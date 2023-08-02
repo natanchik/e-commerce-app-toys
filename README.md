@@ -1,2 +1,3 @@
 # eCommerce-Application
-Welcome to our eCommerce application! This platform replicates real-world shopping experiences in a digital environment
+
+https://github.com/rolling-scopes-school/tasks/tree/master/tasks/eCommerce-Application
