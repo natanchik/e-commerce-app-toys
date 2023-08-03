@@ -21,7 +21,7 @@ module.exports = {
     new CleanWebpackPlugin(),
   ],
   devServer: {
-    static: path.resolve(__dirname, '../dist'),
+    static: path.resolve(__dirname, '..', 'dist'),
   },
   module: {
     rules: [
