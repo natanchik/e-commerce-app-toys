@@ -8,6 +8,8 @@
     "build": "webpack",
     "lint": "eslint ./src --ext .ts",
     "lint:fix": "npm run lint -- --fix",
+    "format": "prettier ./src --check",
+    "format:fix": "prettier ./src --write",
     "test": "jest --env=jsdom"
   },
   "keywords": [],
