@@ -4,13 +4,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: path.resolve(__dirname, './src/index'),
+  entry: path.resolve(__dirname, 'src', 'index'),
   output: {
     filename: 'script.js',
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.json'],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -22,7 +22,6 @@ module.exports = {
   ],
   devServer: {
     static: path.resolve(__dirname, '../dist'),
-    
   },
   module: {
     rules: [
@@ -47,7 +46,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(woff|woff2)$/i,
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
         generator: {
             filename: 'assets/fonts/[name][ext]'

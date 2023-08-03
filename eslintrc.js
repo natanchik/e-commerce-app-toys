@@ -1,12 +1,14 @@
 module.exports = {
-  extends: ['eslint:recommended',
+  extends: [
+    'eslint:recommended',
     'plugin:import/recommended',
     'airbnb-typescript/base',
     'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended'
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['import', '@typescript-eslint'],
+  plugins: ['import', 'prettier', '@typescript-eslint'],
   root: true,
   env: {
     browser: true,
@@ -21,6 +23,7 @@ module.exports = {
   rules: {
     "no-console": 2,
     "class-methods-use-this": "off",
+    'prettier/prettier': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/explicit-function-return-type': 'error',
   },
