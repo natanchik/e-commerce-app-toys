@@ -5,7 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "npm run lint -- --fix"
   },
   "keywords": [],
   "author": "",
