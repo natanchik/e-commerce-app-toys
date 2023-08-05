@@ -1,0 +1,16 @@
+.button {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  background-color: $blue;
+  &:hover {
+    background-color: darken($blue, 5%);
+  }
+}
+.button_green {
+  background-color: $green;
+  color: white;
+  &:hover {
+    background-color: darken($green, 5%);
+  }
+}
