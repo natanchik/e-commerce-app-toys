@@ -31,7 +31,13 @@ class Footer {
       ['header__logo'],
       '<h1>t<span class="logo__peach">o</span><span class="logo__green">y</span><span class="logo__wine">s</span></h1>',
     ) as HTMLDivElement;
-    const navList = createElement('div', ['footer__nav-list']) as HTMLDivElement;
+    const navList = createElement(
+      'div',
+      ['footer__nav-list'],
+      `<a href="" class="footer__nav-item">About us</a>
+      <a href="" class="footer__nav-item">Contact </a>
+      <a href="" class="footer__nav-item">Terms & conditions</a>`,
+    ) as HTMLDivElement;
 
     nav.append(logo, navList);
 

@@ -18,6 +18,25 @@
   }
 }
 
+.footer__nav {
+  text-align: left;
+}
+
+.footer__nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.footer__nav-item {
+  color: $font-dark;
+  opacity: 0.8;
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .footer__info {
   display: flex;
   flex-direction: column;
@@ -26,10 +45,18 @@
   text-align: end;
 }
 
+.footer__tel,
+.footer__email {
+  opacity: 0.8;
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .footer__icon {
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
