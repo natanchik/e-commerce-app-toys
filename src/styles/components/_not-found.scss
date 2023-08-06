@@ -1,0 +1,75 @@
+.not-found__wrapper {
+  padding: 40px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.not-found__img {
+  background-image: url('../assets/images/not-found.jpg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 400px;
+  height: 500px;
+}
+
+.not-found_info {
+  display: flex;
+  flex-direction: column;
+}
+
+.not-found__heading {
+  font-size: 52px;
+  color: $wine;
+}
+
+.not-found__message {
+  margin-bottom: 28px;
+  max-width: 400px;
+  font-size: 46px;
+  color: $peach;
+}
+
+.not-found__button {
+  width: fit-content;
+  font-size: 26px;
+  padding: 15px 40px;
+  color: $background-beige;
+  background-color: $blue;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 6px 4px 0px 1px $wine;
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+
+.not-found__button:hover {
+  background-color: $peach;
+  box-shadow: 6px 4px 1px 1px $wine;
+}
+
+@media (max-width: 960px) {
+  .not-found__wrapper {
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+  .not-found__img {
+    max-width: 260px;
+    height: 300px;
+  }
+  .not-found__heading {
+    font-size: 44px;
+    text-align: center;
+  }
+  .not-found__message {
+    font-size: 38px;
+    text-align: center;
+    margin: 0 0 15px 0;
+  }
+  .not-found__button {
+    font-size: 24px;
+    align-self: center;
+  }
+}
