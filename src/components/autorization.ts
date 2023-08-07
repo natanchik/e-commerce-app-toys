@@ -49,7 +49,7 @@ export class LoginPage {
     const loginPage = createElement('div', ['login-page']);
     const loginBlock = createElement('div', ['login-block', loginBlockType]);
     const loginHeader = createElement('div', ['login-header']);
-    const loginBtnAutoriz = createElement('button', ['button', 'login-btn'], 'Autorization');
+    const loginBtnAuth = createElement('button', ['button', 'login-btn'], 'Autorization');
     const loginBtnReg = createElement('button', ['button', 'login-btn'], 'Registration');
     const loginForm = createElement('form', ['login-form']);
 
@@ -66,7 +66,7 @@ export class LoginPage {
     loginPage.append(loginBlock);
     loginBlock.innerHTML = '';
     loginBlock.append(loginHeader);
-    loginHeader.append(loginBtnAutoriz);
+    loginHeader.append(loginBtnAuth);
     loginHeader.append(loginBtnReg);
     loginBlock.append(loginForm);
     loginForm.innerHTML = '';
@@ -78,20 +78,16 @@ export class LoginPage {
     }
 
     const submitBlock = createElement('div', ['login-submit-block']);
-    const loginSubmitText = this.mode === 'Autorization' ? 'Enter' : 'Register';
-    const loginSubmitBtn = createElement(
-      'button',
-      ['button', 'login-btn', 'uncolored'],
-      loginSubmitText,
-    );
-    submitBlock.append(loginSubmitBtn);
+    const submitText = this.mode === 'Autorization' ? 'Enter' : 'Register';
+    const submitBtn = createElement('button', ['button', 'button_white', 'login-btn'], submitText);
+    submitBlock.append(submitBtn);
     loginBlock.append(submitBlock);
 
     const footerText = this.mode === 'Autorization' ? authFooter : regFooter;
     const loginFooter = createElement('div', ['login-footer'], footerText);
     loginBlock.append(loginFooter);
 
-    loginBtnAutoriz.addEventListener('click', () => {
+    loginBtnAuth.addEventListener('click', () => {
       this.mode = 'Autorization';
       this.drawLoginPage();
     });
