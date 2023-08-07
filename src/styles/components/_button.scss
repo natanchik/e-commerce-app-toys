@@ -7,6 +7,15 @@
     background-color: darken($blue, 5%);
   }
 }
+
+.button_white {
+  background-color: white;
+  border: 2px solid $blue;
+  &:hover {
+    background-color: darken($blue, 5%);
+  }
+}
+
 .button_green {
   background-color: $green;
   color: white;

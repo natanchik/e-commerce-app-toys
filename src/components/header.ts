@@ -1,9 +1,19 @@
 import { createElement } from './utils';
+import LoginPage from './autorization';
 
 class Header {
+  listenHeader(event: Event): void {
+    const target = event.target as HTMLElement;
+
+    if (target.classList.contains('header__icon-user')) {
+      const login = new LoginPage();
+      login.drawLoginPage();
+    }
+  }
+
   public drawHeader(): void {
     const body = document.querySelector('body') as HTMLBodyElement;
-    const hrader = createElement('div', ['header']) as HTMLDivElement;
+    const header = createElement('div', ['header']) as HTMLDivElement;
     const wrapper = createElement('div', ['wrapper', 'header__wrapper']) as HTMLDivElement;
     const nav = createElement('nav', ['header__navigation']) as HTMLElement;
     const burger = createElement(
@@ -30,8 +40,12 @@ class Header {
     nav.append(burger, navList);
     icons.append(iconUser, iconBascket);
     wrapper.append(nav, logo, icons);
-    hrader.append(wrapper);
-    body.append(hrader);
+    header.append(wrapper);
+    body.append(header);
+
+    header.addEventListener('click', (event: Event): void => {
+      this.listenHeader(event);
+    });
   }
 }
 
