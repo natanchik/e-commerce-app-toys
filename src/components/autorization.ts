@@ -39,13 +39,12 @@ export class LoginPage {
       'I agree with <a href="">the terms of personal data processing</a> and <a href=""> privacy policy</a>',
     );
     policylabel.setAttribute('for', 'policylabel');
-    policyBlock.append(policyInput);
-    policyBlock.append(policylabel);
+    policyBlock.append(policyInput, policylabel);
     parent.append(policyBlock);
   }
 
   public drawLoginPage(): void {
-    const loginBlockType = this.mode === 'Autorization' ? 'autoriz-block' : 'reg-block';
+    const loginBlockType = this.mode === 'Autorization' ? 'auth-block' : 'reg-block';
     const loginPage = createElement('div', ['login-page']);
     const loginBlock = createElement('div', ['login-block', loginBlockType]);
     const loginHeader = createElement('div', ['login-header']);
@@ -65,10 +64,6 @@ export class LoginPage {
     }
     loginPage.append(loginBlock);
     loginBlock.innerHTML = '';
-    loginBlock.append(loginHeader);
-    loginHeader.append(loginBtnAuth);
-    loginHeader.append(loginBtnReg);
-    loginBlock.append(loginForm);
     loginForm.innerHTML = '';
 
     if (this.mode === 'Autorization') {
@@ -81,11 +76,12 @@ export class LoginPage {
     const submitText = this.mode === 'Autorization' ? 'Enter' : 'Register';
     const submitBtn = createElement('button', ['button', 'button_white', 'login-btn'], submitText);
     submitBlock.append(submitBtn);
-    loginBlock.append(submitBlock);
 
     const footerText = this.mode === 'Autorization' ? authFooter : regFooter;
     const loginFooter = createElement('div', ['login-footer'], footerText);
-    loginBlock.append(loginFooter);
+
+    loginHeader.append(loginBtnAuth, loginBtnReg);
+    loginBlock.append(loginHeader, loginForm, submitBlock, loginFooter);
 
     loginBtnAuth.addEventListener('click', () => {
       this.mode = 'Autorization';

@@ -21,7 +21,6 @@ export const createInputElement = (
 
   const label = createElement('label', [`${page}-label`], text);
   label.setAttribute('for', id);
-  inputBlock.append(label);
-  inputBlock.append(input);
+  inputBlock.append(label, input);
   parent.append(inputBlock);
 };
