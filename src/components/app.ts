@@ -2,7 +2,6 @@ import { createElement } from './utils';
 import Header from './header';
 import MainPage from './mainPage';
 import Footer from './footer';
-import { LoginPage } from './autorization';
 
 class App {
   startApp(): void {
@@ -21,12 +20,6 @@ class App {
     body.append(main);
 
     footer.drawFooter();
-
-    const iconUser = document.querySelector('.header__icon-user');
-    iconUser?.addEventListener('click', function () {
-      const login = new LoginPage();
-      login.drawLoginPage();
-    });
   }
 }
 

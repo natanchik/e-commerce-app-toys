@@ -94,3 +94,5 @@ export class LoginPage {
     });
   }
 }
+
+export default LoginPage;
