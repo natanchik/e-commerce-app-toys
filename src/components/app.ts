@@ -23,7 +23,7 @@ class App {
     footer.drawFooter();
 
     const iconUser = document.querySelector('.header__icon-user');
-    iconUser?.addEventListener('click', function addLoginPage() {
+    iconUser?.addEventListener('click', function () {
       const login = new LoginPage();
       login.drawLoginPage();
     });
