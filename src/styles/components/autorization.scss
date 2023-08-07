@@ -13,7 +13,7 @@
   flex-direction: column;
   align-items: left;
   height: fit-content;
-  border: 4px solid #dde3f5;
+  border: 4px solid $light-blue;
   text-align: left;
 }
 
@@ -73,7 +73,7 @@
   padding-right: 14px;
   font-size: 1.6rem;
   line-height: 1.4;
-  background-color: #dde3f5;
+  background-color: $light-blue;
 }
 
 .policy-row {
