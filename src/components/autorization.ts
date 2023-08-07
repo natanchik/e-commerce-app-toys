@@ -1,6 +1,6 @@
 import { createElement, createInputElement } from './utils';
 
-export class LoginPage {
+class LoginPage {
   mode = 'Autorization';
 
   private drawAuthBlock(parent: HTMLElement): void {

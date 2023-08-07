@@ -85,8 +85,8 @@ class Sidebar {
   private closeSidebar(): void {
     const dimming = document.querySelector('.sidebar__dimming');
     const wrapper = document.querySelector('.sidebar__wrapper');
-    dimming?.classList.remove('inactive-dimming');
-    document.body.classList.add('hidden-body');
+    dimming?.classList.remove('active-dimming');
+    document.body.classList.remove('hidden-overflow');
     wrapper?.classList.remove('active-sidebar');
   }
 }
