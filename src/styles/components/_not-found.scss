@@ -38,15 +38,12 @@
   color: $background-beige;
   background-color: $blue;
   border: none;
-  border-radius: 10px;
-  box-shadow: 6px 4px 0px 1px $wine;
   cursor: pointer;
-  transition: all 0.3s ease-in;
+  transition: all 0.3s;
 }
 
 .not-found__button:hover {
   background-color: $peach;
-  box-shadow: 6px 4px 1px 1px $wine;
 }
 
 @media (max-width: 960px) {
