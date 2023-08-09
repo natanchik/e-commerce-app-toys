@@ -57,7 +57,7 @@
 }
 
 .sidebar__categories-item:hover {
-  text-shadow: 1px 1px 1px $blue;
+  color: $blue;
 }
 
 .sidebar__login {
@@ -86,4 +86,10 @@
 
 .active-dimming {
   display: block;
+}
+
+@media (max-width: 420px) {
+  .sidebar__wrapper {
+    width: 100%;
+  }
 }

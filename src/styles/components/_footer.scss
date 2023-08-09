@@ -40,9 +40,9 @@
 .footer__info {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   gap: 10px;
   text-align: end;
+  margin-top: 10px;
 }
 
 .footer__tel,
@@ -77,4 +77,30 @@
 .footer_social-icons {
   display: flex;
   gap: 15px;
+}
+
+@media (max-width: 520px) {
+  .footer__raw {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer__nav,
+  .footer__info {
+    text-align: center;
+  }
+
+  .footer__info {
+    margin-top: 30px;
+    gap: 5px;
+  }
+
+  .footer__raw:last-child {
+    flex-direction: column-reverse;
+  }
+
+  .footer_social-icons {
+    gap: 20px;
+    margin: 20px 0 15px;
+  }
 }
