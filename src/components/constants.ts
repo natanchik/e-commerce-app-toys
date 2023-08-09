@@ -19,4 +19,18 @@ const categories = {
   'Outdoor Play': ['Sand & Water Play', 'Bikes, Trikes & Scooters', 'Garden Play & Discovery'],
 };
 
+export const countries = ['', 'U.S.A.', 'Kazakhstan'];
+
+export const salutation = ['', 'Mr', 'Mrs'];
+
+export const validTemplates = {
+  email: /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2-4}$/,
+  password: [/[a-z]+/, /[A-Z]+/, /\d+/],
+  firstName: /^[a-zA-Z]+$/,
+  lastName: /^[a-zA-Z]+$/,
+  street: /^[a-zA-Z-]+$/,
+  city: /^[a-zA-Z-]+$/,
+  postalCode: /\d{5,6}/,
+};
+
 export default categories;
