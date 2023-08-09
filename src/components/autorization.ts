@@ -1,47 +1,13 @@
-import { createElement, createInputElement } from './utils';
+import { countries, salutation } from './constants';
+import {
+  createElement,
+  createInputElement,
+  createSelectElement,
+  createCheckBoxElement,
+} from './utils';
 
 class LoginPage {
-  mode = 'Autorization';
-
-  private drawAuthBlock(parent: HTMLElement): void {
-    createInputElement('email', 'E-mail', 'email', parent, 'login');
-    createInputElement('password', 'Password', 'password', parent, 'login');
-  }
-
-  private drawRegBlock(parent: HTMLElement): void {
-    createInputElement('email', 'E-mail*', 'email', parent, 'login');
-
-    const nameBlock = createElement('div', ['login-row']);
-    createInputElement('text', 'Name*', 'userName', nameBlock, 'login');
-    createInputElement('text', 'Surname*', 'userSurname', nameBlock, 'login');
-    parent.append(nameBlock);
-
-    const userInfo = createElement('div', ['login-row']);
-    createInputElement('date', 'Date of birth*', 'birthday', userInfo, 'login');
-    createInputElement('tel', 'Phone number*', 'phoneNum', userInfo, 'login');
-    parent.append(userInfo);
-
-    const userAddress = createElement('div', ['login-row']);
-    createInputElement('text', 'Country*', 'country', userAddress, 'login');
-    createInputElement('text', 'City*', 'city', userAddress, 'login');
-    createInputElement('text', 'Street*', 'street', userAddress, 'login');
-    createInputElement('number', 'Code*', 'code', userAddress, 'login');
-    parent.append(userAddress);
-
-    const policyBlock = createElement('div', ['login-row', 'policy-row']);
-    const policyInput = createElement('input', ['login-input']) as HTMLInputElement;
-    policyInput.setAttribute('type', 'checkbox');
-    policyInput.setAttribute('id', 'policyInput');
-    policyInput.required = true;
-    const policylabel = createElement(
-      'label',
-      ['login-label'],
-      'I agree with <a href="">the terms of personal data processing</a> and <a href=""> privacy policy</a>',
-    );
-    policylabel.setAttribute('for', 'policylabel');
-    policyBlock.append(policyInput, policylabel);
-    parent.append(policyBlock);
-  }
+  private mode = 'Autorization';
 
   public drawLoginPage(): void {
     const loginBlockType = this.mode === 'Autorization' ? 'auth-block' : 'reg-block';
@@ -92,6 +58,58 @@ class LoginPage {
       this.mode = 'Registration';
       this.drawLoginPage();
     });
+  }
+
+  private drawAuthBlock(parent: HTMLElement): void {
+    parent.append(createInputElement('email', 'E-mail', 'email', 'login'));
+    parent.append(createInputElement('password', 'Password', 'password', 'login'));
+  }
+
+  private drawRegBlock(parent: HTMLElement): void {
+    const emailBlock = createElement('div', ['login-row']);
+    emailBlock.append(createInputElement('email', 'E-mail*', 'email', 'login'));
+    emailBlock.append(createInputElement('password', 'Password*', 'password', 'login'));
+    parent.append(emailBlock);
+
+    const nameBlock = createElement('div', ['login-row']);
+    nameBlock.append(createInputElement('text', 'First name*', 'firstName', 'login'));
+    nameBlock.append(createInputElement('text', 'Last name*', 'lastName', 'login'));
+    parent.append(nameBlock);
+
+    const userInfo = createElement('div', ['login-row']);
+    userInfo.append(createInputElement('date', 'Date of birth*', 'dateOfBirth', 'login'));
+    userInfo.append(createSelectElement(salutation, 'Salutation', 'salutation', 'login', false));
+    parent.append(userInfo);
+
+    parent.append(
+      createCheckBoxElement('Billing and shipping addresses are the same', 'are-same-addresses'),
+    );
+
+    const addressTypes = ['billing', 'shipping'];
+    addressTypes.forEach((type) => {
+      const addressBlock = createElement('div', ['login-row', 'address-block']);
+      const addressTitle = createElement('p', ['address-title'], `Input your ${type} address`);
+
+      const userAddress = createElement('div', ['login-row']);
+      userAddress.append(createSelectElement(countries, 'Country*', 'country', 'login'));
+      userAddress.append(createInputElement('text', 'City*', 'city', 'login'));
+      userAddress.append(createInputElement('text', 'Street*', 'street', 'login'));
+      userAddress.append(
+        createInputElement('number', 'Postal code*', 'code', 'login', true, {
+          min: 10000,
+          max: 999999,
+        }),
+      );
+
+      const asDefault = createCheckBoxElement('Set as default address', `as-default-${type}`);
+
+      addressBlock.append(addressTitle, userAddress, asDefault);
+      parent.append(addressBlock);
+    });
+
+    const policyAgreeText =
+      'I agree with <a href="">The terms of personal data processing</a> and <a href=""> Privacy policy</a>';
+    parent.append(createCheckBoxElement(policyAgreeText, 'policyInput', true));
   }
 }
 
