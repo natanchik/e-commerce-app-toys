@@ -16,12 +16,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'index.html'),
       filename: 'index.html',
-      inject: 'body'
+      inject: 'body',
     }),
     new CleanWebpackPlugin(),
   ],
   devServer: {
     static: path.resolve(__dirname, '..', 'dist'),
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -32,25 +33,21 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [
-          "style-loader",
-          "css-loader",
-          "sass-loader",
-        ],
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|svg)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/[name][ext]'
-        }
+          filename: 'assets/[name][ext]',
+        },
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
         generator: {
-            filename: 'assets/fonts/[name][ext]'
-        }
+          filename: 'assets/fonts/[name][ext]',
+        },
       },
     ],
   },

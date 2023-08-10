@@ -1,25 +1,16 @@
 import { createElement } from './utils';
-import LoginPage from './autorization';
+import Router from '../router/router';
+import pages from '../router/pages';
 
 class Header {
-  listenHeader(event: Event): void {
-    const target = event.target as HTMLElement;
+  header: HTMLHeadElement;
 
-    if (target.classList.contains('header__icon-user')) {
-      const login = new LoginPage();
-      login.drawLoginPage();
-    }
-    if (target.classList.contains('hamburger')) {
-      const dimming = document.querySelector('.sidebar__dimming');
-      const sidebar = document.querySelector('.sidebar__wrapper');
-
-      document.body.classList.add('hidden-overflow');
-      dimming?.classList.add('active-dimming');
-      sidebar?.classList.add('active-sidebar');
-    }
+  constructor(router: Router) {
+    this.header = this.drawHeader();
+    this.setEventListeners(router);
   }
 
-  public drawHeader(): void {
+  private drawHeader(): HTMLHeadElement {
     const body = document.querySelector('body') as HTMLBodyElement;
     const header = createElement('div', ['header']) as HTMLDivElement;
     const wrapper = createElement('div', ['wrapper', 'header__wrapper']) as HTMLDivElement;
@@ -51,8 +42,29 @@ class Header {
     header.append(wrapper);
     body.append(header);
 
-    header.addEventListener('click', (event: Event): void => {
-      this.listenHeader(event);
+    return header;
+  }
+
+  private setEventListeners(router: Router): void {
+    this.header.addEventListener('click', (event: Event): void => {
+      const target = event.target as HTMLElement;
+
+      if (target.classList.contains('header__icon-user')) {
+        router.navigate(pages.AUTORIZATION);
+      }
+
+      if (target.classList.contains('hamburger')) {
+        const dimming = document.querySelector('.sidebar__dimming');
+        const sidebar = document.querySelector('.sidebar__wrapper');
+
+        document.body.classList.add('hidden-overflow');
+        dimming?.classList.add('active-dimming');
+        sidebar?.classList.add('active-sidebar');
+      }
+
+      if (target.classList.contains('header__icon-bascket')) {
+        router.navigate(pages.ABOUT_US);
+      } //показать просто
     });
   }
 }

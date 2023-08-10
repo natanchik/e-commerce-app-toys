@@ -1,28 +1,27 @@
-import { createElement } from './utils';
+import pages from '../router/pages';
 import Header from './header';
-import MainPage from './mainPage';
+import Main from './main';
 import Footer from './footer';
-import Sidebar from './sidebar';
+import Router from '../router/router';
 
 class App {
-  startApp(): void {
-    const body = document.querySelector('body') as HTMLBodyElement;
-    const main = createElement('div', ['main']) as HTMLDivElement;
-    const wrapper = createElement('div', ['wrapper', 'main__wrapper']) as HTMLDivElement;
+  router: Router;
 
-    const header = new Header();
-    const dimming = createElement('div', ['sidebar__dimming']);
-    const sidebar = new Sidebar().drawSidebar();
-    const mainPage = new MainPage();
-    const footer = new Footer();
+  header: Header;
 
-    header.drawHeader();
-    mainPage.drawMainPage();
+  main: Main;
 
-    main.append(wrapper);
-    body.append(main, sidebar, dimming);
+  footer: Footer;
 
-    footer.drawFooter();
+  constructor() {
+    this.router = new Router();
+    this.header = new Header(this.router);
+    this.main = new Main();
+    this.footer = new Footer(this.router);
+  }
+
+  public startApp(): void {
+    this.router.navigate(pages.MAIN);
   }
 }
 

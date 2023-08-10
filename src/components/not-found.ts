@@ -1,8 +1,8 @@
 import { createElement } from './utils';
 
 class NotFound {
-  public drawNotFound(): Node {
-    const wrapper = createElement('div', ['not-found__wrapper']) as HTMLDivElement;
+  public drawNotFound(): HTMLDivElement {
+    const wrapper = createElement('div', ['not-found', 'wrapper']) as HTMLDivElement;
     const info = createElement('div', ['not-found__info']) as HTMLDivElement;
     const heading = createElement('h1', ['not-found__heading'], 'ERROR 404!') as HTMLElement;
     const message = createElement(
@@ -20,7 +20,7 @@ class NotFound {
     info.append(heading, message, button);
     wrapper.append(info, img);
 
-    return wrapper as Node;
+    return wrapper;
   }
 }
 
