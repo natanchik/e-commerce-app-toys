@@ -38,16 +38,15 @@ class LoginPage {
       this.drawRegBlock(loginForm);
     }
 
-    const submitBlock = createElement('div', ['login-submit-block']);
     const submitText = this.mode === 'Autorization' ? 'Enter' : 'Register';
     const submitBtn = createElement('button', ['button', 'button_white', 'login-btn'], submitText);
-    submitBlock.append(submitBtn);
+    loginForm.append(submitBtn);
 
     const footerText = this.mode === 'Autorization' ? authFooter : regFooter;
     const loginFooter = createElement('div', ['login-footer'], footerText);
 
     loginHeader.append(loginBtnAuth, loginBtnReg);
-    loginBlock.append(loginHeader, loginForm, submitBlock, loginFooter);
+    loginBlock.append(loginHeader, loginForm, loginFooter);
 
     loginBtnAuth.addEventListener('click', () => {
       this.mode = 'Autorization';
@@ -128,9 +127,9 @@ class LoginPage {
     const userAddress = createElement('div', ['login-row']);
     userAddress.append(createSelectElement(countries, 'Country*', `${type}-country`, 'login'));
     userAddress.append(createInputElement('text', 'City*', `${type}-city`, 'login'));
-    userAddress.append(createInputElement('text', 'Street*', `${type}-street`, 'login'));
+    userAddress.append(createInputElement('text', 'Street*', `${type}-streetName`, 'login'));
     userAddress.append(
-      createInputElement('number', 'Postal code*', `${type}-code`, 'login', true, {
+      createInputElement('number', 'Postal code*', `${type}-postalCode`, 'login', true, {
         min: 10000,
         max: 999999,
       }),
