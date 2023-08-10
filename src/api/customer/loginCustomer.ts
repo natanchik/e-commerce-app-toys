@@ -11,10 +11,13 @@ const requestOptions = {
   body: '',
 };
 
-const username = 'johndoe1@example.com';
-const password = 'secret1234';
+// TODO take raw data from login form
+const raw = {
+  username: 'johndoe12@example.com',
+  password: 'secret1234',
+};
 
-const loginCustomer = (): void => {
+const loginCustomer = (username = raw.username, password = raw.password): void => {
   fetch(
     `https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/customers/token?grant_type=password&username=${username}&password=${password}`,
     requestOptions,
