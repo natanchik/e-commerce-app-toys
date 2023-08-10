@@ -113,6 +113,10 @@
   color: $red;
 }
 
+.hidden {
+  display: none;
+}
+
 @media (max-width: 600px) {
   .reg-block {
     width: 350px;
