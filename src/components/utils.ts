@@ -34,7 +34,7 @@ export const createInputElement = (
 };
 
 export const createSelectElement = (
-  list: string[],
+  items: object,
   labelText: string,
   inputId: string,
   page: string,
@@ -50,10 +50,10 @@ export const createSelectElement = (
     dataList.required = true;
   }
 
-  for (let i = 0; i < list.length; i += 1) {
+  const optionsInfo = Object.entries(items);
+  for (let i = 0; i < optionsInfo.length; i += 1) {
     const option = document.createElement('option');
-    option.value = list[i];
-    option.textContent = list[i];
+    [option.textContent, option.value] = optionsInfo[i];
     dataList.append(option);
   }
 

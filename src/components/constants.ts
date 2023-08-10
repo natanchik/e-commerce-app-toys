@@ -19,7 +19,7 @@ const categories = {
   'Outdoor Play': ['Sand & Water Play', 'Bikes, Trikes & Scooters', 'Garden Play & Discovery'],
 };
 
-export const countries = ['', 'U.S.A.', 'Kazakhstan'];
+export const countries = { '': '', 'United States': 'US', Kazakhstan: 'KZ' };
 
 export const salutation = ['', 'Mr', 'Mrs'];
 
