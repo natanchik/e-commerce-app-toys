@@ -1,14 +1,19 @@
-import { UrlInfo } from '../types/types';
+import { RouteInfo, UrlInfo } from '../types/types';
 import pages from './pages';
-import routes from './routes';
 
 class Router {
+  routes: RouteInfo[];
+
+  constructor(routes: RouteInfo[]) {
+    this.routes = routes;
+  }
+
   public navigate(url: string): void {
     const request = this.parceUrl(url);
 
     const pathToFind =
       request.cardId === '' ? request.pathname : `${request.pathname}/${request.cardId}`;
-    const route = routes.find((item) => item.path === pathToFind);
+    const route = this.routes.find((item: RouteInfo) => item.path === pathToFind);
 
     if (!route) {
       this.redirectToNotFound();
