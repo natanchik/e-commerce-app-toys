@@ -3,7 +3,11 @@ import { createElement } from './utils';
 
 class Contacts {
   public drawContacts(): HTMLDivElement {
-    const contacts = createElement('div', ['contacts', 'main__wrapper']) as HTMLDivElement;
+    const contacts = createElement('div', [
+      'contacts',
+      'main__wrapper',
+      'main__wrapper_thin',
+    ]) as HTMLDivElement;
     const title = createElement('h2', ['about-us__title'], 'Contacts') as HTMLHeadingElement;
     const decorator = Main.createTitleDecotaror() as HTMLDivElement;
     const text = `

@@ -100,6 +100,10 @@ class Footer {
       if (target.classList.contains('footer__nav-item_contacts')) {
         router.navigate(pages.CONTACTS);
       }
+
+      if (target.classList.contains('footer__nav-item_terms')) {
+        router.navigate(pages.TERMS_AND_CONDITIONS);
+      }
     });
   }
 }

@@ -61,10 +61,6 @@ class Header {
         dimming?.classList.add('active-dimming');
         sidebar?.classList.add('active-sidebar');
       }
-
-      if (target.classList.contains('header__icon-bascket')) {
-        router.navigate(pages.ABOUT_US);
-      } //показать просто
     });
   }
 }

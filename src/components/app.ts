@@ -9,6 +9,7 @@ import Main from './main';
 import Footer from './footer';
 import Router from '../router/router';
 import Contacts from './contacts';
+import Terms from './terms-conditions';
 
 class App {
   router: Router;
@@ -59,6 +60,13 @@ class App {
         callback: (): void => {
           const contacts = new Contacts();
           Main.setContent(contacts.drawContacts());
+        },
+      },
+      {
+        path: `${pages.TERMS_AND_CONDITIONS}`,
+        callback: (): void => {
+          const terms = new Terms();
+          Main.setContent(terms.drawTerms());
         },
       },
       {

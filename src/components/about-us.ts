@@ -3,7 +3,11 @@ import { createElement } from './utils';
 
 class AboutUS {
   public drawAboutUs(): HTMLDivElement {
-    const aboutUs = createElement('div', ['about-us', 'main__wrapper']) as HTMLDivElement;
+    const aboutUs = createElement('div', [
+      'about-us',
+      'main__wrapper',
+      'main__wrapper_thin',
+    ]) as HTMLDivElement;
     const title = createElement('h2', ['about-us__title'], 'About us') as HTMLDivElement;
     const decorator = Main.createTitleDecotaror() as HTMLDivElement;
     const text = `
