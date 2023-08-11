@@ -25,6 +25,16 @@ class Main {
     const content = element.outerHTML;
     main.innerHTML = content;
   }
+
+  static createTitleDecotaror(): HTMLDivElement {
+    const decorator = createElement('div', ['decorator']) as HTMLDivElement;
+    const blue = createElement('div', ['decorator__blue']) as HTMLDivElement;
+    const peach = createElement('div', ['decorator__peach']) as HTMLDivElement;
+    const green = createElement('div', ['decorator__green']) as HTMLDivElement;
+
+    decorator.append(blue, peach, green);
+    return decorator;
+  }
 }
 
 export default Main;

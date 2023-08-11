@@ -6,6 +6,7 @@ class Router {
 
   constructor(routes: RouteInfo[]) {
     this.routes = routes;
+    this.setEventListeners();
   }
 
   public navigate(url: string): void {
@@ -35,6 +36,20 @@ class Router {
 
   private redirectToNotFound(): void {
     this.navigate(pages.NOT_FOUND);
+  }
+
+  private setEventListeners(): void {
+    window.addEventListener('popstate', (): void => {
+      const path = this.getCorrectPath();
+      this.navigate(path);
+    });
+  }
+
+  private getCorrectPath(): string {
+    if (window.location.hash) {
+      return window.location.hash.slice(1);
+    }
+    return window.location.pathname.slice(1);
   }
 }
 

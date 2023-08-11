@@ -39,7 +39,7 @@ class Footer {
     const nav = createElement('div', ['footer__nav']) as HTMLDivElement;
     const logo = createElement(
       'div',
-      ['header__logo'],
+      ['footer__logo', 'logo'],
       '<h1>t<span class="logo__peach">o</span><span class="logo__green">y</span><span class="logo__wine">s</span></h1>',
     ) as HTMLDivElement;
     const navList = createElement(
@@ -60,18 +60,16 @@ class Footer {
     const address = createElement(
       'div',
       ['footer__address'],
-      `<p>6 Saryarka avenue</br>Nur-Sultan, Kazakhstan</p>`,
+      `<p>6 Saryarka avenue</br>Astana, Kazakhstan</p>`,
     ) as HTMLDivElement;
-    const tel = createElement(
-      'a',
-      ['footer__tel'],
-      '<a href="tel:+77771234567" class="footer__tel"><h2>+7(777)123-45-67</h2></a>',
-    ) as HTMLLinkElement;
+    const tel = createElement('a', ['footer__tel'], '<h3>+7(777)123-45-67</h3>') as HTMLLinkElement;
     const email = createElement(
       'a',
       ['footer__email'],
-      '<a href="mailto:info@toys.com" class="footer__email"><h2>info@toys.com</h2></a>',
+      '<h3>info@toys.com</h3>',
     ) as HTMLLinkElement;
+    tel.href = 'tel:+77771234567';
+    email.href = 'mailto:info@toys.com';
 
     info.append(tel, email, address);
     return info;
@@ -100,7 +98,7 @@ class Footer {
       }
 
       if (target.classList.contains('footer__nav-item_contacts')) {
-        router.navigate('g'); // просто показать ошибку
+        router.navigate(pages.CONTACTS);
       }
     });
   }

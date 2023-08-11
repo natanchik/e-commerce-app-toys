@@ -2,7 +2,7 @@ import { createElement } from './utils';
 
 class NotFound {
   public drawNotFound(): HTMLDivElement {
-    const wrapper = createElement('div', ['not-found', 'wrapper']) as HTMLDivElement;
+    const wrapper = createElement('div', ['not-found', 'main__wrapper']) as HTMLDivElement;
     const info = createElement('div', ['not-found__info']) as HTMLDivElement;
     const heading = createElement('h1', ['not-found__heading'], 'ERROR 404!') as HTMLElement;
     const message = createElement(

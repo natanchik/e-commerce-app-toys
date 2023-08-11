@@ -2,7 +2,7 @@ import { createElement } from './utils';
 
 class Card {
   public drawCard(): Node {
-    const wrapper = createElement('div', ['product-card__wrapper']) as HTMLDivElement;
+    const wrapper = createElement('div', ['product-card', 'main__wrapper']) as HTMLDivElement;
     const img = createElement('div', ['product-card__img']) as HTMLDivElement;
     const info = createElement('div', ['product-card__info']) as HTMLDivElement;
     const heading = createElement(

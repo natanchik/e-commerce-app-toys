@@ -8,6 +8,7 @@ import Header from './header';
 import Main from './main';
 import Footer from './footer';
 import Router from '../router/router';
+import Contacts from './contacts';
 
 class App {
   router: Router;
@@ -32,13 +33,6 @@ class App {
   private createRoutes(): RouteInfo[] {
     return [
       {
-        path: ``,
-        callback: (): void => {
-          const mainPage = new MainPage();
-          Main.setContent(mainPage.drawMainPage());
-        },
-      },
-      {
         path: `${pages.MAIN}`,
         callback: (): void => {
           const mainPage = new MainPage();
@@ -49,7 +43,7 @@ class App {
         path: `${pages.AUTORIZATION}`,
         callback: (): void => {
           const loginPage = new LoginPage();
-          //Main.setContent(loginPage.drawLoginPage());
+          //Main.setContent(loginPage.drawLoginPage()); DOTO: refactor aotorization page draw metod - to return HTMLDiv Element
           loginPage.drawLoginPage();
         },
       },
@@ -58,6 +52,13 @@ class App {
         callback: (): void => {
           const aboutUs = new AboutUS();
           Main.setContent(aboutUs.drawAboutUs());
+        },
+      },
+      {
+        path: `${pages.CONTACTS}`,
+        callback: (): void => {
+          const contacts = new Contacts();
+          Main.setContent(contacts.drawContacts());
         },
       },
       {
