@@ -28,12 +28,12 @@ class LoginPage {
     loginForm.innerHTML = '';
 
     if (this.mode === 'Autorization') {
-      this.drawAuthBlock(loginForm);
+      this.addEmailPassword(loginForm, 'current-password');
     } else {
       this.drawRegBlock(loginForm);
     }
 
-    const submitText = this.mode === 'Autorization' ? 'Enter' : 'Register';
+    const submitText = this.mode === 'Autorization' ? 'Login' : 'Register';
     const submitBtn = createElement('button', ['button', 'button_white', 'login-btn'], submitText);
     loginForm.append(submitBtn);
 
@@ -54,35 +54,9 @@ class LoginPage {
     });
   }
 
-  private drawAuthBlock(parent: HTMLElement): void {
-    parent.append(
-      createInputElement('email', 'E-mail', 'email', 'login', true, {
-        name: 'username',
-        autocomplete: 'username',
-      }),
-    );
-    parent.append(
-      createInputElement('password', 'Password', 'password', 'login', true, {
-        name: 'password',
-        autocomplete: 'current-password',
-      }),
-    );
-  }
-
   private drawRegBlock(parent: HTMLElement): void {
     const emailBlock = createElement('div', ['login-row']);
-    emailBlock.append(
-      createInputElement('email', 'E-mail*', 'email', 'login', true, {
-        name: 'username',
-        autocomplete: 'username',
-      }),
-    );
-    emailBlock.append(
-      createInputElement('password', 'Password*', 'password', 'login', true, {
-        name: 'password',
-        autocomplete: 'new-password',
-      }),
-    );
+    this.addEmailPassword(emailBlock, 'new-password');
     parent.append(emailBlock);
 
     const nameBlock = createElement('div', ['login-row']);
@@ -110,6 +84,29 @@ class LoginPage {
       shippingBlock.classList.toggle('hidden');
     });
   }
+
+  private addEmailPassword = (block: HTMLElement, typeOfPassword: string): void => {
+    block.append(
+      createInputElement('email', 'E-mail*', 'email', 'login', true, {
+        name: 'username',
+        autocomplete: 'username',
+      }),
+    );
+    const passwordBlock = createInputElement('password', 'Password*', 'password', 'login', true, {
+      name: 'password',
+      autocomplete: typeOfPassword,
+    });
+    const boxShowPassword = createCheckBoxElement('Show password', 'showPassword');
+    passwordBlock.append(boxShowPassword);
+    block.append(passwordBlock);
+
+    boxShowPassword.addEventListener('change', () => {
+      const passwordInput = document.getElementById('password');
+      if (passwordInput && passwordInput instanceof HTMLInputElement) {
+        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+      }
+    });
+  };
 
   private drawAddressBlock = (type: string): HTMLDivElement => {
     const addressBlock = createElement('div', ['login-row', 'address-block']) as HTMLDivElement;
