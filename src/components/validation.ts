@@ -23,6 +23,17 @@ export const validateInput = (input: HTMLInputElement, notation: HTMLParagraphEl
         warnings += entries[1];
       }
     });
+  } else if (input.id === 'dateOfBirth') {
+    const curDate = new Date();
+    const birthdate = new Date(input.value);
+    let age = curDate.getFullYear() - birthdate.getFullYear();
+    const monthDiff = curDate.getMonth() - birthdate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && curDate.getDate() - birthdate.getDate() < 0)) {
+      age -= 1;
+    }
+    if (age < 13) {
+      warnings += '<p>You are too young. 13+ Only.</p>';
+    }
   } else {
     const id = input.id.startsWith('billing' || 'shipping') ? input.id.split('-')[1] : input.id;
     const fields = Object.keys(validTemplates);
