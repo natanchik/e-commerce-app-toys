@@ -1,6 +1,5 @@
 .login-page {
   display: flex;
-  width: 100vw;
   margin: 10px;
   justify-content: center;
   align-items: center;
@@ -59,10 +58,6 @@
   border: 1px solid $blue;
 }
 
-.error-input {
-  border: 1px solid $red;
-}
-
 .login-label {
   margin: 10px;
 }
@@ -109,8 +104,23 @@
   font-weight: 600;
 }
 
+.error-input {
+  border: 1px solid $red;
+}
+
 .error-message {
   color: $red;
+  margin: 10px;
+  font-size: 1.4rem;
+  vertical-align: bottom;
+  margin-bottom: 5px;
+}
+
+.error-warn {
+  float: left;
+  color: orange;
+  font-size: 1.6rem;
+  margin-right: 10px;
 }
 
 .hidden {

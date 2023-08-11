@@ -1,4 +1,4 @@
-const categories = {
+export const categories = {
   'Shop by stage': [
     'Baby Toys: 0-12M',
     ' Toddler: 1-3 Years',
@@ -21,16 +21,47 @@ const categories = {
 
 export const countries = { '': '', 'United States': 'US', Kazakhstan: 'KZ' };
 
-export const salutation = ['', 'Mr', 'Mrs'];
+export const salutation = { '': '', Mr: 'Mr', Mrs: 'Mrs' };
 
 export const validTemplates = {
-  email: /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2-4}$/,
-  password: [/[a-z]+/, /[A-Z]+/, /\d+/],
-  firstName: /^[a-zA-Z]+$/,
-  lastName: /^[a-zA-Z]+$/,
-  street: /^[a-zA-Z-]+$/,
-  city: /^[a-zA-Z-]+$/,
-  postalCode: /\d{5,6}/,
+  firstName: [
+    /^[a-zA-Z]+$/,
+    'Must contain at least one character (use a-z, A-Z) and no special characters or numbers',
+  ],
+  lastName: [
+    /^[a-zA-Z]+$/,
+    'Must contain at least one character (use a-z, A-Z) and no special characters or numbers',
+  ],
+  streetName: [/^[a-zA-Z0-9-]+$/, 'Must contain at least one character (use a-z, A-Z, 0-9, -)'],
+  city: [
+    /^[a-zA-Z-]+$/,
+    'Must contain at least one character (use a-z, A-Z, -) and no special characters or numbers',
+  ],
+  postalCode: [
+    /^\d{5,6}$/,
+    'Must follow the format for the country (US: 5 digits, KZ: 5-6 digits)',
+  ],
 };
 
-export default categories;
+export const emailRequirements = [
+  [/.{6,}/, 'Email address must be at least 6 characters long.'],
+  [/@/, '<p>Email address must contain an "@" symbol separating local part and domain name.</p>'],
+  [/^[^ ]*$/, '<p>Email address must not contain whitespace.</p>'],
+  [/^[a-zA-Z0-9.@]*$/, 'Email address contains incorrect symbol (use a-z, A-Z, 0-9, .@).'],
+];
+
+export const passwordRequirements = [
+  [/.{8,}/, 'Password must be at least 8 characters long.'],
+  [
+    /^[a-zA-Z0-9!@#$%^&*_+=/?.,~:;-]*$/,
+    'Password contains incorrect symbol (use a-z, A-Z, 0-9, !@#$%^&*_+=/?.,~:;-).',
+  ],
+  [/[a-z]/, '<p>Password must contain at least one lowercase letter (use a-z).</p>'],
+  [/[A-Z]/, '<p>Password must contain at least one uppercase letter (use A-Z).</p>'],
+  [/[0-9]/, '<p>Password must contain at least one digit (0-9).</p>'],
+  [
+    /[!@#$%^&*_+=/?.,~:;-]/,
+    '<p>Password must contain at least one special character (use !@#$%^&*_+=/?.,~:;-).</p>',
+  ],
+  [/^[^ ]*$/, '<p>Password must not contain whitespace.</p>'],
+];

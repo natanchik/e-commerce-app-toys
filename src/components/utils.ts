@@ -1,3 +1,5 @@
+import { validateInput } from './validation';
+
 export const createElement = (tag: string, classes: string[], text?: string): HTMLElement => {
   const element = document.createElement(tag) as HTMLElement;
   element.classList.add(...classes);
@@ -27,8 +29,14 @@ export const createInputElement = (
     Object.entries(attributes).forEach((entry) => input.setAttribute(entry[0], entry[1]));
   }
 
+  const notation = createElement('p', ['error-message']) as HTMLParagraphElement;
+
+  input.oninput = (): void => {
+    validateInput(input, notation);
+  };
+
   const inputBlock = createElement('div', [`${page}-item`]) as HTMLDivElement;
-  inputBlock.append(label, input);
+  inputBlock.append(label, input, notation);
 
   return inputBlock;
 };
@@ -82,14 +90,4 @@ export const createCheckBoxElement = (
   checkBoxBlock.append(input, label);
 
   return checkBoxBlock;
-};
-
-export const showErrorMessage = (inputBlock: HTMLDivElement, message: string): void => {
-  const messageEl = createElement('p', ['error-message'], message);
-  inputBlock.append(messageEl);
-  const input = inputBlock.querySelector('.login-input');
-  input?.classList.add('error-input');
-  setTimeout(() => {
-    input?.classList.remove('error-input');
-  }, 3000);
 };

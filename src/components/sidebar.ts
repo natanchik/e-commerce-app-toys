@@ -1,5 +1,5 @@
 import { createElement } from './utils';
-import categories from './constants';
+import { categories } from './constants';
 
 class Sidebar {
   public drawSidebar(): Node {
