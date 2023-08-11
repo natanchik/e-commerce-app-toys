@@ -24,7 +24,7 @@ class Header {
     const logo = createElement(
       'div',
       ['header__logo'],
-      '<h1>t<span class="logo__peach">o</span><span class="logo__green">y</span><span class="logo__wine">s</span></h1>',
+      '<h1 class="logo">t<span class="logo__peach">o</span><span class="logo__green">y</span><span class="logo__wine">s</span></h1>',
     ) as HTMLDivElement;
     const icons = createElement('div', ['header__icons']) as HTMLDivElement;
     const iconUser = createElement('span', [
@@ -60,6 +60,10 @@ class Header {
         document.body.classList.add('hidden-overflow');
         dimming?.classList.add('active-dimming');
         sidebar?.classList.add('active-sidebar');
+      }
+
+      if (target.classList.contains('logo') || target.parentElement?.classList.contains('logo')) {
+        router.navigate(pages.MAIN);
       }
     });
   }

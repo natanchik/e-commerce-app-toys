@@ -39,8 +39,8 @@ class Footer {
     const nav = createElement('div', ['footer__nav']) as HTMLDivElement;
     const logo = createElement(
       'div',
-      ['footer__logo', 'logo'],
-      '<h1>t<span class="logo__peach">o</span><span class="logo__green">y</span><span class="logo__wine">s</span></h1>',
+      ['footer__logo'],
+      '<h1 class="logo">t<span class="logo__peach">o</span><span class="logo__green">y</span><span class="logo__wine">s</span></h1>',
     ) as HTMLDivElement;
     const navList = createElement(
       'div',
@@ -103,6 +103,10 @@ class Footer {
 
       if (target.classList.contains('footer__nav-item_terms')) {
         router.navigate(pages.TERMS_AND_CONDITIONS);
+      }
+
+      if (target.classList.contains('logo') || target.parentElement?.classList.contains('logo')) {
+        router.navigate(pages.MAIN);
       }
     });
   }
