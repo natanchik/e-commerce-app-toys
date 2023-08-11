@@ -1,14 +1,20 @@
 import { createElement } from './utils';
 import categories from './constants';
+import pages from '../router/pages';
+import Router from '../router/router';
 
 class Sidebar {
-  public drawSidebar(): Node {
+  constructor(router: Router) {
+    this.setEventListeners(router);
+  }
+
+  public drawSidebar(): HTMLDivElement {
     const wrapper = createElement('div', ['sidebar__wrapper']) as HTMLDivElement;
     const header = createElement('div', ['sidebar__header']) as HTMLDivElement;
     const logo = createElement(
       'div',
       ['header__logo'],
-      '<h1>t<span class="logo__peach">o</span><span class="logo__green">y</span><span class="logo__wine">s</span></h1>',
+      '<h1 class="logo">t<span class="logo__peach">o</span><span class="logo__green">y</span><span class="logo__wine">s</span></h1>',
     ) as HTMLDivElement;
     const closeBtn = createElement('button', ['sidebar__close-btn']) as HTMLButtonElement;
     const content = this.drawSidebarContent();
@@ -29,7 +35,7 @@ class Sidebar {
       }
     });
 
-    return wrapper as Node;
+    return wrapper;
   }
 
   private drawSidebarContent(): HTMLDivElement {
@@ -37,8 +43,8 @@ class Sidebar {
     const commonLinks = createElement(
       'div',
       ['sidebar__common-links'],
-      `<a href="" class="sidebar__link">Home</a>
-    <a href="" class="sidebar__link">Catalogue</a>`,
+      `<div class="sidebar__link" data-page="main">Home</div>
+    <div class="sidebar__link" dapage="catalogue">Catalogue</div>`,
     ) as HTMLDivElement;
     const categoriesList = createElement('ul', ['sidebar__categories-list']) as HTMLUListElement;
     for (const [key, value] of Object.entries(categories)) {
@@ -51,13 +57,8 @@ class Sidebar {
       }
       categoriesList.append(category);
     }
-    const login = createElement(
-      'div',
-      ['sidebar__link'],
-      `<a href="" class="sidebar__login sidebar__link">Log in</a>`,
-    );
 
-    content.append(commonLinks, categoriesList, login);
+    content.append(commonLinks, categoriesList);
 
     return content;
   }
@@ -68,6 +69,21 @@ class Sidebar {
     dimming?.classList.remove('active-dimming');
     document.body.classList.remove('hidden-overflow');
     wrapper?.classList.remove('active-sidebar');
+  }
+
+  private setEventListeners(router: Router): void {
+    document.addEventListener('click', (event: Event) => {
+      const target = event.target as HTMLElement;
+
+      if (
+        target.classList.contains('logo') ||
+        target.parentElement?.classList.contains('logo') ||
+        target.dataset.page === 'main'
+      ) {
+        router.navigate(pages.MAIN);
+        this.closeSidebar();
+      }
+    });
   }
 }
 

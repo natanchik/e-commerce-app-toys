@@ -1,19 +1,20 @@
 import { createElement } from './utils';
 import Sidebar from './sidebar';
+import Router from '../router/router';
 
 class Main {
   mainElement: HTMLDivElement;
 
-  constructor() {
-    this.mainElement = this.drawMain();
+  constructor(router: Router) {
+    this.mainElement = this.drawMain(router);
   }
 
-  public drawMain(): HTMLDivElement {
+  public drawMain(router: Router): HTMLDivElement {
     const body = document.querySelector('body') as HTMLBodyElement;
     const main = createElement('div', ['main']) as HTMLDivElement;
 
     const dimming = createElement('div', ['sidebar__dimming']);
-    const sidebar = new Sidebar().drawSidebar();
+    const sidebar = new Sidebar(router).drawSidebar();
 
     body.append(main, sidebar, dimming);
 
@@ -26,7 +27,7 @@ class Main {
     main.innerHTML = content;
   }
 
-  static createTitleDecotaror(): HTMLDivElement {
+  static createTitleDecorator(): HTMLDivElement {
     const decorator = createElement('div', ['decorator']) as HTMLDivElement;
     const blue = createElement('div', ['decorator__blue']) as HTMLDivElement;
     const peach = createElement('div', ['decorator__peach']) as HTMLDivElement;

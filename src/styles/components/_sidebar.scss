@@ -3,11 +3,12 @@
   top: 0;
   z-index: 2;
   width: 390px;
-  padding: 10px;
+  padding: 20px;
   height: 100vh;
   background-color: $background-beige;
   transform: translateX(-100%);
   transition: transform 0.5s;
+  overflow-y: auto;
 }
 
 .sidebar__header {
@@ -35,10 +36,11 @@
   margin-bottom: 5px;
   font-weight: 600;
   color: #97a4c3;
+  cursor: pointer;
 }
 
 .sidebar__category:not(:last-child) {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .sidebar__category-name {
@@ -58,14 +60,6 @@
 
 .sidebar__categories-item:hover {
   color: $blue;
-}
-
-.sidebar__login {
-  padding-left: 20px;
-  margin-top: 40px;
-  background-image: url('../assets/icons/user.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
 }
 
 .sidebar__dimming {
