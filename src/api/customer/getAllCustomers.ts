@@ -9,14 +9,28 @@ const requestOptions = {
   headers: myHeaders,
 };
 
-const getAllCustomers = (): void => {
+export const getAllCustomers = (): void => {
   fetch(
     'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers',
     requestOptions,
   )
-    .then((response) => response.json())
-    .then((result) => console.log(result))
+    .then((res) => res.json())
+    .then((res) => console.log(res))
     .catch((error) => console.log('error', error));
 };
 
-export default getAllCustomers;
+export const getAllCustomersEmails = async (emails: string[] = []): Promise<string[] | void> => {
+  await fetch(
+    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers',
+    requestOptions,
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      res.results.forEach((customer: { [key: string]: string }) => {
+        emails.push(customer.email);
+      });
+    })
+    .catch((error) => console.log('error', error));
+
+  return emails;
+};

@@ -9,10 +9,8 @@ const requestOptions = {
   headers: myHeaders,
 };
 
-const customerID = 'ccf1d98a-7ffc-41b7-b404-a793fb8408a6';
-
 // TODO прокидывать id в параметры функции
-const getCustomerByID = (): void => {
+const getCustomerByID = (customerID = 'ccf1d98a-7ffc-41b7-b404-a793fb8408a6'): void => {
   fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers/${customerID}`,
     requestOptions,
