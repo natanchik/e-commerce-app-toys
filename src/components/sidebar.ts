@@ -19,10 +19,7 @@ class Sidebar {
     closeBtn.addEventListener('click', this.closeSidebar);
     document.addEventListener('click', (event: MouseEvent) => {
       const target = event.target as Node;
-      if (
-        wrapper.classList.contains('active-sidebar') &&
-        target !== document.querySelector('.hamburger')
-      ) {
+      if (wrapper.classList.contains('active-sidebar') && target !== document.querySelector('.hamburger')) {
         if (!(target == wrapper || wrapper.contains(target))) {
           this.closeSidebar();
         }
@@ -51,11 +48,7 @@ class Sidebar {
       }
       categoriesList.append(category);
     }
-    const login = createElement(
-      'div',
-      ['sidebar__link'],
-      `<a href="" class="sidebar__login sidebar__link">Log in</a>`,
-    );
+    const login = createElement('div', ['sidebar__link'], `<a href="" class="sidebar__login sidebar__link">Log in</a>`);
 
     content.append(commonLinks, categoriesList, login);
 

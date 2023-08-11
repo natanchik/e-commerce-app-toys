@@ -1,10 +1,6 @@
 import { emailRequirements, passwordRequirements, validTemplates } from './constants';
 
-export const showErrorMessage = (
-  input: HTMLInputElement,
-  notation: HTMLParagraphElement,
-  message: string,
-): void => {
+export const showErrorMessage = (input: HTMLInputElement, notation: HTMLParagraphElement, message: string): void => {
   input.classList.add('error-input');
   notation.innerHTML = `<p class='error-warn'>&#9888;</p>${message}`; //`<span class='error-icon'></span> ${message}`;
 };

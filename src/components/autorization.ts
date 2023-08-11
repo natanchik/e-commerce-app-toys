@@ -1,10 +1,5 @@
 import { countries, salutation } from './constants';
-import {
-  createElement,
-  createInputElement,
-  createSelectElement,
-  createCheckBoxElement,
-} from './utils';
+import { createElement, createInputElement, createSelectElement, createCheckBoxElement } from './utils';
 
 class LoginPage {
   private mode = 'Autorization';
@@ -100,10 +95,7 @@ class LoginPage {
     userInfo.append(createSelectElement(salutation, 'Salutation', 'salutation', 'login', false));
     parent.append(userInfo);
 
-    const sameAddress = createCheckBoxElement(
-      'Billing and shipping addresses are the same',
-      'are-same-addresses',
-    );
+    const sameAddress = createCheckBoxElement('Billing and shipping addresses are the same', 'are-same-addresses');
     parent.append(sameAddress);
 
     const billingBlock = this.drawAddressBlock('billing');
