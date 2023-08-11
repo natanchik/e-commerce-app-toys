@@ -5,7 +5,7 @@ class MainPage {
     const mainPage = createElement(
       'div',
       ['main-page', 'main__wrapper'],
-      '<h2>Привет! Это главная страница</h2>',
+      '<h2>Main page content well be here soon...</h2>',
     ) as HTMLDivElement;
 
     return mainPage;
