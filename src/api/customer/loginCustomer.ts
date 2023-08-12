@@ -1,6 +1,6 @@
 // TODO remove this eslint-disable
-
 import { getAllCustomersEmails } from './getAllCustomers';
+import { fillUserState } from './getCustomerByID';
 
 /* eslint-disable no-console */
 const myHeaders = {
@@ -16,7 +16,7 @@ const requestOptions = {
 
 // TODO take raw data from login form
 const raw = {
-  username: 'johndoe12@example.com',
+  username: 'johndoe1@example.com',
   password: 'secret1234',
 };
 
@@ -48,10 +48,11 @@ export const loginCustomer = (username = raw.username, password = raw.password):
         }
       }
     })
-    .then((res) => {
+    .then(async (res) => {
       localStorage.setItem('token', res.access_token);
       localStorage.setItem('refresh', res.refresh_token);
       localStorage.setItem('type_of_token', 'customer');
+      await fillUserState(username);
     })
     .catch((err) => {
       if (err instanceof Error) {

@@ -1,4 +1,4 @@
-import getCustomerByID from './getCustomerByID';
+import { getCustomerByID } from './getCustomerByID';
 import { loginAfterRegistration } from './loginCustomer';
 
 // TODO remove this eslint-disable
