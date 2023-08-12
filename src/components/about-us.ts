@@ -15,7 +15,7 @@ class AboutUS {
     <p>Our goal is to provide customers with a hassle-free online shopping experience.</p>
     <p>We aim to give everyone, whatever their age, the best service possible and welcome feedback from our customers on all aspects of their shopping experience.</p>
     <p class="main__blue-text">Thanks to our rich selection of toys and games, you’ll find something for kids of all ages and interests, whether you’re looking for inside or outside entertainment.</p>
-    <p>All our products are in stock ready to be dispatched immediately from our warehouse Kazakhstan.</p>
+    <p>All our products are in stock and ready to be dispatched immediately from our warehouse Kazakhstan.</p>
     `;
     const content = createElement('div', ['about-us__content'], text) as HTMLDivElement;
 

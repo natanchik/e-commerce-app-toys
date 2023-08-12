@@ -9,7 +9,7 @@ class Contacts {
       'main__wrapper_thin',
     ]) as HTMLDivElement;
     const title = createElement('h2', ['about-us__title'], 'Contacts') as HTMLHeadingElement;
-    const decorator = Main.createTitleDecotaror() as HTMLDivElement;
+    const decorator = Main.createTitleDecorator() as HTMLDivElement;
     const text = `
     <p>Visit our shops. We stock a wide variety of toys, essentials, decor, accessories and more, for the customer who is looking for quality at affordable prices.</p>
     `;

@@ -9,7 +9,7 @@ class Terms {
       'main__wrapper_thin',
     ]) as HTMLDivElement;
     const title = createElement('h2', ['terms__title'], 'Terms & conditions') as HTMLDivElement;
-    const decorator = Main.createTitleDecotaror() as HTMLDivElement;
+    const decorator = Main.createTitleDecorator() as HTMLDivElement;
 
     terms.append(title, decorator);
     return terms;
