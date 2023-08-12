@@ -39,6 +39,11 @@ class Router {
   }
 
   private setEventListeners(): void {
+    window.addEventListener('DOMContentLoaded', (): void => {
+      const path = this.getCorrectPath();
+      this.navigate(path);
+    });
+
     window.addEventListener('popstate', (): void => {
       const path = this.getCorrectPath();
       this.navigate(path);
