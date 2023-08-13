@@ -1,7 +1,7 @@
 import pages from '../router/pages';
 import { RouteInfo } from '../types/types';
 import MainPage from './main-page';
-import LoginPage from './autorization';
+import LoginPage from './loginPage';
 import NotFound from './not-found';
 import AboutUS from './about-us';
 import Header from './header';
