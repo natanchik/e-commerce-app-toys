@@ -1,10 +1,16 @@
+import pages from '../router/pages';
+import Router from '../router/router';
 import { createElement } from './utils';
 
 class NotFound {
+  constructor(router: Router) {
+    this.setEventListeners(router);
+  }
+
   public drawNotFound(): HTMLDivElement {
     const wrapper = createElement('div', ['not-found', 'main__wrapper']) as HTMLDivElement;
     const info = createElement('div', ['not-found__info']) as HTMLDivElement;
-    const heading = createElement('h1', ['not-found__heading'], 'ERROR 404!') as HTMLElement;
+    const heading = createElement('h2', ['not-found__heading'], 'ERROR 404') as HTMLElement;
     const message = createElement(
       'p',
       ['not-found__message'],
@@ -12,7 +18,7 @@ class NotFound {
     ) as HTMLParagraphElement;
     const button = createElement(
       'button',
-      ['not-found__button'],
+      ['not-found__button', 'button'],
       'BACK TO HOME',
     ) as HTMLButtonElement;
     const img = createElement('div', ['not-found__img']) as HTMLDivElement;
@@ -21,6 +27,16 @@ class NotFound {
     wrapper.append(info, img);
 
     return wrapper;
+  }
+
+  private setEventListeners(router: Router): void {
+    document.addEventListener('click', (event: Event) => {
+      const target = event.target as HTMLElement;
+
+      if (target.classList.contains('not-found__button')) {
+        router.navigate(pages.MAIN);
+      }
+    });
   }
 }
 
