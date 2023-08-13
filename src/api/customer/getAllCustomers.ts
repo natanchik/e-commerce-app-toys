@@ -14,9 +14,19 @@ export const getAllCustomers = (): void => {
     'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers',
     requestOptions,
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        return res.json();
+      } else {
+        throw new Error(`The error with status code ${res.status} has occured, please try later`);
+      }
+    })
     .then((res) => console.log(res))
-    .catch((error) => console.log('error', error));
+    .catch((err) => {
+      if (err instanceof Error) {
+        console.log(`${err.message}`);
+      }
+    });
 };
 
 export const getAllCustomersEmails = async (emails: string[] = []): Promise<string[] | void> => {
@@ -24,13 +34,23 @@ export const getAllCustomersEmails = async (emails: string[] = []): Promise<stri
     'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers',
     requestOptions,
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        return res.json();
+      } else {
+        throw new Error(`The error with status code ${res.status} has occured, please try later`);
+      }
+    })
     .then((res) => {
       res.results.forEach((customer: { [key: string]: string }) => {
         emails.push(customer.email);
       });
     })
-    .catch((error) => console.log('error', error));
+    .catch((err) => {
+      if (err instanceof Error) {
+        console.log(`${err.message}`);
+      }
+    });
 
   return emails;
 };

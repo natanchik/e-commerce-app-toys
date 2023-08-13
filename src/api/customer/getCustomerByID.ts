@@ -12,12 +12,18 @@ const requestOptions = {
   headers: myHeaders,
 };
 
-export const getCustomerByID = (customerID: string): void => {
-  fetch(
+export const getCustomerByID = async (customerID: string): Promise<void> => {
+  await fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers/${customerID}`,
     requestOptions,
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        return res.json();
+      } else {
+        throw new Error(`The error with status code ${res.status} has occured, please try later`);
+      }
+    })
     .then((res) => {
       userState.firstName = res.firstName;
       userState.lastName = res.lastName;
@@ -36,7 +42,13 @@ export const fillUserState = async (email: string): Promise<void> => {
     'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers',
     requestOptions,
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        return res.json();
+      } else {
+        throw new Error(`The error with status code ${res.status} has occured, please try later`);
+      }
+    })
     .then((res) => {
       const currentCustomer = res.results.find((customer: { [key: string]: string }) => {
         return customer.email === email;

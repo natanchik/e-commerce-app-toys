@@ -1,3 +1,4 @@
+import userState from '../../state/userState';
 import { getCustomerByID } from './getCustomerByID';
 import { loginAfterRegistration } from './loginCustomer';
 
@@ -10,9 +11,9 @@ const myHeaders = {
 
 // TODO take raw data from registration form
 const data = {
-  email: 'TomWhite@example.com',
-  firstName: 'Tom',
-  lastName: 'White',
+  email: 'NewCustomer@example.com',
+  firstName: 'New',
+  lastName: 'Customer',
   password: 'secret1234',
   dateOfBirth: '1998-10-12',
   salutation: 'Mr.',
@@ -129,11 +130,12 @@ const createCustomer = (): void => {
         `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers/${customerID}`,
         { method: 'POST', headers: myHeaders, body: dataForAddressActions },
       )
-        .then(() => {
+        .then(async () => {
           const username = data.email;
           const password = data.password;
           loginAfterRegistration(username, password);
-          getCustomerByID(customerID);
+          await getCustomerByID(customerID);
+          console.log(userState);
         })
         .catch((err) => {
           if (err instanceof Error) {
