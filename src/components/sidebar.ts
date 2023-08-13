@@ -1,19 +1,13 @@
 import { createElement } from './utils';
 import categories from './constants';
-import pages from '../router/pages';
-import Router from '../router/router';
 
 class Sidebar {
-  constructor(router: Router) {
-    this.setEventListeners(router);
-  }
-
   public drawSidebar(): HTMLDivElement {
     const wrapper = createElement('div', ['sidebar__wrapper']) as HTMLDivElement;
     const header = createElement('div', ['sidebar__header']) as HTMLDivElement;
     const logo = createElement(
       'div',
-      ['header__logo'],
+      ['sidebar__logo'],
       '<h1 class="logo">t<span class="logo__peach">o</span><span class="logo__green">y</span><span class="logo__wine">s</span></h1>',
     ) as HTMLDivElement;
     const closeBtn = createElement('button', ['sidebar__close-btn']) as HTMLButtonElement;
@@ -63,27 +57,12 @@ class Sidebar {
     return content;
   }
 
-  private closeSidebar(): void {
+  public closeSidebar(): void {
     const dimming = document.querySelector('.sidebar__dimming');
     const wrapper = document.querySelector('.sidebar__wrapper');
     dimming?.classList.remove('active-dimming');
     document.body.classList.remove('hidden-overflow');
     wrapper?.classList.remove('active-sidebar');
-  }
-
-  private setEventListeners(router: Router): void {
-    document.addEventListener('click', (event: Event) => {
-      const target = event.target as HTMLElement;
-
-      if (
-        target.classList.contains('logo') ||
-        target.parentElement?.classList.contains('logo') ||
-        target.dataset.page === 'main'
-      ) {
-        router.navigate(pages.MAIN);
-        this.closeSidebar();
-      }
-    });
   }
 }
 

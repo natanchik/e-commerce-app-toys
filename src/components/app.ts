@@ -27,26 +27,12 @@ class App {
     this.footer = new Footer(this.router);
   }
 
-  public startApp(): void {
-    this.router.navigate(pages.MAIN);
-  }
-
-  // private loadPage(path: string, ): void {
-  //   window.history.pushState({}, '', path);
-  //   Main.setContent(mainPage.drawMainPage());
-  // }
+  public startApp(): void {}
 
   private createRoutes(): RouteInfo[] {
     return [
       {
         path: ``,
-        callback: (): void => {
-          const mainPage = new MainPage();
-          Main.setContent(mainPage.drawMainPage());
-        },
-      },
-      {
-        path: `${pages.MAIN}`,
         callback: (): void => {
           const mainPage = new MainPage();
           Main.setContent(mainPage.drawMainPage());
