@@ -1,4 +1,4 @@
-.login-page {
+.auth-page {
   display: flex;
   margin: 10px;
   justify-content: center;
@@ -7,7 +7,7 @@
   font-size: 1.8rem;
 }
 
-.login-block {
+.auth-block {
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -16,10 +16,10 @@
   text-align: left;
 }
 
-.auth-block {
+.login-block {
   width: 350px;
 
-  & .login-item {
+  & .auth-item {
     width: 348px;
   }
 }
@@ -27,26 +27,26 @@
 .reg-block {
   width: 600px;
 
-  & .login-item {
+  & .auth-item {
     width: 300px;
   }
 }
 
-.login-row {
+.auth-row {
   display: flex;
 }
 
-.login-item {
+.auth-item {
   display: inline-block;
 }
 
-.login-btn {
+.auth-btn {
   display: inline-block;
   margin: 10px;
   width: content;
 }
 
-.login-input {
+.auth-input {
   display: block;
   margin: 10px;
   width: calc(100% - 25px);
@@ -54,11 +54,11 @@
   border: 1px solid $blue;
 }
 
-.login-label {
+.auth-label {
   margin: 10px;
 }
 
-.login-footer {
+.auth-footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;

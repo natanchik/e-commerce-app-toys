@@ -1,5 +1,5 @@
 import { createElement } from './utils';
-import LoginPage from './autorization';
+import LoginPage from './loginPage';
 
 class Header {
   listenHeader(event: Event): void {
