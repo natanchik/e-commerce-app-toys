@@ -70,7 +70,7 @@ class App {
       {
         path: `${pages.NOT_FOUND}`,
         callback: (): void => {
-          const notFound = new NotFound();
+          const notFound = new NotFound(this.router);
           Main.setContent(notFound.drawNotFound());
         },
       },
