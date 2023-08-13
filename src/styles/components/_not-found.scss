@@ -1,4 +1,4 @@
-.not-found__wrapper {
+.not-found {
   padding: 40px 0;
   display: flex;
   justify-content: center;
@@ -14,7 +14,7 @@
   background-size: contain;
 }
 
-.not-found_info {
+.not-found__info {
   display: flex;
   flex-direction: column;
 }

@@ -30,7 +30,8 @@
 }
 
 .footer__nav-item {
-  color: $font-dark;
+  cursor: pointer;
+  text-transform: capitalize;
   opacity: 0.8;
   &:hover {
     opacity: 1;
