@@ -1,22 +1,28 @@
 import { createElement } from './utils';
 import Sidebar from './sidebar';
 import Router from '../router/router';
+import pages from '../router/pages';
 
 class Main {
   mainElement: HTMLDivElement;
 
+  sidebar: Sidebar;
+
+  sidebarWrapper: HTMLDivElement;
+
   constructor(router: Router) {
-    this.mainElement = this.drawMain(router);
+    this.sidebar = new Sidebar();
+    this.sidebarWrapper = this.sidebar.drawSidebar();
+    this.mainElement = this.drawMain();
+    this.setEventListeners(router);
   }
 
-  public drawMain(router: Router): HTMLDivElement {
+  public drawMain(): HTMLDivElement {
     const body = document.querySelector('body') as HTMLBodyElement;
     const main = createElement('div', ['main']) as HTMLDivElement;
-
     const dimming = createElement('div', ['sidebar__dimming']);
-    const sidebar = new Sidebar(router).drawSidebar();
 
-    body.append(main, sidebar, dimming);
+    body.append(main, this.sidebarWrapper, dimming);
 
     return main;
   }
@@ -35,6 +41,22 @@ class Main {
 
     decorator.append(blue, peach, green);
     return decorator;
+  }
+
+  private setEventListeners(router: Router): void {
+    document.addEventListener('click', (event: Event) => {
+      const target = event.target as HTMLElement;
+
+      if (target.classList.contains('sidebar__link') && target.dataset.page === 'main') {
+        router.navigate(pages.MAIN);
+        this.sidebar.closeSidebar();
+      }
+
+      if (target.classList.contains('logo') || target.parentElement?.classList.contains('logo')) {
+        router.navigate(pages.MAIN);
+        this.sidebar.closeSidebar();
+      }
+    });
   }
 }
 

@@ -96,10 +96,6 @@ class Footer {
       if (target.classList.contains('footer__nav-item_terms')) {
         router.navigate(pages.TERMS_AND_CONDITIONS);
       }
-
-      if (target.classList.contains('logo') || target.parentElement?.classList.contains('logo')) {
-        router.navigate(pages.MAIN);
-      }
     });
   }
 }
