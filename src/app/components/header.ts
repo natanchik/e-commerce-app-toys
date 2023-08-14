@@ -40,7 +40,7 @@ class Header {
       const target = event.target as HTMLElement;
 
       if (target.classList.contains('header__icon-user')) {
-        router.navigate(pages.AUTORIZATION);
+        router.navigate(pages.LOGIN);
       }
 
       if (target.classList.contains('hamburger')) {

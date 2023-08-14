@@ -2,8 +2,8 @@ import AuthPage from '../components/autorization';
 import RegPage from './registration-page';
 
 class LoginPage extends AuthPage {
-  footerText = `<p>I am not registered. <a href=''>Go to Registration.</a></p> 
-  <p>I forgot password. <a href=''>Reset</a></p>`;
+  footerText = `<div>I am not registered. <a href=''>Go to Registration.</a></div> 
+  <div>I forgot password. <a href=''>Reset</a></div>`;
 
   public drawLoginPage = (): void => {
     this.drawAuthPage('login', 'Login', this.footerText, this.drawFormBlock);

@@ -4,8 +4,8 @@ import { countries, salutation } from '../components/constants';
 import { createElement, createInputElement, createSelectElement, createCheckBoxElement } from '../components/utils';
 
 class RegPage extends AuthPage {
-  footerText = `<p>I am registered. <a href="">Go to Login.</a></p>
-  <p>I forgot password. <a href="">Reset</a></p>`;
+  footerText = `<div>I am registered. <a href="">Go to Login.</a></div>
+  <div>I forgot password. <a href="">Reset</a></div>`;
 
   public drawRegPage = (): void => {
     this.drawAuthPage('reg', 'Register', this.footerText, this.drawFormBlock);
@@ -48,7 +48,7 @@ class RegPage extends AuthPage {
   protected drawAddressBlock = (type: string): HTMLDivElement => {
     const addressBlock = createElement('div', ['auth-row', 'address-block']) as HTMLDivElement;
     addressBlock.setAttribute('id', `${type}-block`);
-    const addressTitle = createElement('p', ['address-title'], `Input your ${type} address`);
+    const addressTitle = createElement('h4', ['address-title'], `Input your ${type} address:`);
 
     const userAddress = createElement('div', ['auth-row']);
     userAddress.append(createSelectElement(countries, 'Country*', `${type}-country`, 'auth'));

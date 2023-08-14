@@ -7,12 +7,12 @@ abstract class AuthPage {
     footerText: string,
     drawForm: (block: HTMLElement) => void,
   ): void {
-    const authPage = createElement('div', ['auth-page']);
+    const authPage = createElement('div', ['auth-page', 'main__wrapper']);
     const authBlock = createElement('div', ['auth-block', `${mode}-block`]);
     const authHeader = createElement('div', ['auth-header']);
-    const authBtnAuth = createElement('button', ['button', 'auth-btn'], 'Autorization');
+    const authBtnAuth = createElement('button', ['button', 'button_white', 'auth-btn'], 'Autorization');
     authBtnAuth.setAttribute('id', 'form-auth-btn');
-    const authBtnReg = createElement('button', ['button', 'auth-btn'], 'Registration');
+    const authBtnReg = createElement('button', ['button', 'button_white', 'auth-btn'], 'Registration');
     authBtnReg.setAttribute('id', 'form-reg-btn');
     const authForm = createElement('form', ['auth-form']);
 
@@ -27,7 +27,7 @@ abstract class AuthPage {
 
     drawForm(authForm);
 
-    const submitBtn = createElement('button', ['button', 'button_white', 'auth-btn'], submitText);
+    const submitBtn = createElement('button', ['button', 'button_green', 'auth-btn'], submitText);
     authForm.append(submitBtn);
 
     const authFooter = createElement('div', ['auth-footer'], footerText);

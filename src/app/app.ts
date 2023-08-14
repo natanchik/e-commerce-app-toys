@@ -39,7 +39,15 @@ class App {
         },
       },
       {
-        path: `${pages.AUTORIZATION}`,
+        path: `${pages.LOGIN}`,
+        callback: (): void => {
+          const loginPage = new LoginPage();
+          //Main.setContent(loginPage.drawLoginPage()); DOTO: refactor aotorization page draw metod - to return HTMLDiv Element
+          loginPage.drawLoginPage();
+        },
+      },
+      {
+        path: `${pages.REGISTRATION}`,
         callback: (): void => {
           const loginPage = new LoginPage();
           //Main.setContent(loginPage.drawLoginPage()); DOTO: refactor aotorization page draw metod - to return HTMLDiv Element
