@@ -1,5 +1,5 @@
-import Main from './main';
-import { createElement } from './utils';
+import Main from '../components/main';
+import { createElement } from '../components/utils';
 
 class Contacts {
   public drawContacts(): HTMLDivElement {

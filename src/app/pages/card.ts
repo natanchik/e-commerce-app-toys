@@ -1,4 +1,4 @@
-import { createElement } from './utils';
+import { createElement } from '../components/utils';
 
 class Card {
   public drawCard(): Node {

@@ -1,15 +1,15 @@
-import pages from '../router/pages';
-import { RouteInfo } from '../types/types';
-import MainPage from './main-page';
-import LoginPage from './loginPage';
-import NotFound from './not-found';
-import AboutUS from './about-us';
-import Header from './header';
-import Main from './main';
-import Footer from './footer';
-import Router from '../router/router';
-import Contacts from './contacts';
-import Terms from './terms-conditions';
+import pages from './router/pages';
+import { RouteInfo } from './types/types';
+import MainPage from './pages/main-page';
+import LoginPage from './pages/login-page';
+import NotFound from './pages/not-found';
+import AboutUS from './pages/about-us';
+import Header from './components/header';
+import Main from './components/main';
+import Footer from './components/footer';
+import Router from './router/router';
+import Contacts from './pages/contacts';
+import Terms from './pages/terms-conditions';
 
 class App {
   router: Router;

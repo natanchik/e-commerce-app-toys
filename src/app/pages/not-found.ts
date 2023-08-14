@@ -1,6 +1,6 @@
 import pages from '../router/pages';
 import Router from '../router/router';
-import { createElement } from './utils';
+import { createElement } from '../components/utils';
 
 class NotFound {
   constructor(router: Router) {

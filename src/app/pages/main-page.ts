@@ -1,4 +1,4 @@
-import { createElement } from './utils';
+import { createElement } from '../components/utils';
 
 class MainPage {
   public drawMainPage(): HTMLDivElement {

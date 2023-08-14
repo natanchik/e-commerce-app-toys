@@ -1,7 +1,7 @@
-import AuthPage from './autorization';
-import LoginPage from './loginPage';
-import { countries, salutation } from './constants';
-import { createElement, createInputElement, createSelectElement, createCheckBoxElement } from './utils';
+import AuthPage from '../components/autorization';
+import LoginPage from './login-page';
+import { countries, salutation } from '../components/constants';
+import { createElement, createInputElement, createSelectElement, createCheckBoxElement } from '../components/utils';
 
 class RegPage extends AuthPage {
   footerText = `<p>I am registered. <a href="">Go to Login.</a></p>

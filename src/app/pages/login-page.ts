@@ -1,5 +1,5 @@
-import AuthPage from './autorization';
-import RegPage from './registrationPage';
+import AuthPage from '../components/autorization';
+import RegPage from './registration-page';
 
 class LoginPage extends AuthPage {
   footerText = `<p>I am not registered. <a href=''>Go to Registration.</a></p> 
