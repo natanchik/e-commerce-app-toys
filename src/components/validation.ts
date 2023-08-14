@@ -36,12 +36,25 @@ export const validateInput = (input: HTMLInputElement, notation: HTMLParagraphEl
     }
   } else {
     const id = input.id.startsWith('shipping') || input.id.startsWith('billing') ? input.id.split('-')[1] : input.id;
-    const fields = Object.keys(validTemplates);
-    if (fields.includes(id)) {
-      const ind = fields.indexOf(id);
-      const fieldRequirements = Object.entries(validTemplates)[ind][1];
-      if (!input.value.match(fieldRequirements[0])) {
-        warnings += fieldRequirements[1];
+    if (id === 'postalCode') {
+      const country = document.getElementById(`${input.id.split('-')[0]}-country`) as HTMLInputElement;
+      let reqValue = /^\d{5,6}$/;
+      let reqText = 'US: 5 digits, KZ: 6 digits';
+      if (country && country.value) {
+        reqValue = country.value === 'US' ? /^\d{5}$/ : /^\d{6}$/;
+        reqText = country.value === 'US' ? '5 digits' : '6 digits';
+      }
+      if (!input.value.match(reqValue)) {
+        warnings += `Must follow the format for the country (${reqText})`;
+      }
+    } else {
+      const fields = Object.keys(validTemplates);
+      if (fields.includes(id)) {
+        const ind = fields.indexOf(id);
+        const fieldRequirements = Object.entries(validTemplates)[ind][1];
+        if (!input.value.match(fieldRequirements[0])) {
+          warnings += fieldRequirements[1];
+        }
       }
     }
   }
