@@ -35,7 +35,7 @@ export const validateInput = (input: HTMLInputElement, notation: HTMLParagraphEl
       warnings += '<p>You are too young. 13+ Only.</p>';
     }
   } else {
-    const id = input.id.startsWith('billing' || 'shipping') ? input.id.split('-')[1] : input.id;
+    const id = input.id.startsWith('shipping') || input.id.startsWith('billing') ? input.id.split('-')[1] : input.id;
     const fields = Object.keys(validTemplates);
     if (fields.includes(id)) {
       const ind = fields.indexOf(id);
