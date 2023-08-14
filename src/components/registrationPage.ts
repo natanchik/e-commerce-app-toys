@@ -54,12 +54,12 @@ class RegPage extends AuthPage {
     userAddress.append(createSelectElement(countries, 'Country*', `${type}-country`, 'auth'));
     userAddress.append(createInputElement('text', 'City*', `${type}-city`, 'auth'));
     userAddress.append(createInputElement('text', 'Street*', `${type}-streetName`, 'auth'));
-    userAddress.append(
-      createInputElement('number', 'Postal code*', `${type}-postalCode`, 'auth', true, {
-        min: 10000,
-        max: 999999,
-      }),
-    );
+    const postalCode = createInputElement('number', 'Postal code*', `${type}-postalCode`, 'auth', true, {
+      min: 10000,
+      max: 999999,
+    });
+    postalCode.classList.add('postalCode');
+    userAddress.append(postalCode);
 
     const asDefault = createCheckBoxElement('Set as default address', `as-default-${type}`);
     addressBlock.append(addressTitle, userAddress, asDefault);

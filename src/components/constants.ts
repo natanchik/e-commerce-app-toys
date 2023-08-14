@@ -14,7 +14,7 @@ export const validTemplates = {
   lastName: [/^[a-zA-Z]+$/, 'Must contain at least one character (use a-z, A-Z) and no special characters or numbers'],
   streetName: [/^[a-zA-Z0-9-]+$/, 'Must contain at least one character (use a-z, A-Z, 0-9, -)'],
   city: [/^[a-zA-Z-]+$/, 'Must contain at least one character (use a-z, A-Z, -) and no special characters or numbers'],
-  postalCode: [/^\d{5,6}$/, 'Must follow the format for the country (US: 5 digits, KZ: 5-6 digits)'],
+  postalCode: [/^\d{5,6}$/, 'Must follow the format for the country (US: 5 digits, KZ: 6 digits)'],
 };
 
 export const emailRequirements = [
