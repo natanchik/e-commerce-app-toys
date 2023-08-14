@@ -16,11 +16,7 @@ class NotFound {
       ['not-found__message'],
       'Oops! The page you are looking for could not be found.',
     ) as HTMLParagraphElement;
-    const button = createElement(
-      'button',
-      ['not-found__button', 'button'],
-      'BACK TO HOME',
-    ) as HTMLButtonElement;
+    const button = createElement('button', ['not-found__button', 'button'], 'BACK TO HOME') as HTMLButtonElement;
     const img = createElement('div', ['not-found__img']) as HTMLDivElement;
 
     info.append(heading, message, button);
