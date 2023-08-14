@@ -1,98 +1,70 @@
-import { createElement, createInputElement } from './utils';
+import { createElement, createInputElement, createCheckBoxElement } from './utils';
 
-class LoginPage {
-  mode = 'Autorization';
-
-  private drawAuthBlock(parent: HTMLElement): void {
-    createInputElement('email', 'E-mail', 'email', parent, 'login');
-    createInputElement('password', 'Password', 'password', parent, 'login');
-  }
-
-  private drawRegBlock(parent: HTMLElement): void {
-    createInputElement('email', 'E-mail*', 'email', parent, 'login');
-
-    const nameBlock = createElement('div', ['login-row']);
-    createInputElement('text', 'Name*', 'userName', nameBlock, 'login');
-    createInputElement('text', 'Surname*', 'userSurname', nameBlock, 'login');
-    parent.append(nameBlock);
-
-    const userInfo = createElement('div', ['login-row']);
-    createInputElement('date', 'Date of birth*', 'birthday', userInfo, 'login');
-    createInputElement('tel', 'Phone number*', 'phoneNum', userInfo, 'login');
-    parent.append(userInfo);
-
-    const userAddress = createElement('div', ['login-row']);
-    createInputElement('text', 'Country*', 'country', userAddress, 'login');
-    createInputElement('text', 'City*', 'city', userAddress, 'login');
-    createInputElement('text', 'Street*', 'street', userAddress, 'login');
-    createInputElement('number', 'Code*', 'code', userAddress, 'login');
-    parent.append(userAddress);
-
-    const policyBlock = createElement('div', ['login-row', 'policy-row']);
-    const policyInput = createElement('input', ['login-input']) as HTMLInputElement;
-    policyInput.setAttribute('type', 'checkbox');
-    policyInput.setAttribute('id', 'policyInput');
-    policyInput.required = true;
-    const policylabel = createElement(
-      'label',
-      ['login-label'],
-      'I agree with <a href="">the terms of personal data processing</a> and <a href=""> privacy policy</a>',
-    );
-    policylabel.setAttribute('for', 'policylabel');
-    policyBlock.append(policyInput, policylabel);
-    parent.append(policyBlock);
-  }
-
-  public drawLoginPage(): void {
-    const loginBlockType = this.mode === 'Autorization' ? 'auth-block' : 'reg-block';
-    const loginPage = createElement('div', ['login-page']);
-    const loginBlock = createElement('div', ['login-block', loginBlockType]);
-    const loginHeader = createElement('div', ['login-header']);
-    const loginBtnAuth = createElement('button', ['button', 'login-btn'], 'Autorization');
-    const loginBtnReg = createElement('button', ['button', 'login-btn'], 'Registration');
-    const loginForm = createElement('form', ['login-form']);
-
-    const authFooter = `<p>I am not registered. <a href=''>Go to Registration.</a></p> 
-    <p>I forgot password. <a href=''>Reset</a></p>`;
-    const regFooter = `<p>I am registered. <a href="">Go to Login.</a></p>
-    <p>I forgot password. <a href="">Reset</a></p>`;
+abstract class AuthPage {
+  public drawAuthPage(
+    mode: string,
+    submitText: string,
+    footerText: string,
+    drawForm: (block: HTMLElement) => void,
+  ): void {
+    const authPage = createElement('div', ['auth-page']);
+    const authBlock = createElement('div', ['auth-block', `${mode}-block`]);
+    const authHeader = createElement('div', ['auth-header']);
+    const authBtnAuth = createElement('button', ['button', 'auth-btn'], 'Autorization');
+    authBtnAuth.setAttribute('id', 'form-auth-btn');
+    const authBtnReg = createElement('button', ['button', 'auth-btn'], 'Registration');
+    authBtnReg.setAttribute('id', 'form-reg-btn');
+    const authForm = createElement('form', ['auth-form']);
 
     const parent = document.querySelector('.main');
     if (parent) {
       parent.innerHTML = '';
-      parent.append(loginPage);
+      parent.append(authPage);
     }
-    loginPage.append(loginBlock);
-    loginBlock.innerHTML = '';
-    loginForm.innerHTML = '';
+    authPage.append(authBlock);
+    authBlock.innerHTML = '';
+    authForm.innerHTML = '';
 
-    if (this.mode === 'Autorization') {
-      this.drawAuthBlock(loginForm);
-    } else {
-      this.drawRegBlock(loginForm);
-    }
+    drawForm(authForm);
 
-    const submitBlock = createElement('div', ['login-submit-block']);
-    const submitText = this.mode === 'Autorization' ? 'Enter' : 'Register';
-    const submitBtn = createElement('button', ['button', 'button_white', 'login-btn'], submitText);
-    submitBlock.append(submitBtn);
+    const submitBtn = createElement('button', ['button', 'button_white', 'auth-btn'], submitText);
+    authForm.append(submitBtn);
 
-    const footerText = this.mode === 'Autorization' ? authFooter : regFooter;
-    const loginFooter = createElement('div', ['login-footer'], footerText);
+    const authFooter = createElement('div', ['auth-footer'], footerText);
 
-    loginHeader.append(loginBtnAuth, loginBtnReg);
-    loginBlock.append(loginHeader, loginForm, submitBlock, loginFooter);
-
-    loginBtnAuth.addEventListener('click', () => {
-      this.mode = 'Autorization';
-      this.drawLoginPage();
-    });
-
-    loginBtnReg.addEventListener('click', () => {
-      this.mode = 'Registration';
-      this.drawLoginPage();
-    });
+    authHeader.append(authBtnAuth, authBtnReg);
+    authBlock.append(authHeader, authForm, authFooter);
   }
+
+  protected addListeners = (id: string, callback: () => void): void => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener('click', callback);
+    }
+  };
+
+  protected addEmailPassword = (parent: HTMLElement, typeOfPassword: string): void => {
+    parent.append(
+      createInputElement('email', 'E-mail*', 'email', 'auth', true, {
+        name: 'username',
+        autocomplete: 'username',
+      }),
+    );
+    const passwordBlock = createInputElement('password', 'Password*', 'password', 'auth', true, {
+      name: 'password',
+      autocomplete: typeOfPassword,
+    });
+    const boxShowPassword = createCheckBoxElement('Show password', 'showPassword');
+    passwordBlock.append(boxShowPassword);
+    parent.append(passwordBlock);
+
+    boxShowPassword.addEventListener('change', () => {
+      const passwordInput = document.getElementById('password');
+      if (passwordInput && passwordInput instanceof HTMLInputElement) {
+        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+      }
+    });
+  };
 }
 
-export default LoginPage;
+export default AuthPage;

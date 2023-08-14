@@ -107,13 +107,9 @@ const createCustomer = (): void => {
       } else {
         switch (res.status) {
           case 400:
-            throw new Error(
-              `This email address already exists, please log in or use another email address`,
-            );
+            throw new Error(`This email address already exists, please log in or use another email address`);
           default:
-            throw new Error(
-              `The error with status code ${res.status} has occured, please try later`,
-            );
+            throw new Error(`The error with status code ${res.status} has occured, please try later`);
         }
       }
     })

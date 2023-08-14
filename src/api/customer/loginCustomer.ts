@@ -5,8 +5,7 @@ import { fillUserState } from './getCustomerByID';
 
 /* eslint-disable no-console */
 const myHeaders = {
-  Authorization:
-    'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
+  Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
 };
 
 const requestOptions = {
@@ -43,9 +42,7 @@ export const loginCustomer = (username = raw.username, password = raw.password):
               throw new Error(`The password you entered is incorrect, please try again`);
             }
           default:
-            throw new Error(
-              `The error with status code ${res.status} has occured, please try later`,
-            );
+            throw new Error(`The error with status code ${res.status} has occured, please try later`);
         }
       }
     })

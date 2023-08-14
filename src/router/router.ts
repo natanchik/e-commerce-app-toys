@@ -12,8 +12,7 @@ class Router {
   public navigate(url: string): void {
     const request = this.parceUrl(url);
 
-    const pathToFind =
-      request.cardId === '' ? request.pathname : `${request.pathname}/${request.cardId}`;
+    const pathToFind = request.cardId === '' ? request.pathname : `${request.pathname}/${request.cardId}`;
     const route = this.routes.find((item: RouteInfo) => item.path === pathToFind);
 
     if (!route) {

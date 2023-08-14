@@ -18,11 +18,7 @@ class Footer {
     const rawBottom = createElement('div', ['footer__raw']) as HTMLDivElement;
     const footerNav = this.drawNav() as HTMLDivElement;
     const info = this.drawInfo() as HTMLDivElement;
-    const copyright = createElement(
-      'div',
-      ['footer__copyright'],
-      '© 2023 Toys USA, Inc.',
-    ) as HTMLDivElement;
+    const copyright = createElement('div', ['footer__copyright'], '© 2023 Toys USA, Inc.') as HTMLDivElement;
     const socialIcons = this.drawSocialIcons() as HTMLDivElement;
 
     rawInfo.append(footerNav, info);
@@ -63,11 +59,7 @@ class Footer {
       `<p>6 Saryarka avenue</br>Astana, Kazakhstan</p>`,
     ) as HTMLDivElement;
     const tel = createElement('a', ['footer__tel'], '<h3>+7(777)123-45-67</h3>') as HTMLLinkElement;
-    const email = createElement(
-      'a',
-      ['footer__email'],
-      '<h3>info@toys.com</h3>',
-    ) as HTMLLinkElement;
+    const email = createElement('a', ['footer__email'], '<h3>info@toys.com</h3>') as HTMLLinkElement;
     tel.href = 'tel:+77771234567';
     email.href = 'mailto:info@toys.com';
 

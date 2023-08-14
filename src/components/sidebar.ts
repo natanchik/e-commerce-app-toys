@@ -1,5 +1,5 @@
 import { createElement } from './utils';
-import categories from './constants';
+import { categories } from './constants';
 import pages from '../router/pages';
 import Router from '../router/router';
 
@@ -25,10 +25,7 @@ class Sidebar {
     closeBtn.addEventListener('click', this.closeSidebar);
     document.addEventListener('click', (event: MouseEvent) => {
       const target = event.target as Node;
-      if (
-        wrapper.classList.contains('active-sidebar') &&
-        target !== document.querySelector('.hamburger')
-      ) {
+      if (wrapper.classList.contains('active-sidebar') && target !== document.querySelector('.hamburger')) {
         if (!(target == wrapper || wrapper.contains(target))) {
           this.closeSidebar();
         }
