@@ -1,5 +1,6 @@
-// TODO make interface
-const userState = {
+import { UserState } from '../types/types';
+
+const userState: UserState = {
   firstName: '',
   lastName: '',
   dateOfBirth: '',

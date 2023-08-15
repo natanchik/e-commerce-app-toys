@@ -35,3 +35,10 @@ export interface RegisterData {
   salutation: string;
   addresses: Address[];
 }
+
+export interface UserState {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  addresses: string[];
+}
