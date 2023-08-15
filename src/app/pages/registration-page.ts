@@ -1,20 +1,17 @@
 import AuthPage from '../components/autorization';
-import LoginPage from './login-page';
 import { countries, salutation } from '../components/constants';
 import { createElement, createInputElement, createSelectElement, createCheckBoxElement } from '../components/utils';
 
 class RegPage extends AuthPage {
-  footerText = `<div>I am registered. <a href="">Go to Login.</a></div>
-  <div>I forgot password. <a href="">Reset</a></div>`;
+  footerText = `<div>I forgot password. <a href="">Reset</a></div>`;
 
-  public drawRegPage = (): void => {
-    this.drawAuthPage('reg', 'Register', this.footerText, this.drawFormBlock);
-    this.addListeners('form-auth-btn', function () {
-      new LoginPage().drawLoginPage();
-    });
+  public drawRegPage = (): HTMLDivElement => {
+    const regPage: HTMLDivElement = this.drawAuthPage('reg', 'Register', this.footerText, this.drawFormBlock);
+
+    return regPage;
   };
 
-  private drawFormBlock = (parent: HTMLElement): void => {
+  private drawFormBlock = (parent: HTMLFormElement): void => {
     const emailBlock = createElement('div', ['auth-row']);
     this.addEmailPassword(emailBlock, 'new-password');
     parent.append(emailBlock);

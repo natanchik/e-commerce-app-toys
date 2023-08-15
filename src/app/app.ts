@@ -10,6 +10,7 @@ import Footer from './components/footer';
 import Router from './router/router';
 import Contacts from './pages/contacts';
 import Terms from './pages/terms-conditions';
+import RegPage from './pages/registration-page';
 
 class App {
   router: Router;
@@ -42,16 +43,14 @@ class App {
         path: `${pages.LOGIN}`,
         callback: (): void => {
           const loginPage = new LoginPage();
-          //Main.setContent(loginPage.drawLoginPage()); DOTO: refactor aotorization page draw metod - to return HTMLDiv Element
-          loginPage.drawLoginPage();
+          Main.setContent(loginPage.drawLoginPage());
         },
       },
       {
         path: `${pages.REGISTRATION}`,
         callback: (): void => {
-          const loginPage = new LoginPage();
-          //Main.setContent(loginPage.drawLoginPage()); DOTO: refactor aotorization page draw metod - to return HTMLDiv Element
-          loginPage.drawLoginPage();
+          const regPage = new RegPage();
+          Main.setContent(regPage.drawRegPage());
         },
       },
       {

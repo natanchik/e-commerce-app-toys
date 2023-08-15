@@ -1,18 +1,15 @@
 import AuthPage from '../components/autorization';
-import RegPage from './registration-page';
 
 class LoginPage extends AuthPage {
-  footerText = `<div>I am not registered. <a href=''>Go to Registration.</a></div> 
-  <div>I forgot password. <a href=''>Reset</a></div>`;
+  footerText = `<div>I forgot password. <a href=''>Reset</a></div>`;
 
-  public drawLoginPage = (): void => {
-    this.drawAuthPage('login', 'Login', this.footerText, this.drawFormBlock);
-    this.addListeners('form-reg-btn', function () {
-      new RegPage().drawRegPage();
-    });
+  public drawLoginPage = (): HTMLDivElement => {
+    const loginPage: HTMLDivElement = this.drawAuthPage('login', 'Login', this.footerText, this.drawFormBlock);
+
+    return loginPage;
   };
 
-  private drawFormBlock = (parent: HTMLElement): void => {
+  private drawFormBlock = (parent: HTMLFormElement): void => {
     this.addEmailPassword(parent, 'current-password');
   };
 }

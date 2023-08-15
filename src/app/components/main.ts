@@ -56,6 +56,14 @@ class Main {
         router.navigate(pages.MAIN);
         this.sidebar.closeSidebar();
       }
+
+      if (target.id === 'form-reg-btn') {
+        router.navigate(pages.REGISTRATION);
+      }
+
+      if (target.id === 'form-auth-btn') {
+        router.navigate(pages.LOGIN);
+      }
     });
   }
 }
