@@ -2,6 +2,7 @@ import { createElement } from './utils';
 import Sidebar from './sidebar';
 import Router from '../router/router';
 import pages from '../router/pages';
+import { validateInput } from './validation';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -63,6 +64,17 @@ class Main {
 
       if (target.id === 'form-auth-btn') {
         router.navigate(pages.LOGIN);
+      }
+    });
+
+    document.addEventListener('input', (event: Event): void => {
+      const target = event.target as HTMLInputElement;
+
+      if (target.classList.contains('auth-input')) {
+        const id = target.id;
+        const notation = document.querySelector(`[data-input="${id}"]`) as HTMLParagraphElement;
+
+        validateInput(target, notation);
       }
     });
   }
