@@ -52,13 +52,6 @@ abstract class AuthPage {
     const boxShowPassword = createCheckBoxElement('Show password', 'showPassword');
     passwordBlock.append(boxShowPassword);
     parent.append(passwordBlock);
-
-    boxShowPassword.addEventListener('change', () => {
-      const passwordInput = document.getElementById('password');
-      if (passwordInput && passwordInput instanceof HTMLInputElement) {
-        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-      }
-    });
   };
 }
 

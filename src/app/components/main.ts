@@ -79,9 +79,20 @@ class Main {
       }
     });
 
-    document.addEventListener('change', () => {
-      const shippingBlock = document.getElementById('shipping-block') as HTMLDivElement;
-      shippingBlock.classList.toggle('hidden');
+    document.addEventListener('change', (event: Event): void => {
+      const target = event.target as HTMLElement;
+
+      if (target.id === 'are-same-addresses') {
+        const shippingBlock = document.getElementById('shipping-block') as HTMLDivElement;
+        shippingBlock.classList.toggle('hidden');
+      }
+
+      if (target.id === 'showPassword') {
+        const passwordInput = document.getElementById('password');
+        if (passwordInput && passwordInput instanceof HTMLInputElement) {
+          passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+        }
+      }
     });
   }
 }
