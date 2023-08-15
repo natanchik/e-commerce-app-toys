@@ -73,9 +73,15 @@ class Main {
       if (target.classList.contains('auth-input')) {
         const id = target.id;
         const notation = document.querySelector(`[data-input="${id}"]`) as HTMLParagraphElement;
-
-        validateInput(target, notation);
+        if (notation) {
+          validateInput(target, notation);
+        }
       }
+    });
+
+    document.addEventListener('change', () => {
+      const shippingBlock = document.getElementById('shipping-block') as HTMLDivElement;
+      shippingBlock.classList.toggle('hidden');
     });
   }
 }

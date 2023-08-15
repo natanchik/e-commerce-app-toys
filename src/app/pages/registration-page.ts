@@ -36,10 +36,6 @@ class RegPage extends AuthPage {
     const policyAgreeText =
       'I agree with <a href="">The terms of personal data processing</a> and <a href=""> Privacy policy</a>';
     parent.append(createCheckBoxElement(policyAgreeText, 'policyInput', true));
-
-    sameAddress.addEventListener('change', () => {
-      shippingBlock.classList.toggle('hidden');
-    });
   };
 
   protected drawAddressBlock = (type: string): HTMLDivElement => {
