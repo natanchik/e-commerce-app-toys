@@ -1,4 +1,4 @@
-import { createSelectElement } from '../app/components/utils';
+import { createSelectElement } from '../../app/components/utils';
 
 describe('createSelectElement function', () => {
   document.body.innerHTML = '';

@@ -1,4 +1,4 @@
-import { createElement } from '../app/components/utils';
+import { createElement } from '../../app/components/utils';
 
 describe('createElement function', () => {
   document.body.innerHTML = '';

@@ -1,4 +1,4 @@
-import { createInputElement } from '../app/components/utils';
+import { createInputElement } from '../../app/components/utils';
 
 describe('createCheckBoxElement function', () => {
   document.body.innerHTML = '';
@@ -9,9 +9,6 @@ describe('createCheckBoxElement function', () => {
   const inputElems = document.getElementsByTagName('input');
   const [ageInput, nameInput] = inputElems;
   const labels = document.querySelectorAll('.reg-label');
-
-  ageInput.dispatchEvent(new Event('input'));
-  nameInput.dispatchEvent(new Event('input'));
 
   it('should create input elements with received attributes', () => {
     expect(inputElems).toHaveLength(2);

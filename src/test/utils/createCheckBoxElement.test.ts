@@ -1,4 +1,4 @@
-import { createCheckBoxElement } from '../app/components/utils';
+import { createCheckBoxElement } from '../../app/components/utils';
 
 describe('createCheckBoxElement function', () => {
   document.body.innerHTML = '';
