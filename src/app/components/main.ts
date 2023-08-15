@@ -63,7 +63,7 @@ class Main {
       }
 
       if (target.id === 'form-auth-btn') {
-        router.navigate(pages.LOGIN);
+        router.navigate(pages.AUTORIZATION);
       }
     });
 

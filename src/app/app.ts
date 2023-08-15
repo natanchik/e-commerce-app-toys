@@ -40,10 +40,24 @@ class App {
         },
       },
       {
-        path: `${pages.LOGIN}`,
+        path: `login`,
         callback: (): void => {
           const loginPage = new LoginPage();
           Main.setContent(loginPage.drawLoginPage());
+        },
+      },
+      {
+        path: `${pages.AUTORIZATION}`,
+        callback: (): void => {
+          const loginPage = new LoginPage();
+          Main.setContent(loginPage.drawLoginPage());
+        },
+      },
+      {
+        path: `signup`,
+        callback: (): void => {
+          const regPage = new RegPage();
+          Main.setContent(regPage.drawRegPage());
         },
       },
       {

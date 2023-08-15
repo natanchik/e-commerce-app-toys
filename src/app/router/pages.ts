@@ -1,7 +1,7 @@
 const pages = {
   MAIN: '',
-  LOGIN: 'login',
-  REGISTRATION: 'register',
+  AUTORIZATION: 'autorization',
+  REGISTRATION: 'registration',
   ABOUT_US: 'about-us',
   CONTACTS: 'contacts',
   TERMS_AND_CONDITIONS: 'terms-and-condition',
