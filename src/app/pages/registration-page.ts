@@ -1,20 +1,17 @@
-import AuthPage from './autorization';
-import LoginPage from './loginPage';
-import { countries, salutation } from './constants';
-import { createElement, createInputElement, createSelectElement, createCheckBoxElement } from './utils';
+import AuthPage from '../components/autorization';
+import { countries, salutation } from '../components/constants';
+import { createElement, createInputElement, createSelectElement, createCheckBoxElement } from '../components/utils';
 
 class RegPage extends AuthPage {
-  footerText = `<p>I am registered. <a href="">Go to Login.</a></p>
-  <p>I forgot password. <a href="">Reset</a></p>`;
+  footerText = `<div>I forgot password. <a href="">Reset</a></div>`;
 
-  public drawRegPage = (): void => {
-    this.drawAuthPage('reg', 'Register', this.footerText, this.drawFormBlock);
-    this.addListeners('form-auth-btn', function () {
-      new LoginPage().drawLoginPage();
-    });
+  public drawRegPage = (): HTMLDivElement => {
+    const regPage: HTMLDivElement = this.drawAuthPage('reg', 'Signup', this.footerText, this.drawFormBlock);
+
+    return regPage;
   };
 
-  private drawFormBlock = (parent: HTMLElement): void => {
+  private drawFormBlock = (parent: HTMLFormElement): void => {
     const emailBlock = createElement('div', ['auth-row']);
     this.addEmailPassword(emailBlock, 'new-password');
     parent.append(emailBlock);
@@ -39,16 +36,12 @@ class RegPage extends AuthPage {
     const policyAgreeText =
       'I agree with <a href="">The terms of personal data processing</a> and <a href=""> Privacy policy</a>';
     parent.append(createCheckBoxElement(policyAgreeText, 'policyInput', true));
-
-    sameAddress.addEventListener('change', () => {
-      shippingBlock.classList.toggle('hidden');
-    });
   };
 
   protected drawAddressBlock = (type: string): HTMLDivElement => {
     const addressBlock = createElement('div', ['auth-row', 'address-block']) as HTMLDivElement;
     addressBlock.setAttribute('id', `${type}-block`);
-    const addressTitle = createElement('p', ['address-title'], `Input your ${type} address`);
+    const addressTitle = createElement('h4', ['address-title'], `Input your ${type} address:`);
 
     const userAddress = createElement('div', ['auth-row']);
     userAddress.append(createSelectElement(countries, 'Country*', `${type}-country`, 'auth'));

@@ -1,5 +1,5 @@
-import Main from './main';
-import { createElement } from './utils';
+import Main from '../components/main';
+import { createElement } from '../components/utils';
 
 class Contacts {
   public drawContacts(): HTMLDivElement {
@@ -7,7 +7,7 @@ class Contacts {
     const title = createElement('h2', ['about-us__title'], 'Contacts') as HTMLHeadingElement;
     const decorator = Main.createTitleDecorator() as HTMLDivElement;
     const text = `
-    <p>Visit our shops. We stock a wide variety of toys, essentials, decor, accessories and more, for the customer who is looking for quality at affordable prices.</p>
+    <p class="paragraph">Visit our shops. We stock a wide variety of toys, essentials, decor, accessories and more, for the customer who is looking for quality at affordable prices.</p>
     `;
     const content = createElement('div', ['about-us__content'], text) as HTMLDivElement;
     const hoursTitle = createElement('h4', [], 'Office Hours:') as HTMLHeadingElement;

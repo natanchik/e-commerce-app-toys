@@ -1,6 +1,6 @@
-import pages from '../router/pages';
-import Router from '../router/router';
 import { createElement } from './utils';
+import Router from '../router/router';
+import pages from '../router/pages';
 
 class Footer {
   footer: HTMLDivElement;
@@ -95,10 +95,6 @@ class Footer {
 
       if (target.classList.contains('footer__nav-item_terms')) {
         router.navigate(pages.TERMS_AND_CONDITIONS);
-      }
-
-      if (target.classList.contains('logo') || target.parentElement?.classList.contains('logo')) {
-        router.navigate(pages.MAIN);
       }
     });
   }

@@ -1,5 +1,3 @@
-import { validateInput } from './validation';
-
 export const createElement = (tag: string, classes: string[], text?: string): HTMLElement => {
   const element = document.createElement(tag) as HTMLElement;
   element.classList.add(...classes);
@@ -30,10 +28,7 @@ export const createInputElement = (
   }
 
   const notation = createElement('p', ['error-message']) as HTMLParagraphElement;
-
-  input.oninput = (): void => {
-    validateInput(input, notation);
-  };
+  notation.dataset.input = inputId;
 
   const inputBlock = createElement('div', [`${page}-item`]) as HTMLDivElement;
   inputBlock.append(label, input, notation);

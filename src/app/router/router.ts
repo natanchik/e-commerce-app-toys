@@ -9,7 +9,7 @@ class Router {
     this.setEventListeners();
   }
 
-  public navigate(url: string): void {
+  public navigate(url: string, notPushState?: boolean): void {
     const request = this.parceUrl(url);
 
     const pathToFind = request.cardId === '' ? request.pathname : `${request.pathname}/${request.cardId}`;
@@ -18,6 +18,10 @@ class Router {
     if (!route) {
       this.redirectToNotFound();
       return;
+    }
+
+    if (!notPushState) {
+      window.history.pushState({}, '', `/${route.path}`);
     }
 
     route?.callback();
@@ -38,9 +42,14 @@ class Router {
   }
 
   private setEventListeners(): void {
-    window.addEventListener('popstate', (): void => {
+    window.addEventListener('DOMContentLoaded', (): void => {
       const path = this.getCorrectPath();
       this.navigate(path);
+    });
+
+    window.addEventListener('popstate', (): void => {
+      const path = this.getCorrectPath();
+      this.navigate(path, true);
     });
   }
 
