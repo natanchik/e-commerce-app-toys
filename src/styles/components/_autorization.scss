@@ -21,7 +21,7 @@
 }
 
 .reg-block {
-  max-width: 700px;
+  max-width: 576px;
 
   & .auth-item {
     width: 100%;
@@ -133,6 +133,18 @@
   margin: 10px 0;
   font-size: 1.2em;
   color: $green;
+}
+
+.reset-password-btn,
+.link-terms,
+.link-privacy {
+  color: $blue;
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: darken($color: $blue, $amount: 25%);
+  }
 }
 
 @media (max-width: 700px) {

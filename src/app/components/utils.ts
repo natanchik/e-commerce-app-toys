@@ -42,6 +42,7 @@ export const createSelectElement = (
   inputId: string,
   page: string,
   required: boolean = true,
+  attributes?: object,
 ): HTMLDivElement => {
   const label = createElement('label', [`${page}-label`], labelText);
   label.setAttribute('for', inputId);
@@ -51,6 +52,9 @@ export const createSelectElement = (
   dataList.setAttribute('id', inputId);
   if (required) {
     dataList.required = true;
+  }
+  if (attributes) {
+    Object.entries(attributes).forEach((entry) => dataList.setAttribute(entry[0], entry[1]));
   }
 
   const optionsInfo = Object.entries(items);

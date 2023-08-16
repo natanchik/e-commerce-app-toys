@@ -3,9 +3,10 @@ import Sidebar from './sidebar';
 import Router from '../router/router';
 import pages from '../router/pages';
 import { validateInput } from './validation';
-import { getLoginData } from '../api/helpers/getDataFromInput';
+import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import checkValidity from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
+import createCustomer from '../api/customer/createCustomer';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -91,7 +92,12 @@ class Main {
 
       if (target.classList.contains('register-form')) {
         event.preventDefault();
-        // const isValid: boolean = checkValidity();
+        const isValid: boolean = checkValidity();
+
+        if (isValid) {
+          const data = getRegisterData();
+          createCustomer(data);
+        }
       }
     });
 

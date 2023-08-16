@@ -1,4 +1,5 @@
 import userState from '../../state/userState';
+import { RegisterData } from '../../types/types';
 import { getCustomerByID } from './getCustomerByID';
 import { loginAfterRegistration } from './loginCustomer';
 
@@ -10,18 +11,18 @@ const myHeaders = {
 };
 
 // TODO take raw data from registration form
-const data = {
-  email: 'NewCustomer1@example.com',
-  firstName: 'New',
-  lastName: 'Customer',
-  password: 'Secret!2345',
-  dateOfBirth: '1998-10-12',
-  salutation: 'Mr.',
-  addresses: [
-    { country: 'KZ', city: 'Shymkent', streetName: 'Gagarin', postalCode: '160000' },
-    { country: 'KZ', city: 'Shymkent', streetName: 'Turkistanskaya', postalCode: '160000' },
-  ],
-};
+// const data = {
+//   email: 'NewCustomer1@example.com',
+//   firstName: 'New',
+//   lastName: 'Customer',
+//   password: 'Secret!2345',
+//   dateOfBirth: '1998-10-12',
+//   salutation: 'Mr.',
+//   addresses: [
+//     { country: 'KZ', city: 'Shymkent', streetName: 'Gagarin', postalCode: '160000' },
+//     { country: 'KZ', city: 'Shymkent', streetName: 'Turkistanskaya', postalCode: '160000' },
+//   ],
+// };
 
 // TODO add interfaces for addresses and acions
 const getCurrentActions = (
@@ -85,7 +86,7 @@ const getCurrentActions = (
   return currentActions;
 };
 
-const createCustomer = (): void => {
+const createCustomer = (data: RegisterData): void => {
   const raw = JSON.stringify(data);
   const requestOptions = {
     method: 'POST',
