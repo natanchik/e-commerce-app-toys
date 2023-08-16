@@ -38,7 +38,7 @@ class App {
   private createRoutes(): RouteInfo[] {
     return [
       {
-        path: ``,
+        path: `${pages.MAIN}`,
         callback: (): void => {
           const mainPage = new MainPage();
           Main.setContent(mainPage.drawMainPage());

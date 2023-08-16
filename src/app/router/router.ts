@@ -21,7 +21,7 @@ class Router {
     }
 
     if (!notPushState) {
-      window.history.pushState({}, '', `/${route.path}`);
+      window.history.pushState({}, '', `${route.path}`);
     }
 
     route?.callback();
@@ -42,7 +42,8 @@ class Router {
   }
 
   private setEventListeners(): void {
-    window.addEventListener('DOMContentLoaded', (): void => {
+    window.addEventListener('DOMContentLoaded', (event: Event): void => {
+      event.preventDefault();
       const path = this.getCorrectPath();
       this.navigate(path);
     });
@@ -50,6 +51,11 @@ class Router {
     window.addEventListener('popstate', (): void => {
       const path = this.getCorrectPath();
       this.navigate(path, true);
+    });
+
+    window.addEventListener('hashchange', (): void => {
+      const path = this.getCorrectPath();
+      this.navigate(path);
     });
   }
 
