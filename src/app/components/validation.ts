@@ -5,7 +5,7 @@ export const showErrorMessage = (input: HTMLInputElement, notation: HTMLParagrap
   notation.innerHTML = `<p class='error-warn'>&#9888;</p>${message}`;
 };
 
-export const checkWithRequirements = (requirements: [RegExp, string][], text: string): string => {
+export const checkWithReqs = (requirements: [RegExp, string][], text: string): string => {
   let warning = '';
   requirements.forEach((entries) => {
     warning += !text.match(entries[0]) ? entries[1] : '';
@@ -18,7 +18,7 @@ export const checkEmail = (email: string): string => {
   if (email.match(/^[\w.-]+@/)) {
     warning += '<p>Email address must contain a domain name (e.g., example.com).</p>';
   }
-  warning += checkWithRequirements(emailRequirements, email);
+  warning += checkWithReqs(emailRequirements, email);
   return warning;
 };
 
@@ -34,10 +34,10 @@ export const checkDate = (date: string): string => {
 };
 
 export const checkPostalCode = (input: HTMLInputElement): string => {
-  const country = document.getElementById(`${input.id.split('-')[0]}-country`) as HTMLInputElement;
+  const country = document.getElementById(`${input.id.split('-')[0]}-country`);
   let reqValue = /^\d{5,6}$/;
   let reqText = 'US: 5 digits, KZ: 6 digits';
-  if (country && country.value) {
+  if (country && country instanceof HTMLInputElement && country.value) {
     reqValue = country.value === 'US' ? /^\d{5}$/ : /^\d{6}$/;
     reqText = country.value === 'US' ? '5 digits' : '6 digits';
   }
@@ -60,7 +60,7 @@ export const validateInput = (input: HTMLInputElement, notation: HTMLParagraphEl
     if (input.id === 'email' && !input.value.match(/^\w+@(\w){2,}\.(\w){2,4}$/)) {
       warnings += checkEmail(input.value);
     } else if (input.id === 'password') {
-      warnings += checkWithRequirements(passwordRequirements, input.value);
+      warnings += checkWithReqs(passwordRequirements, input.value);
     } else if (input.id === 'dateOfBirth') {
       warnings += checkDate(input.value);
     } else {
