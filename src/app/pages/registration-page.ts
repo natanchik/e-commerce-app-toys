@@ -3,10 +3,8 @@ import { countries, salutation } from '../components/constants';
 import { createElement, createInputElement, createSelectElement, createCheckBoxElement } from '../components/utils';
 
 class RegPage extends AuthPage {
-  footerText = `<div>I forgot password. <a href="">Reset</a></div>`;
-
   public drawRegPage = (): HTMLDivElement => {
-    const regPage: HTMLDivElement = this.drawAuthPage('reg', 'Signup', this.footerText, this.drawFormBlock);
+    const regPage: HTMLDivElement = this.drawAuthPage('reg', 'Sign up', '', this.drawFormBlock);
 
     return regPage;
   };

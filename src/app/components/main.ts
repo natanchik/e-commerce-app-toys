@@ -91,7 +91,7 @@ class Main {
 
       if (target.classList.contains('register-form')) {
         event.preventDefault();
-        // TODO integrate with api
+        // const isValid: boolean = checkValidity();
       }
     });
 
@@ -114,7 +114,22 @@ class Main {
 
       if (target.id === 'are-same-addresses') {
         const shippingBlock = document.getElementById('shipping-block') as HTMLDivElement;
+        const shippingInputs = [
+          document.getElementById('shipping-country') as HTMLInputElement,
+          document.getElementById('shipping-city') as HTMLInputElement,
+          document.getElementById('shipping-streetName') as HTMLInputElement,
+          document.getElementById('shipping-postalCode') as HTMLInputElement,
+        ];
         shippingBlock.classList.toggle('hidden');
+        if (shippingInputs[0].hasAttribute('required')) {
+          shippingInputs.forEach((input) => {
+            input.removeAttribute('required');
+          });
+        } else {
+          shippingInputs.forEach((input) => {
+            input.setAttribute('required', 'true');
+          });
+        }
       }
 
       if (target.id === 'showPassword') {
