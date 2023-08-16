@@ -22,10 +22,7 @@ export const loginCustomer = async (username: string, password: string): Promise
   const emailInput = document.querySelector('#email') as HTMLInputElement;
   const passwordInput = document.querySelector('#password') as HTMLInputElement;
 
-  await fetch(
-    `https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/customers/token?grant_type=password&username=${username}&password=${password}`,
-    requestOptions,
-  )
+  await fetch(`${loginURL}&username=${username}&password=${password}`, requestOptions)
     .then(async (res) => {
       if (res.headers.get('content-type') !== 'application/json; charset=utf-8') {
         throw new Error(incorrectResponseText);
