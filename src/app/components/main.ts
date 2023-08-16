@@ -3,6 +3,9 @@ import Sidebar from './sidebar';
 import Router from '../router/router';
 import pages from '../router/pages';
 import { validateInput } from './validation';
+import { getLoginData } from '../api/helpers/getDataFromInput';
+import checkValidity from '../api/helpers/checkValidity';
+import { loginCustomer } from '../api/customer/loginCustomer';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -67,8 +70,35 @@ class Main {
       }
     });
 
+    document.addEventListener('submit', async (event: Event) => {
+      const target = event.target as HTMLElement;
+      const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
+
+      if (target.classList.contains('login-form')) {
+        event.preventDefault();
+        const isValid: boolean = checkValidity();
+
+        if (isValid) {
+          const data = getLoginData(target as HTMLFormElement);
+          await loginCustomer(data.username, data.password);
+          if (apiStatus.classList.contains('success-status')) {
+            setTimeout(() => {
+              router.navigate(pages.MAIN);
+            }, 1500);
+          }
+        }
+      }
+
+      if (target.classList.contains('register-form')) {
+        event.preventDefault();
+        // TODO integrate with api
+      }
+    });
+
     document.addEventListener('input', (event: Event): void => {
       const target = event.target as HTMLInputElement;
+      const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
+      apiStatus.innerHTML = '';
 
       if (target.classList.contains('auth-input')) {
         const id = target.id;

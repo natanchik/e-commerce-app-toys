@@ -57,6 +57,5 @@ export const fillUserState = async (email: string): Promise<void> => {
       userState.lastName = currentCustomer.lastName;
       userState.dateOfBirth = currentCustomer.dateOfBirth;
       userState.addresses = currentCustomer.addresses;
-    })
-    .catch((error) => console.log('error', error));
+    });
 };

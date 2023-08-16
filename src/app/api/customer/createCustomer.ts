@@ -11,10 +11,10 @@ const myHeaders = {
 
 // TODO take raw data from registration form
 const data = {
-  email: 'NewCustomer@example.com',
+  email: 'NewCustomer1@example.com',
   firstName: 'New',
   lastName: 'Customer',
-  password: 'secret1234',
+  password: 'Secret!2345',
   dateOfBirth: '1998-10-12',
   salutation: 'Mr.',
   addresses: [

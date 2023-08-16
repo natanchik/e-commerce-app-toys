@@ -118,6 +118,23 @@
   display: none;
 }
 
+.api-status {
+  font-size: 1.2rem;
+  text-align: center;
+  max-width: 290px;
+}
+
+.error-status {
+  padding: 10px 30px;
+  color: $wine;
+}
+
+.success-status {
+  margin: 10px 0;
+  font-size: 1.2em;
+  color: $green;
+}
+
 @media (max-width: 700px) {
   .auth-row {
     flex-direction: column;
