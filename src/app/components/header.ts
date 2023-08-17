@@ -44,6 +44,15 @@ class Header {
     }
   }
 
+  private toggleSidebar(): void {
+    const dimming = document.querySelector('.sidebar__dimming');
+    const sidebar = document.querySelector('.sidebar__wrapper');
+
+    document.body.classList.add('hidden-overflow');
+    dimming?.classList.add('active-dimming');
+    sidebar?.classList.add('active-sidebar');
+  }
+
   private setEventListeners(router: Router): void {
     this.header.addEventListener('click', (event: Event): void => {
       const target = event.target as HTMLElement;
@@ -53,12 +62,7 @@ class Header {
       }
 
       if (target.classList.contains('hamburger')) {
-        const dimming = document.querySelector('.sidebar__dimming');
-        const sidebar = document.querySelector('.sidebar__wrapper');
-
-        document.body.classList.add('hidden-overflow');
-        dimming?.classList.add('active-dimming');
-        sidebar?.classList.add('active-sidebar');
+        this.toggleSidebar();
       }
     });
   }

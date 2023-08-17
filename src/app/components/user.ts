@@ -13,6 +13,8 @@ class User {
     return false;
   }
 
+  public userLogOut(): void {}
+
   private setEventListeners(): void {
     document.addEventListener('DOMContentLoaded', (): void => {
       getAccessToken();
