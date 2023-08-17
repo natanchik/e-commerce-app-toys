@@ -1,20 +1,12 @@
 const checkValidity = (): boolean => {
   const errorBlocks = document.querySelectorAll('.error-message');
-  const booleanValues: boolean[] = [];
 
-  errorBlocks.forEach((item) => {
-    if (item.innerHTML === '') {
-      booleanValues.push(true);
-    } else {
-      booleanValues.push(false);
+  for (let i = 0; i < errorBlocks.length; i += 1) {
+    if (errorBlocks[i].innerHTML) {
+      return false;
     }
-  });
-
-  if (booleanValues.indexOf(false) === -1) {
-    return true;
-  } else {
-    return false;
   }
+  return true;
 };
 
 export default checkValidity;
