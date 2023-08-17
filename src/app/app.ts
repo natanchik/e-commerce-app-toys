@@ -13,7 +13,6 @@ import Terms from './pages/terms-conditions';
 import RegPage from './pages/registration-page';
 import User from './components/user';
 import UserProfile from './pages/user-profile';
-import { loginAfterRegistration } from './api/customer/loginCustomer';
 
 class App {
   router: Router;
@@ -35,7 +34,7 @@ class App {
   }
 
   public startApp(): void {
-    loginAfterRegistration('annfoo@example.com', 'Secret1234!'); //check login form
+    this.user.userLogin();
   }
 
   private createRoutes(): RouteInfo[] {

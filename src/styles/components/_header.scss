@@ -24,6 +24,19 @@
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.header__name {
+  font-weight: 600;
+  opacity: 0.8;
+  font-size: 1.3rem;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .header__icon-user {
@@ -32,6 +45,10 @@
 
 .header__icon-bascket {
   background-image: url('../assets/icons/bascket.svg');
+}
+
+.header__icon-logout {
+  background-image: url('../assets/icons/logout-icon.svg');
 }
 
 @media (max-width: 520px) {
