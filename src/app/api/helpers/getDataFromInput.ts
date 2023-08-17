@@ -59,15 +59,14 @@ export const getRegisterData = (): RegisterData => {
     ],
   };
 
-  if (areSameAddresses.checked) {
-    return data;
-  } else {
+  if (!areSameAddresses.checked) {
     data.addresses.push({
       country: shippingCountry.value,
       city: shippingCity.value,
       streetName: shippingStreet.value,
       postalCode: shippingPostalCode.value,
     });
-    return data;
   }
+
+  return data;
 };
