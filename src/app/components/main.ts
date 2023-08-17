@@ -48,6 +48,34 @@ class Main {
     return decorator;
   }
 
+  private async loginViaForm(target: HTMLFormElement, router: Router): Promise<void> {
+    const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
+    const data = getLoginData(target as HTMLFormElement);
+
+    await loginCustomer(data.username, data.password);
+    if (apiStatus.classList.contains('success-status')) {
+      setTimeout(() => {
+        router.navigate(pages.MAIN);
+      }, 1500);
+    }
+  }
+
+  private async registerViaForm(router: Router): Promise<void> {
+    const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
+    const data = getRegisterData();
+    const defaultBilling = document.getElementById('as-default-billing') as HTMLInputElement;
+    const defaultShipping = document.getElementById('as-default-shipping') as HTMLInputElement;
+    const checkDefaultBilling = defaultBilling.checked;
+    const checkDefaultShipping = defaultShipping.checked;
+
+    await createCustomer(data, checkDefaultBilling, checkDefaultShipping);
+    if (apiStatus.classList.contains('success-status__register')) {
+      setTimeout(() => {
+        router.navigate(pages.MAIN);
+      }, 1500);
+    }
+  }
+
   private setEventListeners(router: Router): void {
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
@@ -73,20 +101,13 @@ class Main {
 
     document.addEventListener('submit', async (event: Event) => {
       const target = event.target as HTMLElement;
-      const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
 
       if (target.classList.contains('login-form')) {
         event.preventDefault();
         const isValid: boolean = checkValidity();
 
         if (isValid) {
-          const data = getLoginData(target as HTMLFormElement);
-          await loginCustomer(data.username, data.password);
-          if (apiStatus.classList.contains('success-status')) {
-            setTimeout(() => {
-              router.navigate(pages.MAIN);
-            }, 1500);
-          }
+          this.loginViaForm(target as HTMLFormElement, router);
         }
       }
 
@@ -95,18 +116,7 @@ class Main {
         const isValid: boolean = checkValidity();
 
         if (isValid) {
-          const data = getRegisterData();
-          const defaultBilling = document.getElementById('as-default-billing') as HTMLInputElement;
-          const defaultShipping = document.getElementById('as-default-shipping') as HTMLInputElement;
-          const checkDefaultBilling = defaultBilling.checked;
-          const checkDefaultShipping = defaultShipping.checked;
-
-          await createCustomer(data, checkDefaultBilling, checkDefaultShipping);
-          if (apiStatus.classList.contains('success-status__register')) {
-            setTimeout(() => {
-              router.navigate(pages.MAIN);
-            }, 1500);
-          }
+          this.registerViaForm(router);
         }
       }
     });

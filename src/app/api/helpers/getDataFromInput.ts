@@ -42,45 +42,32 @@ export const getRegisterData = (): RegisterData => {
   const shippingStreet = document.getElementById('shipping-streetName') as HTMLInputElement;
   const shippingPostalCode = document.getElementById('shipping-postalCode') as HTMLInputElement;
 
+  const data = {
+    email: email.value,
+    password: password.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    dateOfBirth: dateOfBirth.value,
+    salutation: salutation.value,
+    addresses: [
+      {
+        country: billingCountry.value,
+        city: billingCity.value,
+        streetName: billingStreet.value,
+        postalCode: billingPostalCode.value,
+      },
+    ],
+  };
+
   if (areSameAddresses.checked) {
-    return {
-      email: email.value,
-      password: password.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
-      dateOfBirth: dateOfBirth.value,
-      salutation: salutation.value,
-      addresses: [
-        {
-          country: billingCountry.value,
-          city: billingCity.value,
-          streetName: billingStreet.value,
-          postalCode: billingPostalCode.value,
-        },
-      ],
-    };
+    return data;
   } else {
-    return {
-      email: email.value,
-      password: password.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
-      dateOfBirth: dateOfBirth.value,
-      salutation: salutation.value,
-      addresses: [
-        {
-          country: billingCountry.value,
-          city: billingCity.value,
-          streetName: billingStreet.value,
-          postalCode: billingPostalCode.value,
-        },
-        {
-          country: shippingCountry.value,
-          city: shippingCity.value,
-          streetName: shippingStreet.value,
-          postalCode: shippingPostalCode.value,
-        },
-      ],
-    };
+    data.addresses.push({
+      country: shippingCountry.value,
+      city: shippingCity.value,
+      streetName: shippingStreet.value,
+      postalCode: shippingPostalCode.value,
+    });
+    return data;
   }
 };
