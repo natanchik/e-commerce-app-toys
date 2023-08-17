@@ -11,7 +11,9 @@ import Router from './router/router';
 import Contacts from './pages/contacts';
 import Terms from './pages/terms-conditions';
 import RegPage from './pages/registration-page';
-import getAccessToken from './api/tokens/getAccessToken';
+import User from './components/user';
+import UserProfile from './pages/user-profile';
+import { loginAfterRegistration } from './api/customer/loginCustomer';
 
 class App {
   router: Router;
@@ -22,18 +24,19 @@ class App {
 
   footer: Footer;
 
+  user: User;
+
   constructor() {
     this.router = new Router(this.createRoutes());
     this.header = new Header(this.router);
     this.main = new Main(this.router);
     this.footer = new Footer(this.router);
-
-    if (localStorage.getItem('type_of_token') !== 'customer') {
-      getAccessToken();
-    }
+    this.user = new User();
   }
 
-  public startApp(): void {}
+  public startApp(): void {
+    loginAfterRegistration('annfoo@example.com', 'Secret1234!'); //check login form
+  }
 
   private createRoutes(): RouteInfo[] {
     return [
@@ -70,6 +73,13 @@ class App {
         callback: (): void => {
           const regPage = new RegPage();
           Main.setContent(regPage.drawRegPage());
+        },
+      },
+      {
+        path: `${pages.USER_PROFILE}`,
+        callback: (): void => {
+          const userProfile = new UserProfile();
+          Main.setContent(userProfile.drawProfile());
         },
       },
       {

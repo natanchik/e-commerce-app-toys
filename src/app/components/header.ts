@@ -1,6 +1,7 @@
 import { createElement } from './utils';
 import Router from '../router/router';
 import pages from '../router/pages';
+import User from './user';
 
 class Header {
   header: HTMLHeadElement;
@@ -35,12 +36,20 @@ class Header {
     return header;
   }
 
+  private navigateUser(router: Router): void {
+    if (User.isLogged()) {
+      router.navigate(pages.USER_PROFILE);
+    } else {
+      router.navigate(pages.AUTORIZATION);
+    }
+  }
+
   private setEventListeners(router: Router): void {
     this.header.addEventListener('click', (event: Event): void => {
       const target = event.target as HTMLElement;
 
       if (target.classList.contains('header__icon-user')) {
-        router.navigate(pages.AUTORIZATION);
+        this.navigateUser(router);
       }
 
       if (target.classList.contains('hamburger')) {
