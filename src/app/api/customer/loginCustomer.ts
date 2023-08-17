@@ -1,16 +1,11 @@
 import { getAllCustomersEmails } from './getAllCustomers';
 import { fillUserState } from './getCustomerByID';
 
-const loginURL = `https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/customers/token?grant_type=password`;
+const loginURL = `https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/customers/token`;
 
 const myHeaders = {
+  'Content-Type': 'application/x-www-form-urlencoded',
   Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
-};
-
-const requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: '',
 };
 
 const incorrectResponseText = 'Incorrect response from the server, please try later';
@@ -18,11 +13,17 @@ const notExistEmailText = `The email address doesn't exist, please enter correct
 const incorrectPassText = `The password you entered is incorrect, please try again`;
 
 export const loginCustomer = async (username: string, password: string): Promise<void> => {
+  const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: `grant_type=password&username=${username}&password=${password}`,
+  };
+
   const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
   const emailInput = document.querySelector('#email') as HTMLInputElement;
   const passwordInput = document.querySelector('#password') as HTMLInputElement;
 
-  await fetch(`${loginURL}&username=${username}&password=${password}`, requestOptions)
+  await fetch(loginURL, requestOptions)
     .then(async (res) => {
       if (res.headers.get('content-type') !== 'application/json; charset=utf-8') {
         throw new Error(incorrectResponseText);
@@ -65,8 +66,14 @@ export const loginCustomer = async (username: string, password: string): Promise
     });
 };
 
-export const loginAfterRegistration = (username: string, password: string): void => {
-  fetch(`${loginURL}&username=${username}&password=${password}`, requestOptions)
+export const loginAfterRegistration = async (username: string, password: string): Promise<void> => {
+  const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: `grant_type=password&username=${username}&password=${password}`,
+  };
+
+  await fetch(loginURL, requestOptions)
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();
