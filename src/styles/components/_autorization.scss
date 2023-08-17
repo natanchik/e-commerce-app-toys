@@ -41,6 +41,12 @@
 
 .auth-btn {
   display: inline-block;
+
+  &:disabled {
+    background-color: $disabled;
+    color: darken($color: $disabled, $amount: 40%);
+    cursor: auto;
+  }
 }
 
 .auth-input {

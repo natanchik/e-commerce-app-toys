@@ -49,10 +49,13 @@ class Main {
   }
 
   private async loginViaForm(target: HTMLFormElement, router: Router): Promise<void> {
+    const submitBtn = document.querySelector('.auth-btn.submit-login') as HTMLButtonElement;
     const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
     const data = getLoginData(target as HTMLFormElement);
 
+    submitBtn.setAttribute('disabled', 'true');
     await loginCustomer(data.username, data.password);
+    submitBtn.removeAttribute('disabled');
     if (apiStatus.classList.contains('success-status')) {
       setTimeout(() => {
         router.navigate(pages.MAIN);
@@ -61,6 +64,7 @@ class Main {
   }
 
   private async registerViaForm(router: Router): Promise<void> {
+    const submitBtn = document.querySelector('.auth-btn.submit-register') as HTMLButtonElement;
     const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
     const data = getRegisterData();
     const defaultBilling = document.getElementById('as-default-billing') as HTMLInputElement;
@@ -68,7 +72,9 @@ class Main {
     const checkDefaultBilling = defaultBilling.checked;
     const checkDefaultShipping = defaultShipping.checked;
 
+    submitBtn.setAttribute('disabled', 'true');
     await createCustomer(data, checkDefaultBilling, checkDefaultShipping);
+    submitBtn.removeAttribute('disabled');
     if (apiStatus.classList.contains('success-status__register')) {
       setTimeout(() => {
         router.navigate(pages.MAIN);
