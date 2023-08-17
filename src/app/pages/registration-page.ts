@@ -15,14 +15,12 @@ class RegPage extends AuthPage {
     parent.append(emailBlock);
 
     const nameBlock = createElement('div', ['auth-row']);
-    nameBlock.append(createInputElement('text', 'First name*', 'firstName', 'auth', false, { name: 'firstName' }));
-    nameBlock.append(createInputElement('text', 'Last name*', 'lastName', 'auth', false, { name: 'lastName' }));
+    nameBlock.append(createInputElement('text', 'First name*', 'firstName', 'auth', true, { name: 'firstName' }));
+    nameBlock.append(createInputElement('text', 'Last name*', 'lastName', 'auth', true, { name: 'lastName' }));
     parent.append(nameBlock);
 
     const userInfo = createElement('div', ['auth-row']);
-    userInfo.append(
-      createInputElement('date', 'Date of birth*', 'dateOfBirth', 'auth', false, { name: 'dateOfBirth' }),
-    );
+    userInfo.append(createInputElement('date', 'Date of birth*', 'dateOfBirth', 'auth', true, { name: 'dateOfBirth' }));
     userInfo.append(createSelectElement(salutation, 'Salutation', 'salutation', 'auth', false));
     parent.append(userInfo);
 

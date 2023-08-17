@@ -55,11 +55,13 @@ class Main {
 
     submitBtn.setAttribute('disabled', 'true');
     await loginCustomer(data.username, data.password);
-    submitBtn.removeAttribute('disabled');
+
     if (apiStatus.classList.contains('success-status')) {
       setTimeout(() => {
         router.navigate(pages.MAIN);
       }, 1500);
+    } else {
+      submitBtn.removeAttribute('disabled');
     }
   }
 
@@ -74,11 +76,13 @@ class Main {
 
     submitBtn.setAttribute('disabled', 'true');
     await createCustomer(data, checkDefaultBilling, checkDefaultShipping);
-    submitBtn.removeAttribute('disabled');
+
     if (apiStatus.classList.contains('success-status__register')) {
       setTimeout(() => {
         router.navigate(pages.MAIN);
       }, 1500);
+    } else {
+      submitBtn.removeAttribute('disabled');
     }
   }
 
