@@ -1,4 +1,5 @@
 import { AddressFromAPI, RegisterData } from '../../types/types';
+import accessToken from '../helpers/api-consts';
 import { getCustomerByID } from './getCustomerByID';
 import { loginAfterRegistration } from './loginCustomer';
 
@@ -71,7 +72,7 @@ const createCustomer = async (
 ): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    Authorization: `Bearer ${accessToken}`,
   };
   const raw = JSON.stringify(data);
   const requestOptions = {

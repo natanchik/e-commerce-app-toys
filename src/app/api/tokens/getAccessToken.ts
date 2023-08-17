@@ -18,8 +18,8 @@ const getAccessToken = (): void => {
       }
     })
     .then((res) => {
-      localStorage.setItem('token', res.access_token);
-      localStorage.setItem('type_of_token', 'client_credentials');
+      localStorage.setItem('token_info', JSON.stringify(res));
+      localStorage.setItem('type_of_token', 'client-credentials');
     });
   // .catch((err) => {
   //   if (err instanceof Error) {

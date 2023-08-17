@@ -1,9 +1,10 @@
 import userState from '../../state/userState';
+import accessToken from '../helpers/api-consts';
 
 export const getCustomerByID = async (customerID: string): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    Authorization: `Bearer ${accessToken}`,
   };
 
   const requestOptions = {
@@ -33,7 +34,7 @@ export const getCustomerByID = async (customerID: string): Promise<void> => {
 export const fillUserState = async (email: string): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    Authorization: `Bearer ${accessToken}`,
   };
 
   const requestOptions = {

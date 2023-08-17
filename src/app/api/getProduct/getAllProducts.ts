@@ -1,7 +1,9 @@
+import accessToken from '../helpers/api-consts';
+
 const getAllProducts = (): void => {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    Authorization: `Bearer ${accessToken}`,
   };
 
   const requestOptions = {

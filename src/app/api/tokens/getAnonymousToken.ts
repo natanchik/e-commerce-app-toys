@@ -21,7 +21,7 @@ const getAnonymousToken = (): void => {
       }
     })
     .then((res) => {
-      localStorage.setItem('token', res.access_token);
+      localStorage.setItem('token_info', JSON.stringify(res));
       localStorage.setItem('type_of_token', 'anonymous');
     });
   // .catch((err) => {

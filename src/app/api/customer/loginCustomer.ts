@@ -45,8 +45,7 @@ export const loginCustomer = async (username: string, password: string): Promise
       }
     })
     .then(async (res) => {
-      localStorage.setItem('token', res.access_token);
-      localStorage.setItem('refresh', res.refresh_token);
+      localStorage.setItem('token_info', JSON.stringify(res));
       localStorage.setItem('type_of_token', 'customer');
       await fillUserState(username);
       apiStatus.classList.add('success-status');
@@ -82,8 +81,7 @@ export const loginAfterRegistration = async (username: string, password: string)
       }
     })
     .then((res) => {
-      localStorage.setItem('token', res.access_token);
-      localStorage.setItem('refresh', res.refresh_token);
+      localStorage.setItem('token_info', JSON.stringify(res));
       localStorage.setItem('type_of_token', 'customer');
     });
 };
