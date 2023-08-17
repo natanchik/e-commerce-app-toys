@@ -96,7 +96,6 @@ class Main {
 
         if (isValid) {
           const data = getRegisterData();
-          // console.log(data);
           // const areSameAddresses = document.getElementById('are-same-addresses') as HTMLInputElement;
           // const checkDefaultBilling = document.getElementById('as-default-billing') as HTMLInputElement;
           // const checkDefaultShipping = document.getElementById('as-default-shipping') as HTMLInputElement;

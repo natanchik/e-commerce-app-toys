@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const requestOptions = {
   method: 'POST',
   headers: {
@@ -15,18 +14,18 @@ const getAccessToken = (): void => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();
       } else {
-        throw new Error(`The error with status code ${res.status} has occured, please try later`);
+        throw new Error(`The error with status code ${res.status} has occured, please reload page`);
       }
     })
     .then((res) => {
       localStorage.setItem('token', res.access_token);
       localStorage.setItem('type_of_token', 'client_credentials');
-    })
-    .catch((err) => {
-      if (err instanceof Error) {
-        console.log(`${err.message}`);
-      }
     });
+  // .catch((err) => {
+  //   if (err instanceof Error) {
+  //     console.log(`${err.message}`);
+  //   }
+  // });
 };
 
 export default getAccessToken;
