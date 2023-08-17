@@ -96,7 +96,16 @@ class Main {
 
         if (isValid) {
           const data = getRegisterData();
-          createCustomer(data);
+          // console.log(data);
+          // const areSameAddresses = document.getElementById('are-same-addresses') as HTMLInputElement;
+          // const checkDefaultBilling = document.getElementById('as-default-billing') as HTMLInputElement;
+          // const checkDefaultShipping = document.getElementById('as-default-shipping') as HTMLInputElement;
+          await createCustomer(data);
+          if (apiStatus.classList.contains('success-status__register')) {
+            setTimeout(() => {
+              router.navigate(pages.MAIN);
+            }, 1500);
+          }
         }
       }
     });
@@ -104,6 +113,7 @@ class Main {
     document.addEventListener('input', (event: Event): void => {
       const target = event.target as HTMLInputElement;
       const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
+      apiStatus.className = 'api-status';
       apiStatus.innerHTML = '';
 
       if (target.classList.contains('auth-input')) {

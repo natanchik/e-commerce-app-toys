@@ -15,6 +15,10 @@ export interface Address {
   postalCode: string;
 }
 
+export interface AddressFromAPI {
+  [key: string]: string;
+}
+
 export interface RegisterData {
   email: string;
   password: string;

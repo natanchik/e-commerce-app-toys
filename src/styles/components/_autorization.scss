@@ -129,10 +129,23 @@
   color: $wine;
 }
 
+.error-status__register {
+  padding: 10px 30px;
+  color: $wine;
+  max-width: 576px;
+}
+
 .success-status {
   margin: 10px 0;
   font-size: 1.2em;
   color: $green;
+}
+
+.success-status__register {
+  margin: 10px 0;
+  font-size: 1.2em;
+  color: $green;
+  max-width: 576px;
 }
 
 .reset-password-btn,
