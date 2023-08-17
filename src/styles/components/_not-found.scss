@@ -1,5 +1,5 @@
 .not-found {
-  padding: 40px 0;
+  padding: 40px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,6 +23,7 @@
 
 .not-found__heading {
   color: $wine;
+  font-size: 2.5em;
 }
 
 .not-found__message {
@@ -32,8 +33,12 @@
   color: $peach;
 }
 
-@media (max-width: 960px) {
-  .not-found__wrapper {
+.not-found__button {
+  color: $background-beige;
+}
+
+@media (max-width: 700px) {
+  .not-found {
     flex-direction: column-reverse;
     justify-content: center;
     align-items: center;

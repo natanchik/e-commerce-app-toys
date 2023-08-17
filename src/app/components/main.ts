@@ -3,6 +3,10 @@ import Sidebar from './sidebar';
 import Router from '../router/router';
 import pages from '../router/pages';
 import { validateInput } from './validation';
+import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
+import checkValidity from '../api/helpers/checkValidity';
+import { loginCustomer } from '../api/customer/loginCustomer';
+import createCustomer from '../api/customer/createCustomer';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -44,6 +48,44 @@ class Main {
     return decorator;
   }
 
+  private async loginViaForm(target: HTMLFormElement, router: Router): Promise<void> {
+    const submitBtn = document.querySelector('.auth-btn.submit-login') as HTMLButtonElement;
+    const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
+    const data = getLoginData(target as HTMLFormElement);
+
+    submitBtn.setAttribute('disabled', 'true');
+    await loginCustomer(data.username, data.password);
+
+    if (apiStatus.classList.contains('success-status')) {
+      setTimeout(() => {
+        router.navigate(pages.MAIN);
+      }, 1500);
+    } else {
+      submitBtn.removeAttribute('disabled');
+    }
+  }
+
+  private async registerViaForm(router: Router): Promise<void> {
+    const submitBtn = document.querySelector('.auth-btn.submit-register') as HTMLButtonElement;
+    const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
+    const data = getRegisterData();
+    const defaultBilling = document.getElementById('as-default-billing') as HTMLInputElement;
+    const defaultShipping = document.getElementById('as-default-shipping') as HTMLInputElement;
+    const checkDefaultBilling = defaultBilling.checked;
+    const checkDefaultShipping = defaultShipping.checked;
+
+    submitBtn.setAttribute('disabled', 'true');
+    await createCustomer(data, checkDefaultBilling, checkDefaultShipping);
+
+    if (apiStatus.classList.contains('success-status__register')) {
+      setTimeout(() => {
+        router.navigate(pages.MAIN);
+      }, 1500);
+    } else {
+      submitBtn.removeAttribute('disabled');
+    }
+  }
+
   private setEventListeners(router: Router): void {
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
@@ -67,8 +109,33 @@ class Main {
       }
     });
 
+    document.addEventListener('submit', async (event: Event) => {
+      const target = event.target as HTMLElement;
+
+      if (target.classList.contains('login-form')) {
+        event.preventDefault();
+        const isValid: boolean = checkValidity();
+
+        if (isValid) {
+          this.loginViaForm(target as HTMLFormElement, router);
+        }
+      }
+
+      if (target.classList.contains('register-form')) {
+        event.preventDefault();
+        const isValid: boolean = checkValidity();
+
+        if (isValid) {
+          this.registerViaForm(router);
+        }
+      }
+    });
+
     document.addEventListener('input', (event: Event): void => {
       const target = event.target as HTMLInputElement;
+      const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
+      apiStatus.className = 'api-status';
+      apiStatus.innerHTML = '';
 
       if (target.classList.contains('auth-input')) {
         const id = target.id;
@@ -84,7 +151,22 @@ class Main {
 
       if (target.id === 'are-same-addresses') {
         const shippingBlock = document.getElementById('shipping-block') as HTMLDivElement;
+        const shippingInputs = [
+          document.getElementById('shipping-country') as HTMLInputElement,
+          document.getElementById('shipping-city') as HTMLInputElement,
+          document.getElementById('shipping-streetName') as HTMLInputElement,
+          document.getElementById('shipping-postalCode') as HTMLInputElement,
+        ];
         shippingBlock.classList.toggle('hidden');
+        if (shippingInputs[0].hasAttribute('required')) {
+          shippingInputs.forEach((input) => {
+            input.removeAttribute('required');
+          });
+        } else {
+          shippingInputs.forEach((input) => {
+            input.setAttribute('required', 'true');
+          });
+        }
       }
 
       if (target.id === 'showPassword') {

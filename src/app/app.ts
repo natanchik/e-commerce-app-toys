@@ -11,6 +11,7 @@ import Router from './router/router';
 import Contacts from './pages/contacts';
 import Terms from './pages/terms-conditions';
 import RegPage from './pages/registration-page';
+import getAccessToken from './api/tokens/getAccessToken';
 
 class App {
   router: Router;
@@ -26,6 +27,10 @@ class App {
     this.header = new Header(this.router);
     this.main = new Main(this.router);
     this.footer = new Footer(this.router);
+
+    if (localStorage.getItem('type_of_token') !== 'customer') {
+      getAccessToken();
+    }
   }
 
   public startApp(): void {}

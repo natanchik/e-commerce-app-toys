@@ -1,18 +1,17 @@
 import userState from '../../state/userState';
-
-// TODO
-/* eslint-disable no-console */
-const myHeaders = {
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${localStorage.getItem('token')}`,
-};
-
-const requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-};
+import accessToken from '../helpers/api-consts';
 
 export const getCustomerByID = async (customerID: string): Promise<void> => {
+  const myHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${accessToken}`,
+  };
+
+  const requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+  };
+
   await fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers/${customerID}`,
     requestOptions,
@@ -29,15 +28,20 @@ export const getCustomerByID = async (customerID: string): Promise<void> => {
       userState.lastName = res.lastName;
       userState.dateOfBirth = res.dateOfBirth;
       userState.addresses = res.addresses;
-    })
-    .catch((err) => {
-      if (err instanceof Error) {
-        console.log(`${err.message}`);
-      }
     });
 };
 
 export const fillUserState = async (email: string): Promise<void> => {
+  const myHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${accessToken}`,
+  };
+
+  const requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+  };
+
   await fetch(
     'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers',
     requestOptions,
@@ -57,6 +61,5 @@ export const fillUserState = async (email: string): Promise<void> => {
       userState.lastName = currentCustomer.lastName;
       userState.dateOfBirth = currentCustomer.dateOfBirth;
       userState.addresses = currentCustomer.addresses;
-    })
-    .catch((error) => console.log('error', error));
+    });
 };
