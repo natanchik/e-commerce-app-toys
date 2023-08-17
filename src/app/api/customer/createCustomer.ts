@@ -4,8 +4,11 @@ import { loginAfterRegistration } from './loginCustomer';
 
 const customersURL = 'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers';
 
-// TODO add interfaces for addresses and acions
-const getCurrentActions = (addresses: AddressFromAPI[]): { action: string; addressId: string }[] => {
+const getCurrentActions = (
+  addresses: AddressFromAPI[],
+  checkDefaultBilling: boolean,
+  checkDefaultShipping: boolean,
+): { action: string; addressId: string }[] => {
   const currentActions: { action: string; addressId: string }[] = [];
   switch (addresses.length) {
     case 1:
@@ -19,19 +22,18 @@ const getCurrentActions = (addresses: AddressFromAPI[]): { action: string; addre
           addressId: addresses[0].id,
         },
       );
-      // TODO add checking of default value - if checkDefault or not
-      // if (checkDefault) {
-      //   currentActions.push(
-      //     {
-      //       action: 'setDefaultBillingAddress',
-      //       addressId: addresses[0].id,
-      //     },
-      //     {
-      //       action: 'setDefaultShippingAddress',
-      //       addressId: addresses[0].id,
-      //     },
-      //   );
-      // }
+      if (checkDefaultBilling) {
+        currentActions.push(
+          {
+            action: 'setDefaultBillingAddress',
+            addressId: addresses[0].id,
+          },
+          {
+            action: 'setDefaultShippingAddress',
+            addressId: addresses[0].id,
+          },
+        );
+      }
       break;
     case 2:
       currentActions.push(
@@ -44,25 +46,29 @@ const getCurrentActions = (addresses: AddressFromAPI[]): { action: string; addre
           addressId: addresses[1].id,
         },
       );
-      // TODO add checking of default value - if checkDefault or not
-      // if (checkDefaultBilling) {
-      //   currentActions.push({
-      //     action: 'setDefaultBillingAddress',
-      //     addressId: addresses[0].id,
-      //   });
-      // } else if (checkDefaultShipping) {
-      //   currentActions.push({
-      //     action: 'setDefaultShippingAddress',
-      //     addressId: addresses[1].id,
-      //   });
-      // }
+      if (checkDefaultBilling) {
+        currentActions.push({
+          action: 'setDefaultBillingAddress',
+          addressId: addresses[0].id,
+        });
+      }
+      if (checkDefaultShipping) {
+        currentActions.push({
+          action: 'setDefaultShippingAddress',
+          addressId: addresses[1].id,
+        });
+      }
       break;
   }
 
   return currentActions;
 };
 
-const createCustomer = async (data: RegisterData): Promise<void> => {
+const createCustomer = async (
+  data: RegisterData,
+  checkDefaultBilling: boolean,
+  checkDefaultShipping: boolean,
+): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -96,7 +102,7 @@ const createCustomer = async (data: RegisterData): Promise<void> => {
     .then(async (res) => {
       const customerID = res.customer.id;
       const addresses = res.customer.addresses;
-      const currentActions = getCurrentActions(addresses);
+      const currentActions = getCurrentActions(addresses, checkDefaultBilling, checkDefaultShipping);
       const dataForAddressActions = JSON.stringify({
         version: 1,
         actions: currentActions,

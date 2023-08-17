@@ -96,10 +96,12 @@ class Main {
 
         if (isValid) {
           const data = getRegisterData();
-          // const areSameAddresses = document.getElementById('are-same-addresses') as HTMLInputElement;
-          // const checkDefaultBilling = document.getElementById('as-default-billing') as HTMLInputElement;
-          // const checkDefaultShipping = document.getElementById('as-default-shipping') as HTMLInputElement;
-          await createCustomer(data);
+          const defaultBilling = document.getElementById('as-default-billing') as HTMLInputElement;
+          const defaultShipping = document.getElementById('as-default-shipping') as HTMLInputElement;
+          const checkDefaultBilling = defaultBilling.checked;
+          const checkDefaultShipping = defaultShipping.checked;
+
+          await createCustomer(data, checkDefaultBilling, checkDefaultShipping);
           if (apiStatus.classList.contains('success-status__register')) {
             setTimeout(() => {
               router.navigate(pages.MAIN);
