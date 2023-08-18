@@ -48,6 +48,11 @@ class Router {
         this.navigate(pages.MAIN);
         return true;
       }
+    } else {
+      if (path === pages.USER_PROFILE) {
+        this.navigate(pages.MAIN);
+        return true;
+      }
     }
 
     return false;
