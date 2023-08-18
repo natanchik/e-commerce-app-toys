@@ -16,7 +16,7 @@
   position: relative;
   cursor: pointer;
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     right: 20px;
     top: calc(50% - 7px);
