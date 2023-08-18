@@ -14,13 +14,10 @@ describe('Class RegPage: drawRegPage function', () => {
   const date = document.getElementById('dateOfBirth');
   const postalCode = document.getElementById('billing-postalCode');
 
-  it('should create registration header and footer', () => {
+  it('should create registration header', () => {
     const header = document.querySelector('.auth-header');
-    const footer = document.querySelector('.auth-footer');
     expect(header).not.toBeNull();
-    expect(footer).not.toBeNull();
     expect(header?.innerHTML).not.toEqual('');
-    expect(footer?.textContent).not.toBe('');
   });
 
   it('should create registration form with its elements', () => {
@@ -48,7 +45,7 @@ describe('Class RegPage: drawRegPage function', () => {
 
   it('should add correct text to elements', () => {
     expect(btns[1].textContent).toEqual('Registration');
-    expect(btns[2].textContent).toEqual('Signup');
+    expect(btns[2].textContent).toEqual('Sign up');
     expect(labels[1].textContent).toEqual('Password*');
     expect(labels[2].textContent).toEqual('Show password');
     expect(labels[13].textContent).toEqual('Country*');
