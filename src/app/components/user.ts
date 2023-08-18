@@ -26,7 +26,9 @@ class User {
 
   private setEventListeners(): void {
     document.addEventListener('DOMContentLoaded', (): void => {
-      getAccessToken();
+      if (localStorage.length === 0) {
+        getAccessToken();
+      }
     });
   }
 }
