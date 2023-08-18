@@ -25,11 +25,7 @@ class Header {
     ) as HTMLDivElement;
     const icons = createElement('div', ['header__icons']) as HTMLDivElement;
     const iconUser = createElement('span', ['header__icon', 'header__icon-user']) as HTMLSpanElement;
-    const iconLogout = createElement('span', [
-      'header__icon',
-      'header__icon-logout',
-      'header__icon-logout_hidden',
-    ]) as HTMLSpanElement;
+    const iconLogout = createElement('span', ['header__icon', 'header__icon-logout']) as HTMLSpanElement;
     const iconBascket = createElement('span', ['header__icon', 'header__icon-bascket']) as HTMLSpanElement;
 
     nav.append(burger, navList);
@@ -62,12 +58,16 @@ class Header {
     this.header.addEventListener('click', (event: Event): void => {
       const target = event.target as HTMLElement;
 
-      if (target.classList.contains('header__icon-user')) {
+      if (target.classList.contains('header__icon-user') || target.classList.contains('header__name')) {
         this.navigateUser(router);
       }
 
       if (target.classList.contains('hamburger')) {
         this.toggleSidebar();
+      }
+
+      if (target.classList.contains('header__icon-logout')) {
+        User.userLogout();
       }
     });
   }

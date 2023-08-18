@@ -1,6 +1,4 @@
 import getAccessToken from '../api/tokens/getAccessToken';
-import { UserState } from '../types/types';
-import { createElement, nullUserState } from './utils';
 
 class User {
   constructor() {
@@ -11,35 +9,38 @@ class User {
     const typeOfToken: string | null = localStorage.getItem('type_of_token');
 
     if (typeOfToken === 'customer') return true;
-
     return false;
   }
 
-  public userLogin(): void {
-    const userState: UserState = localStorage.getItem('userState')
-      ? JSON.parse(localStorage.getItem('userState') as string)
-      : nullUserState;
-    const icons = document.querySelector('.header__icons') as HTMLDivElement;
-    const beforeIcon = document.querySelector('.header__icon-bascket') as HTMLDivElement;
-    const logoutIcon = document.querySelector('header__icon-logout') as HTMLDivElement;
-    const userName = createElement('span', ['header__name'], `${userState.firstName}`);
+  static toggleLogoutIcon(remove: boolean = false): void {
+    const logoutIcon = document.querySelector('.header__icon-logout') as HTMLDivElement;
 
-    logoutIcon.classList.remove('header__icon-logout_hidden');
-    icons.insertBefore(userName, beforeIcon);
+    if (remove && logoutIcon.classList.contains('header__icon-logout_hidden')) {
+      logoutIcon.classList.remove('header__icon-logout_hidden');
+    } else {
+      logoutIcon.classList.add('header__icon-logout_hidden');
+    }
   }
 
-  public userLogout(): void {
-    const userName = document.querySelector('header__name') as HTMLDivElement;
-    const logoutIcon = document.querySelector('header__icon-logout') as HTMLDivElement;
-    logoutIcon.classList.add('header__icon-logout_hidden');
-    userName.remove();
+  static userLogin(): void {
+    this.toggleLogoutIcon(true);
+  }
+
+  static userLogout(): void {
+    this.toggleLogoutIcon();
     localStorage.clear();
+
+    getAccessToken();
   }
 
   private setEventListeners(): void {
     document.addEventListener('DOMContentLoaded', (): void => {
       if (localStorage.length === 0) {
         getAccessToken();
+      }
+
+      if (!User.isLogged()) {
+        User.toggleLogoutIcon();
       }
     });
   }

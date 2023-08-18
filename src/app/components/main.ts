@@ -7,6 +7,7 @@ import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
+import User from './user';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -59,6 +60,7 @@ class Main {
     if (apiStatus.classList.contains('success-status')) {
       setTimeout(() => {
         router.navigate(pages.MAIN);
+        User.userLogin();
       }, 1500);
     } else {
       submitBtn.removeAttribute('disabled');
@@ -80,6 +82,7 @@ class Main {
     if (apiStatus.classList.contains('success-status__register')) {
       setTimeout(() => {
         router.navigate(pages.MAIN);
+        User.userLogin();
       }, 1500);
     } else {
       submitBtn.removeAttribute('disabled');
