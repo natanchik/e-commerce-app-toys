@@ -4,6 +4,7 @@ export const nullUserState: UserState = {
   firstName: '',
   lastName: '',
   dateOfBirth: '',
+  email: '',
   addresses: [],
 };
 

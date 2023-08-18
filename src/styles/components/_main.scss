@@ -16,3 +16,14 @@
   color: $blue;
   font-style: italic;
 }
+
+.main__green-text {
+  color: $green;
+  font-style: italic;
+}
+
+@media (max-width: 370px) {
+  .main__wrapper {
+    padding: 40px 20px;
+  }
+}

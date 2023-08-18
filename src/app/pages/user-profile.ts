@@ -1,5 +1,5 @@
 import { createElement, nullUserState } from '../components/utils';
-import { UserState } from '../types/types';
+import { Address, UserState } from '../types/types';
 
 class UserProfile {
   public drawProfile(): HTMLDivElement {
@@ -12,26 +12,41 @@ class UserProfile {
       ['profile__title'],
       `
     <h5>Welcome back,</h5>
-    <h4>${userState.firstName} ${userState.lastName}</h4>`,
+    <h4 class="profile__name">${userState.firstName} ${userState.lastName}</h4>`,
     ) as HTMLDivElement;
-    const birthday = createElement('div', ['profile__birthday'], `${userState.dateOfBirth}`) as HTMLDivElement;
-    const addresses = createElement('div', ['profile__addreses']) as HTMLDivElement;
+    const info = createElement('ul', ['profile__info']) as HTMLUListElement;
+    const birthday = this.addProfileItem(
+      'birthday',
+      `<p>Date of birth:</p><p class="main__green-text">${userState.dateOfBirth}</p>`,
+    );
+    const email = this.addProfileItem('email', `<p>Email:</p><p class="main__green-text">${userState.email}</p>`);
+    const addresses = this.addProfileItem('addresses', 'Addresses');
 
-    addresses.append(this.addAddress('billing'), this.addAddress('shipping'));
+    // userState.addresses.forEach((address: Address): void => {
+    //   addresses.append(this.addAddress(address));
+    // })
 
-    profile.append(title, birthday, addresses);
+    info.append(birthday, email, addresses);
+    profile.append(title, info);
     return profile;
   }
 
-  private addAddress(addressClass: string): HTMLDivElement {
-    const address = createElement(
-      'div',
-      ['profile__address', `${addressClass}`],
-      `
-    `,
-    ) as HTMLDivElement;
+  private addProfileItem(className: string, data?: string): HTMLLIElement {
+    const item = createElement('li', ['profile__item', `profile__${className}`], data) as HTMLLIElement;
 
-    return address;
+    return item;
+  }
+
+  private addAddress(address: Address): HTMLDivElement {
+    const addressItem = createElement(
+      'div',
+      ['profile__address'],
+      `<p class="profile__address-line"><b>${address.country}</b> ${address.streetName}</p>
+      <p class="profile__address-line">${address.postalCode} ${address.city}</p>`,
+    ) as HTMLDivElement;
+    addressItem.dataset.id = address.id;
+
+    return addressItem;
   }
 }
 

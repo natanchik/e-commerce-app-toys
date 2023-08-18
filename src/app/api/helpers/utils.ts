@@ -5,6 +5,7 @@ export const addUserState = (customer: UserState): void => {
     firstName: customer.firstName,
     lastName: customer.lastName,
     dateOfBirth: customer.dateOfBirth,
+    email: customer.email,
     addresses: customer.addresses,
   };
   localStorage.setItem('userState', JSON.stringify(userState));

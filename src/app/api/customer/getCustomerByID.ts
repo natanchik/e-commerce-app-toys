@@ -1,3 +1,4 @@
+import { UserState } from '../../types/types';
 import { addUserState } from '../helpers/utils';
 
 export const getCustomerByID = async (customerID: string): Promise<void> => {
@@ -50,7 +51,7 @@ export const fillUserState = async (email: string): Promise<void> => {
       }
     })
     .then((res) => {
-      const currentCustomer = res.results.find((customer: { [key: string]: string }) => {
+      const currentCustomer: UserState = res.results.find((customer: UserState) => {
         return customer.email === email;
       });
       addUserState(currentCustomer);
