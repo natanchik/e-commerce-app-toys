@@ -51,6 +51,10 @@
   background-image: url('../assets/icons/logout-icon.svg');
 }
 
+.header__icon-logout_hidden {
+  display: none;
+}
+
 @media (max-width: 520px) {
   .header__wrapper {
     gap: 10px;

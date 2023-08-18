@@ -25,10 +25,15 @@ class Header {
     ) as HTMLDivElement;
     const icons = createElement('div', ['header__icons']) as HTMLDivElement;
     const iconUser = createElement('span', ['header__icon', 'header__icon-user']) as HTMLSpanElement;
+    const iconLogout = createElement('span', [
+      'header__icon',
+      'header__icon-logout',
+      'header__icon-logout_hidden',
+    ]) as HTMLSpanElement;
     const iconBascket = createElement('span', ['header__icon', 'header__icon-bascket']) as HTMLSpanElement;
 
     nav.append(burger, navList);
-    icons.append(iconUser, iconBascket);
+    icons.append(iconUser, iconBascket, iconLogout);
     wrapper.append(nav, logo, icons);
     header.append(wrapper);
     body.append(header);
