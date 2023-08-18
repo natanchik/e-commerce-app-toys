@@ -3,10 +3,8 @@ import { countries, salutation } from '../components/constants';
 import { createElement, createInputElement, createSelectElement, createCheckBoxElement } from '../components/utils';
 
 class RegPage extends AuthPage {
-  footerText = `<div>I forgot password. <a href="">Reset</a></div>`;
-
   public drawRegPage = (): HTMLDivElement => {
-    return this.drawAuthPage('reg', 'Signup', this.footerText, this.drawFormBlock);
+    return this.drawAuthPage('reg', 'Sign up', '', this.drawFormBlock);
   };
 
   private drawFormBlock = (parent: HTMLFormElement): void => {
@@ -15,12 +13,12 @@ class RegPage extends AuthPage {
     parent.append(emailBlock);
 
     const nameBlock = createElement('div', ['auth-row']);
-    nameBlock.append(createInputElement('text', 'First name*', 'firstName', 'auth'));
-    nameBlock.append(createInputElement('text', 'Last name*', 'lastName', 'auth'));
+    nameBlock.append(createInputElement('text', 'First name*', 'firstName', 'auth', true, { name: 'firstName' }));
+    nameBlock.append(createInputElement('text', 'Last name*', 'lastName', 'auth', true, { name: 'lastName' }));
     parent.append(nameBlock);
 
     const userInfo = createElement('div', ['auth-row']);
-    userInfo.append(createInputElement('date', 'Date of birth*', 'dateOfBirth', 'auth'));
+    userInfo.append(createInputElement('date', 'Date of birth*', 'dateOfBirth', 'auth', true, { name: 'dateOfBirth' }));
     userInfo.append(createSelectElement(salutation, 'Salutation', 'salutation', 'auth', false));
     parent.append(userInfo);
 
@@ -32,7 +30,7 @@ class RegPage extends AuthPage {
     parent.append(billingBlock, shippingBlock);
 
     const policyAgreeText =
-      'I agree with <a href="">The terms of personal data processing</a> and <a href=""> Privacy policy</a>';
+      'I agree with <span class="link-terms">The terms of personal data processing</span> and <span class="link-privacy"> Privacy policy</span>';
     parent.append(createCheckBoxElement(policyAgreeText, 'policyInput', true));
   };
 
@@ -42,10 +40,15 @@ class RegPage extends AuthPage {
     const addressTitle = createElement('h4', ['address-title'], `Input your ${type} address:`);
 
     const userAddress = createElement('div', ['auth-row']);
-    userAddress.append(createSelectElement(countries, 'Country*', `${type}-country`, 'auth'));
-    userAddress.append(createInputElement('text', 'City*', `${type}-city`, 'auth'));
-    userAddress.append(createInputElement('text', 'Street*', `${type}-streetName`, 'auth'));
+    userAddress.append(
+      createSelectElement(countries, 'Country*', `${type}-country`, 'auth', true, { name: `${type}-country` }),
+    );
+    userAddress.append(createInputElement('text', 'City*', `${type}-city`, 'auth', true, { name: `${type}-city` }));
+    userAddress.append(
+      createInputElement('text', 'Street*', `${type}-streetName`, 'auth', true, { name: `${type}-streetName` }),
+    );
     const postalCode = createInputElement('number', 'Postal code*', `${type}-postalCode`, 'auth', true, {
+      name: `${type}-postalCode`,
       min: 10000,
       max: 999999,
     });

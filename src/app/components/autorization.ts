@@ -22,13 +22,21 @@ abstract class AuthPage {
       'Registration',
     ) as HTMLButtonElement;
     authBtnReg.setAttribute('id', 'form-reg-btn');
-    const authForm = createElement('form', ['auth-form']) as HTMLFormElement;
+    const authForm = createElement('form', [
+      'auth-form',
+      `${mode === 'login' ? 'login-form' : 'register-form'}`,
+    ]) as HTMLFormElement;
 
     authPage.append(authBlock);
     drawForm(authForm);
 
-    const submitBtn = createElement('button', ['button', 'button_green', 'auth-btn'], submitText);
-    authForm.append(submitBtn);
+    const apiStatus = createElement('p', ['api-status'], '');
+    const submitBtn = createElement(
+      'button',
+      ['button', 'button_green', 'auth-btn', `${mode === 'login' ? 'submit-login' : 'submit-register'}`],
+      submitText,
+    );
+    authForm.append(apiStatus, submitBtn);
 
     const authFooter = createElement('div', ['auth-footer'], footerText);
 

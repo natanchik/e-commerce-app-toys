@@ -21,7 +21,7 @@
 }
 
 .reg-block {
-  max-width: 700px;
+  max-width: 576px;
 
   & .auth-item {
     width: 100%;
@@ -41,6 +41,12 @@
 
 .auth-btn {
   display: inline-block;
+
+  &:disabled {
+    background-color: $disabled;
+    color: darken($color: $disabled, $amount: 40%);
+    cursor: auto;
+  }
 }
 
 .auth-input {
@@ -116,6 +122,48 @@
 
 .hidden {
   display: none;
+}
+
+.api-status {
+  font-size: 1.2rem;
+  text-align: center;
+  max-width: 290px;
+}
+
+.error-status {
+  padding: 10px 30px;
+  color: $wine;
+}
+
+.error-status__register {
+  padding: 10px 30px;
+  color: $wine;
+  max-width: 576px;
+}
+
+.success-status {
+  margin: 10px 0;
+  font-size: 1.2em;
+  color: $green;
+}
+
+.success-status__register {
+  margin: 10px 0;
+  font-size: 1.2em;
+  color: $green;
+  max-width: 576px;
+}
+
+.reset-password-btn,
+.link-terms,
+.link-privacy {
+  color: $blue;
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: darken($color: $blue, $amount: 25%);
+  }
 }
 
 @media (max-width: 700px) {

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const myHeaders = {
   Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
 };
@@ -22,14 +21,14 @@ const getAnonymousToken = (): void => {
       }
     })
     .then((res) => {
-      localStorage.setItem('token', res.access_token);
+      localStorage.setItem('token_info', JSON.stringify(res));
       localStorage.setItem('type_of_token', 'anonymous');
-    })
-    .catch((err) => {
-      if (err instanceof Error) {
-        console.log(`${err.message}`);
-      }
     });
+  // .catch((err) => {
+  //   if (err instanceof Error) {
+  //     console.log(`${err.message}`);
+  //   }
+  // });
 };
 
 export default getAnonymousToken;
