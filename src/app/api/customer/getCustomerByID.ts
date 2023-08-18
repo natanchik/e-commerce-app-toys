@@ -1,4 +1,4 @@
-import userState from '../../state/userState';
+import { addUserState } from '../helpers/utils';
 
 export const getCustomerByID = async (customerID: string): Promise<void> => {
   const myHeaders = {
@@ -23,10 +23,7 @@ export const getCustomerByID = async (customerID: string): Promise<void> => {
       }
     })
     .then((res) => {
-      userState.firstName = res.firstName;
-      userState.lastName = res.lastName;
-      userState.dateOfBirth = res.dateOfBirth;
-      userState.addresses = res.addresses;
+      addUserState(res);
     });
 };
 
@@ -56,9 +53,6 @@ export const fillUserState = async (email: string): Promise<void> => {
       const currentCustomer = res.results.find((customer: { [key: string]: string }) => {
         return customer.email === email;
       });
-      userState.firstName = currentCustomer.firstName;
-      userState.lastName = currentCustomer.lastName;
-      userState.dateOfBirth = currentCustomer.dateOfBirth;
-      userState.addresses = currentCustomer.addresses;
+      addUserState(currentCustomer);
     });
 };

@@ -33,9 +33,7 @@ class App {
     this.user = new User();
   }
 
-  public startApp(): void {
-    this.user.userLogin();
-  }
+  public startApp(): void {}
 
   private createRoutes(): RouteInfo[] {
     return [

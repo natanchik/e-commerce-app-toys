@@ -1,8 +1,11 @@
-import { createElement } from '../components/utils';
-import userState from '../state/userState';
+import { createElement, nullUserState } from '../components/utils';
+import { UserState } from '../types/types';
 
 class UserProfile {
   public drawProfile(): HTMLDivElement {
+    const userState: UserState = localStorage.getItem('userState')
+      ? JSON.parse(localStorage.getItem('userState') as string)
+      : nullUserState;
     const profile = createElement('div', ['profile', 'main__wrapper']) as HTMLDivElement;
     const title = createElement(
       'div',
