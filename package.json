@@ -11,6 +11,7 @@
     "format": "prettier ./src --check",
     "format:fix": "prettier ./src --write",
     "test": "jest --env=jsdom",
+    "test:cover": "npx jest --coverage",
     "prepare": "husky install",
     "deploy": "npm run build && npx gh-pages -d dist -m \"feat: update deploy\""
   },

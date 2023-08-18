@@ -8,6 +8,13 @@ export interface UrlInfo {
   cardId: string;
 }
 
+export interface ValidTemplates {
+  firstName: [RegExp, string];
+  lastName: [RegExp, string];
+  streetName: [RegExp, string];
+  city: [RegExp, string];
+}
+
 export interface Address {
   country: string;
   city: string;

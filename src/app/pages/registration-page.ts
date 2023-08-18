@@ -4,9 +4,7 @@ import { createElement, createInputElement, createSelectElement, createCheckBoxE
 
 class RegPage extends AuthPage {
   public drawRegPage = (): HTMLDivElement => {
-    const regPage: HTMLDivElement = this.drawAuthPage('reg', 'Sign up', '', this.drawFormBlock);
-
-    return regPage;
+    return this.drawAuthPage('reg', 'Sign up', '', this.drawFormBlock);
   };
 
   private drawFormBlock = (parent: HTMLFormElement): void => {

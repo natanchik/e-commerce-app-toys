@@ -4,9 +4,7 @@ class LoginPage extends AuthPage {
   footerText = `<div>I forgot password. <span class='reset-password-btn'>Reset</span></div>`;
 
   public drawLoginPage = (): HTMLDivElement => {
-    const loginPage: HTMLDivElement = this.drawAuthPage('login', 'Login', this.footerText, this.drawFormBlock);
-
-    return loginPage;
+    return this.drawAuthPage('login', 'Login', this.footerText, this.drawFormBlock);
   };
 
   private drawFormBlock = (parent: HTMLFormElement): void => {
