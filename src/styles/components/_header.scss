@@ -25,17 +25,7 @@
   background-size: contain;
   cursor: pointer;
   &:hover {
-    opacity: 0.8;
-  }
-}
-
-.header__name {
-  font-weight: 600;
-  opacity: 0.8;
-  font-size: 1.3rem;
-  cursor: pointer;
-  &:hover {
-    opacity: 1;
+    opacity: 0.7;
   }
 }
 
@@ -49,6 +39,7 @@
 
 .header__icon-logout {
   background-image: url('../assets/icons/logout-icon.svg');
+  margin-left: 5px;
 }
 
 .header__icon-logout_hidden {
