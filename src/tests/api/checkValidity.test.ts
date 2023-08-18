@@ -1,4 +1,4 @@
-import checkValidity from '../../app/api/helpers/checkValidity';
+import { checkValidity } from '../../app/api/helpers/checkValidity';
 import LoginPage from '../../app/pages/login-page';
 import RegPage from '../../app/pages/registration-page';
 
