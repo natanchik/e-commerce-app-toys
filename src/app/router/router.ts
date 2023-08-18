@@ -1,3 +1,4 @@
+import User from '../components/user';
 import { RouteInfo, UrlInfo } from '../types/types';
 import pages from './pages';
 
@@ -41,10 +42,22 @@ class Router {
     this.navigate(pages.NOT_FOUND);
   }
 
+  private redirectToMainPageIfLogged(path: string): boolean {
+    if (User.isLogged()) {
+      if (path === pages.AUTORIZATION || path === pages.REGISTRATION || path === 'login' || path === 'logout') {
+        this.navigate(pages.MAIN);
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   private setEventListeners(): void {
     window.addEventListener('DOMContentLoaded', (event: Event): void => {
       event.preventDefault();
       const path = this.getCorrectPath();
+      if (this.redirectToMainPageIfLogged(path)) return;
       this.navigate(path);
     });
 
