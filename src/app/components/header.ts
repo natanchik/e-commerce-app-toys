@@ -68,6 +68,7 @@ class Header {
 
       if (target.classList.contains('header__icon-logout')) {
         User.userLogout();
+        router.navigate(pages.AUTORIZATION);
       }
     });
   }

@@ -65,11 +65,6 @@ class Router {
       const path = this.getCorrectPath();
       this.navigate(path, true);
     });
-
-    window.addEventListener('hashchange', (): void => {
-      const path = this.getCorrectPath();
-      this.navigate(path);
-    });
   }
 
   private getCorrectPath(): string {

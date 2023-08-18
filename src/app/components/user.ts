@@ -29,7 +29,6 @@ class User {
   static userLogout(): void {
     this.toggleLogoutIcon();
     localStorage.clear();
-
     getAccessToken();
   }
 
