@@ -1,9 +1,7 @@
-import accessToken from '../helpers/api-consts';
-
 export const getAllCustomers = (): void => {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
   };
 
   const requestOptions = {
@@ -26,7 +24,7 @@ export const getAllCustomers = (): void => {
 export const getAllCustomersEmails = async (emails: string[] = []): Promise<string[] | void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
   };
 
   const requestOptions = {
