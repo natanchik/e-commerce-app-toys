@@ -4,7 +4,7 @@ import Router from '../router/router';
 import pages from '../router/pages';
 import { validateInput } from './validation';
 import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
-import checkValidity from '../api/helpers/checkValidity';
+import { checkValidity } from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
 

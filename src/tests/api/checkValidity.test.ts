@@ -38,7 +38,6 @@ describe('Check validity of form inputs', () => {
     document.body.innerHTML = '';
     const regBlock = new RegPage().drawRegPage();
     document.body.append(regBlock);
-    document.body.append(regBlock);
     const isValid = checkValidity();
 
     expect(isValid).toBeTruthy();
