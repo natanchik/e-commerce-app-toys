@@ -10,7 +10,7 @@ describe('checkEmail function', () => {
   const inputElem1 = document.getElementById('user-email-1') as HTMLInputElement;
   inputElem1.value = 'example';
   const inputElem2 = document.getElementById('user-email-2') as HTMLInputElement;
-  inputElem2.value = 'example@';
+  inputElem2.value = '.example@example.com';
 
   const warning1 = checkEmail(inputElem1.value);
   const warning2 = checkEmail(inputElem2.value);
@@ -30,10 +30,10 @@ describe('checkEmail function', () => {
 
   it('should return warning', () => {
     expect(warning1).toEqual(
-      '<p>Email address must be properly formatted (e.g., user@example.com).</p><p>Email address must contain an "@" symbol separating local part and domain name.</p>',
+      '<p>Email address must be properly formatted (e.g., user@example.com).</p><p>Email address must contain an "@" symbol separating local part and domain name.</p><p>Email address must contain a domain name (e.g., example.com).</p>',
     );
     expect(warning2).toEqual(
-      '<p>Email address must be properly formatted (e.g., user@example.com).</p><p>Email address must contain a domain name (e.g., example.com).</p>',
+      '<p>Email address must be properly formatted (e.g., user@example.com).</p><p>Email address can contain "." character only between letters or numbers.</p>',
     );
   });
 });
