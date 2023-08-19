@@ -89,6 +89,18 @@ class Main {
     }
   }
 
+  private toggleAccordion(id: string, target: HTMLElement): void {
+    if (target.classList.contains('profile__item_active')) {
+      target.classList.remove('profile__item_active');
+      const content = document.querySelector(`[data-content = ${id}]`);
+      content?.classList.add('profile__content_hidden');
+    } else {
+      target.classList.add('profile__item_active');
+      const content = document.querySelector(`[data-content = ${id}]`);
+      content?.classList.remove('profile__content_hidden');
+    }
+  }
+
   private setEventListeners(router: Router): void {
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
@@ -109,6 +121,10 @@ class Main {
 
       if (target.id === 'form-auth-btn') {
         router.navigate(pages.AUTORIZATION);
+      }
+
+      if (target.classList.contains('profile__item')) {
+        this.toggleAccordion(target.id, target);
       }
     });
 

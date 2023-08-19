@@ -4,6 +4,10 @@ import { loginAfterRegistration } from './loginCustomer';
 
 const customersURL = 'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers';
 
+// const pushCurrentActions = (): void => {
+
+// };
+
 const getCurrentActions = (
   addresses: AddressFromAPI[],
   checkDefaultBilling: boolean,
@@ -82,6 +86,11 @@ const createCustomer = async (
   const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
   const emailInput = document.querySelector('#email') as HTMLInputElement;
 
+  const addApiStatus = (className: string, errMessage: string): void => {
+    apiStatus.classList.add(className);
+    apiStatus.innerHTML = errMessage;
+  };
+
   await fetch(customersURL, requestOptions)
     .then((res) => {
       if (res.headers.get('content-type') !== 'application/json; charset=utf-8') {
@@ -111,13 +120,11 @@ const createCustomer = async (
         .then(async () => {
           loginAfterRegistration(data.email, data.password);
           await getCustomerByID(customerID);
-          apiStatus.classList.add('success-status__register');
-          apiStatus.innerHTML = `Enjoy the shopping!`;
+          addApiStatus('success-status__register', `Enjoy the shopping!`);
         })
         .catch((err) => {
           if (err instanceof Error) {
-            apiStatus.classList.add('error-status__register');
-            apiStatus.innerHTML = `${err.message}`;
+            addApiStatus('error-status__register', err.message);
 
             if (
               apiStatus.innerHTML === `This email address already exists, please log in or use another email address`
@@ -129,8 +136,7 @@ const createCustomer = async (
     })
     .catch((err) => {
       if (err instanceof Error) {
-        apiStatus.classList.add('error-status__register');
-        apiStatus.innerHTML = `${err.message}`;
+        addApiStatus('error-status__register', err.message);
 
         if (apiStatus.innerHTML === `This email address already exists, please log in or use another email address`) {
           emailInput.classList.add('error-input');

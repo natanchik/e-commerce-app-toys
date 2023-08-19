@@ -7,6 +7,10 @@
 }
 
 .profile__content {
+  border-bottom: solid 1px $light-blue;
+}
+
+.profile__content_hidden {
   display: none;
 }
 
@@ -28,10 +32,27 @@
     transform-origin: center center;
     box-sizing: border-box;
     transform: rotate(45deg);
+    transition: all 0.5s ease-in;
   }
   &:hover {
     &::after {
       opacity: 1;
     }
   }
+}
+
+.profile__item_active{
+  border-bottom: none;
+  &::after {
+    transform: rotate(-225deg);
+  }
+}
+
+.profile__address {
+  margin-bottom: 10px;
+}
+
+.profile__address-line {
+  margin: 5px 0;
+  font-size: 1.3rem;
 }

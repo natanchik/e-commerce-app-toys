@@ -6,6 +6,11 @@ export const nullUserState: UserState = {
   dateOfBirth: '',
   email: '',
   addresses: [],
+  id: '',
+  billingAddressIds: [],
+  shippingAddressIds: [],
+  defaultBillingAddress: '',
+  defaultShippingAddress: '',
 };
 
 export const createElement = (tag: string, classes: string[], text?: string): HTMLElement => {

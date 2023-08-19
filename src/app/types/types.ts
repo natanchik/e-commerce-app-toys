@@ -43,4 +43,9 @@ export interface UserState {
   dateOfBirth: string;
   email: string;
   addresses: Address[];
+  id: string;
+  billingAddressIds: string[];
+  shippingAddressIds: string[];
+  defaultBillingAddress: string;
+  defaultShippingAddress: string;
 }
