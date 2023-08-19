@@ -49,3 +49,8 @@ export interface UserState {
   defaultBillingAddress: string;
   defaultShippingAddress: string;
 }
+
+export interface CurrentAction {
+  action: string;
+  addressId: string;
+}

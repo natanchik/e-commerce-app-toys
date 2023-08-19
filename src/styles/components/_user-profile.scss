@@ -41,7 +41,7 @@
   }
 }
 
-.profile__item_active{
+.profile__item_active {
   border-bottom: none;
   &::after {
     transform: rotate(-225deg);

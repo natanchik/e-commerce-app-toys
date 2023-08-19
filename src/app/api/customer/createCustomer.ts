@@ -1,66 +1,46 @@
-import { AddressFromAPI, RegisterData } from '../../types/types';
+import { AddressFromAPI, CurrentAction, RegisterData } from '../../types/types';
 import { getCustomerByID } from './getCustomerByID';
 import { loginAfterRegistration } from './loginCustomer';
 
 const customersURL = 'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers';
 
-// const pushCurrentActions = (): void => {
-
-// };
+const pushCurrentActions = (actionValue: string, id: string): CurrentAction => {
+  const currentAction: CurrentAction = {
+    action: actionValue,
+    addressId: id,
+  };
+  return currentAction;
+};
 
 const getCurrentActions = (
   addresses: AddressFromAPI[],
   checkDefaultBilling: boolean,
   checkDefaultShipping: boolean,
 ): { action: string; addressId: string }[] => {
-  const currentActions: { action: string; addressId: string }[] = [];
+  const currentActions: CurrentAction[] = [];
   switch (addresses.length) {
     case 1:
       currentActions.push(
-        {
-          action: 'addBillingAddressId',
-          addressId: addresses[0].id,
-        },
-        {
-          action: 'addShippingAddressId',
-          addressId: addresses[0].id,
-        },
+        pushCurrentActions('addBillingAddressId', addresses[0].id),
+        pushCurrentActions('addShippingAddressId', addresses[0].id),
       );
       if (checkDefaultBilling) {
         currentActions.push(
-          {
-            action: 'setDefaultBillingAddress',
-            addressId: addresses[0].id,
-          },
-          {
-            action: 'setDefaultShippingAddress',
-            addressId: addresses[0].id,
-          },
+          pushCurrentActions('setDefaultBillingAddress', addresses[0].id),
+          pushCurrentActions('setDefaultShippingAddress', addresses[0].id),
         );
       }
       break;
     case 2:
       currentActions.push(
-        {
-          action: 'addBillingAddressId',
-          addressId: addresses[0].id,
-        },
-        {
-          action: 'addShippingAddressId',
-          addressId: addresses[1].id,
-        },
+        pushCurrentActions('addBillingAddressId', addresses[0].id),
+        pushCurrentActions('addShippingAddressId', addresses[1].id),
       );
       if (checkDefaultBilling) {
-        currentActions.push({
-          action: 'setDefaultBillingAddress',
-          addressId: addresses[0].id,
-        });
+        currentActions.push(pushCurrentActions('setDefaultBillingAddress', addresses[0].id));
       }
       if (checkDefaultShipping) {
-        currentActions.push({
-          action: 'setDefaultShippingAddress',
-          addressId: addresses[1].id,
-        });
+        currentActions.push(pushCurrentActions('setDefaultShippingAddress', addresses[1].id));
       }
       break;
   }
