@@ -21,6 +21,8 @@ class Router {
       return;
     }
 
+    if (this.redirectToMainPageIfLogged(route.path)) return;
+
     if (!notPushState) {
       window.history.pushState({}, '', `${route.path}`);
     }
@@ -62,7 +64,6 @@ class Router {
     window.addEventListener('DOMContentLoaded', (event: Event): void => {
       event.preventDefault();
       const path = this.getCorrectPath();
-      if (this.redirectToMainPageIfLogged(path)) return;
       this.navigate(path);
     });
 

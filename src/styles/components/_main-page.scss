@@ -1,0 +1,8 @@
+.main-page__page {
+  text-transform: uppercase;
+  margin: 5px 0;
+  cursor: pointer;
+  &:hover {
+    color: $blue;
+  }
+}

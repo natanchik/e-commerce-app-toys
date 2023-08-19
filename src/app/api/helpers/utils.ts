@@ -10,8 +10,8 @@ export const addUserState = (customer: UserState): void => {
     id: customer.id,
     shippingAddressIds: customer.shippingAddressIds,
     billingAddressIds: customer.billingAddressIds,
-    defaultBillingAddress: customer.defaultBillingAddress,
-    defaultShippingAddress: customer.defaultShippingAddress,
+    defaultBillingAddressId: customer.defaultBillingAddressId,
+    defaultShippingAddressId: customer.defaultShippingAddressId,
   };
   localStorage.setItem('userState', JSON.stringify(userState));
 };

@@ -9,8 +9,8 @@ export const nullUserState: UserState = {
   id: '',
   billingAddressIds: [],
   shippingAddressIds: [],
-  defaultBillingAddress: '',
-  defaultShippingAddress: '',
+  defaultBillingAddressId: '',
+  defaultShippingAddressId: '',
 };
 
 export const createElement = (tag: string, classes: string[], text?: string): HTMLElement => {

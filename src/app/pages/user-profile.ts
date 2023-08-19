@@ -48,7 +48,7 @@ class UserProfile {
         ? 'Shipping address:'
         : '';
     const isDefault =
-      userState.defaultBillingAddress === address.id || userState.defaultShippingAddress === address.id
+      userState.defaultBillingAddressId === address.id || userState.defaultShippingAddressId === address.id
         ? 'default'
         : '';
     const addressItem = createElement(

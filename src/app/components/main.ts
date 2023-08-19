@@ -126,6 +126,11 @@ class Main {
       if (target.classList.contains('profile__item')) {
         this.toggleAccordion(target.id, target);
       }
+
+      if (target.classList.contains('main-page__page')) {
+        const pageName = target.innerText.toLocaleLowerCase();
+        router.navigate(pageName === 'main' ? pages.MAIN : pageName);
+      }
     });
 
     document.addEventListener('submit', async (event: Event) => {
