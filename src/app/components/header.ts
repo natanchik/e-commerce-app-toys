@@ -56,13 +56,12 @@ class Header {
   private setEventListeners(router: Router): void {
     this.header.addEventListener('click', (event: Event): void => {
       const target = event.target as HTMLElement;
-      event.stopPropagation();
 
       if (target.classList.contains('header__icon-user') || target.classList.contains('header__name')) {
         this.navigateUser(router);
       }
 
-      if (target.classList.contains('hamburger') || target.classList.contains('hamburger__line')) {
+      if (target.classList.contains('hamburger')) {
         this.toggleSidebar();
       }
 
