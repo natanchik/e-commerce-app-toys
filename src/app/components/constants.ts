@@ -15,7 +15,7 @@ export const validTemplates: ValidTemplates = {
   firstName: [/^[a-zA-Z]+$/, 'Must contain at least one character (use a-z, A-Z) and no special characters or numbers'],
   lastName: [/^[a-zA-Z]+$/, 'Must contain at least one character (use a-z, A-Z) and no special characters or numbers'],
   streetName: [/^[a-zA-Z0-9-]+$/, 'Must contain at least one character (use a-z, A-Z, 0-9, -)'],
-  city: [/^[a-zA-Z-]+$/, 'Must contain at least one character (use a-z, A-Z, -) and no special characters or numbers'],
+  city: [/^[a-zA-Z]+$/, 'Must contain at least one character (use a-z, A-Z, -) and no special characters or numbers'],
 };
 
 export const emailRequirements: [RegExp, string][] = [
@@ -23,7 +23,7 @@ export const emailRequirements: [RegExp, string][] = [
   [/@/, '<p>Email address must contain an "@" symbol separating local part and domain name.</p>'],
   [/@((\w){2,10}\.)?(\w){2,10}\.(\w){2,4}$/, '<p>Email address must contain a domain name (e.g., example.com).</p>'],
   [/^[^ ]*$/, '<p>Email address must not contain whitespace.</p>'],
-  [/^[a-zA-Z0-9.@]*$/, 'Email address contains incorrect symbol (use a-z, A-Z, 0-9, ._-@).'],
+  [/^[a-zA-Z0-9.@_-]*$/, 'Email address contains incorrect symbol (use a-z, A-Z, 0-9, ._-@).'],
 ];
 
 export const passwordRequirements: [RegExp, string][] = [

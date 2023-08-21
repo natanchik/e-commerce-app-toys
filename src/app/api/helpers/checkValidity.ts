@@ -1,4 +1,4 @@
-const checkValidity = (): boolean => {
+export const checkValidity = (): boolean => {
   const errorBlocks = document.querySelectorAll('.error-message');
 
   for (let i = 0; i < errorBlocks.length; i += 1) {
@@ -8,5 +8,3 @@ const checkValidity = (): boolean => {
   }
   return true;
 };
-
-export default checkValidity;

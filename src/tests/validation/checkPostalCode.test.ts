@@ -1,9 +1,10 @@
-import { createInputElement } from '../../app/components/utils';
+import { createSelectElement, createInputElement } from '../../app/components/utils';
 import { checkPostalCode } from '../../app/components/validation';
 
 describe('checkPostalCode function', () => {
+  const countries = { '': '', US: 'US', KZ: 'KZ' };
   document.body.innerHTML = '';
-  const countryBlock = createInputElement('text', 'Your country', 'user-country', 'reg');
+  const countryBlock = createSelectElement(countries, 'Your country', 'user-country', 'reg');
   const postalBlock = createInputElement('number', 'Your postal code', 'user-postalCode', 'reg');
   document.body.append(countryBlock, postalBlock);
 
@@ -12,7 +13,7 @@ describe('checkPostalCode function', () => {
   const postalCode = document.getElementById('user-postalCode') as HTMLInputElement;
   postalCode.value = '1234567';
 
-  const warning = checkPostalCode(postalCode);
+  let warning = checkPostalCode(postalCode);
 
   it('should define code template', () => {
     expect(countryElem.value).toMatch('US');
@@ -27,5 +28,13 @@ describe('checkPostalCode function', () => {
 
   it('should return warning', () => {
     expect(warning).toEqual('Must follow the format for the country (5 digits)');
+  });
+
+  it('should change warning if country is changed', () => {
+    countryElem.value = 'KZ';
+    postalCode.value = '12345';
+    warning = checkPostalCode(postalCode);
+    expect(warning).toBeTruthy();
+    expect(warning).toEqual('Must follow the format for the country (6 digits)');
   });
 });

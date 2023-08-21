@@ -4,7 +4,7 @@ import Router from '../router/router';
 import pages from '../router/pages';
 import { validateInput } from './validation';
 import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
-import checkValidity from '../api/helpers/checkValidity';
+import { checkValidity } from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
 
@@ -138,8 +138,7 @@ class Main {
       apiStatus.innerHTML = '';
 
       if (target.classList.contains('auth-input')) {
-        const id = target.id;
-        const notation = document.querySelector(`[data-input="${id}"]`) as HTMLParagraphElement;
+        const notation = document.querySelector(`[data-input="${target.id}"]`) as HTMLParagraphElement;
         if (notation) {
           validateInput(target, notation);
         }
@@ -166,6 +165,15 @@ class Main {
           shippingInputs.forEach((input) => {
             input.setAttribute('required', 'true');
           });
+        }
+      }
+
+      if (target.id === 'billing-country' || target.id === 'shipping-country') {
+        const inputId = `${target.id.split('-')[0]}-postalCode`;
+        const postalCode = document.getElementById(inputId) as HTMLInputElement;
+        const notation = document.querySelector(`[data-input="${inputId}"]`) as HTMLParagraphElement;
+        if (notation) {
+          validateInput(postalCode, notation);
         }
       }
 
