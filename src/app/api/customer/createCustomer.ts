@@ -1,62 +1,46 @@
-import { AddressFromAPI, RegisterData } from '../../types/types';
+import { AddressFromAPI, CurrentAction, RegisterData } from '../../types/types';
 import { getCustomerByID } from './getCustomerByID';
 import { loginAfterRegistration } from './loginCustomer';
 
 const customersURL = 'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers';
+
+const pushCurrentActions = (actionValue: string, id: string): CurrentAction => {
+  const currentAction: CurrentAction = {
+    action: actionValue,
+    addressId: id,
+  };
+  return currentAction;
+};
 
 const getCurrentActions = (
   addresses: AddressFromAPI[],
   checkDefaultBilling: boolean,
   checkDefaultShipping: boolean,
 ): { action: string; addressId: string }[] => {
-  const currentActions: { action: string; addressId: string }[] = [];
+  const currentActions: CurrentAction[] = [];
   switch (addresses.length) {
     case 1:
       currentActions.push(
-        {
-          action: 'addBillingAddressId',
-          addressId: addresses[0].id,
-        },
-        {
-          action: 'addShippingAddressId',
-          addressId: addresses[0].id,
-        },
+        pushCurrentActions('addBillingAddressId', addresses[0].id),
+        pushCurrentActions('addShippingAddressId', addresses[0].id),
       );
       if (checkDefaultBilling) {
         currentActions.push(
-          {
-            action: 'setDefaultBillingAddress',
-            addressId: addresses[0].id,
-          },
-          {
-            action: 'setDefaultShippingAddress',
-            addressId: addresses[0].id,
-          },
+          pushCurrentActions('setDefaultBillingAddress', addresses[0].id),
+          pushCurrentActions('setDefaultShippingAddress', addresses[0].id),
         );
       }
       break;
     case 2:
       currentActions.push(
-        {
-          action: 'addBillingAddressId',
-          addressId: addresses[0].id,
-        },
-        {
-          action: 'addShippingAddressId',
-          addressId: addresses[1].id,
-        },
+        pushCurrentActions('addBillingAddressId', addresses[0].id),
+        pushCurrentActions('addShippingAddressId', addresses[1].id),
       );
       if (checkDefaultBilling) {
-        currentActions.push({
-          action: 'setDefaultBillingAddress',
-          addressId: addresses[0].id,
-        });
+        currentActions.push(pushCurrentActions('setDefaultBillingAddress', addresses[0].id));
       }
       if (checkDefaultShipping) {
-        currentActions.push({
-          action: 'setDefaultShippingAddress',
-          addressId: addresses[1].id,
-        });
+        currentActions.push(pushCurrentActions('setDefaultShippingAddress', addresses[1].id));
       }
       break;
   }
@@ -81,6 +65,11 @@ const createCustomer = async (
   };
   const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
   const emailInput = document.querySelector('#email') as HTMLInputElement;
+
+  const addApiStatus = (className: string, errMessage: string): void => {
+    apiStatus.classList.add(className);
+    apiStatus.innerHTML = errMessage;
+  };
 
   await fetch(customersURL, requestOptions)
     .then((res) => {
@@ -111,13 +100,11 @@ const createCustomer = async (
         .then(async () => {
           loginAfterRegistration(data.email, data.password);
           await getCustomerByID(customerID);
-          apiStatus.classList.add('success-status__register');
-          apiStatus.innerHTML = `Enjoy the shopping!`;
+          addApiStatus('success-status__register', `Enjoy the shopping!`);
         })
         .catch((err) => {
           if (err instanceof Error) {
-            apiStatus.classList.add('error-status__register');
-            apiStatus.innerHTML = `${err.message}`;
+            addApiStatus('error-status__register', err.message);
 
             if (
               apiStatus.innerHTML === `This email address already exists, please log in or use another email address`
@@ -129,8 +116,7 @@ const createCustomer = async (
     })
     .catch((err) => {
       if (err instanceof Error) {
-        apiStatus.classList.add('error-status__register');
-        apiStatus.innerHTML = `${err.message}`;
+        addApiStatus('error-status__register', err.message);
 
         if (apiStatus.innerHTML === `This email address already exists, please log in or use another email address`) {
           emailInput.classList.add('error-input');

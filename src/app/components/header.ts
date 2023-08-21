@@ -1,6 +1,7 @@
 import { createElement } from './utils';
 import Router from '../router/router';
 import pages from '../router/pages';
+import User from './user';
 
 class Header {
   header: HTMLHeadElement;
@@ -24,10 +25,11 @@ class Header {
     ) as HTMLDivElement;
     const icons = createElement('div', ['header__icons']) as HTMLDivElement;
     const iconUser = createElement('span', ['header__icon', 'header__icon-user']) as HTMLSpanElement;
+    const iconLogout = createElement('span', ['header__icon', 'header__icon-logout']) as HTMLSpanElement;
     const iconBascket = createElement('span', ['header__icon', 'header__icon-bascket']) as HTMLSpanElement;
 
     nav.append(burger, navList);
-    icons.append(iconUser, iconBascket);
+    icons.append(iconUser, iconBascket, iconLogout);
     wrapper.append(nav, logo, icons);
     header.append(wrapper);
     body.append(header);
@@ -35,21 +37,37 @@ class Header {
     return header;
   }
 
+  private navigateUser(router: Router): void {
+    if (User.isLogged()) {
+      router.navigate(pages.USER_PROFILE);
+    } else {
+      router.navigate(pages.AUTORIZATION);
+    }
+  }
+
+  private toggleSidebar(): void {
+    const dimming = document.querySelector('.sidebar__dimming');
+    const sidebar = document.querySelector('.sidebar__wrapper');
+    document.body.classList.add('hidden-overflow');
+    dimming?.classList.add('active-dimming');
+    sidebar?.classList.add('active-sidebar');
+  }
+
   private setEventListeners(router: Router): void {
     this.header.addEventListener('click', (event: Event): void => {
       const target = event.target as HTMLElement;
 
-      if (target.classList.contains('header__icon-user')) {
-        router.navigate(pages.AUTORIZATION);
+      if (target.classList.contains('header__icon-user') || target.classList.contains('header__name')) {
+        this.navigateUser(router);
       }
 
       if (target.classList.contains('hamburger')) {
-        const dimming = document.querySelector('.sidebar__dimming');
-        const sidebar = document.querySelector('.sidebar__wrapper');
+        this.toggleSidebar();
+      }
 
-        document.body.classList.add('hidden-overflow');
-        dimming?.classList.add('active-dimming');
-        sidebar?.classList.add('active-sidebar');
+      if (target.classList.contains('header__icon-logout')) {
+        User.userLogout();
+        router.navigate(pages.AUTORIZATION);
       }
     });
   }

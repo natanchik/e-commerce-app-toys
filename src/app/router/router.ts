@@ -1,3 +1,4 @@
+import User from '../components/user';
 import { RouteInfo, UrlInfo } from '../types/types';
 import pages from './pages';
 
@@ -20,8 +21,10 @@ class Router {
       return;
     }
 
+    if (this.redirectToMainPageIfLogged(route.path)) return;
+
     if (!notPushState) {
-      window.history.pushState({}, '', `/${route.path}`);
+      window.history.pushState({}, '', `${route.path}`);
     }
 
     route?.callback();
@@ -41,8 +44,25 @@ class Router {
     this.navigate(pages.NOT_FOUND);
   }
 
+  private redirectToMainPageIfLogged(path: string): boolean {
+    if (User.isLogged()) {
+      if (path === pages.AUTORIZATION || path === pages.REGISTRATION || path === 'login' || path === 'logout') {
+        this.navigate(pages.MAIN);
+        return true;
+      }
+    } else {
+      if (path === pages.USER_PROFILE) {
+        this.navigate(pages.MAIN);
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   private setEventListeners(): void {
-    window.addEventListener('DOMContentLoaded', (): void => {
+    window.addEventListener('DOMContentLoaded', (event: Event): void => {
+      event.preventDefault();
       const path = this.getCorrectPath();
       this.navigate(path);
     });

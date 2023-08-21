@@ -24,6 +24,9 @@
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
 }
 
 .header__icon-user {
@@ -32,6 +35,15 @@
 
 .header__icon-bascket {
   background-image: url('../assets/icons/bascket.svg');
+}
+
+.header__icon-logout {
+  background-image: url('../assets/icons/logout-icon.svg');
+  margin-left: 5px;
+}
+
+.header__icon-logout_hidden {
+  display: none;
 }
 
 @media (max-width: 520px) {

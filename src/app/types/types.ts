@@ -20,6 +20,7 @@ export interface Address {
   city: string;
   streetName: string;
   postalCode: string;
+  id?: string;
 }
 
 export interface AddressFromAPI {
@@ -34,4 +35,22 @@ export interface RegisterData {
   dateOfBirth: string;
   salutation: string;
   addresses: Address[];
+}
+
+export interface UserState {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  email: string;
+  addresses: Address[];
+  id: string;
+  billingAddressIds: string[];
+  shippingAddressIds: string[];
+  defaultBillingAddressId: string;
+  defaultShippingAddressId: string;
+}
+
+export interface CurrentAction {
+  action: string;
+  addressId: string;
 }

@@ -7,6 +7,7 @@ import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
+import User from './user';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -59,6 +60,7 @@ class Main {
     if (apiStatus.classList.contains('success-status')) {
       setTimeout(() => {
         router.navigate(pages.MAIN);
+        User.userLogin();
       }, 1500);
     } else {
       submitBtn.removeAttribute('disabled');
@@ -80,9 +82,22 @@ class Main {
     if (apiStatus.classList.contains('success-status__register')) {
       setTimeout(() => {
         router.navigate(pages.MAIN);
+        User.userLogin();
       }, 1500);
     } else {
       submitBtn.removeAttribute('disabled');
+    }
+  }
+
+  private toggleAccordion(id: string, target: HTMLElement): void {
+    if (target.classList.contains('profile__item_active')) {
+      target.classList.remove('profile__item_active');
+      const content = document.querySelector(`[data-content = ${id}]`);
+      content?.classList.add('profile__content_hidden');
+    } else {
+      target.classList.add('profile__item_active');
+      const content = document.querySelector(`[data-content = ${id}]`);
+      content?.classList.remove('profile__content_hidden');
     }
   }
 
@@ -106,6 +121,15 @@ class Main {
 
       if (target.id === 'form-auth-btn') {
         router.navigate(pages.AUTORIZATION);
+      }
+
+      if (target.classList.contains('profile__item')) {
+        this.toggleAccordion(target.id, target);
+      }
+
+      if (target.classList.contains('main-page__page')) {
+        const pageName = target.innerText.toLocaleLowerCase();
+        router.navigate(pageName === 'main' ? pages.MAIN : pageName);
       }
     });
 
