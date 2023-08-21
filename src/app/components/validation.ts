@@ -37,7 +37,7 @@ export const checkPostalCode = (input: HTMLInputElement): string => {
   const country = document.getElementById(`${input.id.split('-')[0]}-country`);
   let reqValue = /^\d{5,6}$/;
   let reqText = 'US: 5 digits, KZ: 6 digits';
-  if (country && country instanceof HTMLInputElement && country.value) {
+  if (country && country instanceof HTMLSelectElement && country.value) {
     reqValue = country.value === 'US' ? /^\d{5}$/ : /^\d{6}$/;
     reqText = country.value === 'US' ? '5 digits' : '6 digits';
   }
