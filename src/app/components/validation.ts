@@ -17,6 +17,8 @@ export const checkEmail = (email: string): string => {
   let warning = '<p>Email address must be properly formatted (e.g., user@example.com).</p>';
   if (email.match(/^[.]+/) || email.match(/[.]+@/) || email.match(/@[.]+/) || email.match(/[.]+$/)) {
     warning += '<p>Email address can contain "." character only between letters or numbers.</p>';
+  } else if (email.match(/^[-_]+/) || email.match(/[-_]+@/)) {
+    warning += '<p>Username can contain "_ -" characters only between letters or numbers.</p>';
   }
   warning += checkWithReqs(emailRequirements, email);
   return warning;
@@ -57,7 +59,7 @@ export const checkOtherInput = (id: string, text: string): string => {
 export const validateInput = (input: HTMLInputElement, notation: HTMLParagraphElement): void => {
   let warnings = '';
   if (input.value) {
-    if (input.id === 'email' && !input.value.match(/^\w+\.?\w+@((\w){2,10}\.)?(\w){2,10}\.(\w){2,4}$/)) {
+    if (input.id === 'email' && !input.value.match(/^\w+[._-]?\w+@((\w){2,10}\.)?(\w){2,10}\.(\w){2,4}$/)) {
       warnings += checkEmail(input.value);
     } else if (input.id === 'password') {
       warnings += checkWithReqs(passwordRequirements, input.value);
