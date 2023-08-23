@@ -54,3 +54,10 @@ export interface CurrentAction {
   action: string;
   addressId: string;
 }
+
+export interface CardData {
+  title: string;
+  images: { width: number; height: number; url: string }[];
+  prices: { value: string; discounted?: string; currency: string };
+  details: string;
+}
