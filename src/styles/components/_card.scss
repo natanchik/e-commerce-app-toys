@@ -6,12 +6,56 @@
   gap: 40px;
 }
 
-.product-card__img {
-  width: 470px;
-  height: 450px;
-  background-image: url('../assets/images/product_1.jpg');
-  background-size: contain;
-  background-repeat: no-repeat;
+.product-card__slider-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  overflow: hidden;
+}
+
+.product-card__slider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.product-card__slides-row,
+.product-card__minis-row {
+  display: flex;
+}
+
+.product-card__slides-row {
+  width: 400px;
+  gap: 60px;
+  transition: transform 0.3s ease-out;
+}
+
+.product-card__minis-row {
+  gap: 20px;
+
+  & .product-card__mini {
+    opacity: 0.3;
+
+    &.active-mini {
+      opacity: 1;
+    }
+  }
+}
+
+.product-card__next-slide,
+.product-card__prev-slide {
+  width: 45px;
+  padding: 12px 16px;
+  color: $font-dark;
+  font-weight: bold;
+  font-size: 22px;
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $light-blue;
+  }
 }
 
 .product-card__info {
@@ -19,20 +63,28 @@
 }
 
 .product-card__heading,
-.product-card__price,
+.product-card__price-wrapper,
 .product-card__form,
-.product-card__small-heading,
+.product-card__detail-heading,
 .product-card__details {
   text-align: left;
   margin-bottom: 10px;
 }
 
-.product-card__price {
-  font-size: 1.3em;
+.product-card__price-wrapper {
+  font-size: 1.2em;
+  font-weight: 600;
 }
 
-.product-card__price,
-.product-card__small-heading {
+.product-card__discounted-price {
+  color: $wine;
+}
+
+.product-card__old-price {
+  text-decoration: line-through;
+}
+
+.product-card__detail-heading {
   font-weight: 600;
 }
 
@@ -63,10 +115,10 @@
   border: 1px solid $blue;
   cursor: pointer;
   transition: all 0.3s ease-in;
-}
 
-.quantity-btn:hover {
-  background-color: $background-blue;
+  &:hover {
+    background-color: $background-blue;
+  }
 }
 
 .product-card__add-to-cart {
@@ -76,14 +128,14 @@
   border: none;
   cursor: pointer;
   transition: all 0.3s ease-in;
-}
 
-.product-card__add-to-cart:hover {
-  background-color: lighten($color: $green, $amount: 10);
+  &:hover {
+    background-color: lighten($color: $green, $amount: 5);
+  }
 }
 
 @media (max-width: 960px) {
-  .product-card__wrapper {
+  .product-card {
     flex-direction: column;
     gap: 10px;
   }
@@ -93,9 +145,8 @@
 }
 
 @media (max-width: 560px) {
-  .product-card__img {
-    width: 330px;
-    height: 310px;
+  .product-card__slide-img {
+    width: 300px;
   }
   .product-card__info {
     width: 90%;
