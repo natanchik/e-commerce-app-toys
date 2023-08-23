@@ -14,11 +14,11 @@ class Card {
     const info = createElement('div', ['product-card__info']) as HTMLDivElement;
     const heading = createElement('h2', ['product-card__heading'], this.data.title) as HTMLElement;
     const priceWrapper = this.drawPriceWrapper();
-    // const form = this.drawCartForm();
+    const form = this.drawCartForm();
     const smallHeading = createElement('h4', ['product-card__detail-heading'], 'Details') as HTMLElement;
     const details = createElement('p', ['product-card__details'], this.data.details) as HTMLParagraphElement;
 
-    info.append(heading, priceWrapper, smallHeading, details);
+    info.append(heading, priceWrapper, form, smallHeading, details);
     wrapper.append(slider, info);
 
     return wrapper;
@@ -31,11 +31,17 @@ class Card {
     const slidesContainer = createElement('div', ['product-card__slider']) as HTMLDivElement;
     const slidesRow = createElement('div', ['product-card__slides-row']);
     const minisRow = createElement('div', ['product-card__minis-row']);
-    this.data.images.map((imageData) => {
+    this.data.images.map((imageData, idx) => {
       const slide = createElement('div', ['product-card__slide']);
-      const currentImg = createImageElement(imageData.url, ['product-card__slide-img'], { width: '400' });
+      const currentImg = createImageElement(imageData.url, ['product-card__slide-img']);
       const mini = createElement('div', ['product-card__mini']);
-      const miniImg = createImageElement(imageData.url, ['product-card__mini-img'], { width: '50' });
+      if (idx === 0) {
+        mini.classList.add('active-mini');
+      }
+      const miniImg = createImageElement(imageData.url, ['product-card__mini-img'], {
+        width: '40',
+        'data-index': `${idx + 1}`,
+      });
 
       slide.append(currentImg);
       mini.append(miniImg);

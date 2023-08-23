@@ -101,7 +101,24 @@ class Main {
     }
   }
 
+  private makeMiniActive(slideIndex: number): void {
+    const minis = document.querySelectorAll('.product-card__mini') as NodeListOf<HTMLDivElement>;
+
+    minis.forEach((mini) => {
+      mini.classList.remove('active-mini');
+    });
+    minis[slideIndex - 1].classList.add('active-mini');
+  }
+
+  private getImgByMini(): void {}
+
+  private slideNextImg(): void {}
+
+  private slidePrevImg(): void {}
+
   private setEventListeners(router: Router): void {
+    let slideIndex = 1;
+
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
 
@@ -131,6 +148,46 @@ class Main {
         const pageName = target.innerText.toLocaleLowerCase();
         router.navigate(pageName === 'main' ? pages.MAIN : pageName);
       }
+
+      if (target.classList.contains('product-card__next-slide')) {
+        const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+        const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+        const width = slides[0].clientWidth + 60;
+
+        if (slideIndex > slides.length - 1) {
+          slideIndex = 1;
+          slidesRow.style.transform = `none`;
+        } else {
+          slidesRow.style.transform = `translateX(${-width * slideIndex}px)`;
+          slideIndex++;
+        }
+        this.makeMiniActive(slideIndex);
+      }
+
+      if (target.classList.contains('product-card__prev-slide')) {
+        const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+        const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+        const width = slides[0].clientWidth + 60;
+
+        if (slideIndex <= 1) {
+          slideIndex = slides.length;
+          slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
+        } else {
+          slideIndex--;
+          slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
+        }
+        this.makeMiniActive(slideIndex);
+      }
+
+      if (target.classList.contains('product-card__mini-img')) {
+        const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+        const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+        const width = slides[0].clientWidth + 60;
+
+        slideIndex = +target.getAttribute('data-index')!;
+        slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
+        this.makeMiniActive(slideIndex);
+      }
     });
 
     document.addEventListener('submit', async (event: Event) => {
@@ -152,6 +209,10 @@ class Main {
         if (isValid) {
           this.registerViaForm(router);
         }
+      }
+
+      if (target.classList.contains('product-card__form')) {
+        event.preventDefault();
       }
     });
 
