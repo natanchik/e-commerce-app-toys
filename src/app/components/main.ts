@@ -110,11 +110,24 @@ class Main {
     minis[slideIndex - 1].classList.add('active-mini');
   }
 
-  private getImgByMini(): void {}
+  private toggleCardModal(slideIndex: number = 1): void {
+    const modal = document.querySelector('.modal-card__dimming');
+    modal?.classList.toggle('modal-active');
+    if (modal?.classList.contains('modal-active')) {
+      const slidesRow = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
+      const slides = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
+      const width = slides[0].clientWidth + 60;
 
-  private slideNextImg(): void {}
+      slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
+    } else {
+      const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+      const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+      const width = slides[0].clientWidth + 60;
 
-  private slidePrevImg(): void {}
+      slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
+      this.makeMiniActive(slideIndex);
+    }
+  }
 
   private setEventListeners(router: Router): void {
     let slideIndex = 1;
@@ -187,6 +200,45 @@ class Main {
         slideIndex = +target.getAttribute('data-index')!;
         slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
         this.makeMiniActive(slideIndex);
+      }
+
+      if (target.classList.contains('modal-card__next-slide')) {
+        const slidesRow = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
+        const slides = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
+        const width = slides[0].clientWidth + 60;
+
+        if (slideIndex > slides.length - 1) {
+          slideIndex = 1;
+          slidesRow.style.transform = `none`;
+        } else {
+          slidesRow.style.transform = `translateX(${-width * slideIndex}px)`;
+          slideIndex++;
+        }
+      }
+
+      if (target.classList.contains('modal-card__prev-slide')) {
+        const slidesRow = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
+        const slides = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
+        const width = slides[0].clientWidth + 60;
+
+        if (slideIndex <= 1) {
+          slideIndex = slides.length;
+          slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
+        } else {
+          slideIndex--;
+          slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
+        }
+      }
+
+      if (target.classList.contains('product-card__slide-img')) {
+        this.toggleCardModal(slideIndex);
+      }
+
+      if (
+        target.classList.contains('modal-card__close-btn') ||
+        (target.classList.contains('modal-card__dimming') && target !== document.querySelector('.modal-card__wrapper'))
+      ) {
+        this.toggleCardModal(slideIndex);
       }
     });
 

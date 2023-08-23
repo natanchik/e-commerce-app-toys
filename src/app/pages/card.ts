@@ -11,6 +11,7 @@ class Card {
   public drawCard(): HTMLDivElement {
     const wrapper = createElement('div', ['product-card', 'main__wrapper']) as HTMLDivElement;
     const slider = this.drawSlider();
+    const modal = this.drawModal();
     const info = createElement('div', ['product-card__info']) as HTMLDivElement;
     const heading = createElement('h2', ['product-card__heading'], this.data.title) as HTMLElement;
     const priceWrapper = this.drawPriceWrapper();
@@ -19,7 +20,7 @@ class Card {
     const details = createElement('p', ['product-card__details'], this.data.details) as HTMLParagraphElement;
 
     info.append(heading, priceWrapper, form, smallHeading, details);
-    wrapper.append(slider, info);
+    wrapper.append(modal, slider, info);
 
     return wrapper;
   }
@@ -58,6 +59,31 @@ class Card {
     }
 
     return container;
+  }
+
+  private drawModal(): HTMLDivElement {
+    const modalDimming = createElement('div', ['modal-card__dimming']) as HTMLDivElement;
+    const modalWrapper = createElement('div', ['modal-card__wrapper']) as HTMLDivElement;
+    const closeModal = createElement('button', ['modal-card__close-btn']) as HTMLButtonElement;
+    const modalSlider = createElement('div', ['modal-card__slider']) as HTMLDivElement;
+    const nextBtn = createElement('span', ['modal-card__next-slide'], '&#10095') as HTMLSpanElement;
+    const prevBtn = createElement('span', ['modal-card__prev-slide'], '&#10094') as HTMLSpanElement;
+    const slidesRow = createElement('div', ['modal-card__slides-row']) as HTMLDivElement;
+    this.data.images.map((imageData, idx) => {
+      const slide = createElement('div', ['modal-card__slide']) as HTMLDivElement;
+      const currentImg = createImageElement(imageData.url, ['modal-card__slide-img'], {
+        'data-index': `${idx + 1}`,
+      }) as HTMLImageElement;
+
+      slide.append(currentImg);
+      slidesRow.append(slide);
+    });
+
+    modalSlider.append(prevBtn, slidesRow, nextBtn);
+    modalWrapper.append(closeModal, modalSlider);
+    modalDimming.append(modalWrapper);
+
+    return modalDimming;
   }
 
   private drawPriceWrapper(): HTMLDivElement {
