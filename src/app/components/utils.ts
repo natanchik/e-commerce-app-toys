@@ -105,3 +105,14 @@ export const createCheckBoxElement = (
 
   return checkBoxBlock;
 };
+
+export const createImageElement = (url: string, classes: string[], attributes?: object): HTMLImageElement => {
+  const image = document.createElement('img') as HTMLImageElement;
+  image.classList.add(...classes);
+  image.src = url;
+  if (attributes) {
+    Object.entries(attributes).forEach((entry) => image.setAttribute(entry[0], entry[1]));
+  }
+
+  return image;
+};
