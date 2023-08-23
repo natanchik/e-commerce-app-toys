@@ -1,24 +1,72 @@
-import { createElement } from '../components/utils';
+import { createElement, createImageElement } from '../components/utils';
+import { CardData } from '../types/types';
 
 class Card {
-  public drawCard(): Node {
+  data: CardData;
+
+  constructor(data: CardData) {
+    this.data = data;
+  }
+
+  public drawCard(): HTMLDivElement {
     const wrapper = createElement('div', ['product-card', 'main__wrapper']) as HTMLDivElement;
-    const img = createElement('div', ['product-card__img']) as HTMLDivElement;
+    const slider = this.drawSlider();
     const info = createElement('div', ['product-card__info']) as HTMLDivElement;
-    const heading = createElement('h2', ['product-card__heading'], 'Little Dutch Cutting Fruit Set') as HTMLElement;
-    const price = createElement('p', ['product-card__price'], '£15.00') as HTMLParagraphElement;
-    const form = this.drawCartForm();
-    const smallHeading = createElement('h4', ['product-card__small-heading'], 'Details') as HTMLElement;
-    const details = createElement(
-      'p',
-      ['product-card__details'],
-      'This beautiful wooden cutting fruit set from our favourites at Little dutch is the perfect gift on its own or with one of our Kitchen sets. <br> Complete with a wooden chopping board and knife, each fruit can be safely chopped in half - for hours of food prep fun! The pieces re connect easily thanks to the sturdy velcro fastening. <br> Each toy is lovingly painted and crafted from natural wood of the highest quality,  all sustainably and responsibly sourced.',
-    ) as HTMLParagraphElement;
+    const heading = createElement('h2', ['product-card__heading'], this.data.title) as HTMLElement;
+    const priceWrapper = this.drawPriceWrapper();
+    // const form = this.drawCartForm();
+    const smallHeading = createElement('h4', ['product-card__detail-heading'], 'Details') as HTMLElement;
+    const details = createElement('p', ['product-card__details'], this.data.details) as HTMLParagraphElement;
 
-    info.append(heading, price, form, smallHeading, details);
-    wrapper.append(img, info);
+    info.append(heading, priceWrapper, smallHeading, details);
+    wrapper.append(slider, info);
 
-    return wrapper as Node;
+    return wrapper;
+  }
+
+  private drawSlider(): HTMLDivElement {
+    const container = createElement('div', ['product-card__slider-container']) as HTMLDivElement;
+    const nextBtn = createElement('span', ['product-card__next-slide'], '&#10095');
+    const prevBtn = createElement('span', ['product-card__prev-slide'], '&#10094');
+    const slidesContainer = createElement('div', ['product-card__slider']) as HTMLDivElement;
+    const slidesRow = createElement('div', ['product-card__slides-row']);
+    const minisRow = createElement('div', ['product-card__minis-row']);
+    this.data.images.map((imageData) => {
+      const slide = createElement('div', ['product-card__slide']);
+      const currentImg = createImageElement(imageData.url, ['product-card__slide-img'], { width: '400' });
+      const mini = createElement('div', ['product-card__mini']);
+      const miniImg = createImageElement(imageData.url, ['product-card__mini-img'], { width: '50' });
+
+      slide.append(currentImg);
+      mini.append(miniImg);
+      slidesRow.append(slide);
+      minisRow.append(mini);
+    });
+
+    slidesContainer.append(slidesRow, minisRow);
+    container.append(prevBtn, slidesContainer, nextBtn);
+
+    return container;
+  }
+
+  private drawPriceWrapper(): HTMLDivElement {
+    const priceWrapper = createElement('div', ['product-card__price-wrapper']) as HTMLDivElement;
+    if (this.data.prices.discounted) {
+      const discountedPrice = createElement(
+        'span',
+        ['product-card__discounted-price'],
+        `${this.data.prices.discounted}${this.data.prices.currency} `,
+      ) as HTMLSpanElement;
+      priceWrapper.append(discountedPrice);
+    }
+    const price = createElement(
+      'span',
+      ['product-card__price', `${this.data.prices.discounted ? 'product-card__old-price' : ''}`],
+      `${this.data.prices.value}${this.data.prices.currency}`,
+    ) as HTMLSpanElement;
+    priceWrapper.append(price);
+
+    return priceWrapper;
   }
 
   private drawCartForm(): HTMLFormElement {
@@ -31,6 +79,7 @@ class Card {
     ) as HTMLButtonElement;
     const quantity = createElement('input', ['product-card__quantity']) as HTMLInputElement;
     quantity.type = 'number';
+    quantity.placeholder = '1';
     quantity.min = '0';
     quantity.value = '1';
     const increaseQuanity = createElement(
