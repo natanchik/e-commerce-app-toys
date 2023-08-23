@@ -49,8 +49,13 @@ class Card {
       minisRow.append(mini);
     });
 
-    slidesContainer.append(slidesRow, minisRow);
-    container.append(prevBtn, slidesContainer, nextBtn);
+    if (this.data.images.length > 1) {
+      slidesContainer.append(slidesRow, minisRow);
+      container.append(prevBtn, slidesContainer, nextBtn);
+    } else {
+      slidesContainer.append(slidesRow);
+      container.append(slidesContainer);
+    }
 
     return container;
   }
