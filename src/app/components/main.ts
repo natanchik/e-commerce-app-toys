@@ -110,7 +110,77 @@ class Main {
     minis[slideIndex - 1].classList.add('active-mini');
   }
 
-  private toggleCardModal(slideIndex: number = 1): void {
+  private switchNextSlide(): void {
+    const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
+    let currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
+
+    const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+    const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+    const width = slides[0].clientWidth + 60;
+
+    const slidesRowModal = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
+    const slidesModal = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
+    const widthModal = slidesModal[0].clientWidth + 60;
+
+    if (currentIndex > slides.length - 1) {
+      currentIndex = 1;
+      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
+
+      slidesRow.style.transform = `none`;
+      slidesRowModal.style.transform = `none`;
+    } else {
+      slidesRow.style.transform = `translateX(${-width * currentIndex}px)`;
+      slidesRowModal.style.transform = `translateX(${-widthModal * currentIndex}px)`;
+
+      currentIndex++;
+      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
+    }
+    this.makeMiniActive(currentIndex);
+  }
+
+  private switchPrevSlide(): void {
+    const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
+    let currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
+
+    const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+    const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+    const width = slides[0].clientWidth + 60;
+
+    const slidesRowModal = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
+    const slidesModal = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
+    const widthModal = slidesModal[0].clientWidth + 60;
+
+    if (currentIndex <= 1) {
+      currentIndex = slides.length;
+      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
+
+      slidesRow.style.transform = `translateX(${-width * (currentIndex - 1)}px)`;
+      slidesRowModal.style.transform = `translateX(${-widthModal * (currentIndex - 1)}px)`;
+    } else {
+      currentIndex--;
+      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
+
+      slidesRow.style.transform = `translateX(${-width * (currentIndex - 1)}px)`;
+      slidesRowModal.style.transform = `translateX(${-widthModal * (currentIndex - 1)}px)`;
+    }
+    this.makeMiniActive(currentIndex);
+  }
+
+  private getImagebyMini(target: HTMLElement): void {
+    const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
+    let currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
+
+    const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+    const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+    const width = slides[0].clientWidth + 60;
+
+    currentIndex = +target.getAttribute('data-index')!;
+    cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
+    slidesRow.style.transform = `translateX(${-width * (currentIndex - 1)}px)`;
+    this.makeMiniActive(currentIndex);
+  }
+
+  private toggleCardModal(slideIndex: number): void {
     const modal = document.querySelector('.modal-card__dimming');
     modal?.classList.toggle('modal-active');
     if (modal?.classList.contains('modal-active')) {
@@ -130,8 +200,6 @@ class Main {
   }
 
   private setEventListeners(router: Router): void {
-    let slideIndex = 1;
-
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
 
@@ -162,83 +230,32 @@ class Main {
         router.navigate(pageName === 'main' ? pages.MAIN : pageName);
       }
 
-      if (target.classList.contains('product-card__next-slide')) {
-        const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
-        const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
-        const width = slides[0].clientWidth + 60;
-
-        if (slideIndex > slides.length - 1) {
-          slideIndex = 1;
-          slidesRow.style.transform = `none`;
-        } else {
-          slidesRow.style.transform = `translateX(${-width * slideIndex}px)`;
-          slideIndex++;
-        }
-        this.makeMiniActive(slideIndex);
-      }
-
-      if (target.classList.contains('product-card__prev-slide')) {
-        const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
-        const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
-        const width = slides[0].clientWidth + 60;
-
-        if (slideIndex <= 1) {
-          slideIndex = slides.length;
-          slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
-        } else {
-          slideIndex--;
-          slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
-        }
-        this.makeMiniActive(slideIndex);
-      }
-
-      if (target.classList.contains('product-card__mini-img')) {
-        const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
-        const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
-        const width = slides[0].clientWidth + 60;
-
-        slideIndex = +target.getAttribute('data-index')!;
-        slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
-        this.makeMiniActive(slideIndex);
-      }
-
-      if (target.classList.contains('modal-card__next-slide')) {
-        const slidesRow = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
-        const slides = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
-        const width = slides[0].clientWidth + 60;
-
-        if (slideIndex > slides.length - 1) {
-          slideIndex = 1;
-          slidesRow.style.transform = `none`;
-        } else {
-          slidesRow.style.transform = `translateX(${-width * slideIndex}px)`;
-          slideIndex++;
-        }
-      }
-
-      if (target.classList.contains('modal-card__prev-slide')) {
-        const slidesRow = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
-        const slides = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
-        const width = slides[0].clientWidth + 60;
-
-        if (slideIndex <= 1) {
-          slideIndex = slides.length;
-          slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
-        } else {
-          slideIndex--;
-          slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
-        }
-      }
-
-      if (target.classList.contains('product-card__slide-img')) {
-        this.toggleCardModal(slideIndex);
+      if (
+        target.classList.contains('product-card__next-slide') ||
+        target.classList.contains('modal-card__next-slide')
+      ) {
+        this.switchNextSlide();
       }
 
       if (
+        target.classList.contains('product-card__prev-slide') ||
+        target.classList.contains('modal-card__prev-slide')
+      ) {
+        this.switchPrevSlide();
+      }
+
+      if (target.classList.contains('product-card__mini-img')) {
+        this.getImagebyMini(target);
+      }
+
+      if (
+        target.classList.contains('product-card__slide-img') ||
         target.classList.contains('modal-card__close-btn') ||
         (target.classList.contains('modal-card__dimming') && target !== document.querySelector('.modal-card__wrapper'))
       ) {
-        this.toggleCardModal(slideIndex);
+        const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
+        const currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
+        this.toggleCardModal(currentIndex);
       }
     });
 
