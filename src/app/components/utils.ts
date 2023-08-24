@@ -13,10 +13,13 @@ export const nullUserState: UserState = {
   defaultShippingAddressId: '',
 };
 
-export const createElement = (tag: string, classes: string[], text?: string): HTMLElement => {
+export const createElement = (tag: string, classes: string[], text?: string, attributes?: object): HTMLElement => {
   const element = document.createElement(tag) as HTMLElement;
   element.classList.add(...classes);
   if (text) element.innerHTML = text;
+  if (attributes) {
+    Object.entries(attributes).forEach((entry) => element.setAttribute(entry[0], entry[1]));
+  }
 
   return element;
 };

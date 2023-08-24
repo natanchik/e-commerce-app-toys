@@ -9,7 +9,9 @@ class Card {
   }
 
   public drawCard(): HTMLDivElement {
-    const wrapper = createElement('div', ['product-card', 'main__wrapper']) as HTMLDivElement;
+    const wrapper = createElement('div', ['product-card', 'main__wrapper'], '', {
+      'data-slideIndex': '1',
+    }) as HTMLDivElement;
     const slider = this.drawSlider();
     const modal = this.drawModal();
     const info = createElement('div', ['product-card__info']) as HTMLDivElement;
@@ -27,15 +29,15 @@ class Card {
 
   private drawSlider(): HTMLDivElement {
     const container = createElement('div', ['product-card__slider-container']) as HTMLDivElement;
-    const nextBtn = createElement('span', ['product-card__next-slide'], '&#10095');
-    const prevBtn = createElement('span', ['product-card__prev-slide'], '&#10094');
+    const nextBtn = createElement('span', ['product-card__next-slide'], '&#10095') as HTMLSpanElement;
+    const prevBtn = createElement('span', ['product-card__prev-slide'], '&#10094') as HTMLSpanElement;
     const slidesContainer = createElement('div', ['product-card__slider']) as HTMLDivElement;
-    const slidesRow = createElement('div', ['product-card__slides-row']);
-    const minisRow = createElement('div', ['product-card__minis-row']);
+    const slidesRow = createElement('div', ['product-card__slides-row']) as HTMLDivElement;
+    const minisRow = createElement('div', ['product-card__minis-row']) as HTMLDivElement;
     this.data.images.map((imageData, idx) => {
-      const slide = createElement('div', ['product-card__slide']);
+      const slide = createElement('div', ['product-card__slide']) as HTMLDivElement;
       const currentImg = createImageElement(imageData.url, ['product-card__slide-img']);
-      const mini = createElement('div', ['product-card__mini']);
+      const mini = createElement('div', ['product-card__mini']) as HTMLDivElement;
       if (idx === 0) {
         mini.classList.add('active-mini');
       }
