@@ -57,7 +57,11 @@ export interface CurrentAction {
 
 export interface CardData {
   title: string;
-  images: { width: number; height: number; url: string }[];
-  prices: { value: string; discounted?: string; currency: string };
+  images: { dimensions: { w: number; h: number }; url: string }[];
+  prices: {
+    value: string;
+    discounted: string;
+    currency: string;
+  };
   details: string;
 }
