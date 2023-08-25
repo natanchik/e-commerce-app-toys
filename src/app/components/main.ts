@@ -192,10 +192,13 @@ class Main {
     } else {
       const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
       const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+      const miniRow = document.querySelector('.product-card__minis-row');
       const width = slides[0].clientWidth + 60;
 
       slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
-      this.makeMiniActive(slideIndex);
+      if (miniRow) {
+        this.makeMiniActive(slideIndex);
+      }
     }
   }
 

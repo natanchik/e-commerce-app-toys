@@ -81,7 +81,11 @@ class Card {
       slidesRow.append(slide);
     });
 
-    modalSlider.append(prevBtn, slidesRow, nextBtn);
+    if (this.data.images.length > 1) {
+      modalSlider.append(prevBtn, slidesRow, nextBtn);
+    } else {
+      modalSlider.append(slidesRow);
+    }
     modalWrapper.append(closeModal, modalSlider);
     modalDimming.append(modalWrapper);
 
