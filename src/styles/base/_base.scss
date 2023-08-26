@@ -21,3 +21,14 @@ body {
 .main {
   flex: 1 0 auto;
 }
+
+.hidden-overflow {
+  overflow: hidden;
+}
+
+@media (max-width: 520px) {
+  .wrapper {
+    text-align: center;
+    padding: 0 20px;
+  }
+}
