@@ -10,7 +10,7 @@ export const getAllCustomers = (): void => {
   };
 
   fetch(
-    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers',
+    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers?limit=500',
     requestOptions,
   ).then((res) => {
     if (res.status >= 200 && res.status < 300) {
@@ -33,7 +33,7 @@ export const getAllCustomersEmails = async (emails: string[] = []): Promise<stri
   };
 
   await fetch(
-    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers',
+    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers?limit=500',
     requestOptions,
   )
     .then((res) => {
