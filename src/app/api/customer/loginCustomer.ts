@@ -1,29 +1,32 @@
 import { getAllCustomersEmails } from './getAllCustomers';
 import { fillUserState } from './getCustomerByID';
 
-const loginURL = `https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/customers/token`;
-
-const myHeaders = {
-  'Content-Type': 'application/x-www-form-urlencoded',
-  Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
-};
+const signinURL = `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/login`;
 
 const incorrectResponseText = 'Incorrect response from the server, please try later';
 const notExistEmailText = `The email address doesn't exist, please enter correct one or register`;
 const incorrectPassText = `The password you entered is incorrect, please try again`;
 
 export const loginCustomer = async (username: string, password: string): Promise<void> => {
+  const signinHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
+  };
+
   const requestOptions = {
     method: 'POST',
-    headers: myHeaders,
-    body: `grant_type=password&username=${username}&password=${password}`,
+    headers: signinHeaders,
+    body: JSON.stringify({
+      email: `${username}`,
+      password: `${password}`,
+    }),
   };
 
   const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
   const emailInput = document.querySelector('#email') as HTMLInputElement;
   const passwordInput = document.querySelector('#password') as HTMLInputElement;
 
-  await fetch(loginURL, requestOptions)
+  await fetch(signinURL, requestOptions)
     .then(async (res) => {
       if (res.headers.get('content-type') !== 'application/json; charset=utf-8') {
         throw new Error(incorrectResponseText);
@@ -45,9 +48,9 @@ export const loginCustomer = async (username: string, password: string): Promise
       }
     })
     .then(async (res) => {
+      await fillUserState(username);
       localStorage.setItem('token_info', JSON.stringify(res));
       localStorage.setItem('type_of_token', 'customer');
-      await fillUserState(username);
       apiStatus.classList.add('success-status');
       apiStatus.innerHTML = `Enjoy the shopping!`;
     })
@@ -66,13 +69,21 @@ export const loginCustomer = async (username: string, password: string): Promise
 };
 
 export const loginAfterRegistration = async (username: string, password: string): Promise<void> => {
-  const requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: `grant_type=password&username=${username}&password=${password}`,
+  const signinHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
   };
 
-  await fetch(loginURL, requestOptions)
+  const requestOptions = {
+    method: 'POST',
+    headers: signinHeaders,
+    body: JSON.stringify({
+      email: `${username}`,
+      password: `${password}`,
+    }),
+  };
+
+  await fetch(signinURL, requestOptions)
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();
