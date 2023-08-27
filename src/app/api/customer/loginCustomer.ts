@@ -1,3 +1,4 @@
+import getCustomerToken from '../tokens/getCustomerToken';
 import { getAllCustomersEmails } from './getAllCustomers';
 import { fillUserState } from './getCustomerByID';
 
@@ -47,10 +48,9 @@ export const loginCustomer = async (username: string, password: string): Promise
         }
       }
     })
-    .then(async (res) => {
+    .then(async () => {
       await fillUserState(username);
-      localStorage.setItem('token_info', JSON.stringify(res));
-      localStorage.setItem('type_of_token', 'customer');
+      await getCustomerToken(username, password);
       apiStatus.classList.add('success-status');
       apiStatus.innerHTML = `Enjoy the shopping!`;
     })
@@ -91,8 +91,7 @@ export const loginAfterRegistration = async (username: string, password: string)
         throw new Error(`The error with status code ${res.status} has occured, please try later`);
       }
     })
-    .then((res) => {
-      localStorage.setItem('token_info', JSON.stringify(res));
-      localStorage.setItem('type_of_token', 'customer');
+    .then(async () => {
+      await getCustomerToken(username, password);
     });
 };
