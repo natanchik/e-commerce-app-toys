@@ -147,3 +147,8 @@ export interface Category {
   parent: CategoryReference;
   orderHint: string;
 }
+
+export interface QueryParam {
+  key : string,
+  value: number | string,
+}

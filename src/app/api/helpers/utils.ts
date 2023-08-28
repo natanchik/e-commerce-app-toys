@@ -1,4 +1,4 @@
-import { UserState } from '../../types/types';
+import { QueryParam, UserState } from '../../types/types';
 
 export const addUserState = (customer: UserState): void => {
   const userState: UserState = {
@@ -14,4 +14,8 @@ export const addUserState = (customer: UserState): void => {
     defaultShippingAddressId: customer.defaultShippingAddressId,
   };
   localStorage.setItem('userState', JSON.stringify(userState));
+};
+
+export const generateQueryParams = (queryParams: QueryParam[] = []): string => {
+  return `?${queryParams.map((x) => `${x.key}=${x.value}`).join('&')}`;
 };
