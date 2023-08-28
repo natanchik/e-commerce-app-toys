@@ -1,12 +1,11 @@
-import getAllCategories from '../api/category/getAllCategories';
 import getAllProducts from '../api/getProduct/getAllProducts';
+import Filters from '../components/filters';
 import { createElement } from '../components/utils';
-import { Category, Price, Product } from '../types/types';
+import { Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
     getAllProducts();
-    getAllCategories();
   }
 
   public drawCatalog(): HTMLDivElement {
@@ -22,13 +21,9 @@ class Catalog {
   }
 
   private drawFilters(): HTMLDivElement {
-    const filters = createElement('div', ['catalog__filters']) as HTMLDivElement;
-    const allCategories: Category[] = localStorage.getItem('all_categories')
-      ? JSON.parse(localStorage.getItem('all_categories') as string)
-      : [];
-    console.log(allCategories);
+    const filters = new Filters();
 
-    return filters;
+    return filters.drawFilters();
   }
 
   private drawProducts(): HTMLDivElement {

@@ -149,6 +149,6 @@ export interface Category {
 }
 
 export interface QueryParam {
-  key : string,
-  value: number | string,
+  key: string;
+  value: number | string;
 }
