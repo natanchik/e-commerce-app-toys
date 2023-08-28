@@ -162,3 +162,8 @@ export interface ProductType {
   createdAt: Date;
   lastModifiedAt: Date;
 }
+
+export interface PriceFilterValue {
+  value: string;
+  query:string;
+}

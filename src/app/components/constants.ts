@@ -1,4 +1,4 @@
-import { ValidTemplates } from '../types/types';
+import { PriceFilterValue, ValidTemplates } from '../types/types';
 
 export const categories = {
   'Shop by stage': ['Baby Toys: 0-12M', ' Toddler: 1-3 Years', 'Pre-School: 3-5 Years', 'School Age: 5 Years +'],
@@ -34,4 +34,11 @@ export const passwordRequirements: [RegExp, string][] = [
   [/[0-9]/, '<p>Password must contain at least one digit (0-9).</p>'],
   [/[!@$%^&*_+.,~:;-]/, '<p>Password must contain at least one special character (use !@$%^&*_+.,~:;-).</p>'],
   [/^[^ ]*$/, '<p>Password must not contain whitespace.</p>'],
+];
+
+export const priceFilterValues: PriceFilterValue[] = [
+  { value: 'Under 15$', query: '%280%20to%2015%29'},
+  { value: '15$ - 30$', query: '%2815%20to%2030%29'}, 
+  { value: '30$ - 75$', query: '%28300%20to%2075%29'}, 
+  { value: 'Above 75$', query: '%2875%20to%202000%29'},
 ];

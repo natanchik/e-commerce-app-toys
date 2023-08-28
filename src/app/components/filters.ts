@@ -1,11 +1,13 @@
 import getCategories from '../api/category/getCategories';
 import getProductsTypes from '../api/types/getProductsTypes';
-import { Category, ProductType } from '../types/types';
+import { Category, PriceFilterValue, ProductType } from '../types/types';
+import { priceFilterValues } from './constants';
 import { createCheckBoxElement, createElement } from './utils';
 
 class Filters {
   public drawFilters(): HTMLDivElement {
     const filters = createElement('div', ['catalog__filters', 'filters']) as HTMLDivElement;
+    this.drawPriceFilter(filters);
 
     getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
     const topCategories: Category[] = localStorage.getItem('top_categories')
@@ -15,7 +17,7 @@ class Filters {
     topCategories.forEach((category: Category): void => {
       const name = category.name['en-US'].toLocaleLowerCase();
       const filter = createElement('div', ['filters__filter-name'], `<h4>${name}</h4>`) as HTMLDivElement;
-      const filterContent = createElement('div', ['filters__filter-list']) as HTMLDivElement;
+      const filterContent = createElement('div', ['filters__filter-list', 'filters__filter-list_hidden']) as HTMLDivElement;
 
       getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
       const currentCategories: Category[] = localStorage.getItem(`${name}_categories`)
@@ -37,7 +39,7 @@ class Filters {
 
   private drawByTypeFilter(filters: HTMLDivElement): void {
     const filterByType = createElement('div', ['filters__filter-name'], '<h4>Product type</h4>') as HTMLDivElement;
-    const filterByTypeList = createElement('div', ['filters__filter-list']) as HTMLDivElement;
+    const filterByTypeList = createElement('div', ['filters__filter-list', 'filters__filter-list_hidden']) as HTMLDivElement;
 
     getProductsTypes();
     const allTypes: ProductType[] = localStorage.getItem('products_types')
@@ -50,6 +52,17 @@ class Filters {
     });
 
     filters.append(filterByType, filterByTypeList);
+  }
+
+  private drawPriceFilter(filters: HTMLDivElement): void {
+    const filterByPrice = createElement('div', ['filters__filter-name'], '<h4>Price</h4>') as HTMLDivElement;
+    const filterByPriceList = createElement('div', ['filters__filter-list', 'filters__filter-list_hidden']) as HTMLDivElement;
+    priceFilterValues.forEach((priceFilterValue: PriceFilterValue): void => {
+      const currentCheckbox = createCheckBoxElement(priceFilterValue.value, priceFilterValue.query, false);
+      filterByPriceList.append(currentCheckbox);
+    })
+
+    filters.append(filterByPrice, filterByPriceList);
   }
 }
 
