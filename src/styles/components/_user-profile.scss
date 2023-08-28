@@ -1,14 +1,20 @@
-.profile__name {
-  font-size: 2rem;
+.profile {
+  position: relative;
 }
 
-.profile__info {
-  margin: 20px 0;
+.profile__name {
+  font-size: 1.6rem;
+  font-weight: 600;
 }
 
 .profile__content {
   border-bottom: solid 1px $light-blue;
-  padding-bottom: 15px;
+  padding: 15px;
+  background-color: $background-blue;
+
+  & .address-block {
+    border: none;
+  }
 }
 
 .profile__content_hidden {
@@ -40,6 +46,12 @@
       opacity: 1;
     }
   }
+  & p {
+    margin-bottom: 10px;
+  }
+  & input {
+    max-width: 350px;
+  }
 }
 
 .profile__item_active {
@@ -53,7 +65,12 @@
   margin-bottom: 10px;
 }
 
-.profile__address-line {
-  margin: 5px 0;
-  font-size: 1.3rem;
+.profile__edit-btn {
+  position: absolute;
+  top: 15px;
+  right: 40px;
+}
+
+.profile__address-title {
+  margin-bottom: 10px;
 }

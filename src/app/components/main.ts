@@ -89,15 +89,23 @@ class Main {
     }
   }
 
-  private toggleAccordion(id: string, target: HTMLElement): void {
+  private showProfileItemContent(target: HTMLElement): void {
+    target.classList.add('profile__item_active');
+    const content = document.querySelector(`[data-content = ${target.id}]`);
+    content?.classList.remove('profile__content_hidden');
+  }
+
+  private hideProfileItemContent(target: HTMLElement): void {
+    target.classList.remove('profile__item_active');
+    const content = document.querySelector(`[data-content = ${target.id}]`);
+    content?.classList.add('profile__content_hidden');
+  }
+
+  private toggleAccordion(target: HTMLElement): void {
     if (target.classList.contains('profile__item_active')) {
-      target.classList.remove('profile__item_active');
-      const content = document.querySelector(`[data-content = ${id}]`);
-      content?.classList.add('profile__content_hidden');
+      this.hideProfileItemContent(target);
     } else {
-      target.classList.add('profile__item_active');
-      const content = document.querySelector(`[data-content = ${id}]`);
-      content?.classList.remove('profile__content_hidden');
+      this.showProfileItemContent(target);
     }
   }
 
@@ -123,8 +131,38 @@ class Main {
         router.navigate(pages.AUTORIZATION);
       }
 
-      if (target.classList.contains('profile__item')) {
-        this.toggleAccordion(target.id, target);
+      if (target.closest('.profile__item')) {
+        const item = target.closest('.profile__item');
+        if (item && item instanceof HTMLElement) {
+          this.toggleAccordion(item);
+        }
+        const editBtn = document.querySelector('.profile__edit-btn');
+        if (editBtn) {
+          if (!document.querySelector('.profile__content_hidden')) {
+            editBtn.textContent = 'Cancel';
+          } else if (!document.querySelector('.profile__item_active')) {
+            editBtn.textContent = 'Edit profile';
+          }
+        }
+      }
+
+      if (target.classList.contains('profile__edit-btn')) {
+        const items = document.querySelectorAll('.profile__item');
+        if (target.textContent === 'Edit profile') {
+          items.forEach((item) => {
+            if (item instanceof HTMLLIElement) {
+              this.showProfileItemContent(item);
+            }
+          });
+          target.textContent = 'Cancel';
+        } else {
+          items.forEach((item) => {
+            if (item instanceof HTMLLIElement) {
+              this.hideProfileItemContent(item);
+            }
+          });
+          target.textContent = 'Edit profile';
+        }
       }
 
       if (target.classList.contains('main-page__page')) {
