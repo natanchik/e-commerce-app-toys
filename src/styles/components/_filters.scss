@@ -1,0 +1,32 @@
+.filters__filter-name {
+  padding: 20px 0;
+  border-bottom: 1px solid $light-blue;
+  position: relative;
+  cursor: pointer;
+  &::after {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: calc(50% - 7px);
+    height: 14px;
+    width: 14px;
+    border: solid 1px $blue;
+    opacity: 0.8;
+    border-width: 1px 1px 0 0;
+    transform-origin: center center;
+    box-sizing: border-box;
+    transform: rotate(45deg);
+    transition: all 0.5s ease-in;
+  }
+  &:hover {
+    &::after {
+      opacity: 1;
+    }
+  }
+}
+
+.filters__filter-name_active {
+  &::after {
+    transform: rotate(-225deg);
+  }
+}
