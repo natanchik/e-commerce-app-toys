@@ -152,3 +152,13 @@ export interface QueryParam {
   key: string;
   value: number | string;
 }
+
+export interface ProductType {
+  id: string;
+  version: number;
+  key: string;
+  name: string;
+  description: string;
+  createdAt: Date;
+  lastModifiedAt: Date;
+}
