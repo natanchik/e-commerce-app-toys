@@ -13,6 +13,7 @@ import Terms from './pages/terms-conditions';
 import RegPage from './pages/registration-page';
 import User from './components/user';
 import UserProfile from './pages/user-profile';
+import Catalog from './pages/catalog';
 
 class App {
   router: Router;
@@ -77,6 +78,13 @@ class App {
         callback: (): void => {
           const userProfile = new UserProfile();
           Main.setContent(userProfile.drawProfile());
+        },
+      },
+      {
+        path: `${pages.CATALOG}`,
+        callback: (): void => {
+          const catalog = new Catalog();
+          Main.setContent(catalog.drawCatalog());
         },
       },
       {

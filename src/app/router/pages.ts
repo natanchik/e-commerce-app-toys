@@ -3,6 +3,7 @@ const pages = {
   AUTORIZATION: 'autorization',
   REGISTRATION: 'registration',
   USER_PROFILE: 'user-profile',
+  CATALOG: 'catalog',
   ABOUT_US: 'about-us',
   CONTACTS: 'contacts',
   TERMS_AND_CONDITIONS: 'terms-and-condition',
