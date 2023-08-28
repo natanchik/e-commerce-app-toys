@@ -54,3 +54,84 @@ export interface CurrentAction {
   action: string;
   addressId: string;
 }
+
+export interface Product {
+  id: string;
+  productType: ProductTypeReference;
+  masterData: ProductCatalogData;
+}
+
+export interface ProductTypeReference {
+  id: string;
+  typeId: string;
+  version: number;
+  versionModifiedAt: string;
+}
+
+export interface ProductCatalogData {
+  current: ProductData;
+}
+
+export interface ProductData {
+  name: LocalizedString;
+  categories: CategoryReference[];
+  description: string;
+  slug: string;
+  masterVariant: ProductVariant;
+  variants: ProductVariant[];
+  //searchKeywords: string;
+}
+
+export type LocalizedString = {
+  'en-US': string;
+  'ru-KZ': string;
+}
+
+export interface CategoryReference {
+  id: string;
+  typeId: string;
+}
+
+export interface ProductVariant {
+  id: number;
+  key: string;
+  sku: string;
+  prices: Price[];
+  price: Price;
+  images: Image[];
+}
+
+export interface Price {
+  country: string;
+  id: string;
+  key: string;
+  value: TypedMoney;
+  discounted: DiscountedPrice;
+}
+
+export interface TypedMoney {
+  centAmount: number;
+  currencyCode: string;
+  fractionDigits: number;
+  type: string;
+}
+
+export interface DiscountedPrice {
+  value: TypedMoney;
+  discount: ProductDiscountReference;
+}
+
+export interface ProductDiscountReference {
+  id: string;
+  typeId: string;
+}
+
+export interface Image {
+  url: string;
+  dimensions: ImageDimensions;
+}
+
+export interface ImageDimensions {
+  w: number;
+  h: number;
+}
