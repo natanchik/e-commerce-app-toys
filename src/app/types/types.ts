@@ -85,7 +85,7 @@ export interface ProductData {
 export type LocalizedString = {
   'en-US': string;
   'ru-KZ': string;
-}
+};
 
 export interface CategoryReference {
   id: string;
@@ -134,4 +134,16 @@ export interface Image {
 export interface ImageDimensions {
   w: number;
   h: number;
+}
+
+export interface Category {
+  id: string;
+  version: number;
+  key: string;
+  name: LocalizedString;
+  slug: LocalizedString;
+  description: LocalizedString;
+  ancestors: CategoryReference;
+  parent: CategoryReference;
+  orderHint: string;
 }
