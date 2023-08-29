@@ -89,15 +89,15 @@ class Main {
     }
   }
 
-  private toggleAccordion(id: string, target: HTMLElement): void {
-    if (target.classList.contains('profile__item_active')) {
-      target.classList.remove('profile__item_active');
-      const content = document.querySelector(`[data-content = ${id}]`);
-      content?.classList.add('profile__content_hidden');
+  private toggleAccordion(id: string, target: HTMLElement, className: string): void {
+    const content = document.querySelector(`[data-content = ${id}]`);
+
+    if (target.classList.contains(`${className}__item_active`)) {
+      target.classList.remove(`${className}__item_active`);
+      content?.classList.add(`${className}__content_hidden`);
     } else {
-      target.classList.add('profile__item_active');
-      const content = document.querySelector(`[data-content = ${id}]`);
-      content?.classList.remove('profile__content_hidden');
+      target.classList.add(`${className}__item_active`);
+      content?.classList.remove(`${className}__content_hidden`);
     }
   }
 
@@ -124,12 +124,16 @@ class Main {
       }
 
       if (target.classList.contains('profile__item')) {
-        this.toggleAccordion(target.id, target);
+        this.toggleAccordion(target.id, target, 'profile');
       }
 
       if (target.classList.contains('main-page__page')) {
         const pageName = target.innerText.toLocaleLowerCase();
         router.navigate(pageName === 'main' ? pages.MAIN : pageName);
+      }
+
+      if (target.classList.contains('filters__item')) {
+        this.toggleAccordion(target.id, target, 'filters');
       }
     });
 
@@ -157,15 +161,22 @@ class Main {
 
     document.addEventListener('input', (event: Event): void => {
       const target = event.target as HTMLInputElement;
-      const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
-      apiStatus.className = 'api-status';
-      apiStatus.innerHTML = '';
 
-      if (target.classList.contains('auth-input')) {
-        const notation = document.querySelector(`[data-input="${target.id}"]`) as HTMLParagraphElement;
-        if (notation) {
-          validateInput(target, notation);
+      if (!target.parentElement?.classList.contains('filters__checkbox-block')) {
+        const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
+        apiStatus.className = 'api-status';
+        apiStatus.innerHTML = '';
+
+        if (target.classList.contains('auth-input')) {
+          const notation = document.querySelector(`[data-input="${target.id}"]`) as HTMLParagraphElement;
+          if (notation) {
+            validateInput(target, notation);
+          }
         }
+      }
+
+      if (target.parentElement?.classList.contains('filters__checkbox-block')) {
+        //console.log(target.id);
       }
     });
 

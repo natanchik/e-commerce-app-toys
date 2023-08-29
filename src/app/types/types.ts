@@ -165,5 +165,5 @@ export interface ProductType {
 
 export interface PriceFilterValue {
   value: string;
-  query:string;
+  query: string;
 }

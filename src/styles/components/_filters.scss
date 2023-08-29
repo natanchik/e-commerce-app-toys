@@ -1,6 +1,9 @@
-.filters__filter-name {
+.filters__item {
   padding: 20px 0;
   border-bottom: 1px solid $light-blue;
+  font-weight: 600;
+  color: $blue;
+  text-transform: capitalize;
   position: relative;
   cursor: pointer;
   &::after {
@@ -25,8 +28,21 @@
   }
 }
 
-.filters__filter-name_active {
+.filters__item_active {
   &::after {
     transform: rotate(-225deg);
   }
+}
+
+.filters__content_hidden {
+  display: none;
+}
+
+.filters__content {
+  padding-top: 10px;
+}
+
+.filters__label {
+  font-size: 1.3rem;
+  font-style: inherit;
 }

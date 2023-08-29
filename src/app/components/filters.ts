@@ -16,8 +16,11 @@ class Filters {
 
     topCategories.forEach((category: Category): void => {
       const name = category.name['en-US'].toLocaleLowerCase();
-      const filter = createElement('div', ['filters__filter-name'], `<h4>${name}</h4>`) as HTMLDivElement;
-      const filterContent = createElement('div', ['filters__filter-list', 'filters__filter-list_hidden']) as HTMLDivElement;
+      const slug = category.slug['en-US'];
+      const filter = createElement('div', ['filters__item'], `${name}`) as HTMLDivElement;
+      const filterContent = createElement('div', ['filters__content', 'filters__content_hidden']) as HTMLDivElement;
+      filter.id = slug;
+      filterContent.dataset.content = slug;
 
       getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
       const currentCategories: Category[] = localStorage.getItem(`${name}_categories`)
@@ -25,7 +28,12 @@ class Filters {
         : [];
 
       currentCategories.forEach((currentCategory: Category): void => {
-        const currentCheckbox = createCheckBoxElement(currentCategory.name['en-US'], currentCategory.id, false);
+        const currentCheckbox = createCheckBoxElement(
+          currentCategory.name['en-US'],
+          currentCategory.id,
+          false,
+          'filters',
+        );
         filterContent.append(currentCheckbox);
       });
 
@@ -38,8 +46,10 @@ class Filters {
   }
 
   private drawByTypeFilter(filters: HTMLDivElement): void {
-    const filterByType = createElement('div', ['filters__filter-name'], '<h4>Product type</h4>') as HTMLDivElement;
-    const filterByTypeList = createElement('div', ['filters__filter-list', 'filters__filter-list_hidden']) as HTMLDivElement;
+    const filterByType = createElement('div', ['filters__item'], 'Product type') as HTMLDivElement;
+    const filterByTypeList = createElement('div', ['filters__content', 'filters__content_hidden']) as HTMLDivElement;
+    filterByType.id = 'types';
+    filterByTypeList.dataset.content = 'types';
 
     getProductsTypes();
     const allTypes: ProductType[] = localStorage.getItem('products_types')
@@ -47,7 +57,7 @@ class Filters {
       : [];
 
     allTypes.forEach((type: ProductType): void => {
-      const currentCheckbox = createCheckBoxElement(type.name, type.id, false);
+      const currentCheckbox = createCheckBoxElement(type.name, type.id, false, 'filters');
       filterByTypeList.append(currentCheckbox);
     });
 
@@ -55,12 +65,14 @@ class Filters {
   }
 
   private drawPriceFilter(filters: HTMLDivElement): void {
-    const filterByPrice = createElement('div', ['filters__filter-name'], '<h4>Price</h4>') as HTMLDivElement;
-    const filterByPriceList = createElement('div', ['filters__filter-list', 'filters__filter-list_hidden']) as HTMLDivElement;
+    const filterByPrice = createElement('div', ['filters__item'], 'Price') as HTMLDivElement;
+    const filterByPriceList = createElement('div', ['filters__content', 'filters__content_hidden']) as HTMLDivElement;
+    filterByPrice.id = 'price';
+    filterByPriceList.dataset.content = 'price';
     priceFilterValues.forEach((priceFilterValue: PriceFilterValue): void => {
-      const currentCheckbox = createCheckBoxElement(priceFilterValue.value, priceFilterValue.query, false);
+      const currentCheckbox = createCheckBoxElement(priceFilterValue.value, priceFilterValue.query, false, 'filters');
       filterByPriceList.append(currentCheckbox);
-    })
+    });
 
     filters.append(filterByPrice, filterByPriceList);
   }
