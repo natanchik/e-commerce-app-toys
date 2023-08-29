@@ -56,3 +56,5 @@ export const priceFilterValues: PriceFilterValue[] = [
     query: 'value%28centAmount%20%3E%207500%29%20or%20discounted%28value%28centAmount%20%3E%207500',
   },
 ];
+
+export const sorterParametrs = { '': 'Sorted by: ', 'name-asc': 'Products: A to Z', 'name-desc': 'Products: Z to A', 'price-asc': 'Price: Low to High', 'price-desc': 'Price: High to Low'};

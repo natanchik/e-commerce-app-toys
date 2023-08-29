@@ -166,7 +166,7 @@ class Main {
     document.addEventListener('input', (event: Event): void => {
       const target = event.target as HTMLInputElement;
 
-      if (!target.parentElement?.classList.contains('filters__checkbox-block')) {
+      if (!target.parentElement?.classList.contains('filters__checkbox-block') && target.parentElement?.classList.contains('checkbox-block')) {
         const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
         apiStatus.className = 'api-status';
         apiStatus.innerHTML = '';
@@ -215,11 +215,12 @@ class Main {
           }
 
           catalogQueryParams.set(target.id, queryParam);
+          console.log(catalogQueryParams);
           getAllProducts();
           Catalog.drawProducts();
         } else {
           catalogQueryParams.delete(target.id);
-          //console.log(catalogQueryParams);
+          console.log(catalogQueryParams);
         }
       }
     });
@@ -261,6 +262,14 @@ class Main {
         if (passwordInput && passwordInput instanceof HTMLInputElement) {
           passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
         }
+      }
+    });
+
+    document.addEventListener('select', (event: Event): void => {
+      const target = event.target as HTMLSelectElement;
+
+      if (target.classList.contains('filters__select')) {
+        console.log(target.value);
       }
     });
   }

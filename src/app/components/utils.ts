@@ -94,15 +94,14 @@ export const createCheckBoxElement = (
 ): HTMLDivElement => {
   const label = createElement(
     'label',
-    ['checkbox-label', additionalClassName ? `${additionalClassName}__label` : ''],
+    ['checkbox-label'],
     labelText,
   );
+  if (additionalClassName) label.classList.add(`${additionalClassName}__label`);
   label.setAttribute('for', inputId);
 
-  const input = createElement('input', [
-    'checkbox-input',
-    additionalClassName ? `${additionalClassName}__input` : '',
-  ]) as HTMLInputElement;
+  const input = createElement('input', ['checkbox-input']) as HTMLInputElement;
+  if (additionalClassName) input.classList.add(`${additionalClassName}__input`);
   input.setAttribute('type', 'checkbox');
   input.setAttribute('id', inputId);
   if (required) {
@@ -112,10 +111,8 @@ export const createCheckBoxElement = (
     input.dataset.filters = typeOfFilters;
   }
 
-  const checkBoxBlock = createElement('div', [
-    'checkbox-block',
-    additionalClassName ? `${additionalClassName}__checkbox-block` : '',
-  ]) as HTMLDivElement;
+  const checkBoxBlock = createElement('div', ['checkbox-block']) as HTMLDivElement;
+  if (additionalClassName) checkBoxBlock.classList.add(`${additionalClassName}__checkbox-block`);
   checkBoxBlock.append(input, label);
 
   return checkBoxBlock;

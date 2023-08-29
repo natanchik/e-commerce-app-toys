@@ -1,16 +1,16 @@
 import getCategories from '../api/category/getCategories';
 import getProductsTypes from '../api/types/getProductsTypes';
 import { Category, PriceFilterValue, ProductType } from '../types/types';
-import { priceFilterValues } from './constants';
+import { priceFilterValues, sorterParametrs } from './constants';
 import { createCheckBoxElement, createElement } from './utils';
 
 class Filters {
   public drawFilters(): HTMLDivElement {
     const filters = createElement('div', ['catalog__filters', 'filters']) as HTMLDivElement;
+    
+    this.drawSort(filters);
     this.drawPriceFilter(filters);
-
     this.drawByCategoryFilter(filters);
-
     this.drawByTypeFilter(filters);
 
     return filters;
@@ -87,6 +87,17 @@ class Filters {
     });
 
     filters.append(filterByPrice, filterByPriceList);
+  }
+
+  private drawSort(filters: HTMLDivElement): void {
+    const sort = createElement('select', ['filters__item', 'filters__select']) as HTMLSelectElement;
+    Object.entries(sorterParametrs).forEach(([key, value]: [string, string]): void => {
+      const option = createElement('option', ['filters__select'], value) as HTMLOptionElement;
+      option.value = key;
+      sort.append(option);
+    })
+
+    filters.append(sort);
   }
 }
 

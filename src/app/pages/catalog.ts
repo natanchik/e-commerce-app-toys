@@ -1,12 +1,14 @@
 import getAllProducts from '../api/getProduct/getAllProducts';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
+import { catalogQueryParams } from '../state/state';
 import { Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
     getAllProducts();
     localStorage.removeItem('sorted_products');
+    catalogQueryParams.clear();
   }
 
   public drawCatalog(): HTMLDivElement {
@@ -42,7 +44,7 @@ class Catalog {
       currentProducts = JSON.parse(localStorage.getItem('all_products') as string);
     }
 
-    //console.log(currentProducts);
+    console.log(currentProducts);
     currentProducts.forEach((product: Product): void => {
       const productBlock = this.drawProduct(product);
       products.append(productBlock);
