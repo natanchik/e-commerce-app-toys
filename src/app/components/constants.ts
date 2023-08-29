@@ -37,8 +37,22 @@ export const passwordRequirements: [RegExp, string][] = [
 ];
 
 export const priceFilterValues: PriceFilterValue[] = [
-  { value: 'Under 15$', query: '%280%20to%2015%29' },
-  { value: '15$ - 30$', query: '%2815%20to%2030%29' },
-  { value: '30$ - 75$', query: '%28300%20to%2075%29' },
-  { value: 'Above 75$', query: '%2875%20to%202000%29' },
+  {
+    value: 'Under 15$',
+    query: 'value%28centAmount%20%3C%201500%29%20or%20discounted%28value%28centAmount%20%3C%201500',
+  },
+  {
+    value: '15$ - 30$',
+    query:
+      '%28value%28centAmount%20%3E%3D%201500%29%20and%20value%28centAmount%20%3C%3D%203000%29%29%20or%20discounted%28%28value%28centAmount%20%3E%3D%201500%29%20and%20value%28centAmount%20%3C%3D%203000%29',
+  },
+  {
+    value: '30$ - 75$',
+    query:
+      '%28value%28centAmount%20%3E%3D%203000%29%20and%20value%28centAmount%20%3C%3D%207500%29%29%20or%20discounted%28%28value%28centAmount%20%3E%3D%203000%29%20and%20value%28centAmount%20%3C%3D%207500%29',
+  },
+  {
+    value: 'Above 75$',
+    query: 'value%28centAmount%20%3E%207500%29%20or%20discounted%28value%28centAmount%20%3E%207500',
+  },
 ];

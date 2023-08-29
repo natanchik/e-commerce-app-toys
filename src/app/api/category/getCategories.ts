@@ -1,7 +1,7 @@
 import { QueryParam } from '../../types/types';
 import { generateQueryParams } from '../helpers/utils';
 
-const getCategories = (dataName?: string, queryParams?: QueryParam[]): void => {
+const getCategories = (dataName?: string, queryParams?: Map<string, QueryParam> | QueryParam[]): void => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -13,7 +13,7 @@ const getCategories = (dataName?: string, queryParams?: QueryParam[]): void => {
   };
 
   fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/categories${generateQueryParams(
+    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/categories?limit=500${generateQueryParams(
       queryParams,
     )}`,
     requestOptions,

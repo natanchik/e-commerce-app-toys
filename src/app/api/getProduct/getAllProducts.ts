@@ -1,4 +1,6 @@
 import { Product } from '../../types/types';
+import { generateQueryParams } from '../helpers/utils';
+import { catalogQueryParams } from '../../state/state';
 
 const getAllProducts = (): void => {
   const myHeaders = {
@@ -14,7 +16,9 @@ const getAllProducts = (): void => {
   const allProducts: Product[] = [];
 
   fetch(
-    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/products?limit=500',
+    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/products?limit=500${
+      catalogQueryParams.size > 0 ? generateQueryParams(catalogQueryParams) : ''
+    }`,
     requestOptions,
   )
     .then((response) => {
@@ -28,7 +32,12 @@ const getAllProducts = (): void => {
       result.results.forEach((product: Product) => {
         allProducts.push(product);
       });
-      localStorage.setItem('product_info', JSON.stringify(allProducts));
+      if (catalogQueryParams.size === 0) {
+        localStorage.setItem('all_products', JSON.stringify(allProducts));
+        localStorage.setItem('sorted_products', JSON.stringify(allProducts));
+      } else {
+        localStorage.setItem('sorted_products', JSON.stringify(allProducts));
+      }
     });
 };
 

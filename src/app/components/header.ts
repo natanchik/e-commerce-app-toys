@@ -1,6 +1,6 @@
 import { createElement } from './utils';
 import Router from '../router/router';
-import pages from '../router/pages';
+import { pages } from '../router/pages';
 import User from './user';
 
 class Header {

@@ -1,13 +1,17 @@
 import { createElement } from './utils';
 import Sidebar from './sidebar';
 import Router from '../router/router';
-import pages from '../router/pages';
+import { pages } from '../router/pages';
 import { validateInput } from './validation';
 import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
 import User from './user';
+import getAllProducts from '../api/getProduct/getAllProducts';
+import { catalogQueryParams } from '../state/state';
+import Catalog from '../pages/catalog';
+import { QueryParam } from '../types/types';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -176,7 +180,47 @@ class Main {
       }
 
       if (target.parentElement?.classList.contains('filters__checkbox-block')) {
-        //console.log(target.id);
+        if (target.checked === true) {
+          let queryParam: QueryParam = {
+            key: '',
+            value: '',
+          };
+
+          if (target.dataset.filters === 'category') {
+            queryParam = {
+              key: 'where',
+              value: `masterData%28current%28categories%28id%3D%22${target.id}%22%29%29%29`,
+            };
+          }
+
+          if (target.dataset.filters === 'price') {
+            queryParam = {
+              key: 'where',
+              value: `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28${target.id}%29%29%29%29%29%29%29`,
+            };
+          }
+
+          if (target.dataset.filters === 'price') {
+            queryParam = {
+              key: 'where',
+              value: `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28${target.id}%29%29%29%29%29%29%29`,
+            };
+          }
+
+          if (target.dataset.filters === 'product-type') {
+            queryParam = {
+              key: 'where',
+              value: `productType%28id%3D%22${target.id}%22%29`,
+            };
+          }
+
+          catalogQueryParams.set(target.id, queryParam);
+          getAllProducts();
+          Catalog.drawProducts();
+        } else {
+          catalogQueryParams.delete(target.id);
+          //console.log(catalogQueryParams);
+        }
       }
     });
 

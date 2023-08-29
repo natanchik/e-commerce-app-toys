@@ -90,6 +90,7 @@ export const createCheckBoxElement = (
   inputId: string,
   required: boolean = false,
   additionalClassName?: string,
+  typeOfFilters?: string,
 ): HTMLDivElement => {
   const label = createElement(
     'label',
@@ -106,6 +107,9 @@ export const createCheckBoxElement = (
   input.setAttribute('id', inputId);
   if (required) {
     input.required = true;
+  }
+  if (typeOfFilters) {
+    input.dataset.filters = typeOfFilters;
   }
 
   const checkBoxBlock = createElement('div', [

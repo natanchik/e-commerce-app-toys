@@ -16,6 +16,14 @@ export const addUserState = (customer: UserState): void => {
   localStorage.setItem('userState', JSON.stringify(userState));
 };
 
-export const generateQueryParams = (queryParams: QueryParam[] = []): string => {
-  return `?${queryParams.map((x) => `${x.key}=${x.value}`).join('&')}`;
+export const generateQueryParams = (queryParams?: Map<string, QueryParam> | QueryParam[]): string => {
+  let params: QueryParam[] | undefined = [];
+
+  if (queryParams && !Array.isArray(queryParams)) {
+    params = Array.from(queryParams.values());
+  } else {
+    params = queryParams;
+  }
+
+  return `&${params?.map((x) => `${x.key}=${x.value}`).join('&')}`;
 };

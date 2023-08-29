@@ -1,4 +1,4 @@
-const pages = {
+export const pages = {
   MAIN: '',
   AUTORIZATION: 'autorization',
   REGISTRATION: 'registration',
@@ -10,4 +10,4 @@ const pages = {
   NOT_FOUND: 'not-found',
 };
 
-export default pages;
+export const ID_SELECTOR: string = '{id}';

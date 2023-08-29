@@ -9,6 +9,14 @@ class Filters {
     const filters = createElement('div', ['catalog__filters', 'filters']) as HTMLDivElement;
     this.drawPriceFilter(filters);
 
+    this.drawByCategoryFilter(filters);
+
+    this.drawByTypeFilter(filters);
+
+    return filters;
+  }
+
+  private drawByCategoryFilter(filters: HTMLDivElement): void {
     getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
     const topCategories: Category[] = localStorage.getItem('top_categories')
       ? JSON.parse(localStorage.getItem('top_categories') as string)
@@ -17,6 +25,7 @@ class Filters {
     topCategories.forEach((category: Category): void => {
       const name = category.name['en-US'].toLocaleLowerCase();
       const slug = category.slug['en-US'];
+
       const filter = createElement('div', ['filters__item'], `${name}`) as HTMLDivElement;
       const filterContent = createElement('div', ['filters__content', 'filters__content_hidden']) as HTMLDivElement;
       filter.id = slug;
@@ -33,16 +42,13 @@ class Filters {
           currentCategory.id,
           false,
           'filters',
+          'category',
         );
         filterContent.append(currentCheckbox);
       });
 
       filters.append(filter, filterContent);
     });
-
-    this.drawByTypeFilter(filters);
-
-    return filters;
   }
 
   private drawByTypeFilter(filters: HTMLDivElement): void {
@@ -57,7 +63,7 @@ class Filters {
       : [];
 
     allTypes.forEach((type: ProductType): void => {
-      const currentCheckbox = createCheckBoxElement(type.name, type.id, false, 'filters');
+      const currentCheckbox = createCheckBoxElement(type.name, type.id, false, 'filters', 'product-type');
       filterByTypeList.append(currentCheckbox);
     });
 
@@ -70,7 +76,13 @@ class Filters {
     filterByPrice.id = 'price';
     filterByPriceList.dataset.content = 'price';
     priceFilterValues.forEach((priceFilterValue: PriceFilterValue): void => {
-      const currentCheckbox = createCheckBoxElement(priceFilterValue.value, priceFilterValue.query, false, 'filters');
+      const currentCheckbox = createCheckBoxElement(
+        priceFilterValue.value,
+        priceFilterValue.query,
+        false,
+        'filters',
+        'price',
+      );
       filterByPriceList.append(currentCheckbox);
     });
 
