@@ -13,6 +13,7 @@ import { catalogQueryParams } from '../state/state';
 import Catalog from '../pages/catalog';
 import { QueryParam } from '../types/types';
 import Filters from './filters';
+import { sorterParametrs } from './constants';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -106,6 +107,79 @@ class Main {
     }
   }
 
+  private redrawProducts(): void {
+    getAllProducts().then(() => {
+      Catalog.drawProducts();
+    });
+  }
+
+  private addNewQueryParam(id: string, key: string, value: string): void {
+    const queryParam: QueryParam = {
+      key: key,
+      value: value,
+    };
+    catalogQueryParams.set(id, queryParam);
+  }
+
+  private addFilterNavigationForCheckbox(currentTarget: HTMLInputElement): void {
+    if (currentTarget.checked === true) {
+      switch (currentTarget.dataset.filters) {
+        case 'category':
+          this.addNewQueryParam(
+            currentTarget.id,
+            'where',
+            `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
+          );
+          break;
+        case 'price':
+          this.addNewQueryParam(
+            currentTarget.id,
+            'where',
+            `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28${currentTarget.id}%29%29%29%29%29%29%29`,
+          );
+          break;
+        case 'product-type':
+          this.addNewQueryParam(currentTarget.id, 'where', `productType%28id%3D%22${currentTarget.id}%22%29`);
+          break;
+      }
+      this.redrawProducts();
+    } else {
+      catalogQueryParams.delete(currentTarget.id);
+      this.redrawProducts();
+    }
+  }
+
+  private deleteSortFromQueryParam(): void {
+    Object.keys(sorterParametrs).forEach((key: string) => {
+      catalogQueryParams.delete(key);
+    });
+  }
+
+  private addFilterNavigationForSelect(currentTarget: HTMLSelectElement): void {
+    switch (currentTarget.value) {
+      case 'name-asc':
+        this.deleteSortFromQueryParam();
+        this.addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20asc`);
+        this.redrawProducts();
+        break;
+      case 'name-desc':
+        this.deleteSortFromQueryParam();
+        this.addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20desc`);
+        this.redrawProducts();
+        break;
+      case 'price-asc':
+        this.deleteSortFromQueryParam();
+        this.addNewQueryParam(currentTarget.value, 'sort', `key%20asc`);
+        this.redrawProducts();
+        break;
+      case 'price-desc':
+        this.deleteSortFromQueryParam();
+        this.addNewQueryParam(currentTarget.value, 'sort', `key%20desc`);
+        this.redrawProducts();
+        break;
+    }
+  }
+
   private setEventListeners(router: Router): void {
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
@@ -143,58 +217,12 @@ class Main {
 
       if (target.parentElement?.classList.contains('filters__checkbox-block')) {
         const currentTarget = target as HTMLInputElement;
-
-        if (currentTarget.checked === true) {
-          let queryParam: QueryParam = {
-            key: '',
-            value: '',
-          };
-
-          if (currentTarget.dataset.filters === 'category') {
-            queryParam = {
-              key: 'where',
-              value: `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
-            };
-          }
-
-          if (currentTarget.dataset.filters === 'price') {
-            queryParam = {
-              key: 'where',
-              value: `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28${currentTarget.id}%29%29%29%29%29%29%29`,
-            };
-          }
-
-          if (currentTarget.dataset.filters === 'price') {
-            queryParam = {
-              key: 'where',
-              value: `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28${currentTarget.id}%29%29%29%29%29%29%29`,
-            };
-          }
-
-          if (currentTarget.dataset.filters === 'product-type') {
-            queryParam = {
-              key: 'where',
-              value: `productType%28id%3D%22${currentTarget.id}%22%29`,
-            };
-          }
-
-          catalogQueryParams.set(currentTarget.id, queryParam);
-          getAllProducts().then(() => {
-            Catalog.drawProducts();
-          });
-        } else {
-          catalogQueryParams.delete(currentTarget.id);
-          getAllProducts().then(() => {
-            Catalog.drawProducts();
-          });
-        }
+        this.addFilterNavigationForCheckbox(currentTarget);
       }
 
       if (target.classList.contains('filters__button')) {
         Filters.resetAllFilters();
-        getAllProducts().then(() => {
-          Catalog.drawProducts();
-        });
+        this.redrawProducts();
       }
     });
 
@@ -223,7 +251,10 @@ class Main {
     document.addEventListener('input', (event: Event): void => {
       const target = event.target as HTMLInputElement;
 
-      if (!target.parentElement?.classList.contains('filters__checkbox-block') && target.parentElement?.classList.contains('checkbox-block')) {
+      if (
+        !target.parentElement?.classList.contains('filters__checkbox-block') &&
+        target.parentElement?.classList.contains('checkbox-block')
+      ) {
         const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
         apiStatus.className = 'api-status';
         apiStatus.innerHTML = '';
@@ -275,13 +306,10 @@ class Main {
           passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
         }
       }
-    });
-
-    document.addEventListener('select', (event: Event): void => {
-      const target = event.target as HTMLSelectElement;
 
       if (target.classList.contains('filters__select')) {
-        console.log(target.value);
+        const currentTarget = target as HTMLSelectElement;
+        this.addFilterNavigationForSelect(currentTarget);
       }
     });
   }

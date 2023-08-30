@@ -42,7 +42,7 @@ class Catalog {
       JSON.parse(localStorage.getItem('sorted_products') as string).length > 0
     ) {
       currentProducts = JSON.parse(localStorage.getItem('sorted_products') as string);
-    } else if (catalogQueryParams.size > 0){
+    } else if (catalogQueryParams.size > 0) {
       currentProducts = JSON.parse(localStorage.getItem('sorted_products') as string);
     } else {
       currentProducts = JSON.parse(localStorage.getItem('all_products') as string);
@@ -56,8 +56,6 @@ class Catalog {
     } else {
       products.innerHTML = 'Sorry, no products matched your selection.';
     }
-
-    
   }
 
   static drawProduct(product: Product): HTMLDivElement {

@@ -98,7 +98,7 @@ class Filters {
       const option = createElement('option', ['filters__option'], value) as HTMLOptionElement;
       option.value = key;
       sort.append(option);
-    })
+    });
 
     filters.append(sort);
   }
@@ -107,21 +107,25 @@ class Filters {
     const search = createElement('input', ['filters__search']) as HTMLInputElement;
     search.setAttribute('placeholder', '. . . search');
     search.type = 'text';
-    
+
     filters.append(search);
   }
 
   private drawResetButton(filters: HTMLDivElement): void {
-    const button = createElement('button', ['filters__button', 'button', 'button_blue'], 'Reset all') as HTMLButtonElement;
+    const button = createElement(
+      'button',
+      ['filters__button', 'button', 'button_blue'],
+      'Reset all',
+    ) as HTMLButtonElement;
 
     filters.append(button);
   }
 
   static resetAllFilters(): void {
     const allCheckbox = document.querySelectorAll<HTMLInputElement>('.filters__checkbox');
-    allCheckbox.forEach((checkbox) => checkbox.checked = false);
+    allCheckbox.forEach((checkbox) => (checkbox.checked = false));
 
-    //TODO: add reset sort search? 
+    //TODO: add reset sort search?
     localStorage.removeItem('sorted_products');
     catalogQueryParams.clear();
   }

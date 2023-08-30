@@ -92,11 +92,7 @@ export const createCheckBoxElement = (
   additionalClassName?: string,
   typeOfFilters?: string,
 ): HTMLDivElement => {
-  const label = createElement(
-    'label',
-    ['checkbox-label'],
-    labelText,
-  );
+  const label = createElement('label', ['checkbox-label'], labelText);
   if (additionalClassName) label.classList.add(`${additionalClassName}__label`);
   label.setAttribute('for', inputId);
 

@@ -13,8 +13,6 @@ const getAllProducts = (): Promise<void> => {
     headers: myHeaders,
   };
 
-  const allProducts: Product[] = [];
-
   return fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/products?limit=500${
       catalogQueryParams.size > 0 ? generateQueryParams(catalogQueryParams) : ''
@@ -29,7 +27,7 @@ const getAllProducts = (): Promise<void> => {
       }
     })
     .then((result) => {
-      console.log(result);
+      //console.log(result);
       if (catalogQueryParams.size === 0) {
         localStorage.setItem('all_products', JSON.stringify(result.results));
         localStorage.setItem('sorted_products', JSON.stringify(result.results));
