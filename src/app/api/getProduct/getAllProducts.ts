@@ -43,4 +43,3 @@ const getAllProducts = (): Promise<void> => {
 };
 
 export default getAllProducts;
-git 
