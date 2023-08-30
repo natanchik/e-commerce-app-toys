@@ -79,7 +79,6 @@ export interface ProductData {
   slug: string;
   masterVariant: ProductVariant;
   variants: ProductVariant[];
-  //searchKeywords: string;
 }
 
 export type LocalizedString = {

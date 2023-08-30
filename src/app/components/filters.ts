@@ -125,7 +125,14 @@ class Filters {
     const allCheckbox = document.querySelectorAll<HTMLInputElement>('.filters__checkbox');
     allCheckbox.forEach((checkbox) => (checkbox.checked = false));
 
-    //TODO: add reset sort search?
+    const sort = document.querySelector('.filters__select') as HTMLSelectElement;
+    sort.value = '';
+    Object.keys(sorterParametrs).forEach((key: string) => {
+      catalogQueryParams.delete(key);
+    });
+    
+
+    //TODO: add reset search?
     localStorage.removeItem('sorted_products');
     catalogQueryParams.clear();
   }
