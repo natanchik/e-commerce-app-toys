@@ -42,14 +42,22 @@ class Catalog {
       JSON.parse(localStorage.getItem('sorted_products') as string).length > 0
     ) {
       currentProducts = JSON.parse(localStorage.getItem('sorted_products') as string);
+    } else if (catalogQueryParams.size > 0){
+      currentProducts = JSON.parse(localStorage.getItem('sorted_products') as string);
     } else {
       currentProducts = JSON.parse(localStorage.getItem('all_products') as string);
     }
 
-    currentProducts.forEach((product: Product): void => {
-      const productBlock = this.drawProduct(product);
-      products.append(productBlock);
-    });
+    if (currentProducts.length > 0) {
+      currentProducts.forEach((product: Product): void => {
+        const productBlock = this.drawProduct(product);
+        products.append(productBlock);
+      });
+    } else {
+      products.innerHTML = 'Sorry, no products matched your selection.';
+    }
+
+    
   }
 
   static drawProduct(product: Product): HTMLDivElement {

@@ -30,14 +30,11 @@ const getAllProducts = (): Promise<void> => {
     })
     .then((result) => {
       console.log(result);
-      result.results.forEach((product: Product) => {
-        allProducts.push(product);
-      });
       if (catalogQueryParams.size === 0) {
-        localStorage.setItem('all_products', JSON.stringify(allProducts));
-        localStorage.setItem('sorted_products', JSON.stringify(allProducts));
+        localStorage.setItem('all_products', JSON.stringify(result.results));
+        localStorage.setItem('sorted_products', JSON.stringify(result.results));
       } else {
-        localStorage.setItem('sorted_products', JSON.stringify(allProducts));
+        localStorage.setItem('sorted_products', JSON.stringify(result.results));
       }
     });
 };
