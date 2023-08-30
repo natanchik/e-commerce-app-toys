@@ -7,7 +7,8 @@ import { createCheckBoxElement, createElement } from './utils';
 class Filters {
   public drawFilters(): HTMLDivElement {
     const filters = createElement('div', ['catalog__filters', 'filters']) as HTMLDivElement;
-    
+
+    this.drawSearch(filters);
     this.drawSort(filters);
     this.drawPriceFilter(filters);
     this.drawByCategoryFilter(filters);
@@ -90,14 +91,22 @@ class Filters {
   }
 
   private drawSort(filters: HTMLDivElement): void {
-    const sort = createElement('select', ['filters__item', 'filters__select']) as HTMLSelectElement;
+    const sort = createElement('select', ['filters__select']) as HTMLSelectElement;
     Object.entries(sorterParametrs).forEach(([key, value]: [string, string]): void => {
-      const option = createElement('option', ['filters__select'], value) as HTMLOptionElement;
+      const option = createElement('option', ['filters__option'], value) as HTMLOptionElement;
       option.value = key;
       sort.append(option);
     })
 
     filters.append(sort);
+  }
+
+  private drawSearch(filters: HTMLDivElement): void {
+    const search = createElement('input', ['filters__search']) as HTMLInputElement;
+    search.setAttribute('placeholder', '. . . search');
+    search.type = 'text';
+    
+    filters.append(search);
   }
 }
 

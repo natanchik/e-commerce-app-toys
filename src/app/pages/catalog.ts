@@ -1,4 +1,5 @@
 import getAllProducts from '../api/getProduct/getAllProducts';
+import getAnonymousToken from '../api/tokens/getAnonymousToken';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
@@ -6,6 +7,7 @@ import { Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
+    getAnonymousToken();
     getAllProducts();
     localStorage.removeItem('sorted_products');
     catalogQueryParams.clear();
@@ -44,7 +46,6 @@ class Catalog {
       currentProducts = JSON.parse(localStorage.getItem('all_products') as string);
     }
 
-    console.log(currentProducts);
     currentProducts.forEach((product: Product): void => {
       const productBlock = this.drawProduct(product);
       products.append(productBlock);

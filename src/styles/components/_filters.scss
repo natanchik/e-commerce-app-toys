@@ -46,3 +46,26 @@
   font-size: 1.3rem;
   font-style: inherit;
 }
+
+.filters__select,
+.filters__search {
+  font-family: "Montserrat", sans-serif;
+  color: $blue;
+  padding: 10px 0;
+  width: 95%;
+  margin-bottom: 15px;
+}
+
+.filters__select {
+  border: 1px solid #dde3f5;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(#dfe5e1, 0.2);
+  }
+}
+
+.filters__search {
+  background-color: rgba(#dfe5e1, 0.4);
+  font-style: italic;
+  padding-left: 5px;
+}

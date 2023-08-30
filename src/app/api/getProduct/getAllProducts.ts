@@ -2,7 +2,7 @@ import { Product } from '../../types/types';
 import { generateQueryParams } from '../helpers/utils';
 import { catalogQueryParams } from '../../state/state';
 
-const getAllProducts = (): void => {
+const getAllProducts = (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -15,7 +15,7 @@ const getAllProducts = (): void => {
 
   const allProducts: Product[] = [];
 
-  fetch(
+  return fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/products?limit=500${
       catalogQueryParams.size > 0 ? generateQueryParams(catalogQueryParams) : ''
     }`,
@@ -38,7 +38,9 @@ const getAllProducts = (): void => {
       } else {
         localStorage.setItem('sorted_products', JSON.stringify(allProducts));
       }
+      return result;
     });
 };
 
 export default getAllProducts;
+git 

@@ -139,6 +139,58 @@ class Main {
       if (target.classList.contains('filters__item')) {
         this.toggleAccordion(target.id, target, 'filters');
       }
+
+      if (target.parentElement?.classList.contains('filters__checkbox-block')) {
+        const currentTarget = target as HTMLInputElement;
+
+        if (currentTarget.checked === true) {
+          let queryParam: QueryParam = {
+            key: '',
+            value: '',
+          };
+
+          if (currentTarget.dataset.filters === 'category') {
+            queryParam = {
+              key: 'where',
+              value: `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
+            };
+          }
+
+          if (currentTarget.dataset.filters === 'price') {
+            queryParam = {
+              key: 'where',
+              value: `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28${currentTarget.id}%29%29%29%29%29%29%29`,
+            };
+          }
+
+          if (currentTarget.dataset.filters === 'price') {
+            queryParam = {
+              key: 'where',
+              value: `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28${currentTarget.id}%29%29%29%29%29%29%29`,
+            };
+          }
+
+          if (currentTarget.dataset.filters === 'product-type') {
+            queryParam = {
+              key: 'where',
+              value: `productType%28id%3D%22${currentTarget.id}%22%29`,
+            };
+          }
+
+          console.log(currentTarget.checked);
+
+          catalogQueryParams.set(currentTarget.id, queryParam);
+          getAllProducts().then((result) => {
+            Catalog.drawProducts();
+          });
+        } else {
+          console.log(currentTarget.checked);
+          catalogQueryParams.delete(currentTarget.id);
+          getAllProducts().then((result) => {
+            Catalog.drawProducts();
+          });
+        }
+      }
     });
 
     document.addEventListener('submit', async (event: Event) => {
@@ -176,51 +228,6 @@ class Main {
           if (notation) {
             validateInput(target, notation);
           }
-        }
-      }
-
-      if (target.parentElement?.classList.contains('filters__checkbox-block')) {
-        if (target.checked === true) {
-          let queryParam: QueryParam = {
-            key: '',
-            value: '',
-          };
-
-          if (target.dataset.filters === 'category') {
-            queryParam = {
-              key: 'where',
-              value: `masterData%28current%28categories%28id%3D%22${target.id}%22%29%29%29`,
-            };
-          }
-
-          if (target.dataset.filters === 'price') {
-            queryParam = {
-              key: 'where',
-              value: `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28${target.id}%29%29%29%29%29%29%29`,
-            };
-          }
-
-          if (target.dataset.filters === 'price') {
-            queryParam = {
-              key: 'where',
-              value: `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28${target.id}%29%29%29%29%29%29%29`,
-            };
-          }
-
-          if (target.dataset.filters === 'product-type') {
-            queryParam = {
-              key: 'where',
-              value: `productType%28id%3D%22${target.id}%22%29`,
-            };
-          }
-
-          catalogQueryParams.set(target.id, queryParam);
-          console.log(catalogQueryParams);
-          getAllProducts();
-          Catalog.drawProducts();
-        } else {
-          catalogQueryParams.delete(target.id);
-          console.log(catalogQueryParams);
         }
       }
     });

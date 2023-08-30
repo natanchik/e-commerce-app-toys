@@ -57,4 +57,4 @@ export const priceFilterValues: PriceFilterValue[] = [
   },
 ];
 
-export const sorterParametrs = { '': 'Sorted by: ', 'name-asc': 'Products: A to Z', 'name-desc': 'Products: Z to A', 'price-asc': 'Price: Low to High', 'price-desc': 'Price: High to Low'};
+export const sorterParametrs = { '': 'Sort by ', 'name-asc': 'Products: A to Z', 'name-desc': 'Products: Z to A', 'price-asc': 'Price: Low to High', 'price-desc': 'Price: High to Low'};
