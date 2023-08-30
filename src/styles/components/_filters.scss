@@ -1,4 +1,5 @@
-.filters__item {
+.filters__item,
+.mobile-filters__item {
   padding: 20px 0;
   border-bottom: 1px solid $light-blue;
   font-weight: 600;
@@ -28,7 +29,13 @@
   }
 }
 
-.filters__item_active {
+.mobile-filters__item {
+  background: rgba(223, 229, 225, 0.4);
+  padding-left: 20px;
+}
+
+.filters__item_active,
+.mobile-filters__item_active {
   &::after {
     transform: rotate(-225deg);
   }

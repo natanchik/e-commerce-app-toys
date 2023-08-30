@@ -7,7 +7,12 @@ import { createCheckBoxElement, createElement } from './utils';
 
 class Filters {
   public drawFilters(): HTMLDivElement {
-    const filters = createElement('div', ['catalog__filters', 'filters']) as HTMLDivElement;
+    const filters = createElement('div', [
+      'catalog__filters',
+      'filters',
+      'mobile-filters__content_hidden',
+    ]) as HTMLDivElement;
+    filters.dataset.content = 'mobile-filters';
 
     this.drawSearch(filters);
     this.drawSort(filters);
@@ -130,7 +135,6 @@ class Filters {
     Object.keys(sorterParametrs).forEach((key: string) => {
       catalogQueryParams.delete(key);
     });
-    
 
     //TODO: add reset search?
     localStorage.removeItem('sorted_products');

@@ -18,9 +18,10 @@ class Catalog {
     const title = createElement('div', ['catalog__title'], '<h2>Catalog</h2>') as HTMLDivElement;
     const content = createElement('div', ['catalog__content']) as HTMLDivElement;
     const products = createElement('div', ['catalog__products']) as HTMLDivElement;
+    const mobileFiltersButton = createElement('div', ['mobile-filters__item'], 'Filters') as HTMLDivElement;
     const filters = this.drawFilters();
 
-    content.append(filters, products);
+    content.append(mobileFiltersButton, filters, products);
     catalog.append(title, content);
 
     return catalog;

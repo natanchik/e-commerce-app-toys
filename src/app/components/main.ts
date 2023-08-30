@@ -224,6 +224,10 @@ class Main {
         Filters.resetAllFilters();
         this.redrawProducts();
       }
+
+      if (target.classList.contains('mobile-filters__item')) {
+        this.toggleAccordion('mobile-filters', target, 'mobile-filters');
+      }
     });
 
     document.addEventListener('submit', async (event: Event) => {
