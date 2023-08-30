@@ -215,7 +215,7 @@ class Main {
         this.toggleAccordion(target.id, target, 'filters');
       }
 
-      if (target.parentElement?.classList.contains('filters__checkbox-block')) {
+      if (target.classList.contains('filters__checkbox')) {
         const currentTarget = target as HTMLInputElement;
         this.addFilterNavigationForCheckbox(currentTarget);
       }

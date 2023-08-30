@@ -68,9 +68,14 @@ class Catalog {
       ['product__name'],
       `${product.masterData.current.name['en-US']}`,
     ) as HTMLDivElement;
+    const description = createElement(
+      'div',
+      ['catalog__description'],
+      `${product.masterData.current.description['en-US'].slice(0, 45)}...`,
+    ) as HTMLDivElement;
     const prices = this.drawPrices(product);
 
-    productBlock.append(img, name, prices);
+    productBlock.append(img, name, description, prices);
     return productBlock;
   }
 

@@ -1,4 +1,3 @@
-import { Product } from '../../types/types';
 import { generateQueryParams } from '../helpers/utils';
 import { catalogQueryParams } from '../../state/state';
 

@@ -75,7 +75,7 @@ export interface ProductCatalogData {
 export interface ProductData {
   name: LocalizedString;
   categories: CategoryReference[];
-  description: string;
+  description: LocalizedString;
   slug: string;
   masterVariant: ProductVariant;
   variants: ProductVariant[];
@@ -158,7 +158,7 @@ export interface ProductType {
   version: number;
   key: string;
   name: string;
-  description: string;
+  description: LocalizedString;
   createdAt: Date;
   lastModifiedAt: Date;
 }
