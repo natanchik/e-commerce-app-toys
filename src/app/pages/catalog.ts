@@ -1,4 +1,5 @@
 import getAllProducts from '../api/getProduct/getAllProducts';
+import getProductsBySearch from '../api/getProduct/getProductsBySearch';
 import getAnonymousToken from '../api/tokens/getAnonymousToken';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
@@ -11,6 +12,7 @@ class Catalog {
     getAllProducts();
     localStorage.removeItem('sorted_products');
     catalogQueryParams.clear();
+    getProductsBySearch('wood');
   }
 
   public drawCatalog(): HTMLDivElement {
