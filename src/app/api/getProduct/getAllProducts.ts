@@ -29,6 +29,7 @@ const getAllProducts = (): Promise<void> => {
       }
     })
     .then((result) => {
+      console.log(result);
       result.results.forEach((product: Product) => {
         allProducts.push(product);
       });
@@ -38,7 +39,6 @@ const getAllProducts = (): Promise<void> => {
       } else {
         localStorage.setItem('sorted_products', JSON.stringify(allProducts));
       }
-      return result;
     });
 };
 

@@ -1,5 +1,6 @@
 import getCategories from '../api/category/getCategories';
 import getProductsTypes from '../api/types/getProductsTypes';
+import { catalogQueryParams } from '../state/state';
 import { Category, PriceFilterValue, ProductType } from '../types/types';
 import { priceFilterValues, sorterParametrs } from './constants';
 import { createCheckBoxElement, createElement } from './utils';
@@ -13,6 +14,7 @@ class Filters {
     this.drawPriceFilter(filters);
     this.drawByCategoryFilter(filters);
     this.drawByTypeFilter(filters);
+    this.drawResetButton(filters);
 
     return filters;
   }
@@ -107,6 +109,21 @@ class Filters {
     search.type = 'text';
     
     filters.append(search);
+  }
+
+  private drawResetButton(filters: HTMLDivElement): void {
+    const button = createElement('button', ['filters__button', 'button', 'button_blue'], 'Reset all') as HTMLButtonElement;
+
+    filters.append(button);
+  }
+
+  static resetAllFilters(): void {
+    const allCheckbox = document.querySelectorAll<HTMLInputElement>('.filters__checkbox');
+    allCheckbox.forEach((checkbox) => checkbox.checked = false);
+
+    //TODO: add reset sort search? 
+    localStorage.removeItem('sorted_products');
+    catalogQueryParams.clear();
   }
 }
 

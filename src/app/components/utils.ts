@@ -101,7 +101,7 @@ export const createCheckBoxElement = (
   label.setAttribute('for', inputId);
 
   const input = createElement('input', ['checkbox-input']) as HTMLInputElement;
-  if (additionalClassName) input.classList.add(`${additionalClassName}__input`);
+  if (additionalClassName) input.classList.add(`${additionalClassName}__checkbox`);
   input.setAttribute('type', 'checkbox');
   input.setAttribute('id', inputId);
   if (required) {

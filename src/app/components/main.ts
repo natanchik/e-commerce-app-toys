@@ -12,6 +12,7 @@ import getAllProducts from '../api/getProduct/getAllProducts';
 import { catalogQueryParams } from '../state/state';
 import Catalog from '../pages/catalog';
 import { QueryParam } from '../types/types';
+import Filters from './filters';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -177,19 +178,23 @@ class Main {
             };
           }
 
-          console.log(currentTarget.checked);
-
           catalogQueryParams.set(currentTarget.id, queryParam);
-          getAllProducts().then((result) => {
+          getAllProducts().then(() => {
             Catalog.drawProducts();
           });
         } else {
-          console.log(currentTarget.checked);
           catalogQueryParams.delete(currentTarget.id);
-          getAllProducts().then((result) => {
+          getAllProducts().then(() => {
             Catalog.drawProducts();
           });
         }
+      }
+
+      if (target.classList.contains('filters__button')) {
+        Filters.resetAllFilters();
+        getAllProducts().then(() => {
+          Catalog.drawProducts();
+        });
       }
     });
 
