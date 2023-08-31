@@ -130,7 +130,11 @@ class Card {
       ['product-card__decrease-quantity', 'quantity-btn'],
       '+',
     ) as HTMLButtonElement;
-    const addToCart = createElement('button', ['product-card__add-to-cart'], 'Add to cart') as HTMLButtonElement;
+    const addToCart = createElement(
+      'button',
+      ['product-card__add-to-cart', 'button', 'button_green'],
+      'Add to cart',
+    ) as HTMLButtonElement;
 
     quantityWrapper.append(decreaseQuanity, quantity, increaseQuanity);
     form.append(quantityWrapper, addToCart);
