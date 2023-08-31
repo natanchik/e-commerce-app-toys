@@ -9,7 +9,13 @@ import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
 import User from './user';
 import getAllProducts from '../api/getProduct/getAllProducts';
-import { catalogQueryParams, productCategoriesSelectedIds, productTypesSelectedIds } from '../state/state';
+import {
+  catalogQueryParams,
+  productAgeSelectedIds,
+  productCategoriesSelectedIds,
+  productGendersSelectedIds,
+  productTypesSelectedIds,
+} from '../state/state';
 import Catalog from '../pages/catalog';
 import Filters from './filters';
 import { sorterParametrs } from './constants';
@@ -117,12 +123,32 @@ class Main {
   private addFilterNavigationForCheckbox(currentTarget: HTMLInputElement): void {
     if (currentTarget.checked === true) {
       switch (currentTarget.dataset.filters) {
-        case 'category':
+        case 'categories':
           productCategoriesSelectedIds.add(`%22${currentTarget.id}%22`);
           addNewQueryParam(
-            'category',
+            'categories',
             'where',
             `masterData%28current%28categories%28id%20in%20%28${Array.from(productCategoriesSelectedIds).join(
+              ',%20',
+            )}%29%29%29%29`,
+          );
+          break;
+        case 'age':
+          productAgeSelectedIds.add(`%22${currentTarget.id}%22`);
+          addNewQueryParam(
+            'age',
+            'where',
+            `masterData%28current%28categories%28id%20in%20%28${Array.from(productAgeSelectedIds).join(
+              ',%20',
+            )}%29%29%29%29`,
+          );
+          break;
+        case 'genders':
+          productGendersSelectedIds.add(`%22${currentTarget.id}%22`);
+          addNewQueryParam(
+            'genders',
+            'where',
+            `masterData%28current%28categories%28id%20in%20%28${Array.from(productGendersSelectedIds).join(
               ',%20',
             )}%29%29%29%29`,
           );
@@ -139,10 +165,22 @@ class Main {
       this.redrawProducts();
     } else {
       switch (currentTarget.dataset.filters) {
-        case 'category':
+        case 'categories':
           productCategoriesSelectedIds.delete(`%22${currentTarget.id}%22`);
           if (productCategoriesSelectedIds.size === 0) {
-            catalogQueryParams.delete('category');
+            catalogQueryParams.delete('categories');
+          }
+          break;
+        case 'age':
+          productAgeSelectedIds.delete(`%22${currentTarget.id}%22`);
+          if (productAgeSelectedIds.size === 0) {
+            catalogQueryParams.delete('age');
+          }
+          break;
+        case 'genders':
+          productGendersSelectedIds.delete(`%22${currentTarget.id}%22`);
+          if (productGendersSelectedIds.size === 0) {
+            catalogQueryParams.delete('genders');
           }
           break;
         case 'product-type':

@@ -50,7 +50,7 @@ class Filters {
           currentCategory.id,
           false,
           'filters',
-          'category',
+          slug,
         );
         filterContent.append(currentCheckbox);
       });
