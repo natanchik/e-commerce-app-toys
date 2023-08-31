@@ -132,13 +132,6 @@ class Main {
             `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
           );
           break;
-        case 'price':
-          this.addNewQueryParam(
-            currentTarget.id,
-            'where',
-            `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28${currentTarget.id}%29%29%29%29%29%29%29`,
-          );
-          break;
         case 'product-type':
           this.addNewQueryParam(currentTarget.id, 'where', `productType%28id%3D%22${currentTarget.id}%22%29`);
           break;
@@ -192,6 +185,28 @@ class Main {
     }
   }
 
+  private addFilterNavigationForPrices(): void {
+    const from = document.getElementById('price-from') as HTMLInputElement;
+    const to = document.getElementById('price-to') as HTMLInputElement;
+    const fromValue = Number(from.value) * 100;
+    const toValue = Number(to.value) * 100;
+    this.addNewQueryParam(
+      'price',
+      'where',
+      `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%20or%20discounted%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%29%29%29%29%29%29`,
+    );
+    this.redrawProducts();
+  }
+
+  private clearFilterForPrices(): void {
+    const from = document.getElementById('price-from') as HTMLInputElement;
+    const to = document.getElementById('price-to') as HTMLInputElement;
+    from.value = '';
+    to.value = '';
+    catalogQueryParams.delete('price');
+    this.redrawProducts();
+  }
+
   private setEventListeners(router: Router): void {
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
@@ -239,6 +254,14 @@ class Main {
 
       if (target.classList.contains('mobile-filters__item')) {
         this.toggleAccordion('mobile-filters', target, 'mobile-filters');
+      }
+
+      if (target.classList.contains('filters__apply_prices')) {
+        this.addFilterNavigationForPrices();
+      }
+
+      if (target.classList.contains('filters__close_prices')) {
+        this.clearFilterForPrices();
       }
     });
 

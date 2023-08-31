@@ -1,9 +1,9 @@
 import getCategories from '../api/category/getCategories';
 import getProductsTypes from '../api/types/getProductsTypes';
 import { catalogQueryParams } from '../state/state';
-import { Category, PriceFilterValue, ProductType } from '../types/types';
-import { priceFilterValues, sorterParametrs } from './constants';
-import { createCheckBoxElement, createElement } from './utils';
+import { Category, ProductType } from '../types/types';
+import { sorterParametrs } from './constants';
+import { createCheckBoxElement, createElement, createInputElement } from './utils';
 
 class Filters {
   public drawFilters(): HTMLDivElement {
@@ -83,17 +83,22 @@ class Filters {
     const filterByPriceList = createElement('div', ['filters__content', 'filters__content_hidden']) as HTMLDivElement;
     filterByPrice.id = 'price';
     filterByPriceList.dataset.content = 'price';
-    priceFilterValues.forEach((priceFilterValue: PriceFilterValue): void => {
-      const currentCheckbox = createCheckBoxElement(
-        priceFilterValue.value,
-        priceFilterValue.query,
-        false,
-        'filters',
-        'price',
-      );
-      filterByPriceList.append(currentCheckbox);
-    });
 
+    const prices = createElement('div', ['filters__prices']) as HTMLDivElement;
+    const from = createInputElement('text', 'from', 'price-from', 'filters__price', false) as HTMLInputElement;
+    const to = createInputElement('text', 'to', 'price-to', 'filters__price', false) as HTMLInputElement;
+    from.classList.add('filters__price-input_from');
+    to.classList.add('filters__price-input_to');
+    const applyButtons = createElement('div', ['filters__apply-buttons']) as HTMLDivElement;
+    const apply = createElement(
+      'p',
+      ['filters__apply', 'filters__apply_prices'],
+      'apply filter',
+    ) as HTMLParagraphElement;
+    const close = createElement('p', ['filters__close', 'filters__close_prices'], '&times;') as HTMLParagraphElement;
+    prices.append(from, to);
+    applyButtons.append(apply, close);
+    filterByPriceList.append(prices, applyButtons);
     filters.append(filterByPrice, filterByPriceList);
   }
 
