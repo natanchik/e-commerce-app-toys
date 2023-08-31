@@ -118,24 +118,40 @@ class Main {
     if (currentTarget.checked === true) {
       switch (currentTarget.dataset.filters) {
         case 'category':
-          // this.addNewQueryParam(
-          //   currentTarget.id,
-          //   'where',
-          //   `productType%28id%20in%20%28%22${currentTarget.id}%22%29%29`,
-          // );
           productCategoriesSelectedIds.add(`%22${currentTarget.id}%22`);
+          addNewQueryParam(
+            'category',
+            'where',
+            `masterData%28current%28categories%28id%20in%20%28${Array.from(productCategoriesSelectedIds).join(
+              ',%20',
+            )}%29%29%29%29`,
+          );
           break;
         case 'product-type':
-          //this.addNewQueryParam(currentTarget.id, 'where', `productType%28id%3D%22${currentTarget.id}%22%29`);
           productTypesSelectedIds.add(`%22${currentTarget.id}%22`);
+          addNewQueryParam(
+            'product-type',
+            'where',
+            `productType%28id%20in%20%28${Array.from(productTypesSelectedIds).join(',%20')}%29%29`,
+          );
           break;
       }
       this.redrawProducts();
     } else {
-      if (productCategoriesSelectedIds.has(`%22${currentTarget.id}%22`))
-        productCategoriesSelectedIds.delete(`%22${currentTarget.id}%22`);
-      if (productTypesSelectedIds.has(`%22${currentTarget.id}%22`))
-        productTypesSelectedIds.delete(`%22${currentTarget.id}%22`);
+      switch (currentTarget.dataset.filters) {
+        case 'category':
+          productCategoriesSelectedIds.delete(`%22${currentTarget.id}%22`);
+          if (productCategoriesSelectedIds.size === 0) {
+            catalogQueryParams.delete('category');
+          }
+          break;
+        case 'product-type':
+          productTypesSelectedIds.delete(`%22${currentTarget.id}%22`);
+          if (productTypesSelectedIds.size === 0) {
+            catalogQueryParams.delete('product-type');
+          }
+          break;
+      }
       this.redrawProducts();
     }
   }

@@ -26,7 +26,6 @@ const getAllProducts = (): Promise<void> => {
       }
     })
     .then((result) => {
-      //console.log(result);
       if (catalogQueryParams.size === 0) {
         localStorage.setItem('all_products', JSON.stringify(result.results));
         localStorage.setItem('sorted_products', JSON.stringify(result.results));
