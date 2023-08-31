@@ -9,12 +9,12 @@ import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
 import User from './user';
 import getAllProducts from '../api/getProduct/getAllProducts';
-import { catalogQueryParams } from '../state/state';
+import { catalogQueryParams, productCategoriesSelectedIds, productTypesSelectedIds } from '../state/state';
 import Catalog from '../pages/catalog';
-import { QueryParam } from '../types/types';
 import Filters from './filters';
 import { sorterParametrs } from './constants';
 import getProductsBySearch from '../api/getProduct/getProductsBySearch';
+import { addNewQueryParam } from '../api/helpers/utils';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -114,31 +114,28 @@ class Main {
     });
   }
 
-  private addNewQueryParam(id: string, key: string, value: string): void {
-    const queryParam: QueryParam = {
-      key: key,
-      value: value,
-    };
-    catalogQueryParams.set(id, queryParam);
-  }
-
   private addFilterNavigationForCheckbox(currentTarget: HTMLInputElement): void {
     if (currentTarget.checked === true) {
       switch (currentTarget.dataset.filters) {
         case 'category':
-          this.addNewQueryParam(
-            currentTarget.id,
-            'where',
-            `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
-          );
+          // this.addNewQueryParam(
+          //   currentTarget.id,
+          //   'where',
+          //   `productType%28id%20in%20%28%22${currentTarget.id}%22%29%29`,
+          // );
+          productCategoriesSelectedIds.add(`%22${currentTarget.id}%22`);
           break;
         case 'product-type':
-          this.addNewQueryParam(currentTarget.id, 'where', `productType%28id%3D%22${currentTarget.id}%22%29`);
+          //this.addNewQueryParam(currentTarget.id, 'where', `productType%28id%3D%22${currentTarget.id}%22%29`);
+          productTypesSelectedIds.add(`%22${currentTarget.id}%22`);
           break;
       }
       this.redrawProducts();
     } else {
-      catalogQueryParams.delete(currentTarget.id);
+      if (productCategoriesSelectedIds.has(`%22${currentTarget.id}%22`))
+        productCategoriesSelectedIds.delete(`%22${currentTarget.id}%22`);
+      if (productTypesSelectedIds.has(`%22${currentTarget.id}%22`))
+        productTypesSelectedIds.delete(`%22${currentTarget.id}%22`);
       this.redrawProducts();
     }
   }
@@ -153,22 +150,22 @@ class Main {
     switch (currentTarget.value) {
       case 'name-asc':
         this.deleteSortFromQueryParam();
-        this.addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20asc`);
+        addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20asc`);
         this.redrawProducts();
         break;
       case 'name-desc':
         this.deleteSortFromQueryParam();
-        this.addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20desc`);
+        addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20desc`);
         this.redrawProducts();
         break;
       case 'price-asc':
         this.deleteSortFromQueryParam();
-        this.addNewQueryParam(currentTarget.value, 'sort', `key%20asc`);
+        addNewQueryParam(currentTarget.value, 'sort', `key%20asc`);
         this.redrawProducts();
         break;
       case 'price-desc':
         this.deleteSortFromQueryParam();
-        this.addNewQueryParam(currentTarget.value, 'sort', `key%20desc`);
+        addNewQueryParam(currentTarget.value, 'sort', `key%20desc`);
         this.redrawProducts();
         break;
     }
@@ -190,7 +187,7 @@ class Main {
     const to = document.getElementById('price-to') as HTMLInputElement;
     const fromValue = Number(from.value) * 100;
     const toValue = Number(to.value) * 100;
-    this.addNewQueryParam(
+    addNewQueryParam(
       'price',
       'where',
       `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%20or%20discounted%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%29%29%29%29%29%29`,

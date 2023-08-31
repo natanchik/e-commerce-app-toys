@@ -1,3 +1,4 @@
+import { catalogQueryParams, productCategoriesSelectedIds } from '../../state/state';
 import { QueryParam, UserState } from '../../types/types';
 
 export const addUserState = (customer: UserState): void => {
@@ -26,4 +27,25 @@ export const generateQueryParams = (queryParams?: Map<string, QueryParam> | Quer
   }
 
   return `&${params?.map((x) => `${x.key}=${x.value}`).join('&')}`;
+};
+
+export const addNewQueryParam = (id: string, key: string, value: string): void => {
+  const queryParam: QueryParam = {
+    key: key,
+    value: value,
+  };
+  catalogQueryParams.set(id, queryParam);
+};
+
+export const changeCatalogQueryParams = (id: string): void => {
+  // if (catalogQueryParams.has(id)) {
+  // }
+};
+
+export const generateQueryParamsforFilterProducts = (queryParams: Map<string, QueryParam>): string => {
+  if (productCategoriesSelectedIds.size > 0) {
+    queryParams;
+  }
+
+  return '';
 };
