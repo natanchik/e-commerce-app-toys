@@ -13,38 +13,33 @@ class UserProfile extends RegPage {
     const name = this.addProfileItem(
       'name',
       `<div class="profile__name"><p>First name, Last name</p><p class="main__green-text">${userState.firstName} ${userState.lastName}</p></div>`,
+      this.addnameBlock(),
     );
-    this.addItemContent(name, this.addnameBlock());
 
     const birthday = this.addProfileItem(
       'birthday',
       `<div><p>Date of birth:</p><p class="main__green-text">${userState.dateOfBirth}</p></div>`,
-    );
-    this.addItemContent(
-      birthday,
       createInputElement('date', 'Date of birth*', 'dateOfBirth', 'auth', true, { name: 'dateOfBirth' }),
     );
 
-    const email = this.addProfileItem(
-      'cur-email',
-      `<div><p>Email:</p><p class="main__green-text">${userState.email}</p></div>`,
-    );
-    this.addItemContent(email, this.addEmail());
-
-    const password = this.addChangePassword();
-
-    info.append(name, birthday, email, password);
+    info.append(name, birthday);
 
     userState.addresses.forEach((address: Address, ind): void => {
       const addressType = ind === 0 ? 'Billing' : 'Shipping';
       const addresses = this.addProfileItem(
         `${addressType.toLocaleLowerCase()}-address`,
         `<p class='profile__address'>${addressType} address</p>`,
+        this.drawAddressBlock(addressType.toLocaleLowerCase()),
       );
       addresses.append(this.addAddress(address, userState, ind));
-      this.addItemContent(addresses, this.drawAddressBlock(addressType.toLocaleLowerCase()));
       info.append(addresses);
     });
+
+    const email = this.addChangeEmail(userState.email);
+
+    const password = this.addChangePassword();
+
+    info.append(email, password);
 
     const editBtn = createElement('button', ['button', 'button_green', 'profile__edit-btn'], 'Edit profile');
 
@@ -52,19 +47,16 @@ class UserProfile extends RegPage {
     return profile;
   }
 
-  private addProfileItem(className: string, data?: string): HTMLLIElement {
-    const item = createElement('li', ['profile__item'], data) as HTMLLIElement;
-    item.id = `${className}`;
-    return item;
-  }
-
-  private addItemContent(item: HTMLLIElement, data: HTMLDivElement): void {
-    const itemContent = createElement('div', ['profile__content', 'profile__content_hidden']) as HTMLDivElement; // , 'profile__content_hidden'
+  private addProfileItem(itemName: string, label?: string, data?: HTMLDivElement): HTMLLIElement {
+    const item = createElement('li', ['profile__item'], label) as HTMLLIElement;
+    item.id = `${itemName}`;
     if (data) {
+      const itemContent = createElement('div', ['profile__content', 'profile__content_hidden']) as HTMLDivElement; // , 'profile__content_hidden'
       itemContent.append(data);
+      itemContent.dataset.content = `${item.id}`;
+      item.append(itemContent);
     }
-    itemContent.dataset.content = `${item.id}`;
-    item.append(itemContent);
+    return item;
   }
 
   private addAddress(address: Address, userState: UserState, ind: number): HTMLDivElement {
@@ -82,15 +74,35 @@ class UserProfile extends RegPage {
     return addressItem;
   }
 
+  private addChangeEmail(curEmail: string): HTMLLIElement {
+    const modalBg = createElement('div', ['profile__modal__bg']) as HTMLDivElement;
+    const passwordModal = createElement(
+      'div',
+      ['profile__modal'],
+      `<h4>UPDATE E-MAIL</h4><p></p><p>Your current E-mail: <i>${curEmail}</i></p>`,
+    ) as HTMLDivElement;
+    modalBg.append(passwordModal);
+
+    passwordModal.append(this.addPassword('current-password', 'password', 'Input your current password'));
+    passwordModal.append(this.addEmail('Input your new E-mail'));
+    passwordModal.append(createElement('button', ['button', 'button_green', 'password-submit'], 'Update E-mail'));
+
+    const emailTitle = `<div><p>Email:</p><p class="main__green-text">${curEmail}</p></div>`;
+    const email = this.addProfileItem('change-email', emailTitle, modalBg);
+    return email;
+  }
+
   private addChangePassword(): HTMLLIElement {
-    const password = this.addProfileItem('cur-password', 'Password');
-    const passwordTypes = ['current-password', 'new-password', 'new-password-check'];
-    const labels = ['Input your current password', 'Input your new password', 'Repeat your new password'];
-    const items = createElement('div', ['passwords']) as HTMLDivElement;
+    const passwordTypes = ['current-password', 'new-password', 'new-password'];
+    const labels = ['Input your current password', 'Input your new password', 'Confirm your new password'];
+    const modalBg = createElement('div', ['profile__modal__bg']) as HTMLDivElement;
+    const passwordModal = createElement('div', ['profile__modal'], '<h4>CHANGE PASSWORD</h4><p></p>') as HTMLDivElement;
+    modalBg.append(passwordModal);
     passwordTypes.forEach((passwordType, ind) => {
-      items.append(this.addPassword(passwordType, passwordType, labels[ind]));
+      passwordModal.append(this.addPassword(passwordType, passwordType, labels[ind]));
     });
-    this.addItemContent(password, items);
+    passwordModal.append(createElement('button', ['button', 'button_green', 'password-submit'], 'Change password'));
+    const password = this.addProfileItem('change-password', 'Password', modalBg);
     return password;
   }
 }

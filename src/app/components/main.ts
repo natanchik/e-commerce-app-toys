@@ -104,8 +104,14 @@ class Main {
   private toggleAccordion(target: HTMLElement): void {
     if (target.classList.contains('profile__item_active')) {
       this.hideProfileItemContent(target);
+      if (target.id === 'change-password') {
+        document.body.style.overflow = '';
+      }
     } else {
       this.showProfileItemContent(target);
+      if (target.id === 'change-password') {
+        document.body.style.overflow = 'hidden';
+      }
     }
   }
 
@@ -131,7 +137,10 @@ class Main {
         router.navigate(pages.AUTORIZATION);
       }
 
-      if (target.closest('.profile__item')) {
+      if (
+        !(target.classList.contains('profile__modal') || target.closest('.profile__modal')) &&
+        target.closest('.profile__item')
+      ) {
         const item = target.closest('.profile__item');
         if (item && item instanceof HTMLElement) {
           this.toggleAccordion(item);
