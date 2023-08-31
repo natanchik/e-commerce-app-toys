@@ -104,12 +104,12 @@ class Main {
   private toggleAccordion(target: HTMLElement): void {
     if (target.classList.contains('profile__item_active')) {
       this.hideProfileItemContent(target);
-      if (target.id === 'change-password') {
+      if (['change-password', 'change-email'].includes(target.id)) {
         document.body.style.overflow = '';
       }
     } else {
       this.showProfileItemContent(target);
-      if (target.id === 'change-password') {
+      if (['change-password', 'change-email'].includes(target.id)) {
         document.body.style.overflow = 'hidden';
       }
     }
