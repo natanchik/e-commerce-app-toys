@@ -136,7 +136,10 @@ class Filters {
       catalogQueryParams.delete(key);
     });
 
-    //TODO: add reset search?
+    const search = document.querySelector('.filters__search') as HTMLInputElement;
+    search.value = '';
+    localStorage.removeItem('search_products');
+
     localStorage.removeItem('sorted_products');
     catalogQueryParams.clear();
   }

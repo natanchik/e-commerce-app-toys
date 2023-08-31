@@ -1,4 +1,4 @@
-const getProductsBySearch = (word: string): Promise<void> => {
+const getProductsBySearch = (text: string): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -8,9 +8,9 @@ const getProductsBySearch = (word: string): Promise<void> => {
     method: 'GET',
     headers: myHeaders,
   };
-  
+
   return fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/product-projections/search?limit=500&fuzzy=true&text.en-US=%22${word}%22`,
+    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/product-projections/search?limit=500&fuzzy=true&text.en-US=%22${text}%22`,
     requestOptions,
   )
     .then((response) => {
@@ -21,7 +21,6 @@ const getProductsBySearch = (word: string): Promise<void> => {
       }
     })
     .then((result) => {
-      console.log(result);
       localStorage.setItem('search_products', JSON.stringify(result.results));
     });
 };

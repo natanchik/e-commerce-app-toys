@@ -1,4 +1,4 @@
-import { createElement } from './utils';
+import { createElement, encodeText } from './utils';
 import Sidebar from './sidebar';
 import Router from '../router/router';
 import { pages } from '../router/pages';
@@ -14,6 +14,7 @@ import Catalog from '../pages/catalog';
 import { QueryParam } from '../types/types';
 import Filters from './filters';
 import { sorterParametrs } from './constants';
+import getProductsBySearch from '../api/getProduct/getProductsBySearch';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -180,6 +181,17 @@ class Main {
     }
   }
 
+  private addFilterNavigationForSearch(currentTarget: HTMLInputElement): void {
+    if (currentTarget.value.length === 0) {
+      localStorage.removeItem('search_products');
+      Catalog.drawProducts();
+    } else {
+      getProductsBySearch(encodeText(currentTarget.value)).then(() => {
+        Catalog.drawProducts();
+      });
+    }
+  }
+
   private setEventListeners(router: Router): void {
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
@@ -314,6 +326,11 @@ class Main {
       if (target.classList.contains('filters__select')) {
         const currentTarget = target as HTMLSelectElement;
         this.addFilterNavigationForSelect(currentTarget);
+      }
+
+      if (target.classList.contains('filters__search')) {
+        const currentTarget = target as HTMLInputElement;
+        this.addFilterNavigationForSearch(currentTarget);
       }
     });
   }

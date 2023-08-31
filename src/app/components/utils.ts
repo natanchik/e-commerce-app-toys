@@ -113,3 +113,7 @@ export const createCheckBoxElement = (
 
   return checkBoxBlock;
 };
+
+export const encodeText = (text: string): string => {
+  return text.replace(',', ' ').replace(/ {2}/g, '').split(' ').join('%20');
+};

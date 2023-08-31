@@ -1,5 +1,4 @@
 import getAllProducts from '../api/getProduct/getAllProducts';
-import getProductsBySearch from '../api/getProduct/getProductsBySearch';
 import getAnonymousToken from '../api/tokens/getAnonymousToken';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
@@ -11,8 +10,8 @@ class Catalog {
     getAnonymousToken();
     getAllProducts();
     localStorage.removeItem('sorted_products');
+    localStorage.removeItem('search_products');
     catalogQueryParams.clear();
-    getProductsBySearch('wood');
   }
 
   public drawCatalog(): HTMLDivElement {
@@ -39,6 +38,7 @@ class Catalog {
     const products = document.querySelector('.catalog__products') as HTMLDivElement;
     products.innerHTML = '';
     let currentProducts: Product[] = [];
+    let searchProducts: Product[] = [];
 
     if (
       localStorage.getItem('sorted_products') &&
@@ -49,6 +49,17 @@ class Catalog {
       currentProducts = JSON.parse(localStorage.getItem('sorted_products') as string);
     } else {
       currentProducts = JSON.parse(localStorage.getItem('all_products') as string);
+    }
+
+    if (localStorage.getItem('search_products')) {
+      searchProducts = JSON.parse(localStorage.getItem('search_products') as string);
+      const searchProductsIds: string[] = [];
+
+      searchProducts.forEach((product: Product): void => {
+        searchProductsIds.push(product.id);
+      });
+
+      currentProducts = currentProducts.filter((product: Product): boolean => searchProductsIds.includes(product.id));
     }
 
     if (currentProducts.length > 0) {
