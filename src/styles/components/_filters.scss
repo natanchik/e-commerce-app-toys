@@ -40,13 +40,17 @@
     transform: rotate(-225deg);
   }
 }
+.filters__item_active {
+  border-bottom: none
+}
 
 .filters__content_hidden {
   display: none;
 }
 
 .filters__content {
-  padding-top: 10px;
+  padding: 10px 0 17px;
+  border-bottom: 1px solid #dde3f5;
 }
 
 .filters__label {
@@ -86,7 +90,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 10px 20px 0;
+  padding: 5px 10px 10px 0;
   cursor: pointer;
   transition: all .3s ease-in-out;
 }

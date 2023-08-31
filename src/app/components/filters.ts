@@ -135,6 +135,9 @@ class Filters {
     const allCheckbox = document.querySelectorAll<HTMLInputElement>('.filters__checkbox');
     allCheckbox.forEach((checkbox) => (checkbox.checked = false));
 
+    const prices = document.querySelectorAll<HTMLInputElement>('.filters__price-input');
+    prices.forEach((inputPrice) => inputPrice.value = '');
+
     const sort = document.querySelector('.filters__select') as HTMLSelectElement;
     sort.value = '';
     Object.keys(sorterParametrs).forEach((key: string) => {
