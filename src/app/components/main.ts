@@ -120,6 +120,9 @@ class Main {
     });
   }
 
+  // private updateQueryParams(currentProductSelctedIds: Set<string>, toAdd: boolean, toDelete: boolean, id: string): void {
+  // }
+
   private addFilterNavigationForCheckbox(currentTarget: HTMLInputElement): void {
     if (currentTarget.checked === true) {
       switch (currentTarget.dataset.filters) {
@@ -167,24 +170,50 @@ class Main {
       switch (currentTarget.dataset.filters) {
         case 'categories':
           productCategoriesSelectedIds.delete(`%22${currentTarget.id}%22`);
+          addNewQueryParam(
+            'categories',
+            'where',
+            `masterData%28current%28categories%28id%20in%20%28${Array.from(productCategoriesSelectedIds).join(
+              ',%20',
+            )}%29%29%29%29`,
+          );
           if (productCategoriesSelectedIds.size === 0) {
             catalogQueryParams.delete('categories');
           }
           break;
         case 'age':
           productAgeSelectedIds.delete(`%22${currentTarget.id}%22`);
+          addNewQueryParam(
+            'age',
+            'where',
+            `masterData%28current%28categories%28id%20in%20%28${Array.from(productAgeSelectedIds).join(
+              ',%20',
+            )}%29%29%29%29`,
+          );
           if (productAgeSelectedIds.size === 0) {
             catalogQueryParams.delete('age');
           }
           break;
         case 'genders':
           productGendersSelectedIds.delete(`%22${currentTarget.id}%22`);
+          addNewQueryParam(
+            'genders',
+            'where',
+            `masterData%28current%28categories%28id%20in%20%28${Array.from(productGendersSelectedIds).join(
+              ',%20',
+            )}%29%29%29%29`,
+          );
           if (productGendersSelectedIds.size === 0) {
             catalogQueryParams.delete('genders');
           }
           break;
         case 'product-type':
           productTypesSelectedIds.delete(`%22${currentTarget.id}%22`);
+          addNewQueryParam(
+            'product-type',
+            'where',
+            `productType%28id%20in%20%28${Array.from(productTypesSelectedIds).join(',%20')}%29%29`,
+          );
           if (productTypesSelectedIds.size === 0) {
             catalogQueryParams.delete('product-type');
           }
