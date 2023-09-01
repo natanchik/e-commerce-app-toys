@@ -35,9 +35,21 @@ class UserProfile extends RegPage {
       info.append(addresses);
     });
 
-    const email = this.addChangeEmail(userState.email);
+    const emailComponents = [
+      createElement('div', [], `<p>Your current E-mail: <i>${userState.email}</i></p>`),
+      this.addPassword('current-password', 'password', 'Input your current password'),
+      this.addEmail('Input your new E-mail'),
+    ];
 
-    const password = this.addChangePassword();
+    const email = this.addModal('email', userState.email, emailComponents);
+
+    const passwordComponents = [
+      this.addPassword('current-password', 'cur-password', 'Input your current password'),
+      this.addPassword('new-password', 'new-password', 'Input your new password'),
+      this.addPassword('new-password', 'new-password-check', 'Confirm your new password'),
+    ];
+
+    const password = this.addModal('password', userState.email, passwordComponents);
 
     info.append(email, password);
 
@@ -51,7 +63,7 @@ class UserProfile extends RegPage {
     const item = createElement('li', ['profile__item'], label) as HTMLLIElement;
     item.id = `${itemName}`;
     if (data) {
-      const itemContent = createElement('div', ['profile__content', 'profile__content_hidden']) as HTMLDivElement; // , 'profile__content_hidden'
+      const itemContent = createElement('div', ['profile__content', 'profile__content_hidden']) as HTMLDivElement;
       itemContent.append(data);
       itemContent.dataset.content = `${item.id}`;
       item.append(itemContent);
@@ -74,36 +86,29 @@ class UserProfile extends RegPage {
     return addressItem;
   }
 
-  private addChangeEmail(curEmail: string): HTMLLIElement {
+  private addModal(title: string, curEmail: string, components: HTMLElement[]): HTMLLIElement {
     const modalBg = createElement('div', ['profile__modal__bg']) as HTMLDivElement;
-    const passwordModal = createElement(
-      'div',
-      ['profile__modal'],
-      `<h4>UPDATE E-MAIL</h4><p></p><p>Your current E-mail: <i>${curEmail}</i></p>`,
-    ) as HTMLDivElement;
-    modalBg.append(passwordModal);
+    const modal = createElement('div', ['profile__modal'], `<h4>Change ${title}</h4>`) as HTMLDivElement;
+    const modalForm = createElement('form', ['auth-form', 'profile__modal__form']) as HTMLFormElement;
+    modalBg.append(modal);
+    modal.append(modalForm);
 
-    passwordModal.append(this.addPassword('current-password', 'password', 'Input your current password'));
-    passwordModal.append(this.addEmail('Input your new E-mail'));
-    passwordModal.append(createElement('button', ['button', 'button_green', 'password-submit'], 'Update E-mail'));
+    const currentEmail = this.addEmail('Input your new E-mail', `${title}__cur-email`);
+    currentEmail.classList.add('profile__email__current');
+    const inputCurEmail = document.getElementById(`${title}__cur-email`);
+    if (inputCurEmail && inputCurEmail instanceof HTMLInputElement) {
+      inputCurEmail.value = `${curEmail}`;
+    }
+    const apiStatus = createElement('p', ['api-status'], '');
+    const btnBlock = createElement('div', ['profile__modal__btn-block']);
+    const cancelBtn = createElement('button', ['button', 'modal-cancel'], `Cancel`);
+    const submitBtn = createElement('button', ['button', 'button_green', 'modal-submit'], `Change ${title}`);
+    btnBlock.append(cancelBtn, submitBtn);
 
-    const emailTitle = `<div><p>Email:</p><p class="main__green-text">${curEmail}</p></div>`;
-    const email = this.addProfileItem('change-email', emailTitle, modalBg);
-    return email;
-  }
-
-  private addChangePassword(): HTMLLIElement {
-    const passwordTypes = ['current-password', 'new-password', 'new-password'];
-    const labels = ['Input your current password', 'Input your new password', 'Confirm your new password'];
-    const modalBg = createElement('div', ['profile__modal__bg']) as HTMLDivElement;
-    const passwordModal = createElement('div', ['profile__modal'], '<h4>CHANGE PASSWORD</h4><p></p>') as HTMLDivElement;
-    modalBg.append(passwordModal);
-    passwordTypes.forEach((passwordType, ind) => {
-      passwordModal.append(this.addPassword(passwordType, passwordType, labels[ind]));
-    });
-    passwordModal.append(createElement('button', ['button', 'button_green', 'password-submit'], 'Change password'));
-    const password = this.addProfileItem('change-password', 'Password', modalBg);
-    return password;
+    modalForm.append(apiStatus, currentEmail, ...components, btnBlock);
+    const itemTitle = title[0].toUpperCase() + title.slice(1);
+    const item = this.addProfileItem(title, itemTitle, modalBg);
+    return item;
   }
 }
 
