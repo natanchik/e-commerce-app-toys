@@ -8,8 +8,8 @@ const requestOptions = {
   body: '',
 };
 
-const getAnonymousToken = (): void => {
-  fetch(
+const getAnonymousToken = (): Promise<void> => {
+  return fetch(
     'https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=client_credentials',
     requestOptions,
   )

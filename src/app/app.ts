@@ -1,4 +1,4 @@
-import pages from './router/pages';
+import { /*ID_SELECTOR,*/ pages } from './router/pages';
 import { RouteInfo } from './types/types';
 import MainPage from './pages/main-page';
 import LoginPage from './pages/login-page';
@@ -13,6 +13,7 @@ import Terms from './pages/terms-conditions';
 import RegPage from './pages/registration-page';
 import User from './components/user';
 import UserProfile from './pages/user-profile';
+import Catalog from './pages/catalog';
 
 class App {
   router: Router;
@@ -79,6 +80,21 @@ class App {
           Main.setContent(userProfile.drawProfile());
         },
       },
+      {
+        path: `${pages.CATALOG}`,
+        callback: (): void => {
+          const catalog = new Catalog();
+          Main.setContent(catalog.drawCatalog());
+          Catalog.drawProducts();
+        },
+      },
+      // {
+      //   path: `${pages.CATALOG}/${ID_SELECTOR}`,
+      // callback: (id): void => {
+      //   const card = new Card();
+      //   Main.setContent(catalog.drawCard());
+      // },
+      // },
       {
         path: `${pages.ABOUT_US}`,
         callback: (): void => {
