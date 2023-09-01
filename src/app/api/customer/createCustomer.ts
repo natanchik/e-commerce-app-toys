@@ -98,7 +98,7 @@ const createCustomer = async (
       });
       await fetch(`${customersURL}/${customerID}`, { method: 'POST', headers: myHeaders, body: dataForAddressActions })
         .then(async () => {
-          loginAfterRegistration(data.email, data.password);
+          await loginAfterRegistration(data.email, data.password);
           await getCustomerByID(customerID);
           addApiStatus('success-status__register', `Enjoy the shopping!`);
         })

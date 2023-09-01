@@ -39,6 +39,7 @@
   font-size: 1.3rem;
   font-weight: 600;
   color: #747474;
+  font-style: italic;
 }
 
 .auth-btn {
@@ -83,10 +84,6 @@
     height: 15px;
     width: 15px;
     cursor: pointer;
-  }
-
-  & .checkbox-label {
-    font-style: italic;
   }
 }
 

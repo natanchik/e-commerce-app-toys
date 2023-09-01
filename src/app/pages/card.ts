@@ -1,24 +1,115 @@
-import { createElement } from '../components/utils';
+import { createElement, createImageElement } from '../components/utils';
+import { CardData } from '../types/types';
 
 class Card {
-  public drawCard(): Node {
-    const wrapper = createElement('div', ['product-card', 'main__wrapper']) as HTMLDivElement;
-    const img = createElement('div', ['product-card__img']) as HTMLDivElement;
+  data: CardData;
+
+  constructor(data: CardData) {
+    this.data = data;
+  }
+
+  public drawCard(): HTMLDivElement {
+    const wrapper = createElement('div', ['product-card', 'main__wrapper'], '', {
+      'data-slideIndex': '1',
+    }) as HTMLDivElement;
+    const slider = this.drawSlider();
+    const modal = this.drawModal();
     const info = createElement('div', ['product-card__info']) as HTMLDivElement;
-    const heading = createElement('h2', ['product-card__heading'], 'Little Dutch Cutting Fruit Set') as HTMLElement;
-    const price = createElement('p', ['product-card__price'], '£15.00') as HTMLParagraphElement;
+    const heading = createElement('h2', ['product-card__heading'], this.data.title) as HTMLElement;
+    const priceWrapper = this.drawPriceWrapper();
     const form = this.drawCartForm();
-    const smallHeading = createElement('h4', ['product-card__small-heading'], 'Details') as HTMLElement;
-    const details = createElement(
-      'p',
-      ['product-card__details'],
-      'This beautiful wooden cutting fruit set from our favourites at Little dutch is the perfect gift on its own or with one of our Kitchen sets. <br> Complete with a wooden chopping board and knife, each fruit can be safely chopped in half - for hours of food prep fun! The pieces re connect easily thanks to the sturdy velcro fastening. <br> Each toy is lovingly painted and crafted from natural wood of the highest quality,  all sustainably and responsibly sourced.',
-    ) as HTMLParagraphElement;
+    const smallHeading = createElement('h4', ['product-card__detail-heading'], 'Details') as HTMLElement;
+    const details = createElement('p', ['product-card__details'], this.data.details) as HTMLParagraphElement;
 
-    info.append(heading, price, form, smallHeading, details);
-    wrapper.append(img, info);
+    info.append(heading, priceWrapper, form, smallHeading, details);
+    wrapper.append(modal, slider, info);
 
-    return wrapper as Node;
+    return wrapper;
+  }
+
+  private drawSlider(): HTMLDivElement {
+    const container = createElement('div', ['product-card__slider-container']) as HTMLDivElement;
+    const nextBtn = createElement('span', ['product-card__next-slide'], '&#10095') as HTMLSpanElement;
+    const prevBtn = createElement('span', ['product-card__prev-slide'], '&#10094') as HTMLSpanElement;
+    const slidesContainer = createElement('div', ['product-card__slider']) as HTMLDivElement;
+    const slidesRow = createElement('div', ['product-card__slides-row']) as HTMLDivElement;
+    const minisRow = createElement('div', ['product-card__minis-row']) as HTMLDivElement;
+    this.data.images.map((imageData, idx) => {
+      const slide = createElement('div', ['product-card__slide']) as HTMLDivElement;
+      const currentImg = createImageElement(imageData.url, ['product-card__slide-img']);
+      const mini = createElement('div', ['product-card__mini']) as HTMLDivElement;
+      if (idx === 0) {
+        mini.classList.add('active-mini');
+      }
+      const miniImg = createImageElement(imageData.url, ['product-card__mini-img'], {
+        width: '40',
+        'data-index': `${idx + 1}`,
+      });
+
+      slide.append(currentImg);
+      mini.append(miniImg);
+      slidesRow.append(slide);
+      minisRow.append(mini);
+    });
+
+    if (this.data.images.length > 1) {
+      slidesContainer.append(slidesRow, minisRow);
+      container.append(prevBtn, slidesContainer, nextBtn);
+    } else {
+      slidesContainer.append(slidesRow);
+      container.append(slidesContainer);
+    }
+
+    return container;
+  }
+
+  private drawModal(): HTMLDivElement {
+    const modalDimming = createElement('div', ['modal-card__dimming']) as HTMLDivElement;
+    const modalWrapper = createElement('div', ['modal-card__wrapper']) as HTMLDivElement;
+    const closeModal = createElement('button', ['modal-card__close-btn']) as HTMLButtonElement;
+    const modalSlider = createElement('div', ['modal-card__slider']) as HTMLDivElement;
+    const nextBtn = createElement('span', ['modal-card__next-slide'], '&#10095') as HTMLSpanElement;
+    const prevBtn = createElement('span', ['modal-card__prev-slide'], '&#10094') as HTMLSpanElement;
+    const slidesRow = createElement('div', ['modal-card__slides-row']) as HTMLDivElement;
+    this.data.images.map((imageData, idx) => {
+      const slide = createElement('div', ['modal-card__slide']) as HTMLDivElement;
+      const currentImg = createImageElement(imageData.url, ['modal-card__slide-img'], {
+        'data-index': `${idx + 1}`,
+      }) as HTMLImageElement;
+
+      slide.append(currentImg);
+      slidesRow.append(slide);
+    });
+
+    if (this.data.images.length > 1) {
+      modalSlider.append(prevBtn, slidesRow, nextBtn);
+    } else {
+      modalSlider.append(slidesRow);
+    }
+    modalWrapper.append(closeModal, modalSlider);
+    modalDimming.append(modalWrapper);
+
+    return modalDimming;
+  }
+
+  private drawPriceWrapper(): HTMLDivElement {
+    const priceWrapper = createElement('div', ['product-card__price-wrapper']) as HTMLDivElement;
+    if (this.data.prices.discounted) {
+      const discountedPrice = createElement(
+        'span',
+        ['product-card__discounted-price'],
+        `${this.data.prices.discounted}${this.data.prices.currency} `,
+      ) as HTMLSpanElement;
+      priceWrapper.append(discountedPrice);
+    }
+    const price = createElement(
+      'span',
+      ['product-card__price', `${this.data.prices.discounted ? 'product-card__old-price' : ''}`],
+      `${this.data.prices.value}${this.data.prices.currency}`,
+    ) as HTMLSpanElement;
+    priceWrapper.append(price);
+
+    return priceWrapper;
   }
 
   private drawCartForm(): HTMLFormElement {
@@ -31,6 +122,7 @@ class Card {
     ) as HTMLButtonElement;
     const quantity = createElement('input', ['product-card__quantity']) as HTMLInputElement;
     quantity.type = 'number';
+    quantity.placeholder = '1';
     quantity.min = '0';
     quantity.value = '1';
     const increaseQuanity = createElement(
@@ -38,7 +130,11 @@ class Card {
       ['product-card__decrease-quantity', 'quantity-btn'],
       '+',
     ) as HTMLButtonElement;
-    const addToCart = createElement('button', ['product-card__add-to-cart'], 'Add to cart') as HTMLButtonElement;
+    const addToCart = createElement(
+      'button',
+      ['product-card__add-to-cart', 'button', 'button_green'],
+      'Add to cart',
+    ) as HTMLButtonElement;
 
     quantityWrapper.append(decreaseQuanity, quantity, increaseQuanity);
     form.append(quantityWrapper, addToCart);

@@ -1,5 +1,5 @@
 import { createElement } from '../components/utils';
-import pages from '../router/pages';
+import { pages } from '../router/pages';
 
 class MainPage {
   public drawMainPage(): HTMLDivElement {

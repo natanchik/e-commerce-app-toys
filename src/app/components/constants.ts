@@ -35,3 +35,11 @@ export const passwordRequirements: [RegExp, string][] = [
   [/[!@$%^&*_+.,~:;-]/, '<p>Password must contain at least one special character (use !@$%^&*_+.,~:;-).</p>'],
   [/^[^ ]*$/, '<p>Password must not contain whitespace.</p>'],
 ];
+
+export const sorterParametrs = {
+  '': 'Sort by ',
+  'name-asc': 'Products: A to Z',
+  'name-desc': 'Products: Z to A',
+  'price-asc': 'Price: Low to High',
+  'price-desc': 'Price: High to Low',
+};
