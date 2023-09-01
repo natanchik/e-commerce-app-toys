@@ -1,5 +1,6 @@
+import getCategories from '../api/category/getCategories';
+import { Category } from '../types/types';
 import { createElement } from './utils';
-import { categories } from './constants';
 
 class Sidebar {
   public drawSidebar(): HTMLDivElement {
@@ -34,20 +35,57 @@ class Sidebar {
     const commonLinks = createElement(
       'div',
       ['sidebar__common-links'],
-      `<div class="sidebar__link" data-page="main">Home</div>
-    <div class="sidebar__link" dapage="catalogue">Catalogue</div>`,
+      `<h4 class="sidebar__link" data-page="main">Home</h4>
+    <h4 class="sidebar__link" data-page="catalogue">Catalogue</h4>`,
     ) as HTMLDivElement;
     const categoriesList = createElement('ul', ['sidebar__categories-list']) as HTMLUListElement;
-    for (const [key, value] of Object.entries(categories)) {
-      const category = createElement('li', ['sidebar__category']) as HTMLElement;
-      const categoryName = createElement('li', ['sidebar__category-name'], key) as HTMLElement;
-      category.append(categoryName);
-      for (const sortBy of value) {
-        const item = createElement('div', ['sidebar__categories-item'], sortBy) as HTMLElement;
-        category.append(item);
-      }
-      categoriesList.append(category);
+    let topCategories: Category[] = [];
+
+    if (localStorage.getItem('top_categories') === null) {
+      getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]).then(() => {
+        topCategories = JSON.parse(localStorage.getItem('top_categories') as string);
+      });
+      //отобразить сообщение об ошибке если не загрузились категории
     }
+    
+    topCategories = JSON.parse(localStorage.getItem('top_categories') as string);
+
+    topCategories.forEach((category: Category): void => {
+      const name = category.name['en-US'].toLocaleLowerCase();
+      const slug = category.slug['en-US'];
+
+      if (slug !== 'age' && slug !== 'genders') {
+        const categoryItem = createElement('li', ['sidebar__category', 'sidebar__link'], name) as HTMLElement;
+        categoryItem.id = category.id;
+        categoryItem.dataset.page = slug;
+
+        getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]).then(() => {
+          const subcategories: Category[] = localStorage.getItem(`${name}_categories`)
+            ? JSON.parse(localStorage.getItem(`${name}_categories`) as string)
+            : [];
+
+          subcategories.forEach((subcategory: Category): void => {
+
+          })
+
+        })
+
+
+        categoriesList.append(categoryItem);
+      }
+    });
+
+  
+    // for (const [key, value] of Object.entries(categories)) {
+    //   const category = createElement('li', ['sidebar__category']) as HTMLElement;
+    //   const categoryName = createElement('li', ['sidebar__category-name'], key) as HTMLElement;
+    //   category.append(categoryName);
+    //   for (const sortBy of value) {
+    //     const item = createElement('div', ['sidebar__categories-item'], sortBy) as HTMLElement;
+    //     category.append(item);
+    //   }
+    //   categoriesList.append(category);
+    // }
 
     content.append(commonLinks, categoriesList);
 

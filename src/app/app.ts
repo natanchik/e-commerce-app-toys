@@ -28,10 +28,10 @@ class App {
 
   constructor() {
     this.router = new Router(this.createRoutes());
+    this.user = new User();
     this.header = new Header(this.router);
     this.main = new Main(this.router);
     this.footer = new Footer(this.router);
-    this.user = new User();
   }
 
   public startApp(): void {}

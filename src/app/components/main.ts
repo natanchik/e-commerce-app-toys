@@ -33,6 +33,7 @@ class Main {
     this.sidebarWrapper = this.sidebar.drawSidebar();
     this.mainElement = this.drawMain();
     this.setEventListeners(router);
+    getAllProducts();
   }
 
   public drawMain(): HTMLDivElement {
@@ -438,8 +439,7 @@ class Main {
         const currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
         this.toggleCardModal(currentIndex);
         }
-    });
-    
+
       if (target.classList.contains('filters__item')) {
         this.toggleAccordion(target.id, target, 'filters');
       }

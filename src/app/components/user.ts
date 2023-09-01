@@ -1,4 +1,3 @@
-import getAllProducts from '../api/getProduct/getAllProducts';
 import getAnonymousToken from '../api/tokens/getAnonymousToken';
 
 class User {
@@ -36,9 +35,7 @@ class User {
   private setEventListeners(): void {
     document.addEventListener('DOMContentLoaded', (): void => {
       if (localStorage.length === 0) {
-        getAnonymousToken().then(() => {
-          getAllProducts();
-        });
+        getAnonymousToken();
       }
 
       if (!User.isLogged()) {
