@@ -133,6 +133,8 @@ class Catalog {
     ) as HTMLDivElement;
     const prices = this.drawPrices(product);
 
+    productBlock.id = product.id;
+
     productBlock.append(img, name, description, prices);
     return productBlock;
   }
