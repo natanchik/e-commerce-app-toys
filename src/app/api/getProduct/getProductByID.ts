@@ -1,4 +1,4 @@
-const productID = '554109e7-7c41-4002-8140-eb9344aac28c';
+const productID = '129ae40f-9c4f-49b7-a5ca-2aba067d8c7b';
 
 // TODO прокидывать id в параметры функции
 const getProductByID = (): void => {
@@ -15,8 +15,25 @@ const getProductByID = (): void => {
   fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/products/${productID}`,
     requestOptions,
-  ).then((response) => response.text());
-  // .then((result) => console.log(result))
+  )
+    .then((response) => response.json())
+    .then((result) => {
+      // TODO сохранять в локал только нужную для карточки инфо или нужен весь объект?
+      localStorage.setItem('full-product-info', JSON.stringify(result));
+      localStorage.setItem(
+        'product-info',
+        JSON.stringify({
+          title: result.masterData.staged.name['ru-KZ'],
+          images: [...result.masterData.staged.masterVariant.images],
+          prices: {
+            value: (result.masterData.staged.masterVariant.prices[0].value.centAmount / 100).toFixed(2),
+            discounted: (result.masterData.staged.masterVariant.prices[0].discounted.value.centAmount / 100).toFixed(2),
+            currency: result.masterData.staged.masterVariant.prices[0].value.currencyCode,
+          },
+          details: result.masterData.staged.description['en-US'],
+        }),
+      );
+    });
   // .catch((error) => console.log('error', error));
 };
 

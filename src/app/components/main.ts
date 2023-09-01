@@ -196,6 +196,107 @@ class Main {
     }
   }
 
+  private makeMiniActive(slideIndex: number): void {
+    const minis = document.querySelectorAll('.product-card__mini') as NodeListOf<HTMLDivElement>;
+
+    minis.forEach((mini) => {
+      mini.classList.remove('active-mini');
+    });
+    minis[slideIndex - 1].classList.add('active-mini');
+  }
+
+  private switchNextSlide(): void {
+    const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
+    let currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
+
+    const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+    const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+    const width = slides[0].clientWidth + 60;
+
+    const slidesRowModal = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
+    const slidesModal = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
+    const widthModal = slidesModal[0].clientWidth + 60;
+
+    if (currentIndex > slides.length - 1) {
+      currentIndex = 1;
+      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
+
+      slidesRow.style.transform = `none`;
+      slidesRowModal.style.transform = `none`;
+    } else {
+      slidesRow.style.transform = `translateX(${-width * currentIndex}px)`;
+      slidesRowModal.style.transform = `translateX(${-widthModal * currentIndex}px)`;
+
+      currentIndex++;
+      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
+    }
+    this.makeMiniActive(currentIndex);
+  }
+
+  private switchPrevSlide(): void {
+    const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
+    let currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
+
+    const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+    const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+    const width = slides[0].clientWidth + 60;
+
+    const slidesRowModal = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
+    const slidesModal = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
+    const widthModal = slidesModal[0].clientWidth + 60;
+
+    if (currentIndex <= 1) {
+      currentIndex = slides.length;
+      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
+
+      slidesRow.style.transform = `translateX(${-width * (currentIndex - 1)}px)`;
+      slidesRowModal.style.transform = `translateX(${-widthModal * (currentIndex - 1)}px)`;
+    } else {
+      currentIndex--;
+      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
+
+      slidesRow.style.transform = `translateX(${-width * (currentIndex - 1)}px)`;
+      slidesRowModal.style.transform = `translateX(${-widthModal * (currentIndex - 1)}px)`;
+    }
+    this.makeMiniActive(currentIndex);
+  }
+
+  private getImagebyMini(target: HTMLElement): void {
+    const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
+    let currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
+
+    const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+    const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+    const width = slides[0].clientWidth + 60;
+
+    currentIndex = +target.getAttribute('data-index')!;
+    cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
+    slidesRow.style.transform = `translateX(${-width * (currentIndex - 1)}px)`;
+    this.makeMiniActive(currentIndex);
+  }
+
+  private toggleCardModal(slideIndex: number): void {
+    const modal = document.querySelector('.modal-card__dimming');
+    modal?.classList.toggle('modal-active');
+    if (modal?.classList.contains('modal-active')) {
+      const slidesRow = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
+      const slides = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
+      const width = slides[0].clientWidth + 60;
+
+      slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
+    } else {
+      const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
+      const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
+      const miniRow = document.querySelector('.product-card__minis-row');
+      const width = slides[0].clientWidth + 60;
+
+      slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
+      if (miniRow) {
+        this.makeMiniActive(slideIndex);
+      }
+    }
+}
+
   private deleteSortFromQueryParam(): void {
     Object.keys(sorterParametrs).forEach((key: string) => {
       catalogQueryParams.delete(key);
@@ -310,6 +411,35 @@ class Main {
         router.navigate(pageName === 'main' ? pages.MAIN : pageName);
       }
 
+      if (
+        target.classList.contains('product-card__next-slide') ||
+        target.classList.contains('modal-card__next-slide')
+      ) {
+        this.switchNextSlide();
+      }
+
+      if (
+        target.classList.contains('product-card__prev-slide') ||
+        target.classList.contains('modal-card__prev-slide')
+      ) {
+        this.switchPrevSlide();
+      }
+
+      if (target.classList.contains('product-card__mini-img')) {
+        this.getImagebyMini(target);
+      }
+
+      if (
+        target.classList.contains('product-card__slide-img') ||
+        target.classList.contains('modal-card__close-btn') ||
+        (target.classList.contains('modal-card__dimming') && target !== document.querySelector('.modal-card__wrapper'))
+      ) {
+        const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
+        const currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
+        this.toggleCardModal(currentIndex);
+        }
+    });
+    
       if (target.classList.contains('filters__item')) {
         this.toggleAccordion(target.id, target, 'filters');
       }
@@ -360,6 +490,10 @@ class Main {
         if (isValid) {
           this.registerViaForm(router);
         }
+      }
+
+      if (target.classList.contains('product-card__form')) {
+        event.preventDefault();
       }
     });
 

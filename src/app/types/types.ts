@@ -55,6 +55,17 @@ export interface CurrentAction {
   addressId: string;
 }
 
+export interface CardData {
+  title: string;
+  images: { dimensions: { w: number; h: number }; url: string }[];
+  prices: {
+    value: string;
+    discounted: string;
+    currency: string;
+  };
+  details: string;
+}
+
 export interface Product {
   id: string;
   productType: ProductTypeReference;
