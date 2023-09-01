@@ -1,6 +1,6 @@
 import User from '../components/user';
 import { RouteInfo, UrlInfo } from '../types/types';
-import pages from './pages';
+import { pages } from './pages';
 
 class Router {
   routes: RouteInfo[];

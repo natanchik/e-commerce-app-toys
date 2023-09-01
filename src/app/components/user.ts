@@ -1,4 +1,5 @@
-import getAccessToken from '../api/tokens/getAccessToken';
+import getAllProducts from '../api/getProduct/getAllProducts';
+import getAnonymousToken from '../api/tokens/getAnonymousToken';
 
 class User {
   constructor() {
@@ -29,13 +30,15 @@ class User {
   static userLogout(): void {
     this.toggleLogoutIcon();
     localStorage.clear();
-    getAccessToken();
+    getAnonymousToken();
   }
 
   private setEventListeners(): void {
     document.addEventListener('DOMContentLoaded', (): void => {
       if (localStorage.length === 0) {
-        getAccessToken();
+        getAnonymousToken().then(() => {
+          getAllProducts();
+        });
       }
 
       if (!User.isLogged()) {

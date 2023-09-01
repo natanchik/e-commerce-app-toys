@@ -1,4 +1,5 @@
-import { UserState } from '../../types/types';
+import { catalogQueryParams } from '../../state/state';
+import { QueryParam, UserState } from '../../types/types';
 
 export const addUserState = (customer: UserState): void => {
   const userState: UserState = {
@@ -14,4 +15,24 @@ export const addUserState = (customer: UserState): void => {
     defaultShippingAddressId: customer.defaultShippingAddressId,
   };
   localStorage.setItem('userState', JSON.stringify(userState));
+};
+
+export const generateQueryParams = (queryParams?: Map<string, QueryParam> | QueryParam[]): string => {
+  let params: QueryParam[] | undefined = [];
+
+  if (queryParams && !Array.isArray(queryParams)) {
+    params = Array.from(queryParams.values());
+  } else {
+    params = queryParams;
+  }
+
+  return `&${params?.map((x) => `${x.key}=${x.value}`).join('&')}`;
+};
+
+export const addNewQueryParam = (id: string, key: string, value: string): void => {
+  const queryParam: QueryParam = {
+    key: key,
+    value: value,
+  };
+  catalogQueryParams.set(id, queryParam);
 };
