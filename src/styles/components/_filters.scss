@@ -75,6 +75,10 @@
   }
 }
 
+.filters__search-block {
+  position: relative;
+}
+
 .filters__search {
   background-color: rgba(#dfe5e1, 0.4);
   font-style: italic;
@@ -86,18 +90,12 @@
   width: 95%;
 }
 
-.filters__apply-buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 10px 10px 0;
-  cursor: pointer;
-  transition: all .3s ease-in-out;
-}
 
 .filters__apply {
   font-weight: 600;
   font-size: 1.3rem;
+  padding-top: 15px;
+  cursor: pointer;
   &:hover {
     color: $green;
   }
@@ -105,14 +103,27 @@
 
 .filters__close {
   font-size: 2.5rem;
+  cursor: pointer;
   &:hover {
     color: $green;
   }
 }
 
+.filters__close_search {
+  position: absolute;
+  right: 10%;
+  top: 5%;
+}
+
+.filters__close_hidden {
+  display: none;
+}
+
 .filters__prices {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
   font-size: 1.3rem;
   gap: 10px;
 }

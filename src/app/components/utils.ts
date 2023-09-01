@@ -28,6 +28,7 @@ export const createInputElement = (
   page: string,
   required: boolean = true,
   attributes?: object,
+  ifError: boolean = true
 ): HTMLDivElement => {
   const label = createElement('label', [`${page}-label`], labelText);
   label.setAttribute('for', inputId);
@@ -42,11 +43,14 @@ export const createInputElement = (
     Object.entries(attributes).forEach((entry) => input.setAttribute(entry[0], entry[1]));
   }
 
-  const notation = createElement('p', ['error-message']) as HTMLParagraphElement;
-  notation.dataset.input = inputId;
-
   const inputBlock = createElement('div', [`${page}-item`]) as HTMLDivElement;
-  inputBlock.append(label, input, notation);
+  inputBlock.append(label, input);
+
+  if (ifError) {
+    const notation = createElement('p', ['error-message']) as HTMLParagraphElement;
+    notation.dataset.input = inputId;
+    inputBlock.append(notation);
+  }
 
   return inputBlock;
 };

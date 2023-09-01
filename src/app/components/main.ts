@@ -120,22 +120,9 @@ class Main {
     });
   }
 
-  // private updateQueryParams(currentProductSelctedIds: Set<string>, toAdd: boolean, toDelete: boolean, id: string): void {
-  // }
-
   private addFilterNavigationForCheckbox(currentTarget: HTMLInputElement): void {
     if (currentTarget.checked === true) {
       switch (currentTarget.dataset.filters) {
-        case 'categories':
-          productCategoriesSelectedIds.add(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'categories',
-            'where',
-            `masterData%28current%28categories%28id%20in%20%28${Array.from(productCategoriesSelectedIds).join(
-              ',%20',
-            )}%29%29%29%29`,
-          );
-          break;
         case 'age':
           productAgeSelectedIds.add(`%22${currentTarget.id}%22`);
           addNewQueryParam(
@@ -168,19 +155,6 @@ class Main {
       this.redrawProducts();
     } else {
       switch (currentTarget.dataset.filters) {
-        case 'categories':
-          productCategoriesSelectedIds.delete(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'categories',
-            'where',
-            `masterData%28current%28categories%28id%20in%20%28${Array.from(productCategoriesSelectedIds).join(
-              ',%20',
-            )}%29%29%29%29`,
-          );
-          if (productCategoriesSelectedIds.size === 0) {
-            catalogQueryParams.delete('categories');
-          }
-          break;
         case 'age':
           productAgeSelectedIds.delete(`%22${currentTarget.id}%22`);
           addNewQueryParam(
@@ -255,9 +229,12 @@ class Main {
   }
 
   private addFilterNavigationForSearch(currentTarget: HTMLInputElement): void {
+    const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
+    close.classList.remove('filters__close_hidden');
     if (currentTarget.value.length === 0) {
       localStorage.removeItem('search_products');
       Catalog.drawProducts();
+      close.classList.add('filters__close_hidden');
     } else {
       getProductsBySearch(encodeText(currentTarget.value)).then(() => {
         Catalog.drawProducts();
@@ -265,7 +242,18 @@ class Main {
     }
   }
 
+  private clearFilterForSearch(): void {
+    const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
+    const search = document.querySelector('.filters__search') as HTMLInputElement;
+    search.value = '';
+    localStorage.removeItem('search_products');
+    close.classList.add('filters__close_hidden');
+    this.redrawProducts();
+  }
+
   private addFilterNavigationForPrices(): void {
+    const close = document.querySelector('.filters__close_prices') as HTMLParagraphElement;
+    close.classList.remove('filters__close_hidden');
     const from = document.getElementById('price-from') as HTMLInputElement;
     const to = document.getElementById('price-to') as HTMLInputElement;
     const fromValue = Number(from.value) * 100;
@@ -342,6 +330,10 @@ class Main {
 
       if (target.classList.contains('filters__close_prices')) {
         this.clearFilterForPrices();
+      }
+
+      if (target.classList.contains('filters__close_search')) {
+        this.clearFilterForSearch();
       }
     });
 

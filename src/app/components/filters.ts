@@ -34,28 +34,30 @@ class Filters {
       const name = category.name['en-US'].toLocaleLowerCase();
       const slug = category.slug['en-US'];
 
-      const filter = createElement('div', ['filters__item'], `${name}`) as HTMLDivElement;
-      const filterContent = createElement('div', ['filters__content', 'filters__content_hidden']) as HTMLDivElement;
-      filter.id = slug;
-      filterContent.dataset.content = slug;
-
-      getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
-      const currentCategories: Category[] = localStorage.getItem(`${name}_categories`)
-        ? JSON.parse(localStorage.getItem(`${name}_categories`) as string)
-        : [];
-
-      currentCategories.forEach((currentCategory: Category): void => {
-        const currentCheckbox = createCheckBoxElement(
-          currentCategory.name['en-US'],
-          currentCategory.id,
-          false,
-          'filters',
-          slug,
-        );
-        filterContent.append(currentCheckbox);
-      });
-
-      filters.append(filter, filterContent);
+      if (slug !== 'indoor' && slug !== 'outdoor') {
+        const filter = createElement('div', ['filters__item'], `${name}`) as HTMLDivElement;
+        const filterContent = createElement('div', ['filters__content', 'filters__content_hidden']) as HTMLDivElement;
+        filter.id = slug;
+        filterContent.dataset.content = slug;
+  
+        getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
+        const currentCategories: Category[] = localStorage.getItem(`${name}_categories`)
+          ? JSON.parse(localStorage.getItem(`${name}_categories`) as string)
+          : [];
+  
+        currentCategories.forEach((currentCategory: Category): void => {
+          const currentCheckbox = createCheckBoxElement(
+            currentCategory.name['en-US'],
+            currentCategory.id,
+            false,
+            'filters',
+            slug,
+          );
+          filterContent.append(currentCheckbox);
+        });
+  
+        filters.append(filter, filterContent);
+      }
     });
   }
 
@@ -85,20 +87,19 @@ class Filters {
     filterByPriceList.dataset.content = 'price';
 
     const prices = createElement('div', ['filters__prices']) as HTMLDivElement;
-    const from = createInputElement('text', 'from', 'price-from', 'filters__price', false) as HTMLInputElement;
-    const to = createInputElement('text', 'to', 'price-to', 'filters__price', false) as HTMLInputElement;
+    const from = createInputElement('text', 'from', 'price-from', 'filters__price', false, {} , false) as HTMLInputElement;
+    const to = createInputElement('text', 'to', 'price-to', 'filters__price', false, {}, false) as HTMLInputElement;
+    const close = createElement('p', ['filters__close', 'filters__close_prices', 'filters__close_hidden'], '&times;') as HTMLParagraphElement;
     from.classList.add('filters__price-input_from');
     to.classList.add('filters__price-input_to');
-    const applyButtons = createElement('div', ['filters__apply-buttons']) as HTMLDivElement;
+
     const apply = createElement(
       'p',
       ['filters__apply', 'filters__apply_prices'],
       'apply filter',
     ) as HTMLParagraphElement;
-    const close = createElement('p', ['filters__close', 'filters__close_prices'], '&times;') as HTMLParagraphElement;
-    prices.append(from, to);
-    applyButtons.append(apply, close);
-    filterByPriceList.append(prices, applyButtons);
+    prices.append(from, to, close);
+    filterByPriceList.append(prices, apply);
     filters.append(filterByPrice, filterByPriceList);
   }
 
@@ -114,11 +115,14 @@ class Filters {
   }
 
   private drawSearch(filters: HTMLDivElement): void {
+    const searchBlock = createElement('div', ['filters__search-block']) as HTMLDivElement;
     const search = createElement('input', ['filters__search']) as HTMLInputElement;
+    const close = createElement('p', ['filters__close', 'filters__close_search', 'filters__close_hidden'], '&times;') as HTMLParagraphElement;
     search.setAttribute('placeholder', '. . . search');
     search.type = 'text';
 
-    filters.append(search);
+    searchBlock.append(search, close);
+    filters.append(searchBlock);
   }
 
   private drawResetButton(filters: HTMLDivElement): void {
