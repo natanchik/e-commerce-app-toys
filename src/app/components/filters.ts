@@ -39,12 +39,12 @@ class Filters {
         const filterContent = createElement('div', ['filters__content', 'filters__content_hidden']) as HTMLDivElement;
         filter.id = slug;
         filterContent.dataset.content = slug;
-  
+
         getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
         const currentCategories: Category[] = localStorage.getItem(`${name}_categories`)
           ? JSON.parse(localStorage.getItem(`${name}_categories`) as string)
           : [];
-  
+
         currentCategories.forEach((currentCategory: Category): void => {
           const currentCheckbox = createCheckBoxElement(
             currentCategory.name['en-US'],
@@ -55,7 +55,7 @@ class Filters {
           );
           filterContent.append(currentCheckbox);
         });
-  
+
         filters.append(filter, filterContent);
       }
     });
@@ -87,9 +87,21 @@ class Filters {
     filterByPriceList.dataset.content = 'price';
 
     const prices = createElement('div', ['filters__prices']) as HTMLDivElement;
-    const from = createInputElement('text', 'from', 'price-from', 'filters__price', false, {} , false) as HTMLInputElement;
+    const from = createInputElement(
+      'text',
+      'from',
+      'price-from',
+      'filters__price',
+      false,
+      {},
+      false,
+    ) as HTMLInputElement;
     const to = createInputElement('text', 'to', 'price-to', 'filters__price', false, {}, false) as HTMLInputElement;
-    const close = createElement('p', ['filters__close', 'filters__close_prices', 'filters__close_hidden'], '&times;') as HTMLParagraphElement;
+    const close = createElement(
+      'p',
+      ['filters__close', 'filters__close_prices', 'filters__close_hidden'],
+      '&times;',
+    ) as HTMLParagraphElement;
     from.classList.add('filters__price-input_from');
     to.classList.add('filters__price-input_to');
 
@@ -117,7 +129,11 @@ class Filters {
   private drawSearch(filters: HTMLDivElement): void {
     const searchBlock = createElement('div', ['filters__search-block']) as HTMLDivElement;
     const search = createElement('input', ['filters__search']) as HTMLInputElement;
-    const close = createElement('p', ['filters__close', 'filters__close_search', 'filters__close_hidden'], '&times;') as HTMLParagraphElement;
+    const close = createElement(
+      'p',
+      ['filters__close', 'filters__close_search', 'filters__close_hidden'],
+      '&times;',
+    ) as HTMLParagraphElement;
     search.setAttribute('placeholder', '. . . search');
     search.type = 'text';
 
@@ -140,7 +156,7 @@ class Filters {
     allCheckbox.forEach((checkbox) => (checkbox.checked = false));
 
     const prices = document.querySelectorAll<HTMLInputElement>('.filters__price-input');
-    prices.forEach((inputPrice) => inputPrice.value = '');
+    prices.forEach((inputPrice) => (inputPrice.value = ''));
 
     const sort = document.querySelector('.filters__select') as HTMLSelectElement;
     sort.value = '';

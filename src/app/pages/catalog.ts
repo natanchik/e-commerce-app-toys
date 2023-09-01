@@ -1,5 +1,3 @@
-import getAllProducts from '../api/getProduct/getAllProducts';
-import getAnonymousToken from '../api/tokens/getAnonymousToken';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
@@ -7,8 +5,6 @@ import { Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
-    getAnonymousToken();
-    getAllProducts();
     localStorage.removeItem('sorted_products');
     localStorage.removeItem('search_products');
     catalogQueryParams.clear();
@@ -51,7 +47,7 @@ class Catalog {
       currentProducts = JSON.parse(localStorage.getItem('all_products') as string);
     }
 
-    if (localStorage.getItem('search_products')) {
+    if (localStorage.getItem('search_products') !== null) {
       searchProducts = JSON.parse(localStorage.getItem('search_products') as string);
       const searchProductsIds: string[] = [];
 

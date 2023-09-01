@@ -28,7 +28,7 @@ export const createInputElement = (
   page: string,
   required: boolean = true,
   attributes?: object,
-  ifError: boolean = true
+  ifError: boolean = true,
 ): HTMLDivElement => {
   const label = createElement('label', [`${page}-label`], labelText);
   label.setAttribute('for', inputId);

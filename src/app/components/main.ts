@@ -12,7 +12,6 @@ import getAllProducts from '../api/getProduct/getAllProducts';
 import {
   catalogQueryParams,
   productAgeSelectedIds,
-  productCategoriesSelectedIds,
   productGendersSelectedIds,
   productTypesSelectedIds,
 } from '../state/state';
@@ -262,7 +261,7 @@ class Main {
     const from = document.getElementById('price-from') as HTMLInputElement;
     const to = document.getElementById('price-to') as HTMLInputElement;
     const fromValue = Number(from.value) * 100;
-    const toValue = (to.value) ? Number(to.value) * 100 : 5000000;
+    const toValue = to.value ? Number(to.value) * 100 : 5000000;
     addNewQueryParam(
       'price',
       'where',
