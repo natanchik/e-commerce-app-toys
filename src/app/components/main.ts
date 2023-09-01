@@ -225,6 +225,11 @@ class Main {
         addNewQueryParam(currentTarget.value, 'sort', `key%20desc`);
         this.redrawProducts();
         break;
+      default:
+        localStorage.removeItem('sorted_products');
+        this.deleteSortFromQueryParam();
+        this.redrawProducts();
+        break;
     }
   }
 
