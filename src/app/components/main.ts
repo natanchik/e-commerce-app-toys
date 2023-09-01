@@ -33,7 +33,6 @@ class Main {
     this.sidebarWrapper = this.sidebar.drawSidebar();
     this.mainElement = this.drawMain();
     this.setEventListeners(router);
-    getAllProducts();
   }
 
   public drawMain(): HTMLDivElement {
@@ -103,7 +102,7 @@ class Main {
   }
 
   private toggleAccordion(id: string, target: HTMLElement, className: string): void {
-    const content = document.querySelector(`[data-content = ${id}]`);
+    const content = document.querySelector(`[data-content = '${id}']`);
 
     if (target.classList.contains(`${className}__item_active`)) {
       target.classList.remove(`${className}__item_active`);
@@ -296,7 +295,7 @@ class Main {
         this.makeMiniActive(slideIndex);
       }
     }
-}
+  }
 
   private deleteSortFromQueryParam(): void {
     Object.keys(sorterParametrs).forEach((key: string) => {
@@ -390,6 +389,11 @@ class Main {
         this.sidebar.closeSidebar();
       }
 
+      if (target.classList.contains('sidebar__link') && target.dataset.page === 'catalog') {
+        router.navigate(pages.CATALOG);
+        this.sidebar.closeSidebar();
+      }
+
       if (target.classList.contains('logo') || target.parentElement?.classList.contains('logo')) {
         router.navigate(pages.MAIN);
         this.sidebar.closeSidebar();
@@ -438,7 +442,7 @@ class Main {
         const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
         const currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
         this.toggleCardModal(currentIndex);
-        }
+      }
 
       if (target.classList.contains('filters__item')) {
         this.toggleAccordion(target.id, target, 'filters');
@@ -468,6 +472,14 @@ class Main {
 
       if (target.classList.contains('filters__close_search')) {
         this.clearFilterForSearch();
+      }
+
+      if(target.classList.contains('sidebar__category')) {
+
+      }
+
+      if(target.classList.contains('sidebar__category-item')) {
+
       }
     });
 

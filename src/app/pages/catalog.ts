@@ -6,7 +6,7 @@ import { Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
-    getAllProducts();
+    if (!localStorage.getItem('all_products')) getAllProducts();
     localStorage.removeItem('sorted_products');
     localStorage.removeItem('search_products');
     catalogQueryParams.clear();

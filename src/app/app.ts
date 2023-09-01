@@ -1,4 +1,4 @@
-import { /*ID_SELECTOR,*/ pages } from './router/pages';
+import { /*ID_SELECTOR,*/ CATEGORY, pages } from './router/pages';
 import { RouteInfo } from './types/types';
 import MainPage from './pages/main-page';
 import LoginPage from './pages/login-page';
@@ -14,6 +14,9 @@ import RegPage from './pages/registration-page';
 import User from './components/user';
 import UserProfile from './pages/user-profile';
 import Catalog from './pages/catalog';
+import getAnonymousToken from './api/tokens/getAnonymousToken';
+import getCategories from './api/category/getCategories';
+import getAllProducts from './api/getProduct/getAllProducts';
 
 class App {
   router: Router;
@@ -27,8 +30,11 @@ class App {
   user: User;
 
   constructor() {
-    this.router = new Router(this.createRoutes());
+    getAnonymousToken().then(() => {
+      getAllProducts();
+    });
     this.user = new User();
+    this.router = new Router(this.createRoutes());
     this.header = new Header(this.router);
     this.main = new Main(this.router);
     this.footer = new Footer(this.router);
@@ -82,6 +88,14 @@ class App {
       },
       {
         path: `${pages.CATALOG}`,
+        callback: (): void => {
+          const catalog = new Catalog();
+          Main.setContent(catalog.drawCatalog());
+          Catalog.drawProducts();
+        },
+      },
+      {
+        path: `${pages.CATALOG}/${CATEGORY}`,
         callback: (): void => {
           const catalog = new Catalog();
           Main.setContent(catalog.drawCatalog());

@@ -177,4 +177,3 @@ export interface PriceFilterValue {
   value: string;
   query: string;
 }
-

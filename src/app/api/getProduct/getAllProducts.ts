@@ -32,7 +32,10 @@ const getAllProducts = (): Promise<void> => {
       } else {
         localStorage.setItem('sorted_products', JSON.stringify(result.results));
       }
-    });
+    })
+    .catch((error) => {
+      if (error) localStorage.setItem('error_products_message', error.value);
+    })
 };
 
 export default getAllProducts;

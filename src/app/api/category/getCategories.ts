@@ -34,7 +34,7 @@ const getCategories = (dataName?: string, queryParams?: Map<string, QueryParam> 
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_getcategories_message', error.value);
-    })
+    });
 };
 
 export default getCategories;

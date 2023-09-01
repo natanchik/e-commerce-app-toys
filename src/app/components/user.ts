@@ -1,3 +1,4 @@
+import getAccessToken from '../api/tokens/getAccessToken';
 import getAnonymousToken from '../api/tokens/getAnonymousToken';
 
 class User {
@@ -30,12 +31,13 @@ class User {
     this.toggleLogoutIcon();
     localStorage.clear();
     getAnonymousToken();
+    getAccessToken();
   }
 
   private setEventListeners(): void {
     document.addEventListener('DOMContentLoaded', (): void => {
       if (localStorage.length === 0) {
-        getAnonymousToken();
+        getAccessToken();
       }
 
       if (!User.isLogged()) {
