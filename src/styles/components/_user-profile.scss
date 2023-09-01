@@ -71,19 +71,30 @@
 
 .profile__modal {
   position: absolute;
-  top: calc(50% - 200px);
+  top: calc(50% - 220px);
   left: calc(50% - 195px);
   padding: 20px;
   width: 390px;
-  height: fit-content;
+  height: 420px;
   background-color: $background-blue;
   border: 4px solid $background-blue;
   z-index: 10;
 }
 
+.profile__modal__form {
+  height: 360px;
+  overflow-y: auto;
+}
+
 .profile__modal__btn-block {
+  position: sticky;
+  bottom: 0px;
+  left: 20px;
+  max-width: 340px;
   display: flex;
+  padding-top: 10px;
   justify-content: space-between;
+  background-color: $background-blue;
 }
 
 .profile__email__current {

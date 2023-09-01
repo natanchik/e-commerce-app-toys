@@ -62,7 +62,7 @@ abstract class AuthPage {
       name: 'password',
       autocomplete: typeOfPassword,
     });
-    const boxShowPassword = createCheckBoxElement('Show password', `${id}-showPassword`);
+    const boxShowPassword = createCheckBoxElement('Show password', `showPassword-${id}`);
     passwordBlock.append(boxShowPassword);
     return passwordBlock;
   };

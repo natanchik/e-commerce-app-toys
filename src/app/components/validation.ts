@@ -61,7 +61,7 @@ export const validateInput = (input: HTMLInputElement, notation: HTMLParagraphEl
   if (input.value) {
     if (input.id === 'email' && !input.value.match(/^\w+[._-]?\w+@((\w){2,10}\.)?(\w){2,10}\.(\w){2,4}$/)) {
       warnings += checkEmail(input.value);
-    } else if (input.id === 'password') {
+    } else if (input.id.includes('password')) {
       warnings += checkWithReqs(passwordRequirements, input.value);
     } else if (input.id === 'dateOfBirth') {
       warnings += checkDate(input.value);

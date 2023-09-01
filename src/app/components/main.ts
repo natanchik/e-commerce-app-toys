@@ -8,6 +8,13 @@ import { checkValidity } from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
 import User from './user';
+import {
+  editProfile,
+  toggleProfile,
+  handlerSameAddresses,
+  handlerCountry,
+  handlerShowPassword,
+} from '../components/handlers';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -89,32 +96,6 @@ class Main {
     }
   }
 
-  private showProfileItemContent(target: HTMLElement): void {
-    target.classList.add('profile__item_active');
-    const content = document.querySelector(`[data-content = ${target.id}]`);
-    content?.classList.remove('profile__content_hidden');
-  }
-
-  private hideProfileItemContent(target: HTMLElement): void {
-    target.classList.remove('profile__item_active');
-    const content = document.querySelector(`[data-content = ${target.id}]`);
-    content?.classList.add('profile__content_hidden');
-  }
-
-  private toggleAccordion(target: HTMLElement): void {
-    if (target.classList.contains('profile__item_active')) {
-      this.hideProfileItemContent(target);
-      if (['change-password', 'change-email'].includes(target.id)) {
-        document.body.style.overflow = '';
-      }
-    } else {
-      this.showProfileItemContent(target);
-      if (['change-password', 'change-email'].includes(target.id)) {
-        document.body.style.overflow = 'hidden';
-      }
-    }
-  }
-
   private setEventListeners(router: Router): void {
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
@@ -141,37 +122,11 @@ class Main {
         !(target.classList.contains('profile__modal') || target.closest('.profile__modal')) &&
         target.closest('.profile__item')
       ) {
-        const item = target.closest('.profile__item');
-        if (item && item instanceof HTMLElement) {
-          this.toggleAccordion(item);
-        }
-        const editBtn = document.querySelector('.profile__edit-btn');
-        if (editBtn) {
-          if (!document.querySelector('.profile__content_hidden')) {
-            editBtn.textContent = 'Cancel';
-          } else if (!document.querySelector('.profile__item_active')) {
-            editBtn.textContent = 'Edit profile';
-          }
-        }
+        toggleProfile(target);
       }
 
       if (target.classList.contains('profile__edit-btn')) {
-        const items = document.querySelectorAll('.profile__item');
-        if (target.textContent === 'Edit profile') {
-          items.forEach((item) => {
-            if (item instanceof HTMLLIElement) {
-              this.showProfileItemContent(item);
-            }
-          });
-          target.textContent = 'Cancel';
-        } else {
-          items.forEach((item) => {
-            if (item instanceof HTMLLIElement) {
-              this.hideProfileItemContent(item);
-            }
-          });
-          target.textContent = 'Edit profile';
-        }
+        editProfile(target);
       }
 
       if (target.classList.contains('main-page__page')) {
@@ -220,39 +175,15 @@ class Main {
       const target = event.target as HTMLElement;
 
       if (target.id === 'are-same-addresses') {
-        const shippingBlock = document.getElementById('shipping-block') as HTMLDivElement;
-        const shippingInputs = [
-          document.getElementById('shipping-country') as HTMLInputElement,
-          document.getElementById('shipping-city') as HTMLInputElement,
-          document.getElementById('shipping-streetName') as HTMLInputElement,
-          document.getElementById('shipping-postalCode') as HTMLInputElement,
-        ];
-        shippingBlock.classList.toggle('hidden');
-        if (shippingInputs[0].hasAttribute('required')) {
-          shippingInputs.forEach((input) => {
-            input.removeAttribute('required');
-          });
-        } else {
-          shippingInputs.forEach((input) => {
-            input.setAttribute('required', 'true');
-          });
-        }
+        handlerSameAddresses();
       }
 
-      if (target.id === 'billing-country' || target.id === 'shipping-country') {
-        const inputId = `${target.id.split('-')[0]}-postalCode`;
-        const postalCode = document.getElementById(inputId) as HTMLInputElement;
-        const notation = document.querySelector(`[data-input="${inputId}"]`) as HTMLParagraphElement;
-        if (notation) {
-          validateInput(postalCode, notation);
-        }
+      if (target.id.includes('country')) {
+        handlerCountry(target);
       }
 
-      if (target.id === 'showPassword') {
-        const passwordInput = document.getElementById('password');
-        if (passwordInput && passwordInput instanceof HTMLInputElement) {
-          passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-        }
+      if (target.id.includes('showPassword')) {
+        handlerShowPassword(target);
       }
     });
   }
