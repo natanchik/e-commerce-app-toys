@@ -14,6 +14,7 @@ import RegPage from './pages/registration-page';
 import User from './components/user';
 import UserProfile from './pages/user-profile';
 import Catalog from './pages/catalog';
+import Card from './pages/card';
 
 class App {
   router: Router;
@@ -100,9 +101,11 @@ class App {
       },
       {
         path: `${pages.CATALOG}/${ID_SELECTOR}`,
-        callback: (): void => {
-          // const card = new Card();
-          // Main.setContent(card.drawCard(id));
+        callback: async (id): Promise<void> => {
+          if (id) {
+            const card = new Card(id);
+            Main.setContent(await card.drawCard());
+          }
         },
       },
       {
