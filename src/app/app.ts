@@ -1,4 +1,4 @@
-import { /*ID_SELECTOR,*/ SUBCATEGORY, pages } from './router/pages';
+import { ID_SELECTOR, SUBCATEGORY, pages } from './router/pages';
 import { RouteInfo } from './types/types';
 import MainPage from './pages/main-page';
 import LoginPage from './pages/login-page';
@@ -96,18 +96,18 @@ class App {
       {
         path: `${pages.CATALOG}/${SUBCATEGORY}`,
         callback: (): void => {
+          // const card = new Card();
+          // Main.setContent(card.drawCard());
+        },
+      },
+      {
+        path: `${pages.CATALOG}/${ID_SELECTOR}`,
+        callback: (): void => {
           const catalog = new Catalog();
           Main.setContent(catalog.drawCatalog());
           Catalog.drawProducts();
         },
       },
-      // {
-      //   path: `${pages.CATALOG}/${ID_SELECTOR}`,
-      // callback: (id): void => {
-      //   const card = new Card();
-      //   Main.setContent(catalog.drawCard());
-      // },
-      // },
       {
         path: `${pages.ABOUT_US}`,
         callback: (): void => {

@@ -386,7 +386,6 @@ class Main {
     addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`);
     getAllProducts().then(() => {
       this.sidebar.closeSidebar();
-      console.log(currentTarget.dataset.page);
       router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
     });
   }
