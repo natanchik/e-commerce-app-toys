@@ -5,7 +5,7 @@ export interface RouteInfo {
 
 export interface UrlInfo {
   pathname: string;
-  cardId: string;
+  id: string;
 }
 
 export interface ValidTemplates {

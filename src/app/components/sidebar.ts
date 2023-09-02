@@ -67,15 +67,8 @@ class Sidebar {
           const slug = category.slug['en-US'];
 
           if (slug !== 'age' && slug !== 'genders') {
-            const categoryItem = createElement(
-              'li',
-              ['sidebar__category', 'sidebar__link', 'sidebar__item'],
-              name,
-            ) as HTMLLIElement;
-            const categoryContentList = createElement('ul', [
-              'sidebar__category-list',
-              'sidebar__content',
-            ]) as HTMLUListElement;
+            const categoryItem = createElement('li', ['sidebar__category', 'sidebar__link'], name) as HTMLLIElement;
+            const categoryContentList = createElement('ul', ['sidebar__category-list']) as HTMLUListElement;
             categoryItem.id = category.id;
             categoryItem.dataset.page = slug;
             categoryContentList.dataset.content = category.id;
@@ -94,7 +87,7 @@ class Sidebar {
                 item.id = subcategory.id;
                 item.dataset.page = subcategory.slug['ru-KZ'];
                 item.dataset.parent = category.id;
-        
+
                 categoryContentList.append(item);
               });
             });
@@ -103,6 +96,24 @@ class Sidebar {
           }
         });
       });
+
+    // document.addEventListener('mouseover', (event: Event) => {
+    //   const target = event.target as HTMLElement;
+
+    //   if(target.classList.contains('sidebar__category')) {
+    //     const categoriesLlist = document.querySelector(`[data-content="${target.id}"]`) as HTMLUListElement;
+
+    //     categoriesLlist.classList.add('sidebar__category-list_active');
+    //   }
+    // });
+
+    // document.addEventListener('mouseout', (event: Event) => {
+    //   const target = event.target as HTMLElement;
+
+    //   if(target.classList.contains('sidebar__category-list')) {
+    //     target.classList.remove('sidebar__category-list_active');
+    //   }
+    // });
   }
 }
 

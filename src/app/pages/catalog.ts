@@ -3,7 +3,7 @@ import getAllProducts from '../api/getProduct/getAllProducts';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
-import { Category, Price, Product, QueryParam } from '../types/types';
+import { Category, Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
@@ -13,15 +13,18 @@ class Catalog {
 
   public drawCatalog(): HTMLDivElement {
     const catalog = createElement('div', ['catalog', 'main__wrapper']) as HTMLDivElement;
-    const title = createElement('div', ['catalog__title'], '<h2>Catalog</h2>') as HTMLDivElement;
-    const breadcrumbs = createElement('ul', ['catalog__breadcrumbs'], '<li class="catalog__breadcrumb" data-page="catalog" >Catalog</li>') as HTMLDivElement;
+    const breadcrumbs = createElement(
+      'ul',
+      ['catalog__breadcrumbs'],
+      '<li class="catalog__breadcrumb" data-page="catalog" >Catalog</li>',
+    ) as HTMLDivElement;
     const content = createElement('div', ['catalog__content']) as HTMLDivElement;
     const products = createElement('div', ['catalog__products']) as HTMLDivElement;
     const mobileFiltersButton = createElement('div', ['mobile-filters__item'], 'Filters') as HTMLDivElement;
     const filters = this.drawFilters();
 
     content.append(mobileFiltersButton, filters, products);
-    catalog.append(title, breadcrumbs, content);
+    catalog.append(breadcrumbs, content);
 
     return catalog;
   }
@@ -34,39 +37,43 @@ class Catalog {
 
   static drawBreadcrumbs(): void {
     const breadcrumbs = document.querySelector('.catalog__breadcrumbs') as HTMLUListElement;
-    const title = document.querySelector('.catalog__title') as HTMLDivElement;
 
     if (catalogQueryParams.has('sidebar')) {
       const currentParamValue: string = catalogQueryParams.get('sidebar').value;
-      const currentCategoryId: string = currentParamValue.replace('masterData%28current%28categories%28id%3D%22', '').replace('%22%29%29%29', '');
+      const currentCategoryId: string = currentParamValue
+        .replace('masterData%28current%28categories%28id%3D%22', '')
+        .replace('%22%29%29%29', '');
 
       const current = document.getElementById(currentCategoryId);
       if (current?.dataset.parent) {
-        getCategories('', [{key: 'where', value: `id%3D%22${current.dataset.parent}%22`}]).then((result) => {
-          result.forEach((parent: Category) => {
-            const breadcrumbParrent = createElement('li', ['catalog__breadcrumb'], parent.name['ru-KZ']) as HTMLLIElement;
-            breadcrumbParrent.dataset.page = parent.slug['ru-KZ'];
-            breadcrumbParrent.id = parent.id;
+        getCategories('', [{ key: 'where', value: `id%3D%22${current.dataset.parent}%22` }])
+          .then((result: Category[]) => {
+            result.forEach((parent: Category) => {
+              const breadcrumbParrent = createElement(
+                'li',
+                ['catalog__breadcrumb'],
+                parent.name['ru-KZ'],
+              ) as HTMLLIElement;
+              breadcrumbParrent.dataset.page = parent.slug['ru-KZ'];
+              breadcrumbParrent.id = parent.id;
 
-            breadcrumbs.append(breadcrumbParrent);
+              breadcrumbs.append(breadcrumbParrent);
+            });
           })
-        }).then(() => {
-          const breadcrumbCurrent = createElement('li', ['catalog__breadcrumb'], current?.innerText) as HTMLLIElement;
-          breadcrumbCurrent.dataset.page = current?.dataset.page;
-          breadcrumbCurrent.id = currentCategoryId;
+          .then(() => {
+            const breadcrumbCurrent = createElement('li', ['catalog__breadcrumb'], current?.innerText) as HTMLLIElement;
+            breadcrumbCurrent.dataset.page = current?.dataset.page;
+            breadcrumbCurrent.id = currentCategoryId;
 
-          breadcrumbs.append(breadcrumbCurrent);
-          title.innerHTML = `<h2>${current?.innerText}</h2>`;
-        })
+            breadcrumbs.append(breadcrumbCurrent);
+          });
       } else {
         const breadcrumbCurrent = createElement('li', ['catalog__breadcrumb'], current?.innerText) as HTMLLIElement;
         breadcrumbCurrent.dataset.page = current?.dataset.page;
         breadcrumbCurrent.id = currentCategoryId;
 
         breadcrumbs.append(breadcrumbCurrent);
-        title.innerHTML = `<h2>${current?.innerText}</h2>`;
       }
-      
     }
   }
 

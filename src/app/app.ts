@@ -94,7 +94,7 @@ class App {
         },
       },
       {
-        path: `${pages.CATALOG}/:${SUBCATEGORY}`,
+        path: `${pages.CATALOG}/${SUBCATEGORY}`,
         callback: (): void => {
           const catalog = new Catalog();
           Main.setContent(catalog.drawCatalog());

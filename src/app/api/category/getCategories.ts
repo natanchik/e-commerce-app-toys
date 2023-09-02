@@ -1,7 +1,10 @@
 import { Category, QueryParam } from '../../types/types';
 import { generateQueryParams } from '../helpers/utils';
 
-const getCategories = (dataName?: string, queryParams?: Map<string, QueryParam> | QueryParam[]): Promise<Category[]> => {
+const getCategories = (
+  dataName?: string,
+  queryParams?: Map<string, QueryParam> | QueryParam[],
+): Promise<Category[]> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,

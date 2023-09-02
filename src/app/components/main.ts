@@ -387,8 +387,7 @@ class Main {
     getAllProducts().then(() => {
       this.sidebar.closeSidebar();
       console.log(currentTarget.dataset.page);
-      router.navigate(`${pages.CATALOG}`);
-      //TODO: router.navigate(`${pages.CATALOG}/:${currentTarget.dataset.page}`);
+      router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
     });
   }
 
@@ -425,7 +424,7 @@ class Main {
 
       if (target.classList.contains('main-page__page')) {
         const pageName = target.innerText.toLocaleLowerCase();
-        if (pageName === 'catalog') Catalog.clearSortedProducts(); //??
+        if (pageName === 'catalog') Catalog.clearSortedProducts();
         router.navigate(pageName === 'main' ? pages.MAIN : pageName);
       }
 
@@ -487,15 +486,19 @@ class Main {
         this.clearFilterForSearch();
       }
 
-      if (target.classList.contains('sidebar__category') || target.classList.contains('sidebar__category-item') || target.classList.contains('catalog__breadcrumb')) {
+      if (
+        target.classList.contains('sidebar__category') ||
+        target.classList.contains('sidebar__category-item') ||
+        target.classList.contains('catalog__breadcrumb')
+      ) {
         const currentTarget = target as HTMLLIElement;
-        this.addNavigationForSidebar(currentTarget, router);
+
+        if (target.dataset.page === 'catalog') {
+          router.navigate(pages.CATALOG);
+        } else {
+          this.addNavigationForSidebar(currentTarget, router);
+        }
       }
-
-      // if(target.classList.contains('catalog__breadcrumb')) {
-
-      //   if (target.dataset.page) this.addNavigationForSidebar(target, router);
-      // }
     });
 
     document.addEventListener('submit', async (event: Event) => {
