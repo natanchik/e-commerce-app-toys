@@ -1,4 +1,4 @@
-import { /*ID_SELECTOR,*/ CATEGORY, pages } from './router/pages';
+import { /*ID_SELECTOR,*/ SUBCATEGORY, pages } from './router/pages';
 import { RouteInfo } from './types/types';
 import MainPage from './pages/main-page';
 import LoginPage from './pages/login-page';
@@ -94,7 +94,7 @@ class App {
         },
       },
       {
-        path: `${pages.CATALOG}/${CATEGORY}`,
+        path: `${pages.CATALOG}/:${SUBCATEGORY}`,
         callback: (): void => {
           const catalog = new Catalog();
           Main.setContent(catalog.drawCatalog());

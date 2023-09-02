@@ -1,7 +1,7 @@
-import { QueryParam } from '../../types/types';
+import { Category, QueryParam } from '../../types/types';
 import { generateQueryParams } from '../helpers/utils';
 
-const getCategories = (dataName?: string, queryParams?: Map<string, QueryParam> | QueryParam[]): Promise<void> => {
+const getCategories = (dataName?: string, queryParams?: Map<string, QueryParam> | QueryParam[]): Promise<Category[]> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -26,11 +26,13 @@ const getCategories = (dataName?: string, queryParams?: Map<string, QueryParam> 
       }
     })
     .then((result) => {
-      if (queryParams) {
+      if (queryParams && dataName !== '') {
         localStorage.setItem(`${dataName}_categories`, JSON.stringify(result.results));
       } else {
         localStorage.setItem('all_categories', JSON.stringify(result.results));
       }
+
+      return result.results;
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_getcategories_message', error.value);

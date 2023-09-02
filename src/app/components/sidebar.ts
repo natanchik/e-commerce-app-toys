@@ -93,6 +93,8 @@ class Sidebar {
                 ) as HTMLLIElement;
                 item.id = subcategory.id;
                 item.dataset.page = subcategory.slug['ru-KZ'];
+                item.dataset.parent = category.id;
+        
                 categoryContentList.append(item);
               });
             });

@@ -382,11 +382,13 @@ class Main {
 
   private addNavigationForSidebar(currentTarget: HTMLLIElement, router: Router): void {
     Catalog.clearSortedProducts();
-    catalogQueryParams.delete('sidebar');
+    if (catalogQueryParams.has('sidebar')) catalogQueryParams.delete('sidebar');
     addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`);
     getAllProducts().then(() => {
       this.sidebar.closeSidebar();
+      console.log(currentTarget.dataset.page);
       router.navigate(`${pages.CATALOG}`);
+      //TODO: router.navigate(`${pages.CATALOG}/:${currentTarget.dataset.page}`);
     });
   }
 
@@ -485,10 +487,15 @@ class Main {
         this.clearFilterForSearch();
       }
 
-      if (target.classList.contains('sidebar__category') || target.classList.contains('sidebar__category-item')) {
+      if (target.classList.contains('sidebar__category') || target.classList.contains('sidebar__category-item') || target.classList.contains('catalog__breadcrumb')) {
         const currentTarget = target as HTMLLIElement;
         this.addNavigationForSidebar(currentTarget, router);
       }
+
+      // if(target.classList.contains('catalog__breadcrumb')) {
+
+      //   if (target.dataset.page) this.addNavigationForSidebar(target, router);
+      // }
     });
 
     document.addEventListener('submit', async (event: Event) => {

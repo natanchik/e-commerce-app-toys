@@ -1,5 +1,7 @@
 export const catalogQueryParams = new Map();
 
+export const catalogBreadcrumbs = new Map();
+
 export const productAgeSelectedIds: Set<string> = new Set();
 
 export const productGendersSelectedIds: Set<string> = new Set();

@@ -12,4 +12,4 @@ export const pages = {
 
 export const ID_SELECTOR: string = '{id}';
 
-export const CATEGORY: string = '{category)';
+export const SUBCATEGORY: string = '{subcategory)';
