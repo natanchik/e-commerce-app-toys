@@ -96,16 +96,16 @@ class App {
       {
         path: `${pages.CATALOG}/${SUBCATEGORY}`,
         callback: (): void => {
-          // const card = new Card();
-          // Main.setContent(card.drawCard());
+          const catalog = new Catalog();
+          Main.setContent(catalog.drawCatalog());
+          Catalog.drawProducts();
         },
       },
       {
         path: `${pages.CATALOG}/${ID_SELECTOR}`,
         callback: (): void => {
-          const catalog = new Catalog();
-          Main.setContent(catalog.drawCatalog());
-          Catalog.drawProducts();
+          // const card = new Card();
+          // Main.setContent(card.drawCard());
         },
       },
       {
