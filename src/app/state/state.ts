@@ -1,7 +1,7 @@
 export const catalogQueryParams = new Map();
 
-export const productAgeSelectedIds = new Set();
+export const productAgeSelectedIds: Set<string> = new Set();
 
-export const productGendersSelectedIds = new Set();
+export const productGendersSelectedIds: Set<string> = new Set();
 
-export const productTypesSelectedIds = new Set();
+export const productTypesSelectedIds: Set<string> = new Set();

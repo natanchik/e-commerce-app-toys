@@ -67,8 +67,15 @@ class Sidebar {
           const slug = category.slug['en-US'];
 
           if (slug !== 'age' && slug !== 'genders') {
-            const categoryItem = createElement('li', ['sidebar__category', 'sidebar__link', 'sidebar__item'], name) as HTMLLIElement;
-            const categoryContentList = createElement('ul', ['sidebar__category-list', 'sidebar__content']) as HTMLUListElement;
+            const categoryItem = createElement(
+              'li',
+              ['sidebar__category', 'sidebar__link', 'sidebar__item'],
+              name,
+            ) as HTMLLIElement;
+            const categoryContentList = createElement('ul', [
+              'sidebar__category-list',
+              'sidebar__content',
+            ]) as HTMLUListElement;
             categoryItem.id = category.id;
             categoryItem.dataset.page = slug;
             categoryContentList.dataset.content = category.id;
@@ -79,9 +86,13 @@ class Sidebar {
                 : [];
 
               subcategories.forEach((subcategory: Category): void => {
-                const item = createElement('li', ['sidebar__category-item'], subcategory.name['en-US']) as HTMLLIElement;
+                const item = createElement(
+                  'li',
+                  ['sidebar__category-item'],
+                  subcategory.name['en-US'],
+                ) as HTMLLIElement;
                 item.id = subcategory.id;
-                item.dataset.subcategory = subcategory.slug['en-US'];
+                item.dataset.page = subcategory.slug['ru-KZ'];
                 categoryContentList.append(item);
               });
             });

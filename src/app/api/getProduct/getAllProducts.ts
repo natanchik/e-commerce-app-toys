@@ -26,16 +26,18 @@ const getAllProducts = (): Promise<void> => {
       }
     })
     .then((result) => {
+      console.log(catalogQueryParams);
+      console.log(catalogQueryParams.get('sidebar'));
+
       if (catalogQueryParams.size === 0) {
         localStorage.setItem('all_products', JSON.stringify(result.results));
-        localStorage.setItem('sorted_products', JSON.stringify(result.results));
       } else {
         localStorage.setItem('sorted_products', JSON.stringify(result.results));
       }
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_products_message', error.value);
-    })
+    });
 };
 
 export default getAllProducts;

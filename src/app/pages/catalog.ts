@@ -7,9 +7,7 @@ import { Price, Product } from '../types/types';
 class Catalog {
   constructor() {
     if (!localStorage.getItem('all_products')) getAllProducts();
-    localStorage.removeItem('sorted_products');
     localStorage.removeItem('search_products');
-    catalogQueryParams.clear();
   }
 
   public drawCatalog(): HTMLDivElement {
@@ -117,6 +115,11 @@ class Catalog {
     prices.append(priceValue);
 
     return prices;
+  }
+
+  static clearSortedProducts(): void {
+    localStorage.removeItem('sorted_products');
+    catalogQueryParams.clear();
   }
 }
 

@@ -1,4 +1,4 @@
-import { PriceFilterValue, ValidTemplates } from '../types/types';
+import { ValidTemplates } from '../types/types';
 
 export const countries = { '': '', 'United States': 'US', Kazakhstan: 'KZ' };
 

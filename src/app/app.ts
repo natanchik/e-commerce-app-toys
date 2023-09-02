@@ -15,7 +15,6 @@ import User from './components/user';
 import UserProfile from './pages/user-profile';
 import Catalog from './pages/catalog';
 import getAnonymousToken from './api/tokens/getAnonymousToken';
-import getCategories from './api/category/getCategories';
 import getAllProducts from './api/getProduct/getAllProducts';
 
 class App {

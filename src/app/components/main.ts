@@ -380,6 +380,16 @@ class Main {
     this.redrawProducts();
   }
 
+  private addNavigationForSidebar(currentTarget: HTMLLIElement, router: Router): void {
+    Catalog.clearSortedProducts();
+    catalogQueryParams.delete('sidebar');
+    addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`);
+    getAllProducts().then(() => {
+      this.sidebar.closeSidebar();
+      router.navigate(`${pages.CATALOG}`);
+    });
+  }
+
   private setEventListeners(router: Router): void {
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
@@ -413,6 +423,7 @@ class Main {
 
       if (target.classList.contains('main-page__page')) {
         const pageName = target.innerText.toLocaleLowerCase();
+        if (pageName === 'catalog') Catalog.clearSortedProducts(); //??
         router.navigate(pageName === 'main' ? pages.MAIN : pageName);
       }
 
@@ -474,12 +485,9 @@ class Main {
         this.clearFilterForSearch();
       }
 
-      if(target.classList.contains('sidebar__category')) {
-
-      }
-
-      if(target.classList.contains('sidebar__category-item')) {
-
+      if (target.classList.contains('sidebar__category') || target.classList.contains('sidebar__category-item')) {
+        const currentTarget = target as HTMLLIElement;
+        this.addNavigationForSidebar(currentTarget, router);
       }
     });
 
