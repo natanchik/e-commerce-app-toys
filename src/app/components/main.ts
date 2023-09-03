@@ -382,11 +382,20 @@ class Main {
 
   private addNavigationForSidebar(currentTarget: HTMLLIElement, router: Router): void {
     Catalog.clearSortedProducts();
-    if (catalogQueryParams.has('sidebar')) catalogQueryParams.delete('sidebar');
-    addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`);
+    if (currentTarget.dataset.page !== 'catalog') {
+      addNewQueryParam(
+        'sidebar',
+        'where',
+        `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
+      );
+    }
     getAllProducts().then(() => {
       this.sidebar.closeSidebar();
-      router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
+      if (currentTarget.dataset.page === 'catalog') {
+        router.navigate(pages.CATALOG);
+      } else {
+        router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
+      }
     });
   }
 
@@ -491,12 +500,7 @@ class Main {
         target.classList.contains('catalog__breadcrumb')
       ) {
         const currentTarget = target as HTMLLIElement;
-
-        if (target.dataset.page === 'catalog') {
-          router.navigate(pages.CATALOG);
-        } else {
-          this.addNavigationForSidebar(currentTarget, router);
-        }
+        this.addNavigationForSidebar(currentTarget, router);
       }
     });
 
@@ -529,10 +533,7 @@ class Main {
     document.addEventListener('input', (event: Event): void => {
       const target = event.target as HTMLInputElement;
 
-      if (
-        !target.parentElement?.classList.contains('filters__checkbox-block') &&
-        target.parentElement?.classList.contains('checkbox-block')
-      ) {
+      if (!target.parentElement?.classList.contains('filters__checkbox-block')) {
         const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
         apiStatus.className = 'api-status';
         apiStatus.innerHTML = '';

@@ -1,5 +1,4 @@
 import getAccessToken from '../api/tokens/getAccessToken';
-import getAnonymousToken from '../api/tokens/getAnonymousToken';
 
 class User {
   constructor() {
@@ -30,7 +29,6 @@ class User {
   static userLogout(): void {
     this.toggleLogoutIcon();
     localStorage.clear();
-    getAnonymousToken();
     getAccessToken();
   }
 

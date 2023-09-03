@@ -1,6 +1,6 @@
 import getCategories from '../api/category/getCategories';
 import User from '../components/user';
-import { Category, RouteInfo, UrlInfo } from '../types/types';
+import { Category, Product, RouteInfo, UrlInfo } from '../types/types';
 import { ID_SELECTOR, pages, SUBCATEGORY } from './pages';
 
 class Router {
@@ -12,11 +12,16 @@ class Router {
   }
 
   public navigate(url: string, notPushState?: boolean): void {
+    //console.log(url);
     const request = this.parceUrl(url);
 
     this.isCategory(request.id).then((isCategory: boolean) => {
+      const isProduct = this.isProductId(request.id);
+
       const pathToFind =
-        request.id === '' ? request.pathname : `${request.pathname}/${isCategory ? SUBCATEGORY : ID_SELECTOR}`;
+        request.id === ''
+          ? request.pathname
+          : `${request.pathname}/${isCategory ? SUBCATEGORY : isProduct ? ID_SELECTOR : ''}`;
       const route = this.routes.find((item: RouteInfo) => item.path === pathToFind);
 
       if (!route) {
@@ -30,7 +35,7 @@ class Router {
         window.history.pushState({}, '', `${request.pathname}/${request.id}`);
       }
 
-      route?.callback();
+      route?.callback(request.id);
     });
   }
 
@@ -43,6 +48,19 @@ class Router {
     });
 
     return allCategoriesIds.includes(id);
+  }
+
+  private isProductId(id: string): boolean {
+    const products: Product[] = localStorage.getItem('all_products')
+      ? JSON.parse(localStorage.getItem('all_products') as string)
+      : [];
+    const allProductsIds: string[] = [];
+
+    products.forEach((product: Product) => {
+      allProductsIds.push(product.id);
+    });
+
+    return allProductsIds.includes(id);
   }
 
   private parceUrl(url: string): UrlInfo {
@@ -82,9 +100,10 @@ class Router {
       this.navigate(path);
     });
 
-    window.addEventListener('popstate', (): void => {
+    window.addEventListener('popstate', (event: Event): void => {
       const path = this.getCorrectPath();
       this.navigate(path, true);
+      //console.log(event.target);
     });
   }
 

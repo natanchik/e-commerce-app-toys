@@ -16,6 +16,7 @@ import UserProfile from './pages/user-profile';
 import Catalog from './pages/catalog';
 import getAnonymousToken from './api/tokens/getAnonymousToken';
 import getAllProducts from './api/getProduct/getAllProducts';
+import getAccessToken from './api/tokens/getAccessToken';
 
 class App {
   router: Router;
@@ -29,6 +30,7 @@ class App {
   user: User;
 
   constructor() {
+    getAccessToken();
     getAnonymousToken().then(() => {
       getAllProducts();
     });
@@ -103,9 +105,9 @@ class App {
       },
       {
         path: `${pages.CATALOG}/${ID_SELECTOR}`,
-        callback: (): void => {
+        callback: (id): void => {
           // const card = new Card();
-          // Main.setContent(card.drawCard());
+          // Main.setContent(card.drawCard(id));
         },
       },
       {

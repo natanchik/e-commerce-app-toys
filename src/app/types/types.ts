@@ -1,6 +1,6 @@
 export interface RouteInfo {
   path: string;
-  callback: () => void;
+  callback: (id?: string) => void;
 }
 
 export interface UrlInfo {

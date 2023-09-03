@@ -37,6 +37,7 @@ class Catalog {
 
   static drawBreadcrumbs(): void {
     const breadcrumbs = document.querySelector('.catalog__breadcrumbs') as HTMLUListElement;
+    breadcrumbs.innerHTML = '<li class="catalog__breadcrumb" data-page="catalog" >Catalog</li>';
 
     if (catalogQueryParams.has('sidebar')) {
       const currentParamValue: string = catalogQueryParams.get('sidebar').value;
@@ -107,7 +108,7 @@ class Catalog {
       currentProducts = currentProducts.filter((product: Product): boolean => searchProductsIds.includes(product.id));
     }
 
-    if (currentProducts.length > 0) {
+    if (currentProducts && currentProducts.length > 0) {
       currentProducts.forEach((product: Product): void => {
         const productBlock = this.drawProduct(product);
         products.append(productBlock);
