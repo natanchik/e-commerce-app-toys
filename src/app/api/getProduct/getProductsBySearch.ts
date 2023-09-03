@@ -1,4 +1,4 @@
-const getProductsBySearch = (text: string): Promise<void> => {
+const getProductsBySearch = async (text: string): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,

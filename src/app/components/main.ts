@@ -113,10 +113,9 @@ class Main {
     }
   }
 
-  private redrawProducts(): void {
-    getAllProducts().then(() => {
-      Catalog.drawProducts();
-    });
+  private async redrawProducts(): Promise<void> {
+    await getAllProducts();
+    Catalog.drawProducts();
   }
 
   private addFilterNavigationForCheckbox(currentTarget: HTMLInputElement): void {
@@ -333,7 +332,7 @@ class Main {
     }
   }
 
-  private addFilterNavigationForSearch(currentTarget: HTMLInputElement): void {
+  private async addFilterNavigationForSearch(currentTarget: HTMLInputElement): Promise<void> {
     const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
     close.classList.remove('filters__close_hidden');
     if (currentTarget.value.length === 0) {
@@ -341,7 +340,7 @@ class Main {
       Catalog.drawProducts();
       close.classList.add('filters__close_hidden');
     } else {
-      getProductsBySearch(encodeText(currentTarget.value)).then(() => {
+      await getProductsBySearch(encodeText(currentTarget.value)).then(() => {
         Catalog.drawProducts();
       });
     }
@@ -380,7 +379,7 @@ class Main {
     this.redrawProducts();
   }
 
-  private addNavigationForSidebar(currentTarget: HTMLLIElement, router: Router): void {
+  private async addNavigationForSidebar(currentTarget: HTMLLIElement, router: Router): Promise<void> {
     Catalog.clearSortedProducts();
     if (currentTarget.dataset.page !== 'catalog') {
       addNewQueryParam(
@@ -389,14 +388,15 @@ class Main {
         `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
       );
     }
-    getAllProducts().then(() => {
-      this.sidebar.closeSidebar();
-      if (currentTarget.dataset.page === 'catalog') {
-        router.navigate(pages.CATALOG);
-      } else {
-        router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
-      }
-    });
+
+    await getAllProducts();
+
+    this.sidebar.closeSidebar();
+    if (currentTarget.dataset.page === 'catalog') {
+      router.navigate(pages.CATALOG);
+    } else {
+      router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
+    }
   }
 
   private setEventListeners(router: Router): void {
@@ -533,7 +533,11 @@ class Main {
     document.addEventListener('input', (event: Event): void => {
       const target = event.target as HTMLInputElement;
 
-      if (!target.parentElement?.classList.contains('filters__checkbox-block')) {
+      if (
+        !target.parentElement?.classList.contains('filters__checkbox-block') &&
+        !target.classList.contains('filters__search') &&
+        !target.classList.contains('filters__price-input')
+      ) {
         const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
         apiStatus.className = 'api-status';
         apiStatus.innerHTML = '';

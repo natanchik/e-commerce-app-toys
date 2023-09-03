@@ -1,12 +1,12 @@
 import getCategories from '../api/category/getCategories';
-import getProductsTypes from '../api/types/getProductsTypes';
+import getProductsTypes from '../api/products-types/getProductsTypes';
 import { catalogQueryParams } from '../state/state';
 import { Category, ProductType } from '../types/types';
 import { sorterParametrs } from './constants';
 import { createCheckBoxElement, createElement, createInputElement } from './utils';
 
 class Filters {
-  public drawFilters(): HTMLDivElement {
+  public async drawFilters(): Promise<HTMLDivElement> {
     const filters = createElement('div', [
       'catalog__filters',
       'filters',
@@ -17,20 +17,21 @@ class Filters {
     this.drawSearch(filters);
     this.drawSort(filters);
     this.drawPriceFilter(filters);
-    this.drawByCategoryFilter(filters);
-    this.drawByTypeFilter(filters);
+    await this.drawByCategoryFilter(filters);
+    await this.drawByTypeFilter(filters);
     this.drawResetButton(filters);
 
     return filters;
   }
 
-  private drawByCategoryFilter(filters: HTMLDivElement): void {
-    getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
+  private async drawByCategoryFilter(filters: HTMLDivElement): Promise<void> {
+    if (!localStorage.getItem('top_categories'))
+      await getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
     const topCategories: Category[] = localStorage.getItem('top_categories')
       ? JSON.parse(localStorage.getItem('top_categories') as string)
       : [];
 
-    topCategories.forEach((category: Category): void => {
+    topCategories.forEach(async (category: Category): Promise<void> => {
       const name = category.name['en-US'].toLocaleLowerCase();
       const slug = category.slug['en-US'];
 
@@ -40,7 +41,8 @@ class Filters {
         filter.id = slug;
         filterContent.dataset.content = slug;
 
-        getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
+        if (!localStorage.getItem(`${name}_categories`))
+          await getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
         const currentCategories: Category[] = localStorage.getItem(`${name}_categories`)
           ? JSON.parse(localStorage.getItem(`${name}_categories`) as string)
           : [];
@@ -61,13 +63,13 @@ class Filters {
     });
   }
 
-  private drawByTypeFilter(filters: HTMLDivElement): void {
+  private async drawByTypeFilter(filters: HTMLDivElement): Promise<void> {
     const filterByType = createElement('div', ['filters__item'], 'Product type') as HTMLDivElement;
     const filterByTypeList = createElement('div', ['filters__content', 'filters__content_hidden']) as HTMLDivElement;
     filterByType.id = 'types';
     filterByTypeList.dataset.content = 'types';
 
-    getProductsTypes();
+    if (!localStorage.getItem('products_types')) await getProductsTypes();
     const allTypes: ProductType[] = localStorage.getItem('products_types')
       ? JSON.parse(localStorage.getItem('products_types') as string)
       : [];

@@ -100,7 +100,7 @@ class Router {
       this.navigate(path);
     });
 
-    window.addEventListener('popstate', (event: Event): void => {
+    window.addEventListener('popstate', (/*event: Event*/): void => {
       const path = this.getCorrectPath();
       this.navigate(path, true);
       //console.log(event.target);

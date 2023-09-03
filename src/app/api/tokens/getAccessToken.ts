@@ -5,8 +5,8 @@ const requestOptions = {
   },
 };
 
-const getAccessToken = (): void => {
-  fetch(
+const getAccessToken = async (): Promise<void> => {
+  return fetch(
     'https://auth.australia-southeast1.gcp.commercetools.com/oauth/token?grant_type=client_credentials',
     requestOptions,
   )

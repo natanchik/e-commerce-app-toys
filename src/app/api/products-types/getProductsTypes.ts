@@ -1,4 +1,4 @@
-const getProductsTypes = (): void => {
+const getProductsTypes = async (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -9,7 +9,7 @@ const getProductsTypes = (): void => {
     headers: myHeaders,
   };
 
-  fetch(
+  await fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/product-types`,
     requestOptions,
   )
@@ -26,7 +26,7 @@ const getProductsTypes = (): void => {
     .catch((error) => {
       if (error) localStorage.setItem('error_getproducts-types', error.message);
       alert('Sorry, this is taking an unusually long time...');
-    })
+    });
 };
 
 export default getProductsTypes;

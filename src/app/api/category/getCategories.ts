@@ -1,7 +1,7 @@
 import { Category, QueryParam } from '../../types/types';
 import { generateQueryParams } from '../helpers/utils';
 
-const getCategories = (
+const getCategories = async (
   dataName?: string,
   queryParams?: Map<string, QueryParam> | QueryParam[],
 ): Promise<Category[]> => {

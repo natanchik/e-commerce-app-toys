@@ -1,5 +1,4 @@
 import getCategories from '../api/category/getCategories';
-import getAllProducts from '../api/getProduct/getAllProducts';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
@@ -7,11 +6,10 @@ import { Category, Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
-    if (!localStorage.getItem('all_products')) getAllProducts();
     localStorage.removeItem('search_products');
   }
 
-  public drawCatalog(): HTMLDivElement {
+  public async drawCatalog(): Promise<HTMLDivElement> {
     const catalog = createElement('div', ['catalog', 'main__wrapper']) as HTMLDivElement;
     const breadcrumbs = createElement(
       'ul',
@@ -21,7 +19,7 @@ class Catalog {
     const content = createElement('div', ['catalog__content']) as HTMLDivElement;
     const products = createElement('div', ['catalog__products']) as HTMLDivElement;
     const mobileFiltersButton = createElement('div', ['mobile-filters__item'], 'Filters') as HTMLDivElement;
-    const filters = this.drawFilters();
+    const filters = await this.drawFilters();
 
     content.append(mobileFiltersButton, filters, products);
     catalog.append(breadcrumbs, content);
@@ -29,13 +27,13 @@ class Catalog {
     return catalog;
   }
 
-  private drawFilters(): HTMLDivElement {
+  private async drawFilters(): Promise<HTMLDivElement> {
     const filters = new Filters();
 
     return filters.drawFilters();
   }
 
-  static drawBreadcrumbs(): void {
+  static async drawBreadcrumbs(): Promise<void> {
     const breadcrumbs = document.querySelector('.catalog__breadcrumbs') as HTMLUListElement;
     breadcrumbs.innerHTML = '<li class="catalog__breadcrumb" data-page="catalog" >Catalog</li>';
 
@@ -47,7 +45,7 @@ class Catalog {
 
       const current = document.getElementById(currentCategoryId);
       if (current?.dataset.parent) {
-        getCategories('', [{ key: 'where', value: `id%3D%22${current.dataset.parent}%22` }])
+        await getCategories('', [{ key: 'where', value: `id%3D%22${current.dataset.parent}%22` }])
           .then((result: Category[]) => {
             result.forEach((parent: Category) => {
               const breadcrumbParrent = createElement(

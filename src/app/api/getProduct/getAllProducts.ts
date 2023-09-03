@@ -1,7 +1,7 @@
 import { generateQueryParams } from '../helpers/utils';
 import { catalogQueryParams } from '../../state/state';
 
-const getAllProducts = (): Promise<void> => {
+const getAllProducts = async (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
