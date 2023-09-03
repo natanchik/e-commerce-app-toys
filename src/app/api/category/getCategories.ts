@@ -35,6 +35,10 @@ const getCategories = async (
         localStorage.setItem('all_categories', JSON.stringify(result.results));
       }
 
+      if (!queryParams && !dataName) {
+        localStorage.setItem('categories', JSON.stringify(result.results));
+      }
+
       return result.results;
     })
     .catch((error) => {
