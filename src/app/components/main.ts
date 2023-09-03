@@ -536,7 +536,8 @@ class Main {
       if (
         !target.parentElement?.classList.contains('filters__checkbox-block') &&
         !target.classList.contains('filters__search') &&
-        !target.classList.contains('filters__price-input')
+        !target.classList.contains('filters__price-input') &&
+        !target.classList.contains('filters__select') 
       ) {
         const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
         apiStatus.className = 'api-status';

@@ -33,7 +33,8 @@ class Router {
     if (this.redirectToMainPageIfLogged(route.path)) return;
 
     if (!notPushState) {
-      window.history.pushState({}, '', `${request.pathname}/${request.id}`);
+      window.history.pushState({}, '', request.id === ''
+      ? `${request.pathname}` : `${request.pathname}/${request.id}`);
     }
 
     route?.callback(request.id);
@@ -108,8 +109,9 @@ class Router {
       addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentId}%22%29%29%29`);
 
       await getAllProducts();
-      this.navigate(`${pages.CATALOG}/${id}`);
+      this.navigate(`${pages.CATALOG}/${id}`, true);
     } else {
+      Catalog.clearSortedProducts();
       this.navigate(path, true);
     }
   }
@@ -128,6 +130,7 @@ class Router {
       if (id !== '') {
         await this.navigationByStagedCategories(path, id);
       } else {
+        Catalog.clearSortedProducts();
         this.navigate(path, true);
       }
     });
