@@ -44,6 +44,7 @@ export interface UserState {
   email: string;
   addresses: Address[];
   id: string;
+  version: number;
   billingAddressIds: string[];
   shippingAddressIds: string[];
   defaultBillingAddressId: string;
@@ -52,7 +53,7 @@ export interface UserState {
 
 export interface CurrentAction {
   action: string;
-  addressId: string;
+  [dataTitile: string]: string;
 }
 
 export interface CardData {

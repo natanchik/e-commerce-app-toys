@@ -7,6 +7,7 @@ export const nullUserState: UserState = {
   email: '',
   addresses: [],
   id: '',
+  version: 0,
   billingAddressIds: [],
   shippingAddressIds: [],
   defaultBillingAddressId: '',

@@ -9,6 +9,7 @@ export const addUserState = (customer: UserState): void => {
     email: customer.email,
     addresses: customer.addresses,
     id: customer.id,
+    version: customer.version,
     shippingAddressIds: customer.shippingAddressIds,
     billingAddressIds: customer.billingAddressIds,
     defaultBillingAddressId: customer.defaultBillingAddressId,
