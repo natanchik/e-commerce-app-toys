@@ -74,12 +74,19 @@
 }
 
 .sidebar__category-list {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
+  height: 0;
+  opacity: 0;
   transition: all 0.3s ease-in-out;
+}
+
+.sidebar__category-list_active {
+  height: 100%;
+  opacity: 1;
 }
 
 .sidebar__category-item {

@@ -19,12 +19,35 @@ class Sidebar {
     wrapper.append(header, content);
 
     closeBtn.addEventListener('click', this.closeSidebar);
-    document.addEventListener('click', (event: MouseEvent) => {
+
+    document.addEventListener('click', (event: Event) => {
       const target = event.target as Node;
       if (wrapper.classList.contains('active-sidebar') && target !== document.querySelector('.hamburger')) {
         if (!(target == wrapper || wrapper.contains(target))) {
           this.closeSidebar();
         }
+      }
+    });
+
+    document.addEventListener('mouseover', (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.classList.contains('sidebar__category')) {
+        const allLists = document.querySelectorAll<HTMLElement>('.sidebar__category-list');
+        allLists.forEach((list: HTMLElement): void => {
+          list.classList.remove('sidebar__category-list_active');
+        })
+        const categoryList = document.querySelector(`[data-content="${target.id}"]`) as HTMLElement;
+        categoryList.classList.add('sidebar__category-list_active');
+      }
+    });
+
+    document.addEventListener('mouseout', (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.classList.contains('sidebar__wrapper')) {
+        const allLists = document.querySelectorAll<HTMLElement>('.sidebar__category-list');
+        allLists.forEach((list: HTMLElement): void => {
+          list.classList.remove('sidebar__category-list_active');
+        })
       }
     });
 
