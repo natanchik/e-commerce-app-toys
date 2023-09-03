@@ -12,13 +12,13 @@ class UserProfile extends RegPage {
 
     const name = this.addProfileItem(
       'name',
-      `<div class="profile__name"><p>First name, Last name</p><p class="main__green-text">${userState.firstName} ${userState.lastName}</p></div>`,
+      `<div class="profile__name"><p>First name, Last name</p><p id='nameInfo' class="main__green-text">${userState.firstName} ${userState.lastName}</p></div>`,
       this.addnameBlock(),
     );
 
     const birthday = this.addProfileItem(
       'birthday',
-      `<div><p>Date of birth:</p><p class="main__green-text">${userState.dateOfBirth}</p></div>`,
+      `<div><p>Date of birth:</p><p id='birthdayInfo' class='main__green-text'>${userState.dateOfBirth}</p></div>`,
       createInputElement('date', 'Date of birth*', 'dateOfBirth', 'auth', true, { name: 'dateOfBirth' }),
     );
 

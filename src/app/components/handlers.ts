@@ -1,4 +1,6 @@
 import { validateInput } from './validation';
+import updateCustomerNames from '../api/customer/update/update-names';
+import updateCustomerBirthday from '../api/customer/update/update-birthday';
 
 function toggleProfileItemBtns(target: HTMLElement, action: string): void {
   const saveBtn = target.querySelector('.profile__update');
@@ -128,6 +130,29 @@ export function handlerValInput(event: Event): void {
       const notation = document.querySelector(`[data-input="${target.id}"]`) as HTMLParagraphElement;
       if (notation) {
         validateInput(target, notation);
+      }
+    }
+  }
+}
+
+export function handlersProfileUpdates(target: HTMLElement): void {
+  if (target.closest('[data-content="name"]')) {
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    if (firstName instanceof HTMLInputElement && lastName instanceof HTMLInputElement) {
+      updateCustomerNames(firstName.value, lastName.value);
+      const nameInfo = document.getElementById('nameInfo');
+      if (nameInfo) {
+        nameInfo.textContent = firstName.value + ' ' + lastName.value;
+      }
+    }
+  } else if (target.closest('[data-content="birthday"]')) {
+    const birthday = document.getElementById('dateOfBirth');
+    if (birthday instanceof HTMLInputElement) {
+      updateCustomerBirthday(birthday.value);
+      const birthdayInfo = document.getElementById('birthdayInfo');
+      if (birthdayInfo) {
+        birthdayInfo.textContent = birthday.value;
       }
     }
   }

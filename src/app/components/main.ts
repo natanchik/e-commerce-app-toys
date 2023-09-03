@@ -6,7 +6,6 @@ import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
-import updateCustomerNames from '../api/customer/update/update-names';
 import User from './user';
 import getAllProducts from '../api/getProduct/getAllProducts';
 import {
@@ -28,6 +27,7 @@ import {
   handlerCountry,
   handlerShowPassword,
   handlerValInput,
+  handlersProfileUpdates,
 } from '../components/handlers';
 
 class Main {
@@ -415,12 +415,7 @@ class Main {
       }
 
       if (target.classList.contains('profile__update')) {
-        if (target.closest('[data-content="name"]')) {
-          const firstName = document.getElementById('firstName');
-          const lastName = document.getElementById('lastName');
-          if (firstName instanceof HTMLInputElement && lastName instanceof HTMLInputElement)
-            updateCustomerNames(firstName.value, lastName.value);
-        }
+        handlersProfileUpdates(target);
       }
 
       // if (target.classList.contains('profile__add-another-address')) {
