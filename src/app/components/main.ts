@@ -409,6 +409,7 @@ class Main {
       }
 
       if (target.classList.contains('sidebar__link') && target.dataset.page === 'catalog') {
+        Catalog.clearSortedProducts();
         router.navigate(pages.CATALOG);
         this.sidebar.closeSidebar();
       }
