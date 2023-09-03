@@ -33,8 +33,7 @@ class Router {
     if (this.redirectToMainPageIfLogged(route.path)) return;
 
     if (!notPushState) {
-      window.history.pushState({}, '', request.id === ''
-      ? `${request.pathname}` : `${request.pathname}/${request.id}`);
+      window.history.pushState({}, '', request.id === '' ? `${request.pathname}` : `${request.pathname}/${request.id}`);
     }
 
     route?.callback(request.id);

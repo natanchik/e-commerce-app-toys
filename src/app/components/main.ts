@@ -38,7 +38,7 @@ class Main {
   public drawMain(): HTMLDivElement {
     const body = document.querySelector('body') as HTMLBodyElement;
     const main = createElement('div', ['main']) as HTMLDivElement;
-    const dimming = createElement('div', ['sidebar__dimming']);
+    const dimming = createElement('div', ['sidebar__dimming']) as HTMLDivElement;
 
     body.append(main, this.sidebarWrapper, dimming);
 
@@ -537,7 +537,7 @@ class Main {
         !target.parentElement?.classList.contains('filters__checkbox-block') &&
         !target.classList.contains('filters__search') &&
         !target.classList.contains('filters__price-input') &&
-        !target.classList.contains('filters__select') 
+        !target.classList.contains('filters__select')
       ) {
         const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
         apiStatus.className = 'api-status';
