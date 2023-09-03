@@ -1,9 +1,11 @@
 import AuthPage from '../components/autorization';
 import { countries, salutation } from '../components/constants';
 import { createElement, createInputElement, createSelectElement, createCheckBoxElement } from '../components/utils';
+import getAccessToken from '../api/tokens/getAccessToken';
 
 class RegPage extends AuthPage {
   public drawRegPage = (): HTMLDivElement => {
+    getAccessToken();
     return this.drawAuthPage('reg', 'Sign up', '', this.drawFormBlock);
   };
 

@@ -1,5 +1,5 @@
 import { createElement, createInputElement, nullUserState } from '../components/utils';
-import { Address, UserState } from '../types/types';
+import { UserState } from '../types/types';
 import RegPage from '../pages/registration-page';
 
 class UserProfile extends RegPage {
@@ -24,16 +24,9 @@ class UserProfile extends RegPage {
 
     info.append(name, birthday);
 
-    userState.addresses.forEach((address: Address, ind): void => {
-      const addressType = ind === 0 ? 'Billing' : 'Shipping';
-      const addresses = this.addProfileItem(
-        `${addressType.toLocaleLowerCase()}-address`,
-        `<p class='profile__address'>${addressType} address</p>`,
-        this.drawAddressBlock(addressType.toLocaleLowerCase()),
-      );
-      addresses.append(this.addAddress(address, userState, ind));
-      info.append(addresses);
-    });
+    const billingAddresses = this.addAddressTypeItem(userState, 'Billing');
+    const shippingAddresses = this.addAddressTypeItem(userState, 'Shipping');
+    info.append(billingAddresses, shippingAddresses);
 
     const emailComponents = [
       createElement('div', [], `<p>Your current E-mail: <i>${userState.email}</i></p>`),
@@ -41,7 +34,7 @@ class UserProfile extends RegPage {
       this.addEmail('Input your new E-mail'),
     ];
 
-    const email = this.addModal('email', userState.email, emailComponents);
+    const email = this.addModal('e-mail', userState.email, emailComponents);
 
     const passwordComponents = [
       this.addPassword('current-password', 'cur-password', 'Input your current password'),
@@ -59,31 +52,93 @@ class UserProfile extends RegPage {
     return profile;
   }
 
-  private addProfileItem(itemName: string, label?: string, data?: HTMLDivElement): HTMLLIElement {
-    const item = createElement('li', ['profile__item'], label) as HTMLLIElement;
+  private addProfileItem(itemName: string, label?: string, data?: HTMLDivElement, btn: boolean = true): HTMLLIElement {
+    const item = createElement('li', ['profile__item', 'profile__item_inline'], label) as HTMLLIElement;
     item.id = `${itemName}`;
     if (data) {
       const itemContent = createElement('div', ['profile__content', 'profile__content_hidden']) as HTMLDivElement;
       itemContent.append(data);
       itemContent.dataset.content = `${item.id}`;
+      if (btn) {
+        itemContent.append(
+          createElement(
+            'button',
+            ['button', 'button_green', 'profile__update', 'profile__content_hidden'],
+            'Save changes',
+          ),
+        );
+      }
       item.append(itemContent);
     }
     return item;
   }
 
-  private addAddress(address: Address, userState: UserState, ind: number): HTMLDivElement {
-    const isDefault =
-      (ind === 0 ? userState.defaultBillingAddressId : userState.defaultShippingAddressId) === address.id
-        ? 'default'
-        : '';
-    const addressItem = createElement(
-      'div',
-      ['profile__address', 'profile__address__current'],
-      `<p class="main__green-text">${address.country}, ${address.postalCode}, ${address.city}, ${address.streetName}</p>
-      <h6 class="main__green-text">${isDefault}</h6>`,
-    ) as HTMLDivElement;
-    addressItem.dataset.id = address.id;
-    return addressItem;
+  private addAddressTypeItem(userState: UserState, type: string): HTMLLIElement {
+    const item = createElement(
+      'li',
+      ['profile__item', 'profile__item_inline'],
+      `<p class='profile__address__title'>${type} addresses</p>`,
+    ) as HTMLLIElement;
+    item.id = `${type}-address`;
+    const defaultId = type === 'Billing' ? userState.defaultBillingAddressId : userState.defaultShippingAddressId;
+    const ids = type === 'Billing' ? userState.billingAddressIds : userState.shippingAddressIds;
+    ids.forEach((id) => {
+      userState.addresses.forEach((address) => {
+        if (address.id === id) {
+          const isDefault = defaultId === address.id ? ': default' : '';
+          const addressText = createElement(
+            'div',
+            ['profile__address__text'],
+            `<p class="main__green-text">- ${address.country}, ${address.postalCode}, ${address.city}, ${address.streetName}${isDefault}</p>`,
+          );
+          const addressItem = createElement('div', ['profile__address', `${type}-address`]) as HTMLDivElement;
+          addressItem.append(addressText);
+          addressItem.append(
+            createElement(
+              'button',
+              [
+                'profile__address__btn',
+                `profile__${type}-address__btn`,
+                `profile__${type}-address__edit-btn`,
+                'profile__content_hidden',
+              ],
+              '&#128221;',
+            ),
+          );
+          addressItem.append(
+            createElement(
+              'button',
+              [
+                'profile__address__btn',
+                `profile__${type}-address__btn`,
+                `profile__${type}-address__delete-btn`,
+                'profile__content_hidden',
+              ],
+              'X',
+            ),
+          );
+          addressItem.dataset.id = id;
+          item.append(addressItem);
+        }
+      });
+    });
+    const itemContent = createElement('div', ['profile__content', 'profile__content_hidden']) as HTMLDivElement;
+    const addressForm = createElement('form', ['profile__address__form']);
+    const addressTemplate = this.drawAddressBlock(type);
+    const saveBtn = createElement(
+      'button',
+      ['button', 'button_green', 'profile__update', 'profile__content_hidden'],
+      'Save address',
+    );
+    const btnAnotherAddress = createElement('p', ['profile__add-another-address'], 'Add another address');
+    const btnBlock = createElement('div', ['profile__address__btn-block']);
+
+    btnBlock.append(btnAnotherAddress, saveBtn);
+    addressForm.append(addressTemplate, btnBlock);
+    itemContent.append(addressForm);
+    itemContent.dataset.content = `${item.id}`;
+    item.append(itemContent);
+    return item;
   }
 
   private addModal(title: string, curEmail: string, components: HTMLElement[]): HTMLLIElement {
@@ -107,7 +162,8 @@ class UserProfile extends RegPage {
 
     modalForm.append(apiStatus, currentEmail, ...components, btnBlock);
     const itemTitle = title[0].toUpperCase() + title.slice(1);
-    const item = this.addProfileItem(title, itemTitle, modalBg);
+    const item = this.addProfileItem(`change-${title}`, itemTitle, modalBg, false);
+    item.className = 'profile__item';
     return item;
   }
 }
