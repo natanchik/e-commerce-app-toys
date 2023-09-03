@@ -1,16 +1,8 @@
-import { CurrentAction } from '../../../types/types';
+import { pushCurrentAction } from '../../helpers/utils';
 import { getCustomerByID } from '../getCustomerByID';
 import { loginAfterRegistration } from '../loginCustomer';
 
 const customerURL = `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me`;
-
-const pushCurrentAction = (action: string, dataTitle: string, data: string): CurrentAction => {
-  const currentAction = {
-    action: action,
-    [dataTitle]: data,
-  };
-  return currentAction;
-};
 
 const updateCustomer = async (data: string): Promise<void> => {
   const myHeaders = {
@@ -51,7 +43,7 @@ const updateCustomer = async (data: string): Promise<void> => {
     .then(async (res) => {
       const customerID = res.customer.id;
       // const addresses = res.customer.addresses;
-      const currentActions = pushCurrentAction('changeEmail', 'email', data);
+      const currentActions = pushCurrentAction('email', 'changeEmail', data);
       const dataForAddressActions = JSON.stringify({
         version: 1,
         actions: currentActions,

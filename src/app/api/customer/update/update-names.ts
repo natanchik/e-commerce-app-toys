@@ -1,13 +1,4 @@
-import { CurrentAction } from '../../../types/types';
-import { addUserState } from '../../helpers/utils';
-
-const pushCurrentAction = (action: string, dataTitle: string, data: string): CurrentAction => {
-  const currentAction = {
-    action: action,
-    [dataTitle]: data,
-  };
-  return currentAction;
-};
+import { pushCurrentAction, addUserState } from '../../helpers/utils';
 
 const updateCustomerNames = async (newFirstName: string, newLastName: string): Promise<void> => {
   const myHeaders = {
@@ -15,8 +6,8 @@ const updateCustomerNames = async (newFirstName: string, newLastName: string): P
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
   };
   const currentActions = [
-    pushCurrentAction('setFirstName', 'firstName', newFirstName),
-    pushCurrentAction('setLastName', 'lastName', newLastName),
+    pushCurrentAction('firstName', 'setFirstName', newFirstName),
+    pushCurrentAction('lastName', 'setLastName', newLastName),
   ];
   const dataForActions = JSON.stringify({
     version: JSON.parse(localStorage.userState).version,

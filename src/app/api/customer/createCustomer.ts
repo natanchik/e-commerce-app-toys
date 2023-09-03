@@ -1,22 +1,17 @@
 import { AddressFromAPI, CurrentAction, RegisterData } from '../../types/types';
+import { pushCurrentAction } from '../helpers/utils';
 import { getCustomerByID } from './getCustomerByID';
 import { loginAfterRegistration } from './loginCustomer';
 
 const customersURL = 'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers';
 
-const pushCurrentActions = (actionValue: string, id: string): CurrentAction => {
-  const currentAction: CurrentAction = {
-    action: actionValue,
-    addressId: id,
-  };
-  return currentAction;
-};
+const pushCurrentActions = pushCurrentAction.bind(null, 'addressId');
 
 const getCurrentActions = (
   addresses: AddressFromAPI[],
   checkDefaultBilling: boolean,
   checkDefaultShipping: boolean,
-): { action: string; addressId: string }[] => {
+): CurrentAction[] => {
   const currentActions: CurrentAction[] = [];
   switch (addresses.length) {
     case 1:

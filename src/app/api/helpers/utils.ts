@@ -1,5 +1,5 @@
 import { catalogQueryParams } from '../../state/state';
-import { QueryParam, UserState } from '../../types/types';
+import { QueryParam, UserState, CurrentAction } from '../../types/types';
 
 export const addUserState = (customer: UserState): void => {
   const userState: UserState = {
@@ -36,4 +36,12 @@ export const addNewQueryParam = (id: string, key: string, value: string): void =
     value: value,
   };
   catalogQueryParams.set(id, queryParam);
+};
+
+export const pushCurrentAction = (dataTitle: string, action: string, data: string): CurrentAction => {
+  const currentAction = {
+    action: action,
+    [dataTitle]: data,
+  };
+  return currentAction;
 };
