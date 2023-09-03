@@ -2,11 +2,11 @@ import { createElement, encodeText } from './utils';
 import Sidebar from './sidebar';
 import Router from '../router/router';
 import { pages } from '../router/pages';
-import { validateInput } from './validation';
 import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
+import updateCustomerNames from '../api/customer/update/update-names';
 import User from './user';
 import getAllProducts from '../api/getProduct/getAllProducts';
 import {
@@ -21,11 +21,13 @@ import { sorterParametrs } from './constants';
 import getProductsBySearch from '../api/getProduct/getProductsBySearch';
 import { addNewQueryParam } from '../api/helpers/utils';
 import {
-  editProfile,
-  toggleProfile,
+  toggleProfileEditMode,
+  toggleProfileItems,
+  toggleAccordion,
   handlerSameAddresses,
   handlerCountry,
   handlerShowPassword,
+  handlerValInput,
 } from '../components/handlers';
 
 class Main {
@@ -105,18 +107,6 @@ class Main {
       }, 1500);
     } else {
       submitBtn.removeAttribute('disabled');
-    }
-  }
-
-  private toggleAccordion(id: string, target: HTMLElement, className: string): void {
-    const content = document.querySelector(`[data-content = ${id}]`);
-
-    if (target.classList.contains(`${className}__item_active`)) {
-      target.classList.remove(`${className}__item_active`);
-      content?.classList.add(`${className}__content_hidden`);
-    } else {
-      target.classList.add(`${className}__item_active`);
-      content?.classList.remove(`${className}__content_hidden`);
     }
   }
 
@@ -410,15 +400,33 @@ class Main {
       }
 
       if (
-        !(target.classList.contains('profile__modal') || target.closest('.profile__modal')) &&
+        !(
+          target.classList.contains('profile__modal') ||
+          target.closest('.profile__modal') ||
+          target.closest('.profile__content')
+        ) &&
         target.closest('.profile__item')
       ) {
-        toggleProfile(target);
+        toggleProfileItems(target);
       }
 
       if (target.classList.contains('profile__edit-btn')) {
-        editProfile(target);
+        toggleProfileEditMode(target);
       }
+
+      if (target.classList.contains('profile__update')) {
+        if (target.closest('[data-content="name"]')) {
+          const firstName = document.getElementById('firstName');
+          const lastName = document.getElementById('lastName');
+          if (firstName instanceof HTMLInputElement && lastName instanceof HTMLInputElement)
+            updateCustomerNames(firstName.value, lastName.value);
+        }
+      }
+
+      // if (target.classList.contains('profile__add-another-address')) {
+      //   const content = target.closest('.profile__content')
+      //   content?.append(this.drawAddressBlock(type))
+      // }
 
       if (target.classList.contains('main-page__page')) {
         const pageName = target.innerText.toLocaleLowerCase();
@@ -454,7 +462,7 @@ class Main {
       }
 
       if (target.classList.contains('filters__item')) {
-        this.toggleAccordion(target.id, target, 'filters');
+        toggleAccordion(target.id, target, 'filters');
       }
 
       if (target.classList.contains('filters__checkbox')) {
@@ -468,7 +476,7 @@ class Main {
       }
 
       if (target.classList.contains('mobile-filters__item')) {
-        this.toggleAccordion('mobile-filters', target, 'mobile-filters');
+        toggleAccordion('mobile-filters', target, 'mobile-filters');
       }
 
       if (target.classList.contains('filters__apply_prices')) {
@@ -511,23 +519,7 @@ class Main {
     });
 
     document.addEventListener('input', (event: Event): void => {
-      const target = event.target as HTMLInputElement;
-
-      if (
-        !target.parentElement?.classList.contains('filters__checkbox-block') &&
-        target.parentElement?.classList.contains('checkbox-block')
-      ) {
-        const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
-        apiStatus.className = 'api-status';
-        apiStatus.innerHTML = '';
-
-        if (target.classList.contains('auth-input')) {
-          const notation = document.querySelector(`[data-input="${target.id}"]`) as HTMLParagraphElement;
-          if (notation) {
-            validateInput(target, notation);
-          }
-        }
-      }
+      handlerValInput(event);
     });
 
     document.addEventListener('change', (event: Event): void => {
