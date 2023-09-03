@@ -26,6 +26,7 @@ const getCustomerToken = async (username: string, password: string): Promise<voi
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_get-customer-token', error.message);
+      alert('Sorry, this is taking an unusually long time...');
     });
 };
 

@@ -36,6 +36,7 @@ const getProductByID = (): void => {
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_getproduct-by-id', error.message);
+      alert('Sorry, this is taking an unusually long time...');
     });
 };
 

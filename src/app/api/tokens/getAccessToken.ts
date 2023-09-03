@@ -23,6 +23,7 @@ const getAccessToken = (): void => {
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_get-access-token', error.message);
+      alert('Sorry, this is taking an unusually long time...');
     });
 };
 

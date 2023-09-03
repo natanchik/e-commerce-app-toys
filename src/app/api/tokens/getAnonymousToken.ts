@@ -25,6 +25,7 @@ const getAnonymousToken = (): Promise<void> => {
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_get-anonymous-token', error.message);
+      alert('Sorry, this is taking an unusually long time...');
     });
 };
 
