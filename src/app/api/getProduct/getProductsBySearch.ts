@@ -22,6 +22,9 @@ const getProductsBySearch = (text: string): Promise<void> => {
     })
     .then((result) => {
       localStorage.setItem('search_products', JSON.stringify(result.results));
+    })
+    .catch((error) => {
+      if (error) localStorage.setItem('error_getproduct', error.message);
     });
 };
 

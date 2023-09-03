@@ -33,8 +33,10 @@ const getProductByID = (): void => {
           details: result.masterData.staged.description['en-US'],
         }),
       );
+    })
+    .catch((error) => {
+      if (error) localStorage.setItem('error_getproduct-by-id', error.message);
     });
-  // .catch((error) => console.log('error', error));
 };
 
 export default getProductByID;

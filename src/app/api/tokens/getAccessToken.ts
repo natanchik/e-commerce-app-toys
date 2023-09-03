@@ -21,7 +21,9 @@ const getAccessToken = (): void => {
       localStorage.setItem('token_info', JSON.stringify(res));
       localStorage.setItem('type_of_token', 'client-credentials');
     })
-    .catch((error) => {});
+    .catch((error) => {
+      if (error) localStorage.setItem('error_get-access-token', error.message);
+    });
 };
 
 export default getAccessToken;

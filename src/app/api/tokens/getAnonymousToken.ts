@@ -23,7 +23,9 @@ const getAnonymousToken = (): Promise<void> => {
     .then((res) => {
       localStorage.setItem('anonymous_token', JSON.stringify(res));
     })
-    .catch((error) => {});
+    .catch((error) => {
+      if (error) localStorage.setItem('error_get-anonymous-token', error.message);
+    });
 };
 
 export default getAnonymousToken;

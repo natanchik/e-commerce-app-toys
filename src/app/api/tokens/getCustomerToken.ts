@@ -23,6 +23,9 @@ const getCustomerToken = async (username: string, password: string): Promise<voi
     .then(async (res) => {
       localStorage.setItem('token_info', JSON.stringify(res));
       localStorage.setItem('type_of_token', 'customer');
+    })
+    .catch((error) => {
+      if (error) localStorage.setItem('error_get-customer-token', error.message);
     });
 };
 

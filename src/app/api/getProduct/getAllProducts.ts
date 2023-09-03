@@ -33,7 +33,7 @@ const getAllProducts = (): Promise<void> => {
       }
     })
     .catch((error) => {
-      if (error) localStorage.setItem('error_products_message', error.value);
+      if (error) localStorage.setItem('error_getproducts', error.message);
     });
 };
 

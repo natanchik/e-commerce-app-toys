@@ -22,7 +22,10 @@ const getProductsTypes = (): void => {
     })
     .then((result) => {
       localStorage.setItem('products_types', JSON.stringify(result.results));
-    });
+    })
+    .catch((error) => {
+      if (error) localStorage.setItem('error_getproducts-types', error.message);
+    })
 };
 
 export default getProductsTypes;

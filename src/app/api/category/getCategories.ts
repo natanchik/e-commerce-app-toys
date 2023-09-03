@@ -38,7 +38,7 @@ const getCategories = (
       return result.results;
     })
     .catch((error) => {
-      if (error) localStorage.setItem('error_getcategories_message', error.value);
+      if (error) localStorage.setItem('error_getcategories', error.message);
     });
 };
 
