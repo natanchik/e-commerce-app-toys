@@ -1,6 +1,6 @@
 import { addUserState } from '../../helpers/utils';
 import getCustomerToken from '../../tokens/getCustomerToken';
-import { addProfileWarning } from '../../../components/handlers';
+import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
 
 const customerURL = `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/password`;
 
@@ -24,12 +24,8 @@ const changeCustomerPassword = async (): Promise<void> => {
 
   const dataForActions = getChangePasswordData();
 
-  const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
-  const addApiStatus = (className: string, errMessage: string): void => {
-    apiStatus.classList.add(className);
-    apiStatus.innerHTML = errMessage;
-  };
-
+  const submitBtn = document.querySelector('.modal-submit') as HTMLButtonElement;
+  submitBtn.disabled = true;
   await fetch(`${customerURL}`, { method: 'POST', headers: myHeaders, body: JSON.stringify(dataForActions) })
     .then((res) => {
       if (res.headers.get('content-type') !== 'application/json; charset=utf-8') {
@@ -42,27 +38,39 @@ const changeCustomerPassword = async (): Promise<void> => {
         const passwordField = document.getElementById('cur-password');
         passwordField?.classList.add('error-input');
         addProfileWarning('error', 'The given current password does not match.');
-        addApiStatus('error-status__update', 'The given current password does not match.');
+        setTimeout(() => {
+          removeProfileWarning();
+        }, 3000);
       } else {
         throw new Error(`The error with status code ${res.status} has occured, please try later`);
       }
     })
     .then(async (res) => {
-      addApiStatus('success-status__update', `Update was successful!`);
+      submitBtn.disabled = false;
       addUserState(res);
       await getCustomerToken(
         JSON.parse(localStorage.userState).email,
         dataForActions ? dataForActions.newPassword : '',
       );
       addProfileWarning('success', 'Update was successful');
+      setTimeout(() => {
+        removeProfileWarning();
+      }, 3000);
     })
     .catch((err) => {
+      submitBtn.disabled = false;
       if (err.status === 400) {
         const passwordField = document.getElementById('cur-password');
         passwordField?.classList.add('error-input');
-        addApiStatus('error-status__update', 'The given current password does not match.');
+        addProfileWarning('error', 'The given current password does not match.');
+        setTimeout(() => {
+          removeProfileWarning();
+        }, 3000);
       } else if (err instanceof Error) {
-        addApiStatus('error-status__update', err.message);
+        addProfileWarning('error', err.message);
+        setTimeout(() => {
+          removeProfileWarning();
+        }, 3000);
       }
     });
 };

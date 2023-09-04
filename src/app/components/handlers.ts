@@ -1,6 +1,7 @@
 import { validateInput } from './validation';
 import updateCustomerNames from '../api/customer/update/update-names';
 import updateCustomerBirthday from '../api/customer/update/update-birthday';
+import changeCustomerEmail from '../api/customer/update/change-email';
 import { nullUserState } from '../components/utils';
 import changeCustomerPassword from '../api/customer/update/change-password';
 import { checkValidity } from '../api/helpers/checkValidity';
@@ -159,6 +160,10 @@ export async function handlersProfileUpdates(target: HTMLElement): Promise<void>
         }
       }
     }
+    const item = target.closest('.profile__item');
+    if (item && item instanceof HTMLElement) {
+      toggleAccordion(item?.id, item, 'profile');
+    }
   }
 
   if (target.closest('[data-content="birthday"]')) {
@@ -170,10 +175,14 @@ export async function handlersProfileUpdates(target: HTMLElement): Promise<void>
         birthdayInfo.textContent = birthday.value;
       }
     }
+    const item = target.closest('.profile__item');
+    if (item && item instanceof HTMLElement) {
+      toggleAccordion(item?.id, item, 'profile');
+    }
   }
 }
 
-export async function addProfileWarning(type: string, message: string): Promise<void> {
+export function addProfileWarning(type: string, message: string): void {
   const warning = document.querySelector('.profile__warning');
   if (warning) {
     warning.className = 'profile__warning';
@@ -183,9 +192,14 @@ export async function addProfileWarning(type: string, message: string): Promise<
       warning.classList.add('error');
     }
     warning.innerHTML = `<p>${message}</p>`;
-    setTimeout(() => {
-      warning.innerHTML = '';
-    }, 3000);
+  }
+}
+
+export function removeProfileWarning(): void {
+  const warning = document.querySelector('.profile__warning');
+  if (warning) {
+    warning.className = 'profile__warning';
+    warning.innerHTML = '';
   }
 }
 
@@ -193,10 +207,23 @@ export async function handlerChangePaswwordSubmit(event: Event, target: HTMLElem
   event.preventDefault();
   const isValid: boolean = checkValidity();
   if (isValid) {
-    const submitBtn = document.querySelector('.modal-submit') as HTMLButtonElement;
-    submitBtn.setAttribute('disabled', 'true');
     await changeCustomerPassword();
-    submitBtn.removeAttribute('disabled');
+    const item = target.closest('.profile__item_modal');
+    if (item && item instanceof HTMLElement) {
+      hideItemContent(item.id, item, 'profile');
+      document.body.style.overflow = '';
+    }
+  }
+}
+
+export async function handlerChangeEmailSubmit(event: Event, target: HTMLElement): Promise<void> {
+  event.preventDefault();
+  const isValid: boolean = checkValidity();
+  if (isValid) {
+    const submitBtn = document.querySelector('.modal-submit') as HTMLButtonElement;
+    submitBtn.disabled = true;
+    await changeCustomerEmail();
+    submitBtn.disabled = false;
 
     const item = target.closest('.profile__item_modal');
     if (item && item instanceof HTMLElement) {

@@ -29,6 +29,7 @@ import {
   handlerValInput,
   handlersProfileUpdates,
   handlerChangePaswwordSubmit,
+  handlerChangeEmailSubmit,
 } from '../components/handlers';
 
 class Main {
@@ -517,8 +518,12 @@ class Main {
         event.preventDefault();
       }
 
-      if (target.classList.contains('profile__modal__form')) {
+      if (target.classList.contains('profile__password__form')) {
         handlerChangePaswwordSubmit(event, target);
+      }
+
+      if (target.classList.contains('profile__e-mail__form')) {
+        handlerChangeEmailSubmit(event, target);
       }
     });
 

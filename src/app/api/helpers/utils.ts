@@ -45,3 +45,12 @@ export const pushCurrentAction = (dataTitle: string, action: string, data: strin
   };
   return currentAction;
 };
+
+export const addApiStatus = async (
+  apiStatus: HTMLParagraphElement,
+  className: string,
+  errMessage: string,
+): Promise<void> => {
+  apiStatus.classList.add(className);
+  apiStatus.innerHTML = errMessage;
+};

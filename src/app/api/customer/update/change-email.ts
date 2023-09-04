@@ -1,12 +1,15 @@
 import { pushCurrentAction, addUserState } from '../../helpers/utils';
 import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
 
-const updateCustomerBirthday = async (birthday: string): Promise<void> => {
+const changeCustomerEmail = async (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
   };
-  const currentActions = [pushCurrentAction('dateOfBirth', 'setDateOfBirth', birthday)];
+
+  const newEmailInput = document.getElementById('email') as HTMLInputElement;
+  const newEmail = newEmailInput && newEmailInput instanceof HTMLInputElement ? newEmailInput.value : '';
+  const currentActions = [pushCurrentAction('email', 'changeEmail', newEmail)];
   const dataForActions = JSON.stringify({
     version: JSON.parse(localStorage.userState).version,
     actions: currentActions,
@@ -28,11 +31,15 @@ const updateCustomerBirthday = async (birthday: string): Promise<void> => {
       }
     })
     .then(async (res) => {
-      addUserState(res);
       addProfileWarning('success', `Update was successful!`);
       setTimeout(() => {
         removeProfileWarning();
       }, 3000);
+      addUserState(res);
+      const emailInfo = document.getElementById('curEmailInfo');
+      if (emailInfo) {
+        emailInfo.innerHTML = `Your current E-mail: <i>${newEmail}</i>`;
+      }
     })
     .catch((err) => {
       if (err instanceof Error) {
@@ -44,4 +51,4 @@ const updateCustomerBirthday = async (birthday: string): Promise<void> => {
     });
 };
 
-export default updateCustomerBirthday;
+export default changeCustomerEmail;

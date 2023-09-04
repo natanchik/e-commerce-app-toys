@@ -1,4 +1,5 @@
 import { pushCurrentAction, addUserState } from '../../helpers/utils';
+import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
 
 const updateCustomerNames = async (newFirstName: string, newLastName: string): Promise<void> => {
   const myHeaders = {
@@ -13,11 +14,7 @@ const updateCustomerNames = async (newFirstName: string, newLastName: string): P
     version: JSON.parse(localStorage.userState).version,
     actions: currentActions,
   });
-  const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
-  const addApiStatus = (className: string, errMessage: string): void => {
-    apiStatus.classList.add(className);
-    apiStatus.innerHTML = errMessage;
-  };
+
   const customerId = JSON.parse(localStorage.userState).id;
   const customerURL = `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers/${customerId}`;
 
@@ -34,12 +31,18 @@ const updateCustomerNames = async (newFirstName: string, newLastName: string): P
       }
     })
     .then(async (res) => {
-      addApiStatus('success-status__update', `Update was successful!`);
+      addProfileWarning('success', `Update was successful!`);
       addUserState(res);
+      setTimeout(() => {
+        removeProfileWarning();
+      }, 3000);
     })
     .catch((err) => {
       if (err instanceof Error) {
-        addApiStatus('error-status__update', err.message);
+        addProfileWarning('error', err.message);
+        setTimeout(() => {
+          removeProfileWarning();
+        }, 3000);
       }
     });
 };

@@ -29,8 +29,7 @@ class UserProfile extends RegPage {
     info.append(billingAddresses, shippingAddresses);
 
     const emailComponents = [
-      createElement('div', [], `<p>Your current E-mail: <i>${userState.email}</i></p>`),
-      this.addPassword('current-password', 'password', 'Input your current password'),
+      createElement('div', [], `<p id='curEmailInfo'>Your current E-mail: <i>${userState.email}</i></p>`),
       this.addEmail('Input your new E-mail'),
     ];
 
@@ -160,7 +159,7 @@ class UserProfile extends RegPage {
     const submitBtn = createElement('button', ['button', 'button_green', 'modal-submit'], `Change ${title}`);
     btnBlock.append(cancelBtn, submitBtn);
 
-    modalForm.append(apiStatus, currentEmail, ...components, btnBlock);
+    modalForm.append(currentEmail, ...components, apiStatus, btnBlock);
     const itemTitle = title[0].toUpperCase() + title.slice(1);
     const item = this.addProfileItem(`change-${title}`, itemTitle, modalBg, false);
     item.className = 'profile__item profile__item_modal';
