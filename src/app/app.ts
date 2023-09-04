@@ -36,7 +36,8 @@ class App {
   }
 
   public startApp(): void {
-    this.router.navigate(pages.MAIN);
+    const mainPage = new MainPage();
+    Main.setContent(mainPage.drawMainPage());
   }
 
   private createRoutes(): RouteInfo[] {
