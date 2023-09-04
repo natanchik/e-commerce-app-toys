@@ -63,7 +63,7 @@ class UserProfile extends RegPage {
         itemContent.append(
           createElement(
             'button',
-            ['button', 'button_green', 'profile__update', 'profile__content_hidden'],
+            ['button', 'button_white', 'profile__update', 'profile__content_hidden'],
             'Save changes',
           ),
         );
@@ -88,7 +88,7 @@ class UserProfile extends RegPage {
     const addressTemplate = this.drawAddressBlock(type);
     const saveBtn = createElement(
       'button',
-      ['button', 'button_green', 'profile__update', 'profile__content_hidden'],
+      ['button', 'button_white', 'profile__update', 'profile__content_hidden'],
       'Save address',
     );
     const btnAnotherAddress = createElement('p', ['profile__add-another-address'], 'Add another address');
