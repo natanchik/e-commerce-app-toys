@@ -6,6 +6,7 @@ import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
+import removeCustomerAddress from '../api/customer/update/remove-address';
 import User from './user';
 import getAllProducts from '../api/getProduct/getAllProducts';
 import {
@@ -402,7 +403,11 @@ class Main {
       }
 
       if (
-        !(target.classList.contains('profile__content') || target.closest('.profile__content')) &&
+        !(
+          target.classList.contains('profile__content') ||
+          target.closest('.profile__content') ||
+          target.classList.contains('profile__address__btn')
+        ) &&
         target.closest('.profile__item_inline')
       ) {
         toggleProfileItems(target);
@@ -422,6 +427,13 @@ class Main {
 
       if (target.classList.contains('profile__update')) {
         handlersProfileUpdates(target);
+      }
+
+      if (target.classList.contains('profile__address__delete-btn')) {
+        const address = target.closest('.profile__address');
+        if (address && address instanceof HTMLElement && address.dataset.id) {
+          removeCustomerAddress(address.dataset.id);
+        }
       }
 
       // if (target.classList.contains('profile__add-another-address')) {

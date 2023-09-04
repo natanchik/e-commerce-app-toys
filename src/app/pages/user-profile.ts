@@ -110,6 +110,7 @@ class UserProfile extends RegPage {
               [
                 'profile__address__btn',
                 `profile__${type}-address__btn`,
+                'profile__address__delete-btn',
                 `profile__${type}-address__delete-btn`,
                 'profile__content_hidden',
               ],
