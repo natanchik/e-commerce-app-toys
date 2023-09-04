@@ -1,10 +1,12 @@
 import { validateInput } from './validation';
+import { createElement, nullUserState } from '../components/utils';
 import updateCustomerNames from '../api/customer/update/update-names';
 import updateCustomerBirthday from '../api/customer/update/update-birthday';
 import changeCustomerEmail from '../api/customer/update/change-email';
-import { nullUserState } from '../components/utils';
 import changeCustomerPassword from '../api/customer/update/change-password';
+import updateCustomerAddress from '../api/customer/update/add-address';
 import { checkValidity } from '../api/helpers/checkValidity';
+import { UserState } from '../types/types';
 
 function toggleProfileItemBtns(target: HTMLElement, action: string): void {
   const saveBtn = target.querySelector('.profile__update');
@@ -207,7 +209,10 @@ export async function handlerChangePaswwordSubmit(event: Event, target: HTMLElem
   event.preventDefault();
   const isValid: boolean = checkValidity();
   if (isValid) {
+    const submitBtn = document.querySelectorAll('.modal-submit')[1] as HTMLButtonElement;
+    submitBtn.disabled = true;
     await changeCustomerPassword();
+    submitBtn.disabled = false;
     const item = target.closest('.profile__item_modal');
     if (item && item instanceof HTMLElement) {
       hideItemContent(item.id, item, 'profile');
@@ -224,8 +229,99 @@ export async function handlerChangeEmailSubmit(event: Event, target: HTMLElement
     submitBtn.disabled = true;
     await changeCustomerEmail();
     submitBtn.disabled = false;
-
     const item = target.closest('.profile__item_modal');
+    if (item && item instanceof HTMLElement) {
+      hideItemContent(item.id, item, 'profile');
+      document.body.style.overflow = '';
+    }
+  }
+}
+
+export function drawCurrentAddresses(type: string, curAddresses: HTMLDivElement): void {
+  const userState: UserState = localStorage.getItem('userState')
+    ? JSON.parse(localStorage.getItem('userState') as string)
+    : nullUserState;
+  curAddresses.innerHTML = '';
+  const defaultId = type === 'Billing' ? userState.defaultBillingAddressId : userState.defaultShippingAddressId;
+  const ids = type === 'Billing' ? userState.billingAddressIds : userState.shippingAddressIds;
+  ids.forEach((id) => {
+    userState.addresses.forEach((address) => {
+      if (address.id === id) {
+        const isDefault = defaultId === address.id ? ': default' : '';
+        const addressText = createElement(
+          'div',
+          ['profile__address__text'],
+          `<p class="main__green-text">- ${address.country}, ${address.postalCode}, ${address.city}, ${address.streetName}${isDefault}</p>`,
+        );
+        const addressItem = createElement('div', ['profile__address', `${type}-address`]) as HTMLDivElement;
+        addressItem.append(addressText);
+        addressItem.append(
+          createElement(
+            'button',
+            [
+              'profile__address__btn',
+              `profile__${type}-address__btn`,
+              `profile__${type}-address__edit-btn`,
+              'profile__content_hidden',
+            ],
+            '&#128221;',
+          ),
+        );
+        addressItem.append(
+          createElement(
+            'button',
+            [
+              'profile__address__btn',
+              `profile__${type}-address__btn`,
+              'profile__address__delete-btn',
+              `profile__${type}-address__delete-btn`,
+              'profile__content_hidden',
+            ],
+            'X',
+          ),
+        );
+        addressItem.dataset.id = id;
+        curAddresses.append(addressItem);
+      }
+    });
+  });
+}
+
+export async function handlerChangeAddressSubmit(event: Event, target: HTMLElement): Promise<void> {
+  event.preventDefault();
+  const item = target.closest('.profile__item_inline') as HTMLLIElement;
+  const type = item?.id?.split('-')[0];
+  const country = document.getElementById(`${type}-country`) as HTMLInputElement;
+  const city = document.getElementById(`${type}-city`) as HTMLInputElement;
+  const street = document.getElementById(`${type}-streetName`) as HTMLInputElement;
+  const postalCode = document.getElementById(`${type}-postalCode`) as HTMLInputElement;
+  const isDefaultBox = document.getElementById(`as-default-${type}`) as HTMLInputElement;
+  const isDefault = isDefaultBox ? isDefaultBox.checked : false;
+
+  [country, city, street, postalCode].forEach((el) => {
+    const notation = document.querySelector('[data-input="' + `${el.id}"]`) as HTMLParagraphElement;
+    if (notation) {
+      validateInput(el, notation);
+    }
+  });
+
+  const isValid: boolean = checkValidity();
+  if (isValid) {
+    const submitBtn = target.querySelector('.profile__update') as HTMLButtonElement;
+    submitBtn.disabled = true;
+    const data = {
+      country: country.value,
+      city: city.value,
+      streetName: street.value,
+      postalCode: postalCode.value,
+    };
+    await updateCustomerAddress(data, type ? type : '', isDefault);
+    const curAddressesBlock = item?.querySelector('.profile__addresses__current');
+    if (curAddressesBlock && curAddressesBlock instanceof HTMLDivElement) {
+      drawCurrentAddresses(type ? type : '', curAddressesBlock);
+    }
+    submitBtn.disabled = false;
+
     if (item && item instanceof HTMLElement) {
       hideItemContent(item.id, item, 'profile');
       document.body.style.overflow = '';

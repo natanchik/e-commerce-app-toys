@@ -31,6 +31,7 @@ import {
   handlersProfileUpdates,
   handlerChangePaswwordSubmit,
   handlerChangeEmailSubmit,
+  handlerChangeAddressSubmit,
 } from '../components/handlers';
 
 class Main {
@@ -511,7 +512,6 @@ class Main {
       if (target.classList.contains('login-form')) {
         event.preventDefault();
         const isValid: boolean = checkValidity();
-
         if (isValid) {
           this.loginViaForm(target as HTMLFormElement, router);
         }
@@ -520,7 +520,6 @@ class Main {
       if (target.classList.contains('register-form')) {
         event.preventDefault();
         const isValid: boolean = checkValidity();
-
         if (isValid) {
           this.registerViaForm(router);
         }
@@ -536,6 +535,10 @@ class Main {
 
       if (target.classList.contains('profile__e-mail__form')) {
         handlerChangeEmailSubmit(event, target);
+      }
+
+      if (target.classList.contains('profile__address__form')) {
+        handlerChangeAddressSubmit(event, target);
       }
     });
 

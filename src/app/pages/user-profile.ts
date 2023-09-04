@@ -1,6 +1,7 @@
 import { createElement, createInputElement, nullUserState } from '../components/utils';
 import { UserState } from '../types/types';
 import RegPage from '../pages/registration-page';
+import { drawCurrentAddresses } from '../components/handlers';
 
 class UserProfile extends RegPage {
   public drawProfile(): HTMLDivElement {
@@ -24,8 +25,8 @@ class UserProfile extends RegPage {
 
     info.append(name, birthday);
 
-    const billingAddresses = this.addAddressTypeItem(userState, 'Billing');
-    const shippingAddresses = this.addAddressTypeItem(userState, 'Shipping');
+    const billingAddresses = this.addAddressTypeItem('Billing');
+    const shippingAddresses = this.addAddressTypeItem('Shipping');
     info.append(billingAddresses, shippingAddresses);
 
     const emailComponents = [
@@ -72,56 +73,16 @@ class UserProfile extends RegPage {
     return item;
   }
 
-  private addAddressTypeItem(userState: UserState, type: string): HTMLLIElement {
+  private addAddressTypeItem(type: string): HTMLLIElement {
     const item = createElement(
       'li',
       ['profile__item', 'profile__item_inline'],
       `<p class='profile__address__title'>${type} addresses</p>`,
     ) as HTMLLIElement;
     item.id = `${type}-address`;
-    const defaultId = type === 'Billing' ? userState.defaultBillingAddressId : userState.defaultShippingAddressId;
-    const ids = type === 'Billing' ? userState.billingAddressIds : userState.shippingAddressIds;
-    ids.forEach((id) => {
-      userState.addresses.forEach((address) => {
-        if (address.id === id) {
-          const isDefault = defaultId === address.id ? ': default' : '';
-          const addressText = createElement(
-            'div',
-            ['profile__address__text'],
-            `<p class="main__green-text">- ${address.country}, ${address.postalCode}, ${address.city}, ${address.streetName}${isDefault}</p>`,
-          );
-          const addressItem = createElement('div', ['profile__address', `${type}-address`]) as HTMLDivElement;
-          addressItem.append(addressText);
-          addressItem.append(
-            createElement(
-              'button',
-              [
-                'profile__address__btn',
-                `profile__${type}-address__btn`,
-                `profile__${type}-address__edit-btn`,
-                'profile__content_hidden',
-              ],
-              '&#128221;',
-            ),
-          );
-          addressItem.append(
-            createElement(
-              'button',
-              [
-                'profile__address__btn',
-                `profile__${type}-address__btn`,
-                'profile__address__delete-btn',
-                `profile__${type}-address__delete-btn`,
-                'profile__content_hidden',
-              ],
-              'X',
-            ),
-          );
-          addressItem.dataset.id = id;
-          item.append(addressItem);
-        }
-      });
-    });
+    const curAddresses = createElement('div', ['profile__addresses__current']) as HTMLDivElement;
+    drawCurrentAddresses(type, curAddresses);
+
     const itemContent = createElement('div', ['profile__content', 'profile__content_hidden']) as HTMLDivElement;
     const addressForm = createElement('form', ['profile__address__form']);
     const addressTemplate = this.drawAddressBlock(type);
@@ -137,7 +98,7 @@ class UserProfile extends RegPage {
     addressForm.append(addressTemplate, btnBlock);
     itemContent.append(addressForm);
     itemContent.dataset.content = `${item.id}`;
-    item.append(itemContent);
+    item.append(curAddresses, itemContent);
     return item;
   }
 

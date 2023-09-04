@@ -38,7 +38,7 @@ export const addNewQueryParam = (id: string, key: string, value: string): void =
   catalogQueryParams.set(id, queryParam);
 };
 
-export const pushCurrentAction = (dataTitle: string, action: string, data: string): CurrentAction => {
+export const pushCurrentAction = (dataTitle: string, action: string, data: string | object): CurrentAction => {
   const currentAction = {
     action: action,
     [dataTitle]: data,

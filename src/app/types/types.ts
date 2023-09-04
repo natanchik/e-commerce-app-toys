@@ -53,7 +53,7 @@ export interface UserState {
 
 export interface CurrentAction {
   action: string;
-  [dataTitile: string]: string;
+  [dataTitile: string]: string | object;
 }
 
 export interface CardData {
