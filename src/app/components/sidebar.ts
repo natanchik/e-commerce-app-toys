@@ -35,7 +35,7 @@ class Sidebar {
         const allLists = document.querySelectorAll<HTMLElement>('.sidebar__category-list');
         allLists.forEach((list: HTMLElement): void => {
           list.classList.remove('sidebar__category-list_active');
-        })
+        });
         const categoryList = document.querySelector(`[data-content="${target.id}"]`) as HTMLElement;
         categoryList.classList.add('sidebar__category-list_active');
       }
@@ -47,7 +47,7 @@ class Sidebar {
         const allLists = document.querySelectorAll<HTMLElement>('.sidebar__category-list');
         allLists.forEach((list: HTMLElement): void => {
           list.classList.remove('sidebar__category-list_active');
-        })
+        });
       }
     });
 

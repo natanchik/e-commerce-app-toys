@@ -63,12 +63,12 @@
     border-width: 1px 1px 0 0;
     transform-origin: center center;
     box-sizing: border-box;
-    transform: rotate(45deg);
+    transform: rotate(135deg);
     transition: all 0.5s ease-in;
   }
   &:hover {
     &::after {
-      transform: rotate(135deg);
+      transform: rotate(45deg);
     }
   }
 }

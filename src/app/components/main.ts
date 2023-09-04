@@ -432,9 +432,9 @@ class Main {
       }
 
       if (target.classList.contains('main-page__page')) {
-        const pageName = target.innerText.toLocaleLowerCase();
+        const pageName: string = target.dataset.page ? target.dataset.page : '';
         if (pageName === 'catalog') Catalog.clearSortedProducts();
-        router.navigate(pageName === 'main' ? pages.MAIN : pageName);
+        router.navigate(pageName);
       }
 
       if (
