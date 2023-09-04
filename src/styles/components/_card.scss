@@ -196,7 +196,9 @@
 }
 
 .modal-active {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (max-width: 960px) or (max-height: 700px) {
