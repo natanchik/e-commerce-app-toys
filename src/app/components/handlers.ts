@@ -162,6 +162,8 @@ export async function handlersProfileUpdates(target: HTMLElement): Promise<void>
           nameInfo.textContent = firstName.value + ' ' + lastName.value;
         }
       }
+      firstName.value = '';
+      lastName.value = '';
     }
     const item = target.closest('.profile__item');
     if (item && item instanceof HTMLElement) {
@@ -177,6 +179,7 @@ export async function handlersProfileUpdates(target: HTMLElement): Promise<void>
       if (birthdayInfo) {
         birthdayInfo.textContent = birthday.value;
       }
+      birthday.value = '';
     }
     const item = target.closest('.profile__item');
     if (item && item instanceof HTMLElement) {
@@ -214,6 +217,7 @@ export async function handlerChangePaswwordSubmit(event: Event, target: HTMLElem
     submitBtn.disabled = true;
     await changeCustomerPassword();
     submitBtn.disabled = false;
+    target.querySelectorAll('input').forEach((input) => (input.value = ''));
     const item = target.closest('.profile__item_modal');
     if (item && item instanceof HTMLElement) {
       hideItemContent(item.id, item, 'profile');
@@ -324,7 +328,9 @@ export async function handlerAddAddressSubmit(event: Event, target: HTMLElement)
       drawCurrentAddresses(type ? type : '', curAddressesBlock);
     }
     submitBtn.disabled = false;
-
+    [country, city, street, postalCode, isDefaultBox].forEach((el) => {
+      el.value = '';
+    });
     if (item && item instanceof HTMLElement) {
       hideItemContent(item.id, item, 'profile');
       document.body.style.overflow = '';

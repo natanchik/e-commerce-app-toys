@@ -91,10 +91,9 @@ class UserProfile extends RegPage {
       ['button', 'button_white', 'profile__update', 'profile__content_hidden'],
       'Save address',
     );
-    const btnAnotherAddress = createElement('p', ['profile__add-another-address'], 'Add another address');
     const btnBlock = createElement('div', ['profile__address__btn-block']);
 
-    btnBlock.append(btnAnotherAddress, saveBtn);
+    btnBlock.append(saveBtn);
     addressForm.append(addressTemplate, btnBlock);
     itemContent.append(addressForm);
     itemContent.dataset.content = `${item.id}`;

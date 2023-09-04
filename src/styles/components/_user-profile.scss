@@ -122,7 +122,7 @@
 
 .profile__address__btn-block {
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
 }
 
 .profile__add-another-address {
@@ -178,4 +178,10 @@
   height: fit-content;
   font-size: 1.2rem;
   align-self: last baseline;
+}
+
+.modal-submit:disabled {
+  background-color: $disabled;
+  color: darken($color: $disabled, $amount: 40%);
+  cursor: auto;
 }

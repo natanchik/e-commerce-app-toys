@@ -32,6 +32,7 @@ const changeCustomerEmail = async (): Promise<void> => {
     })
     .then(async (res) => {
       addProfileWarning('success', `Update was successful!`);
+      newEmailInput.value = '';
       setTimeout(() => {
         removeProfileWarning();
       }, 3000);
