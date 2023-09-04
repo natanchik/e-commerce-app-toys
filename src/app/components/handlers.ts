@@ -4,7 +4,7 @@ import updateCustomerNames from '../api/customer/update/update-names';
 import updateCustomerBirthday from '../api/customer/update/update-birthday';
 import changeCustomerEmail from '../api/customer/update/change-email';
 import changeCustomerPassword from '../api/customer/update/change-password';
-import updateCustomerAddress from '../api/customer/update/add-address';
+import addCustomerAddress from '../api/customer/update/add-address';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { UserState } from '../types/types';
 
@@ -315,7 +315,7 @@ export async function handlerChangeAddressSubmit(event: Event, target: HTMLEleme
       streetName: street.value,
       postalCode: postalCode.value,
     };
-    await updateCustomerAddress(data, type ? type : '', isDefault);
+    await addCustomerAddress(data, type ? type : '', isDefault);
     const curAddressesBlock = item?.querySelector('.profile__addresses__current');
     if (curAddressesBlock && curAddressesBlock instanceof HTMLDivElement) {
       drawCurrentAddresses(type ? type : '', curAddressesBlock);

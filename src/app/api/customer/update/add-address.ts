@@ -2,7 +2,7 @@ import { addUserState, pushCurrentAction } from '../../helpers/utils';
 import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
 import { Address } from '../../../types/types';
 
-const updateCustomerAddress = async (data: object, type: string, isDefault: boolean): Promise<void> => {
+const addCustomerAddress = async (data: object, type: string, isDefault: boolean): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -78,4 +78,4 @@ const updateCustomerAddress = async (data: object, type: string, isDefault: bool
     });
 };
 
-export default updateCustomerAddress;
+export default addCustomerAddress;
