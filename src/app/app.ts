@@ -1,4 +1,4 @@
-import { /*ID_SELECTOR,*/ pages } from './router/pages';
+import { ID_SELECTOR, SUBCATEGORY, pages } from './router/pages';
 import { RouteInfo } from './types/types';
 import MainPage from './pages/main-page';
 import LoginPage from './pages/login-page';
@@ -27,14 +27,16 @@ class App {
   user: User;
 
   constructor() {
+    this.user = new User();
     this.router = new Router(this.createRoutes());
     this.header = new Header(this.router);
     this.main = new Main(this.router);
     this.footer = new Footer(this.router);
-    this.user = new User();
   }
 
-  public startApp(): void {}
+  public startApp(): void {
+    this.router.navigate(pages.MAIN);
+  }
 
   private createRoutes(): RouteInfo[] {
     return [
@@ -82,19 +84,27 @@ class App {
       },
       {
         path: `${pages.CATALOG}`,
-        callback: (): void => {
+        callback: async (): Promise<void> => {
           const catalog = new Catalog();
-          Main.setContent(catalog.drawCatalog());
+          Main.setContent(await catalog.drawCatalog());
           Catalog.drawProducts();
         },
       },
-      // {
-      //   path: `${pages.CATALOG}/${ID_SELECTOR}`,
-      // callback: (id): void => {
-      //   const card = new Card();
-      //   Main.setContent(catalog.drawCard());
-      // },
-      // },
+      {
+        path: `${pages.CATALOG}/${SUBCATEGORY}`,
+        callback: async (): Promise<void> => {
+          const catalog = new Catalog();
+          Main.setContent(await catalog.drawCatalog());
+          Catalog.drawProducts();
+        },
+      },
+      {
+        path: `${pages.CATALOG}/${ID_SELECTOR}`,
+        callback: (): void => {
+          // const card = new Card();
+          // Main.setContent(card.drawCard(id));
+        },
+      },
       {
         path: `${pages.ABOUT_US}`,
         callback: (): void => {

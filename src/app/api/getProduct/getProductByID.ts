@@ -1,7 +1,7 @@
 const productID = '129ae40f-9c4f-49b7-a5ca-2aba067d8c7b';
 
 // TODO прокидывать id в параметры функции
-const getProductByID = (): void => {
+const getProductByID = async (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -12,7 +12,7 @@ const getProductByID = (): void => {
     headers: myHeaders,
   };
 
-  fetch(
+  return fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/products/${productID}`,
     requestOptions,
   )
@@ -33,8 +33,11 @@ const getProductByID = (): void => {
           details: result.masterData.staged.description['en-US'],
         }),
       );
+    })
+    .catch((error) => {
+      if (error) localStorage.setItem('error_getproduct-by-id', error.message);
+      alert('Sorry, this is taking an unusually long time...');
     });
-  // .catch((error) => console.log('error', error));
 };
 
 export default getProductByID;

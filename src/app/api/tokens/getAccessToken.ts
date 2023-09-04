@@ -5,8 +5,8 @@ const requestOptions = {
   },
 };
 
-const getAccessToken = (): void => {
-  fetch(
+const getAccessToken = async (): Promise<void> => {
+  return fetch(
     'https://auth.australia-southeast1.gcp.commercetools.com/oauth/token?grant_type=client_credentials',
     requestOptions,
   )
@@ -20,12 +20,11 @@ const getAccessToken = (): void => {
     .then((res) => {
       localStorage.setItem('token_info', JSON.stringify(res));
       localStorage.setItem('type_of_token', 'client-credentials');
+    })
+    .catch((error) => {
+      if (error) localStorage.setItem('error_get-access-token', error.message);
+      alert('Sorry, this is taking an unusually long time...');
     });
-  // .catch((err) => {
-  //   if (err instanceof Error) {
-  //     console.log(`${err.message}`);
-  //   }
-  // });
 };
 
 export default getAccessToken;

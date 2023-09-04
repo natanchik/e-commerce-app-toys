@@ -41,7 +41,7 @@
   }
 }
 .filters__item_active {
-  border-bottom: none
+  border-bottom: none;
 }
 
 .filters__content_hidden {
@@ -60,7 +60,7 @@
 
 .filters__select,
 .filters__search {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   color: $blue;
   padding: 10px 0;
   width: 95%;
@@ -89,7 +89,6 @@
   margin: 30px 0;
   width: 95%;
 }
-
 
 .filters__apply {
   font-weight: 600;

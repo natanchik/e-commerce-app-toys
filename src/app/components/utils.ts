@@ -135,3 +135,16 @@ export const createImageElement = (url: string, classes: string[], attributes?: 
 export const encodeText = (text: string): string => {
   return text.replace(',', ' ').replace(/ {2}/g, '').split(' ').join('%20');
 };
+
+export const showLoadig = (): void => {
+  const body = document.querySelector('body') as HTMLBodyElement;
+  const loading = createElement('div', ['main__loading']) as HTMLDivElement;
+  const loadingImg = createElement('div', ['main__loading-img']) as HTMLDivElement;
+
+  loading.append(loadingImg);
+  body.append(loading);
+};
+export const hideLoading = (): void => {
+  const loading = document.querySelector('.main__loading') as HTMLBodyElement;
+  loading.remove();
+};

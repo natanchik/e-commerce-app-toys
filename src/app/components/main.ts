@@ -38,7 +38,7 @@ class Main {
   public drawMain(): HTMLDivElement {
     const body = document.querySelector('body') as HTMLBodyElement;
     const main = createElement('div', ['main']) as HTMLDivElement;
-    const dimming = createElement('div', ['sidebar__dimming']);
+    const dimming = createElement('div', ['sidebar__dimming']) as HTMLDivElement;
 
     body.append(main, this.sidebarWrapper, dimming);
 
@@ -102,7 +102,7 @@ class Main {
   }
 
   private toggleAccordion(id: string, target: HTMLElement, className: string): void {
-    const content = document.querySelector(`[data-content = ${id}]`);
+    const content = document.querySelector(`[data-content = '${id}']`);
 
     if (target.classList.contains(`${className}__item_active`)) {
       target.classList.remove(`${className}__item_active`);
@@ -113,10 +113,9 @@ class Main {
     }
   }
 
-  private redrawProducts(): void {
-    getAllProducts().then(() => {
-      Catalog.drawProducts();
-    });
+  private async redrawProducts(): Promise<void> {
+    await getAllProducts();
+    Catalog.drawProducts();
   }
 
   private addFilterNavigationForCheckbox(currentTarget: HTMLInputElement): void {
@@ -295,7 +294,7 @@ class Main {
         this.makeMiniActive(slideIndex);
       }
     }
-}
+  }
 
   private deleteSortFromQueryParam(): void {
     Object.keys(sorterParametrs).forEach((key: string) => {
@@ -333,7 +332,7 @@ class Main {
     }
   }
 
-  private addFilterNavigationForSearch(currentTarget: HTMLInputElement): void {
+  private async addFilterNavigationForSearch(currentTarget: HTMLInputElement): Promise<void> {
     const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
     close.classList.remove('filters__close_hidden');
     if (currentTarget.value.length === 0) {
@@ -341,7 +340,7 @@ class Main {
       Catalog.drawProducts();
       close.classList.add('filters__close_hidden');
     } else {
-      getProductsBySearch(encodeText(currentTarget.value)).then(() => {
+      await getProductsBySearch(encodeText(currentTarget.value)).then(() => {
         Catalog.drawProducts();
       });
     }
@@ -380,12 +379,38 @@ class Main {
     this.redrawProducts();
   }
 
+  private async addNavigationForSidebar(currentTarget: HTMLLIElement, router: Router): Promise<void> {
+    Catalog.clearSortedProducts();
+    if (currentTarget.dataset.page !== 'catalog') {
+      addNewQueryParam(
+        'sidebar',
+        'where',
+        `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
+      );
+    }
+
+    await getAllProducts();
+
+    this.sidebar.closeSidebar();
+    if (currentTarget.dataset.page === 'catalog') {
+      router.navigate(pages.CATALOG);
+    } else {
+      router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
+    }
+  }
+
   private setEventListeners(router: Router): void {
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
 
       if (target.classList.contains('sidebar__link') && target.dataset.page === 'main') {
         router.navigate(pages.MAIN);
+        this.sidebar.closeSidebar();
+      }
+
+      if (target.classList.contains('sidebar__link') && target.dataset.page === 'catalog') {
+        Catalog.clearSortedProducts();
+        router.navigate(pages.CATALOG);
         this.sidebar.closeSidebar();
       }
 
@@ -407,8 +432,9 @@ class Main {
       }
 
       if (target.classList.contains('main-page__page')) {
-        const pageName = target.innerText.toLocaleLowerCase();
-        router.navigate(pageName === 'main' ? pages.MAIN : pageName);
+        const pageName: string = target.dataset.page ? target.dataset.page : '';
+        if (pageName === 'catalog') Catalog.clearSortedProducts();
+        router.navigate(pageName);
       }
 
       if (
@@ -437,9 +463,8 @@ class Main {
         const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
         const currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
         this.toggleCardModal(currentIndex);
-        }
-    });
-    
+      }
+
       if (target.classList.contains('filters__item')) {
         this.toggleAccordion(target.id, target, 'filters');
       }
@@ -468,6 +493,15 @@ class Main {
 
       if (target.classList.contains('filters__close_search')) {
         this.clearFilterForSearch();
+      }
+
+      if (
+        target.classList.contains('sidebar__category') ||
+        target.classList.contains('sidebar__category-item') ||
+        target.classList.contains('catalog__breadcrumb')
+      ) {
+        const currentTarget = target as HTMLLIElement;
+        this.addNavigationForSidebar(currentTarget, router);
       }
     });
 
@@ -502,7 +536,9 @@ class Main {
 
       if (
         !target.parentElement?.classList.contains('filters__checkbox-block') &&
-        target.parentElement?.classList.contains('checkbox-block')
+        !target.classList.contains('filters__search') &&
+        !target.classList.contains('filters__price-input') &&
+        !target.classList.contains('filters__select')
       ) {
         const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
         apiStatus.className = 'api-status';
