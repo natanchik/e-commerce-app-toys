@@ -19,7 +19,7 @@ class MainPage {
         const note = createElement(
           'p',
           ['main-page__pagen-note', 'main__green-text'],
-          'note: you can choose the category you need in sidebar',
+          'note: you can choose the category you need in burger menu',
         );
         pageBlock.append(note);
       }
