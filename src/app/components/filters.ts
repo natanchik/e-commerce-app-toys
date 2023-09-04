@@ -1,7 +1,7 @@
 import getCategories from '../api/category/getCategories';
 import getProductsTypes from '../api/products-types/getProductsTypes';
 import { catalogQueryParams } from '../state/state';
-import { Category, ProductType } from '../types/types';
+import { Category, ProductType, QueryParam } from '../types/types';
 import { sorterParametrs } from './constants';
 import { createCheckBoxElement, createElement, createInputElement } from './utils';
 
@@ -171,7 +171,9 @@ class Filters {
     localStorage.removeItem('search_products');
 
     localStorage.removeItem('sorted_products');
-    catalogQueryParams.clear();
+    catalogQueryParams.forEach((param: QueryParam) => {
+      if (param.key !== 'sidebar') catalogQueryParams.delete(param.key);
+    });
   }
 }
 
