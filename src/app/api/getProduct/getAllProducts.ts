@@ -1,7 +1,7 @@
 import { generateQueryParams } from '../helpers/utils';
 import { catalogQueryParams } from '../../state/state';
 
-const getAllProducts = (): Promise<void> => {
+const getAllProducts = async (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -28,10 +28,13 @@ const getAllProducts = (): Promise<void> => {
     .then((result) => {
       if (catalogQueryParams.size === 0) {
         localStorage.setItem('all_products', JSON.stringify(result.results));
-        localStorage.setItem('sorted_products', JSON.stringify(result.results));
       } else {
         localStorage.setItem('sorted_products', JSON.stringify(result.results));
       }
+    })
+    .catch((error) => {
+      if (error) localStorage.setItem('error_getproducts', error.message);
+      alert('Sorry, this is taking an unusually long time...');
     });
 };
 

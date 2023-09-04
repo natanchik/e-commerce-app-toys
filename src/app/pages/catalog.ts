@@ -1,33 +1,80 @@
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
-import { Price, Product } from '../types/types';
+import { Category, Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
-    localStorage.removeItem('sorted_products');
     localStorage.removeItem('search_products');
-    catalogQueryParams.clear();
   }
 
-  public drawCatalog(): HTMLDivElement {
+  public async drawCatalog(): Promise<HTMLDivElement> {
     const catalog = createElement('div', ['catalog', 'main__wrapper']) as HTMLDivElement;
-    const title = createElement('div', ['catalog__title'], '<h2>Catalog</h2>') as HTMLDivElement;
+    const breadcrumbs = createElement(
+      'ul',
+      ['catalog__breadcrumbs'],
+      '<li class="catalog__breadcrumb" data-page="catalog" >Catalog</li>',
+    ) as HTMLDivElement;
     const content = createElement('div', ['catalog__content']) as HTMLDivElement;
     const products = createElement('div', ['catalog__products']) as HTMLDivElement;
     const mobileFiltersButton = createElement('div', ['mobile-filters__item'], 'Filters') as HTMLDivElement;
-    const filters = this.drawFilters();
+    const filters = await this.drawFilters();
 
     content.append(mobileFiltersButton, filters, products);
-    catalog.append(title, content);
+    catalog.append(breadcrumbs, content);
 
     return catalog;
   }
 
-  private drawFilters(): HTMLDivElement {
+  private async drawFilters(): Promise<HTMLDivElement> {
     const filters = new Filters();
 
     return filters.drawFilters();
+  }
+
+  static async drawBreadcrumbs(): Promise<void> {
+    const breadcrumbs = document.querySelector('.catalog__breadcrumbs') as HTMLUListElement;
+    breadcrumbs.innerHTML = '<li class="catalog__breadcrumb" data-page="catalog" >Catalog</li>';
+
+    if (catalogQueryParams.has('sidebar')) {
+      const currentParamValue: string = catalogQueryParams.get('sidebar').value;
+      const currentCategoryId: string = currentParamValue
+        .replace('masterData%28current%28categories%28id%3D%22', '')
+        .replace('%22%29%29%29', '');
+
+      const categories: Category[] = localStorage.getItem('categories')
+        ? JSON.parse(localStorage.getItem('categories') as string)
+        : [];
+      categories.forEach((category: Category) => {
+        if (category.id === currentCategoryId) {
+          if (category.parent) {
+            categories.forEach((parentCategory: Category) => {
+              if (parentCategory.id === category.parent.id) {
+                const breadcrumbCurrent = createElement(
+                  'li',
+                  ['catalog__breadcrumb'],
+                  parentCategory.name['ru-KZ'],
+                ) as HTMLLIElement;
+                breadcrumbCurrent.dataset.page = parentCategory.slug['ru-KZ'];
+                breadcrumbCurrent.id = parentCategory.id;
+
+                breadcrumbs.append(breadcrumbCurrent);
+              }
+            });
+          }
+
+          const breadcrumbCurrent = createElement(
+            'li',
+            ['catalog__breadcrumb'],
+            category.name['ru-KZ'],
+          ) as HTMLLIElement;
+          breadcrumbCurrent.dataset.page = category.slug['ru-KZ'];
+          breadcrumbCurrent.id = category.id;
+
+          breadcrumbs.append(breadcrumbCurrent);
+        }
+      });
+    }
   }
 
   static drawProducts(): void {
@@ -35,6 +82,8 @@ class Catalog {
     products.innerHTML = '';
     let currentProducts: Product[] = [];
     let searchProducts: Product[] = [];
+
+    this.drawBreadcrumbs();
 
     if (
       localStorage.getItem('sorted_products') &&
@@ -47,7 +96,7 @@ class Catalog {
       currentProducts = JSON.parse(localStorage.getItem('all_products') as string);
     }
 
-    if (localStorage.getItem('search_products') !== null) {
+    if (localStorage.getItem('search_products')) {
       searchProducts = JSON.parse(localStorage.getItem('search_products') as string);
       const searchProductsIds: string[] = [];
 
@@ -58,7 +107,7 @@ class Catalog {
       currentProducts = currentProducts.filter((product: Product): boolean => searchProductsIds.includes(product.id));
     }
 
-    if (currentProducts.length > 0) {
+    if (currentProducts && currentProducts.length > 0) {
       currentProducts.forEach((product: Product): void => {
         const productBlock = this.drawProduct(product);
         products.append(productBlock);
@@ -84,6 +133,8 @@ class Catalog {
       `${product.masterData.current.description['en-US'].slice(0, 45)}...`,
     ) as HTMLDivElement;
     const prices = this.drawPrices(product);
+
+    productBlock.id = product.id;
 
     productBlock.append(img, name, description, prices);
     return productBlock;
@@ -115,6 +166,11 @@ class Catalog {
     prices.append(priceValue);
 
     return prices;
+  }
+
+  static clearSortedProducts(): void {
+    localStorage.removeItem('sorted_products');
+    catalogQueryParams.clear();
   }
 }
 

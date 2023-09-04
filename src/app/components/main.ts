@@ -51,7 +51,7 @@ class Main {
   public drawMain(): HTMLDivElement {
     const body = document.querySelector('body') as HTMLBodyElement;
     const main = createElement('div', ['main']) as HTMLDivElement;
-    const dimming = createElement('div', ['sidebar__dimming']);
+    const dimming = createElement('div', ['sidebar__dimming']) as HTMLDivElement;
 
     body.append(main, this.sidebarWrapper, dimming);
 
@@ -114,10 +114,9 @@ class Main {
     }
   }
 
-  private redrawProducts(): void {
-    getAllProducts().then(() => {
-      Catalog.drawProducts();
-    });
+  private async redrawProducts(): Promise<void> {
+    await getAllProducts();
+    Catalog.drawProducts();
   }
 
   private addFilterNavigationForCheckbox(currentTarget: HTMLInputElement): void {
@@ -334,7 +333,7 @@ class Main {
     }
   }
 
-  private addFilterNavigationForSearch(currentTarget: HTMLInputElement): void {
+  private async addFilterNavigationForSearch(currentTarget: HTMLInputElement): Promise<void> {
     const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
     close.classList.remove('filters__close_hidden');
     if (currentTarget.value.length === 0) {
@@ -342,7 +341,7 @@ class Main {
       Catalog.drawProducts();
       close.classList.add('filters__close_hidden');
     } else {
-      getProductsBySearch(encodeText(currentTarget.value)).then(() => {
+      await getProductsBySearch(encodeText(currentTarget.value)).then(() => {
         Catalog.drawProducts();
       });
     }
@@ -381,12 +380,38 @@ class Main {
     this.redrawProducts();
   }
 
+  private async addNavigationForSidebar(currentTarget: HTMLLIElement, router: Router): Promise<void> {
+    Catalog.clearSortedProducts();
+    if (currentTarget.dataset.page !== 'catalog') {
+      addNewQueryParam(
+        'sidebar',
+        'where',
+        `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
+      );
+    }
+
+    await getAllProducts();
+
+    this.sidebar.closeSidebar();
+    if (currentTarget.dataset.page === 'catalog') {
+      router.navigate(pages.CATALOG);
+    } else {
+      router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
+    }
+  }
+
   private setEventListeners(router: Router): void {
     document.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
 
       if (target.classList.contains('sidebar__link') && target.dataset.page === 'main') {
         router.navigate(pages.MAIN);
+        this.sidebar.closeSidebar();
+      }
+
+      if (target.classList.contains('sidebar__link') && target.dataset.page === 'catalog') {
+        Catalog.clearSortedProducts();
+        router.navigate(pages.CATALOG);
         this.sidebar.closeSidebar();
       }
 
@@ -460,8 +485,9 @@ class Main {
       // }
 
       if (target.classList.contains('main-page__page')) {
-        const pageName = target.innerText.toLocaleLowerCase();
-        router.navigate(pageName === 'main' ? pages.MAIN : pageName);
+        const pageName: string = target.dataset.page ? target.dataset.page : '';
+        if (pageName === 'catalog') Catalog.clearSortedProducts();
+        router.navigate(pageName);
       }
 
       if (
@@ -521,6 +547,26 @@ class Main {
       if (target.classList.contains('filters__close_search')) {
         this.clearFilterForSearch();
       }
+
+      if (
+        target.classList.contains('sidebar__category') ||
+        target.classList.contains('sidebar__category-item') ||
+        target.classList.contains('catalog__breadcrumb')
+      ) {
+        const currentTarget = target as HTMLLIElement;
+        this.addNavigationForSidebar(currentTarget, router);
+      }
+
+      if (target.classList.contains('catalog__product')) {
+        const currentID = target.id;
+        router.navigate(`${pages.CATALOG}/${currentID}`);
+      }
+
+      if (target.parentElement?.classList.contains('catalog__product')) {
+        const parentDiv = target.parentNode as HTMLDivElement;
+        const currentID = parentDiv.id;
+        router.navigate(`${pages.CATALOG}/${currentID}`);
+      }
     });
 
     document.addEventListener('submit', async (event: Event) => {
@@ -560,7 +606,16 @@ class Main {
     });
 
     document.addEventListener('input', (event: Event): void => {
-      handlerValInput(event);
+      const target = event.target as HTMLInputElement;
+
+      if (
+        !target.parentElement?.classList.contains('filters__checkbox-block') &&
+        !target.classList.contains('filters__search') &&
+        !target.classList.contains('filters__price-input') &&
+        !target.classList.contains('filters__select')
+      ) {
+        handlerValInput(event);
+      }
     });
 
     document.addEventListener('change', (event: Event): void => {
