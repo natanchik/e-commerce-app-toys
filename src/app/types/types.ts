@@ -56,6 +56,12 @@ export interface CurrentAction {
   [dataTitile: string]: string | object;
 }
 
+export interface CurrentActionWithId {
+  action: string;
+  addressId: string;
+  [dataTitile: string]: string | object;
+}
+
 export interface CardData {
   title: string;
   images: { dimensions: { w: number; h: number }; url: string }[];

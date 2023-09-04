@@ -79,7 +79,13 @@ export const validateInput = (input: HTMLInputElement, notation: HTMLParagraphEl
     } else if (input.id === 'dateOfBirth') {
       warnings += checkDate(input.value);
     } else {
-      const id = input.id.startsWith('shipping') || input.id.startsWith('billing') ? input.id.split('-')[1] : input.id;
+      const id =
+        input.id.startsWith('shipping') ||
+        input.id.startsWith('Shipping') ||
+        input.id.startsWith('billing') ||
+        input.id.startsWith('Billing')
+          ? input.id.split('-')[1]
+          : input.id;
       if (id === 'postalCode') {
         warnings += checkPostalCode(input);
       } else {

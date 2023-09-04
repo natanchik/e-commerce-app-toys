@@ -5,6 +5,7 @@ import updateCustomerBirthday from '../api/customer/update/update-birthday';
 import changeCustomerEmail from '../api/customer/update/change-email';
 import changeCustomerPassword from '../api/customer/update/change-password';
 import addCustomerAddress from '../api/customer/update/add-address';
+import changeCustomerAddress from '../api/customer/update/change-address';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { UserState } from '../types/types';
 
@@ -247,11 +248,11 @@ export function drawCurrentAddresses(type: string, curAddresses: HTMLDivElement)
   ids.forEach((id) => {
     userState.addresses.forEach((address) => {
       if (address.id === id) {
-        const isDefault = defaultId === address.id ? ': default' : '';
+        const isDefault = defaultId === address.id ? 'default' : '';
         const addressText = createElement(
           'div',
           ['profile__address__text'],
-          `<p class="main__green-text">- ${address.country}, ${address.postalCode}, ${address.city}, ${address.streetName}${isDefault}</p>`,
+          `<p class="main__green-text">- ${address.country}, ${address.postalCode}, ${address.city}, ${address.streetName}: <b>${isDefault}</b></p>`,
         );
         const addressItem = createElement('div', ['profile__address', `${type}-address`]) as HTMLDivElement;
         addressItem.append(addressText);
@@ -260,6 +261,7 @@ export function drawCurrentAddresses(type: string, curAddresses: HTMLDivElement)
             'button',
             [
               'profile__address__btn',
+              'profile__address__edit-btn',
               `profile__${type}-address__btn`,
               `profile__${type}-address__edit-btn`,
               'profile__content_hidden',
@@ -287,7 +289,7 @@ export function drawCurrentAddresses(type: string, curAddresses: HTMLDivElement)
   });
 }
 
-export async function handlerChangeAddressSubmit(event: Event, target: HTMLElement): Promise<void> {
+export async function handlerAddAddressSubmit(event: Event, target: HTMLElement): Promise<void> {
   event.preventDefault();
   const item = target.closest('.profile__item_inline') as HTMLLIElement;
   const type = item?.id?.split('-')[0];
@@ -297,25 +299,26 @@ export async function handlerChangeAddressSubmit(event: Event, target: HTMLEleme
   const postalCode = document.getElementById(`${type}-postalCode`) as HTMLInputElement;
   const isDefaultBox = document.getElementById(`as-default-${type}`) as HTMLInputElement;
   const isDefault = isDefaultBox ? isDefaultBox.checked : false;
-
-  [country, city, street, postalCode].forEach((el) => {
-    const notation = document.querySelector('[data-input="' + `${el.id}"]`) as HTMLParagraphElement;
-    if (notation) {
-      validateInput(el, notation);
-    }
-  });
+  const mode = item.classList.contains('change') ? 'change' : 'add';
 
   const isValid: boolean = checkValidity();
   if (isValid) {
     const submitBtn = target.querySelector('.profile__update') as HTMLButtonElement;
     submitBtn.disabled = true;
+
     const data = {
       country: country.value,
       city: city.value,
       streetName: street.value,
       postalCode: postalCode.value,
     };
-    await addCustomerAddress(data, type ? type : '', isDefault);
+
+    if (mode === 'change') {
+      await changeCustomerAddress(data, type ? type : '', isDefault);
+    } else {
+      await addCustomerAddress(data, type ? type : '', isDefault);
+    }
+
     const curAddressesBlock = item?.querySelector('.profile__addresses__current');
     if (curAddressesBlock && curAddressesBlock instanceof HTMLDivElement) {
       drawCurrentAddresses(type ? type : '', curAddressesBlock);
@@ -325,6 +328,9 @@ export async function handlerChangeAddressSubmit(event: Event, target: HTMLEleme
     if (item && item instanceof HTMLElement) {
       hideItemContent(item.id, item, 'profile');
       document.body.style.overflow = '';
+    }
+    if (mode === 'change') {
+      item.classList.remove('change');
     }
   }
 }

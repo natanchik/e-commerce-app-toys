@@ -31,7 +31,7 @@ import {
   handlersProfileUpdates,
   handlerChangePaswwordSubmit,
   handlerChangeEmailSubmit,
-  handlerChangeAddressSubmit,
+  handlerAddAddressSubmit,
 } from '../components/handlers';
 
 class Main {
@@ -437,6 +437,23 @@ class Main {
         }
       }
 
+      if (target.classList.contains('profile__address__edit-btn')) {
+        const item = target.closest('.profile__item_inline') as HTMLLIElement;
+        const addressItem = target.closest('.profile__address') as HTMLLIElement;
+        const editText = createElement('p', ['profile__address__edit-text'], 'Input your changes into form below');
+        if (!item.classList.contains('change')) {
+          item.classList.add('change');
+          addressItem.classList.add('change');
+          addressItem.classList.add('change-address');
+          addressItem.append(editText);
+        } else {
+          item.classList.remove('change');
+          addressItem.classList.remove('change');
+          addressItem.classList.remove('change-address');
+          const text = document.querySelector('.profile__address__edit-text');
+          text?.remove();
+        }
+      }
       // if (target.classList.contains('profile__add-another-address')) {
       //   const content = target.closest('.profile__content')
       //   content?.append(this.drawAddressBlock(type))
@@ -538,7 +555,7 @@ class Main {
       }
 
       if (target.classList.contains('profile__address__form')) {
-        handlerChangeAddressSubmit(event, target);
+        handlerAddAddressSubmit(event, target);
       }
     });
 
