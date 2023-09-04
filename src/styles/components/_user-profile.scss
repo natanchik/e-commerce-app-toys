@@ -137,10 +137,27 @@
   background-color: white;
 }
 
+.profile__warning {
+  position: fixed;
+  top: calc(50vh - 50px);
+  left: calc(50vw - 175px);
+  font-size: 1.6rem;
+  font-weight: 600;
+  width: 350px;
+  height: fit-content;
+  text-align: center;
+  border: none;
+
+  &.success {
+    color: $green;
+  }
+
+  &.error {
+    color: $wine;
+  }
+}
+
 .profile__update {
-  /*position: absolute;  
-  top: 25px;
-  right: 0;*/
   margin-bottom: 10px;
   margin-left: 20px;
   padding: 7px;

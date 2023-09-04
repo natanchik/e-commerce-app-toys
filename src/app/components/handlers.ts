@@ -1,6 +1,9 @@
 import { validateInput } from './validation';
 import updateCustomerNames from '../api/customer/update/update-names';
 import updateCustomerBirthday from '../api/customer/update/update-birthday';
+import { nullUserState } from '../components/utils';
+import changeCustomerPassword from '../api/customer/update/change-password';
+import { checkValidity } from '../api/helpers/checkValidity';
 
 function toggleProfileItemBtns(target: HTMLElement, action: string): void {
   const saveBtn = target.querySelector('.profile__update');
@@ -32,7 +35,7 @@ function showItemContent(id: string, target: HTMLElement, className: string): vo
   toggleProfileItemBtns(target, 'show');
 }
 
-function hideItemContent(id: string, target: HTMLElement, className: string): void {
+export function hideItemContent(id: string, target: HTMLElement, className: string): void {
   target.classList.remove(`${className}__item_active`);
   const content = document.querySelector(`[data-content = ${id}]`);
   content?.classList.add(`${className}__content_hidden`);
@@ -42,12 +45,20 @@ function hideItemContent(id: string, target: HTMLElement, className: string): vo
 export function toggleAccordion(id: string, target: HTMLElement, className: string): void {
   if (target.classList.contains(`${className}__item_active`)) {
     hideItemContent(id, target, className);
-    if (['change-password', 'change-email'].includes(target.id)) {
+    if (['change-password', 'change-e-mail'].includes(target.id)) {
       document.body.style.overflow = '';
     }
   } else {
     showItemContent(id, target, className);
     if (['change-password', 'change-e-mail'].includes(target.id)) {
+      const currentEmailInput = document.getElementById(`${target.id.slice(7)}__cur-email`);
+      const curEmail = localStorage.getItem('userState')
+        ? JSON.parse(localStorage.getItem('userState') as string)
+        : nullUserState;
+      if (currentEmailInput && currentEmailInput instanceof HTMLInputElement) {
+        currentEmailInput.value = `${curEmail.email}`;
+        currentEmailInput.disabled = true;
+      }
       document.body.style.overflow = 'hidden';
     }
   }
@@ -135,18 +146,22 @@ export function handlerValInput(event: Event): void {
   }
 }
 
-export function handlersProfileUpdates(target: HTMLElement): void {
+export async function handlersProfileUpdates(target: HTMLElement): Promise<void> {
   if (target.closest('[data-content="name"]')) {
     const firstName = document.getElementById('firstName');
     const lastName = document.getElementById('lastName');
     if (firstName instanceof HTMLInputElement && lastName instanceof HTMLInputElement) {
-      updateCustomerNames(firstName.value, lastName.value);
-      const nameInfo = document.getElementById('nameInfo');
-      if (nameInfo) {
-        nameInfo.textContent = firstName.value + ' ' + lastName.value;
+      if (firstName.value && lastName.value) {
+        updateCustomerNames(firstName.value, lastName.value);
+        const nameInfo = document.getElementById('nameInfo');
+        if (nameInfo) {
+          nameInfo.textContent = firstName.value + ' ' + lastName.value;
+        }
       }
     }
-  } else if (target.closest('[data-content="birthday"]')) {
+  }
+
+  if (target.closest('[data-content="birthday"]')) {
     const birthday = document.getElementById('dateOfBirth');
     if (birthday instanceof HTMLInputElement) {
       updateCustomerBirthday(birthday.value);
@@ -154,6 +169,39 @@ export function handlersProfileUpdates(target: HTMLElement): void {
       if (birthdayInfo) {
         birthdayInfo.textContent = birthday.value;
       }
+    }
+  }
+}
+
+export async function addProfileWarning(type: string, message: string): Promise<void> {
+  const warning = document.querySelector('.profile__warning');
+  if (warning) {
+    warning.className = 'profile__warning';
+    if (type === 'success') {
+      warning.classList.add('success');
+    } else {
+      warning.classList.add('error');
+    }
+    warning.innerHTML = `<p>${message}</p>`;
+    setTimeout(() => {
+      warning.innerHTML = '';
+    }, 3000);
+  }
+}
+
+export async function handlerChangePaswwordSubmit(event: Event, target: HTMLElement): Promise<void> {
+  event.preventDefault();
+  const isValid: boolean = checkValidity();
+  if (isValid) {
+    const submitBtn = document.querySelector('.modal-submit') as HTMLButtonElement;
+    submitBtn.setAttribute('disabled', 'true');
+    await changeCustomerPassword();
+    submitBtn.removeAttribute('disabled');
+
+    const item = target.closest('.profile__item_modal');
+    if (item && item instanceof HTMLElement) {
+      hideItemContent(item.id, item, 'profile');
+      document.body.style.overflow = '';
     }
   }
 }

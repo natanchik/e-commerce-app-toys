@@ -34,7 +34,7 @@ class UserProfile extends RegPage {
       this.addEmail('Input your new E-mail'),
     ];
 
-    const email = this.addModal('e-mail', userState.email, emailComponents);
+    const email = this.addModal('e-mail', emailComponents);
 
     const passwordComponents = [
       this.addPassword('current-password', 'cur-password', 'Input your current password'),
@@ -42,17 +42,17 @@ class UserProfile extends RegPage {
       this.addPassword('new-password', 'new-password-check', 'Confirm your new password'),
     ];
 
-    const password = this.addModal('password', userState.email, passwordComponents);
+    const password = this.addModal('password', passwordComponents);
 
     info.append(email, password);
 
     const editBtn = createElement('button', ['button', 'button_green', 'profile__edit-btn'], 'Edit profile');
-
-    profile.append(editBtn, info);
+    const warning = createElement('div', ['profile__warning']);
+    profile.append(editBtn, warning, info);
     return profile;
   }
 
-  private addProfileItem(itemName: string, label?: string, data?: HTMLDivElement, btn: boolean = true): HTMLLIElement {
+  private addProfileItem(itemName: string, label?: string, data?: HTMLElement, btn: boolean = true): HTMLLIElement {
     const item = createElement('li', ['profile__item', 'profile__item_inline'], label) as HTMLLIElement;
     item.id = `${itemName}`;
     if (data) {
@@ -141,19 +141,19 @@ class UserProfile extends RegPage {
     return item;
   }
 
-  private addModal(title: string, curEmail: string, components: HTMLElement[]): HTMLLIElement {
+  private addModal(title: string, components: HTMLElement[]): HTMLLIElement {
     const modalBg = createElement('div', ['profile__modal__bg']) as HTMLDivElement;
     const modal = createElement('div', ['profile__modal'], `<h4>Change ${title}</h4>`) as HTMLDivElement;
-    const modalForm = createElement('form', ['auth-form', 'profile__modal__form']) as HTMLFormElement;
+    const modalForm = createElement('form', [
+      'auth-form',
+      'profile__modal__form',
+      `profile__${title}__form`,
+    ]) as HTMLFormElement;
     modalBg.append(modal);
     modal.append(modalForm);
 
-    const currentEmail = this.addEmail('Input your new E-mail', `${title}__cur-email`);
+    const currentEmail = this.addEmail('Your current E-mail', `${title}__cur-email`);
     currentEmail.classList.add('profile__email__current');
-    const inputCurEmail = document.getElementById(`${title}__cur-email`);
-    if (inputCurEmail && inputCurEmail instanceof HTMLInputElement) {
-      inputCurEmail.value = `${curEmail}`;
-    }
     const apiStatus = createElement('p', ['api-status'], '');
     const btnBlock = createElement('div', ['profile__modal__btn-block']);
     const cancelBtn = createElement('button', ['button', 'modal-cancel'], `Cancel`);
@@ -163,7 +163,7 @@ class UserProfile extends RegPage {
     modalForm.append(apiStatus, currentEmail, ...components, btnBlock);
     const itemTitle = title[0].toUpperCase() + title.slice(1);
     const item = this.addProfileItem(`change-${title}`, itemTitle, modalBg, false);
-    item.className = 'profile__item';
+    item.className = 'profile__item profile__item_modal';
     return item;
   }
 }

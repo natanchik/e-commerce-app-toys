@@ -63,6 +63,19 @@ export const validateInput = (input: HTMLInputElement, notation: HTMLParagraphEl
       warnings += checkEmail(input.value);
     } else if (input.id.includes('password')) {
       warnings += checkWithReqs(passwordRequirements, input.value);
+      if (input.id === 'new-password-check' || input.id === 'new-password') {
+        const repeatPasswordId = input.id === 'new-password-check' ? 'new-password' : 'new-password-check';
+        const repeatPassword = document.getElementById(repeatPasswordId);
+        if (repeatPassword && repeatPassword instanceof HTMLInputElement) {
+          const repeatNotation = document.querySelector(`[data-input="${repeatPassword.id}"]`) as HTMLParagraphElement;
+          if (repeatPassword.value !== input.value) {
+            warnings += 'New password and new password check must be the same';
+          } else {
+            repeatPassword.classList.remove('error-input');
+            repeatNotation.innerHTML = '';
+          }
+        }
+      }
     } else if (input.id === 'dateOfBirth') {
       warnings += checkDate(input.value);
     } else {

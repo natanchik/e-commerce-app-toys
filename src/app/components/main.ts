@@ -28,6 +28,7 @@ import {
   handlerShowPassword,
   handlerValInput,
   handlersProfileUpdates,
+  handlerChangePaswwordSubmit,
 } from '../components/handlers';
 
 class Main {
@@ -400,12 +401,16 @@ class Main {
       }
 
       if (
-        !(
-          target.classList.contains('profile__modal') ||
-          target.closest('.profile__modal') ||
-          target.closest('.profile__content')
-        ) &&
-        target.closest('.profile__item')
+        !(target.classList.contains('profile__content') || target.closest('.profile__content')) &&
+        target.closest('.profile__item_inline')
+      ) {
+        toggleProfileItems(target);
+      }
+
+      if (
+        (!(target.classList.contains('profile__modal') || target.closest('.profile__modal')) &&
+          target.closest('.profile__item_modal')) ||
+        target.classList.contains('modal-cancel')
       ) {
         toggleProfileItems(target);
       }
@@ -510,6 +515,10 @@ class Main {
 
       if (target.classList.contains('product-card__form')) {
         event.preventDefault();
+      }
+
+      if (target.classList.contains('profile__modal__form')) {
+        handlerChangePaswwordSubmit(event, target);
       }
     });
 
