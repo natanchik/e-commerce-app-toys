@@ -1,4 +1,3 @@
-import getCategories from '../api/category/getCategories';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
@@ -43,36 +42,38 @@ class Catalog {
         .replace('masterData%28current%28categories%28id%3D%22', '')
         .replace('%22%29%29%29', '');
 
-      const current = document.getElementById(currentCategoryId);
-      if (current?.dataset.parent) {
-        await getCategories('', [{ key: 'where', value: `id%3D%22${current.dataset.parent}%22` }])
-          .then((result: Category[]) => {
-            result.forEach((parent: Category) => {
-              const breadcrumbParrent = createElement(
-                'li',
-                ['catalog__breadcrumb'],
-                parent.name['ru-KZ'],
-              ) as HTMLLIElement;
-              breadcrumbParrent.dataset.page = parent.slug['ru-KZ'];
-              breadcrumbParrent.id = parent.id;
+      const categories: Category[] = localStorage.getItem('categories')
+        ? JSON.parse(localStorage.getItem('categories') as string)
+        : [];
+      categories.forEach((category: Category) => {
+        if (category.id === currentCategoryId) {
+          if (category.parent) {
+            categories.forEach((parentCategory: Category) => {
+              if (parentCategory.id === category.parent.id) {
+                const breadcrumbCurrent = createElement(
+                  'li',
+                  ['catalog__breadcrumb'],
+                  parentCategory.name['ru-KZ'],
+                ) as HTMLLIElement;
+                breadcrumbCurrent.dataset.page = parentCategory.slug['ru-KZ'];
+                breadcrumbCurrent.id = parentCategory.id;
 
-              breadcrumbs.append(breadcrumbParrent);
+                breadcrumbs.append(breadcrumbCurrent);
+              }
             });
-          })
-          .then(() => {
-            const breadcrumbCurrent = createElement('li', ['catalog__breadcrumb'], current?.innerText) as HTMLLIElement;
-            breadcrumbCurrent.dataset.page = current?.dataset.page;
-            breadcrumbCurrent.id = currentCategoryId;
+          }
 
-            breadcrumbs.append(breadcrumbCurrent);
-          });
-      } else {
-        const breadcrumbCurrent = createElement('li', ['catalog__breadcrumb'], current?.innerText) as HTMLLIElement;
-        breadcrumbCurrent.dataset.page = current?.dataset.page;
-        breadcrumbCurrent.id = currentCategoryId;
+          const breadcrumbCurrent = createElement(
+            'li',
+            ['catalog__breadcrumb'],
+            category.name['ru-KZ'],
+          ) as HTMLLIElement;
+          breadcrumbCurrent.dataset.page = category.slug['ru-KZ'];
+          breadcrumbCurrent.id = category.id;
 
-        breadcrumbs.append(breadcrumbCurrent);
-      }
+          breadcrumbs.append(breadcrumbCurrent);
+        }
+      });
     }
   }
 
@@ -132,6 +133,8 @@ class Catalog {
       `${product.masterData.current.description['en-US'].slice(0, 45)}...`,
     ) as HTMLDivElement;
     const prices = this.drawPrices(product);
+
+    productBlock.id = product.id;
 
     productBlock.append(img, name, description, prices);
     return productBlock;

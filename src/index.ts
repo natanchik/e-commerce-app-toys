@@ -16,6 +16,7 @@ const loadTokens = async (): Promise<void> => {
 
 loadTokens().then(() => {
   hideLoading();
-  const app = new App();
-  app.startApp();
 });
+
+const app = new App();
+app.startApp();

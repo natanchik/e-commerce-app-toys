@@ -22,7 +22,7 @@ class Router {
     const pathToFind =
       request.id === ''
         ? `${request.pathname}`
-        : `${request.pathname}/${isCategory ? SUBCATEGORY : isProduct ? ID_SELECTOR : ''}`;
+        : `${request.pathname}/${isCategory ? SUBCATEGORY : isProduct ? ID_SELECTOR : 'not-found'}`;
     const route = this.routes.find((item: RouteInfo) => item.path === pathToFind);
 
     if (!route) {
@@ -115,19 +115,42 @@ class Router {
     }
   }
 
-  private setEventListeners(): void {
-    window.addEventListener('DOMContentLoaded', (event: Event): void => {
-      event.preventDefault();
-      const path = this.getCorrectPath();
-      this.navigate(path);
-    });
+  private async navigationByCategories(id: string): Promise<void> {
+    if (this.isCategory(id)) {
+      const categories: Category[] = localStorage.getItem('categories')
+        ? JSON.parse(localStorage.getItem('categories') as string)
+        : [];
+      const currentId: string | undefined = categories.find((category: Category) => {
+        return category.slug['ru-KZ'] === id;
+      })?.id;
 
-    window.addEventListener('popstate', async (): Promise<void> => {
+      Catalog.clearSortedProducts();
+      addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentId}%22%29%29%29`);
+
+      await getAllProducts();
+    }
+  }
+
+  private setEventListeners(): void {
+    window.addEventListener('load', async (event: Event): Promise<void> => {
+      event.preventDefault();
       const path = this.getCorrectPath();
       const id: string = this.parceUrl(path).id ? this.parceUrl(path).id : '';
 
-      if (id !== '') {
-        await this.navigationByStagedCategories(path, id);
+      if (id) {
+        await this.navigationByCategories(id);
+      } else {
+        Catalog.clearSortedProducts();
+      }
+      this.navigate(path);
+    });
+
+    window.addEventListener('popstate', (): void => {
+      const path = this.getCorrectPath();
+      const id: string = this.parceUrl(path).id ? this.parceUrl(path).id : '';
+
+      if (id) {
+        this.navigationByStagedCategories(path, id);
       } else {
         Catalog.clearSortedProducts();
         this.navigate(path, true);

@@ -503,6 +503,17 @@ class Main {
         const currentTarget = target as HTMLLIElement;
         this.addNavigationForSidebar(currentTarget, router);
       }
+
+      if (target.classList.contains('catalog__product')) {
+        const currentID = target.id;
+        router.navigate(`${pages.CATALOG}/${currentID}`);
+      }
+
+      if (target.parentElement?.classList.contains('catalog__product')) {
+        const parentDiv = target.parentNode as HTMLDivElement;
+        const currentID = parentDiv.id;
+        router.navigate(`${pages.CATALOG}/${currentID}`);
+      }
     });
 
     document.addEventListener('submit', async (event: Event) => {
