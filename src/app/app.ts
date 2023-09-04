@@ -35,10 +35,7 @@ class App {
     this.footer = new Footer(this.router);
   }
 
-  public startApp(): void {
-    const mainPage = new MainPage();
-    Main.setContent(mainPage.drawMainPage());
-  }
+  public startApp(): void {}
 
   private createRoutes(): RouteInfo[] {
     return [
