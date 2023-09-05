@@ -32,6 +32,7 @@ import {
   handlerChangePaswwordSubmit,
   handlerChangeEmailSubmit,
   handlerAddAddressSubmit,
+  handlerDefaultAddress,
 } from '../components/handlers';
 
 class Main {
@@ -479,10 +480,9 @@ class Main {
           text?.remove();
         }
       }
-      // if (target.classList.contains('profile__add-another-address')) {
-      //   const content = target.closest('.profile__content')
-      //   content?.append(this.drawAddressBlock(type))
-      // }
+      if (target.classList.contains('profile__address__default-btn')) {
+        handlerDefaultAddress(target);
+      }
 
       if (target.classList.contains('main-page__page')) {
         const pageName: string = target.dataset.page ? target.dataset.page : '';

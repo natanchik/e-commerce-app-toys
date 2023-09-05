@@ -6,6 +6,7 @@ import changeCustomerEmail from '../api/customer/update/change-email';
 import changeCustomerPassword from '../api/customer/update/change-password';
 import addCustomerAddress from '../api/customer/update/add-address';
 import changeCustomerAddress from '../api/customer/update/change-address';
+import makeAddressDefault from '../api/customer/update/make-address-default';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { UserState } from '../types/types';
 
@@ -289,6 +290,19 @@ export function drawCurrentAddresses(type: string, curAddresses: HTMLDivElement)
             'X',
           ),
         );
+        addressItem.append(
+          createElement(
+            'button',
+            [
+              'profile__address__btn',
+              `profile__${type}-address__btn`,
+              'profile__address__default-btn',
+              `profile__${type}-address__default-btn`,
+              'profile__content_hidden',
+            ],
+            'Make default',
+          ),
+        );
         addressItem.dataset.id = id;
         curAddresses.append(addressItem);
       }
@@ -342,4 +356,16 @@ export async function handlerAddAddressSubmit(event: Event, target: HTMLElement)
       item.classList.remove('change');
     }
   }
+}
+
+export async function handlerDefaultAddress(target: HTMLElement): Promise<void> {
+  const item = target.closest('.profile__item_inline') as HTMLLIElement;
+  const type = item?.id?.split('-')[0];
+  await makeAddressDefault(target, type);
+
+  const curAddressesBlock = item?.querySelector('.profile__addresses__current');
+  if (curAddressesBlock && curAddressesBlock instanceof HTMLDivElement) {
+    drawCurrentAddresses(type ? type : '', curAddressesBlock);
+  }
+  toggleAccordion(item.id, item, 'profile');
 }
