@@ -274,7 +274,7 @@ export function drawCurrentAddresses(type: string, curAddresses: HTMLDivElement)
               `profile__${type}-address__edit-btn`,
               'profile__content_hidden',
             ],
-            '&#128221;',
+            '&#9998;',
           ),
         );
         addressItem.append(
@@ -287,7 +287,7 @@ export function drawCurrentAddresses(type: string, curAddresses: HTMLDivElement)
               `profile__${type}-address__delete-btn`,
               'profile__content_hidden',
             ],
-            'X',
+            '&#10006;',
           ),
         );
         addressItem.append(
