@@ -145,6 +145,7 @@ export const showLoadig = (): void => {
   loading.append(loadingImg);
   body.append(loading);
 };
+
 export const hideLoading = (): void => {
   const loading = document.querySelector('.main__loading') as HTMLBodyElement;
   loading.remove();

@@ -39,7 +39,7 @@ class Router {
     route?.callback(request.id);
   }
 
-  private isCategory(id: string): boolean {
+  public isCategory(id: string): boolean {
     const categories: Category[] = localStorage.getItem('categories')
       ? JSON.parse(localStorage.getItem('categories') as string)
       : [];
@@ -52,7 +52,7 @@ class Router {
     return allCategoriesIds.includes(id);
   }
 
-  private isProductId(id: string): boolean {
+  public isProductId(id: string): boolean {
     const products: Product[] = localStorage.getItem('all_products')
       ? JSON.parse(localStorage.getItem('all_products') as string)
       : [];
@@ -65,7 +65,7 @@ class Router {
     return allProductsIds.includes(id);
   }
 
-  private parceUrl(url: string): UrlInfo {
+  public parceUrl(url: string): UrlInfo {
     const paths = url.split('/');
     const result: UrlInfo = {
       pathname: paths[0] ? paths[0] : '',
