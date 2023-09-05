@@ -94,6 +94,10 @@
   margin: 20px 0;
 }
 
+.postalCode {
+  max-width: 85px;
+}
+
 .postalCode::-webkit-outer-spin-button,
 .postalCode::-webkit-inner-spin-button {
   -webkit-appearance: none;

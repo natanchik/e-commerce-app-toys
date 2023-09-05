@@ -155,11 +155,14 @@ export async function handlersProfileUpdates(target: HTMLElement): Promise<void>
     const firstName = document.getElementById('firstName');
     const lastName = document.getElementById('lastName');
     if (firstName instanceof HTMLInputElement && lastName instanceof HTMLInputElement) {
-      if (firstName.value && lastName.value) {
-        updateCustomerNames(firstName.value, lastName.value);
+      if (firstName.value || lastName.value) {
+        await updateCustomerNames(firstName.value, lastName.value);
         const nameInfo = document.getElementById('nameInfo');
         if (nameInfo) {
-          nameInfo.textContent = firstName.value + ' ' + lastName.value;
+          const userState: UserState = localStorage.getItem('userState')
+            ? JSON.parse(localStorage.getItem('userState') as string)
+            : nullUserState;
+          nameInfo.textContent = userState.firstName + ' ' + userState.lastName;
         }
       }
       firstName.value = '';

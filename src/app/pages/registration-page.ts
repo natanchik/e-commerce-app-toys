@@ -34,10 +34,13 @@ class RegPage extends AuthPage {
     parent.append(createCheckBoxElement(policyAgreeText, 'policyInput', true));
   };
 
-  protected addnameBlock = (): HTMLDivElement => {
+  protected addnameBlock = (
+    firstNameTitle: string = 'First name*',
+    lastNameTitle: string = 'Last name*',
+  ): HTMLDivElement => {
     const nameBlock = createElement('div', ['auth-row']) as HTMLDivElement;
-    nameBlock.append(createInputElement('text', 'First name*', 'firstName', 'auth', true, { name: 'firstName' }));
-    nameBlock.append(createInputElement('text', 'Last name*', 'lastName', 'auth', true, { name: 'lastName' }));
+    nameBlock.append(createInputElement('text', firstNameTitle, 'firstName', 'auth', true, { name: 'firstName' }));
+    nameBlock.append(createInputElement('text', lastNameTitle, 'lastName', 'auth', true, { name: 'lastName' }));
     return nameBlock;
   };
 

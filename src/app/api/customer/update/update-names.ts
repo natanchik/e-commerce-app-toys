@@ -1,4 +1,5 @@
 import { pushCurrentAction, addUserState } from '../../helpers/utils';
+import { CurrentAction } from '../../../types/types';
 import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
 
 const updateCustomerNames = async (newFirstName: string, newLastName: string): Promise<void> => {
@@ -6,10 +7,13 @@ const updateCustomerNames = async (newFirstName: string, newLastName: string): P
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
   };
-  const currentActions = [
-    pushCurrentAction('firstName', 'setFirstName', newFirstName),
-    pushCurrentAction('lastName', 'setLastName', newLastName),
-  ];
+  const currentActions: CurrentAction[] = [];
+  if (newFirstName) {
+    currentActions.push(pushCurrentAction('firstName', 'setFirstName', newFirstName));
+  }
+  if (newLastName) {
+    currentActions.push(pushCurrentAction('lastName', 'setLastName', newLastName));
+  }
   const dataForActions = JSON.stringify({
     version: JSON.parse(localStorage.userState).version,
     actions: currentActions,
