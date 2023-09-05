@@ -119,24 +119,6 @@ class Sidebar {
           }
         });
       });
-
-    // document.addEventListener('mouseover', (event: Event) => {
-    //   const target = event.target as HTMLElement;
-
-    //   if(target.classList.contains('sidebar__category')) {
-    //     const categoriesLlist = document.querySelector(`[data-content="${target.id}"]`) as HTMLUListElement;
-
-    //     categoriesLlist.classList.add('sidebar__category-list_active');
-    //   }
-    // });
-
-    // document.addEventListener('mouseout', (event: Event) => {
-    //   const target = event.target as HTMLElement;
-
-    //   if(target.classList.contains('sidebar__category-list')) {
-    //     target.classList.remove('sidebar__category-list_active');
-    //   }
-    // });
   }
 }
 
