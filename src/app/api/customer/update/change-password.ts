@@ -29,20 +29,14 @@ const changeCustomerPassword = async (): Promise<void> => {
   await fetch(`${customerURL}`, { method: 'POST', headers: myHeaders, body: JSON.stringify(dataForActions) })
     .then((res) => {
       if (res.headers.get('content-type') !== 'application/json; charset=utf-8') {
-        const error = new Error('Incorrect response from the server, please try later');
-        throw error;
+        throw new Error('Incorrect response from the server, please try later');
       }
       if (res.status >= 200 && res.status < 300) {
         return res.json();
-      } else if (res.status === 400) {
+      } else if (res.status == 400) {
         const passwordField = document.getElementById('cur-password');
         passwordField?.classList.add('error-input');
-        addProfileWarning('error', 'The given current password does not match.');
-        setTimeout(() => {
-          removeProfileWarning();
-        }, 3000);
-      } else {
-        throw new Error(`The error with status code ${res.status} has occured, please try later`);
+        throw new Error('The given current password does not match.');
       }
     })
     .then(async (res) => {
@@ -58,15 +52,7 @@ const changeCustomerPassword = async (): Promise<void> => {
       }, 3000);
     })
     .catch((err) => {
-      submitBtn.disabled = false;
-      if (err.status === 400) {
-        const passwordField = document.getElementById('cur-password');
-        passwordField?.classList.add('error-input');
-        addProfileWarning('error', 'The given current password does not match.');
-        setTimeout(() => {
-          removeProfileWarning();
-        }, 3000);
-      } else if (err instanceof Error) {
+      if (err instanceof Error) {
         addProfileWarning('error', err.message);
         setTimeout(() => {
           removeProfileWarning();
