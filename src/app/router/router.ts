@@ -1,6 +1,9 @@
+import getAllProducts from '../api/getProduct/getAllProducts';
+import { addNewQueryParam } from '../api/helpers/utils';
 import User from '../components/user';
-import { RouteInfo, UrlInfo } from '../types/types';
-import pages from './pages';
+import Catalog from '../pages/catalog';
+import { Category, Product, RouteInfo, UrlInfo } from '../types/types';
+import { ID_SELECTOR, pages, SUBCATEGORY } from './pages';
 
 class Router {
   routes: RouteInfo[];
@@ -13,7 +16,13 @@ class Router {
   public navigate(url: string, notPushState?: boolean): void {
     const request = this.parceUrl(url);
 
-    const pathToFind = request.cardId === '' ? request.pathname : `${request.pathname}/${request.cardId}`;
+    const isProduct: boolean = this.isProductId(request.id);
+    const isCategory: boolean = this.isCategory(request.id);
+
+    const pathToFind =
+      request.id === ''
+        ? `${request.pathname}`
+        : `${request.pathname}/${isCategory ? SUBCATEGORY : isProduct ? ID_SELECTOR : 'not-found'}`;
     const route = this.routes.find((item: RouteInfo) => item.path === pathToFind);
 
     if (!route) {
@@ -24,17 +33,43 @@ class Router {
     if (this.redirectToMainPageIfLogged(route.path)) return;
 
     if (!notPushState) {
-      window.history.pushState({}, '', `${route.path}`);
+      window.history.pushState({}, '', request.id === '' ? `${request.pathname}` : `${request.pathname}/${request.id}`);
     }
 
-    route?.callback();
+    route?.callback(request.id);
   }
 
-  private parceUrl(url: string): UrlInfo {
+  public isCategory(id: string): boolean {
+    const categories: Category[] = localStorage.getItem('categories')
+      ? JSON.parse(localStorage.getItem('categories') as string)
+      : [];
+    const allCategoriesIds: string[] = [];
+
+    categories.forEach((category: Category) => {
+      allCategoriesIds.push(category.slug['ru-KZ']);
+    });
+
+    return allCategoriesIds.includes(id);
+  }
+
+  public isProductId(id: string): boolean {
+    const products: Product[] = localStorage.getItem('all_products')
+      ? JSON.parse(localStorage.getItem('all_products') as string)
+      : [];
+    const allProductsIds: string[] = [];
+
+    products.forEach((product: Product) => {
+      allProductsIds.push(product.id);
+    });
+
+    return allProductsIds.includes(id);
+  }
+
+  public parceUrl(url: string): UrlInfo {
     const paths = url.split('/');
     const result: UrlInfo = {
       pathname: paths[0] ? paths[0] : '',
-      cardId: paths[1] ? paths[1] : '',
+      id: paths[1] ? paths[1] : '',
     };
 
     return result;
@@ -60,16 +95,66 @@ class Router {
     return false;
   }
 
+  private async navigationByStagedCategories(path: string, id: string): Promise<void> {
+    if (this.isCategory(id)) {
+      const categories: Category[] = localStorage.getItem('categories')
+        ? JSON.parse(localStorage.getItem('categories') as string)
+        : [];
+      const currentId: string | undefined = categories.find((category: Category) => {
+        return category.slug['ru-KZ'] === id;
+      })?.id;
+
+      Catalog.clearSortedProducts();
+      addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentId}%22%29%29%29`);
+
+      await getAllProducts();
+      this.navigate(`${pages.CATALOG}/${id}`, true);
+    } else {
+      Catalog.clearSortedProducts();
+      this.navigate(path, true);
+    }
+  }
+
+  private async navigationByCategories(id: string): Promise<void> {
+    if (this.isCategory(id)) {
+      const categories: Category[] = localStorage.getItem('categories')
+        ? JSON.parse(localStorage.getItem('categories') as string)
+        : [];
+      const currentId: string | undefined = categories.find((category: Category) => {
+        return category.slug['ru-KZ'] === id;
+      })?.id;
+
+      Catalog.clearSortedProducts();
+      addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentId}%22%29%29%29`);
+
+      await getAllProducts();
+    }
+  }
+
   private setEventListeners(): void {
-    window.addEventListener('DOMContentLoaded', (event: Event): void => {
+    window.addEventListener('load', async (event: Event): Promise<void> => {
       event.preventDefault();
       const path = this.getCorrectPath();
+      const id: string = this.parceUrl(path).id ? this.parceUrl(path).id : '';
+
+      if (id) {
+        await this.navigationByCategories(id);
+      } else {
+        Catalog.clearSortedProducts();
+      }
       this.navigate(path);
     });
 
     window.addEventListener('popstate', (): void => {
       const path = this.getCorrectPath();
-      this.navigate(path, true);
+      const id: string = this.parceUrl(path).id ? this.parceUrl(path).id : '';
+
+      if (id) {
+        this.navigationByStagedCategories(path, id);
+      } else {
+        Catalog.clearSortedProducts();
+        this.navigate(path, true);
+      }
     });
   }
 

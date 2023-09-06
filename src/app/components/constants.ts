@@ -1,12 +1,5 @@
 import { ValidTemplates } from '../types/types';
 
-export const categories = {
-  'Shop by stage': ['Baby Toys: 0-12M', ' Toddler: 1-3 Years', 'Pre-School: 3-5 Years', 'School Age: 5 Years +'],
-  'Imaginative Play': ['Play Kitchens & Shops', 'Role Play & Dress Up', 'Play Cars, Trains & Transport'],
-  'Educational Toys': ['Montessori Toys', 'Shape Sorters', 'Games & Puzzles'],
-  'Outdoor Play': ['Sand & Water Play', 'Bikes, Trikes & Scooters', 'Garden Play & Discovery'],
-};
-
 export const countries = { '': '', 'United States': 'US', Kazakhstan: 'KZ' };
 
 export const salutation = { '': '', Mr: 'Mr', Mrs: 'Mrs' };
@@ -35,3 +28,11 @@ export const passwordRequirements: [RegExp, string][] = [
   [/[!@$%^&*_+.,~:;-]/, '<p>Password must contain at least one special character (use !@$%^&*_+.,~:;-).</p>'],
   [/^[^ ]*$/, '<p>Password must not contain whitespace.</p>'],
 ];
+
+export const sorterParametrs = {
+  '': 'Sort by ',
+  'name-asc': 'Products: A to Z',
+  'name-desc': 'Products: Z to A',
+  'price-asc': 'Price: Low to High',
+  'price-desc': 'Price: High to Low',
+};

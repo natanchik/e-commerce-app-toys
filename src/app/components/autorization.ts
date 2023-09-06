@@ -46,20 +46,25 @@ abstract class AuthPage {
     return authPage;
   }
 
-  protected addEmailPassword = (parent: HTMLElement, typeOfPassword: string): void => {
-    parent.append(
-      createInputElement('email', 'E-mail*', 'email', 'auth', true, {
-        name: 'username',
-        autocomplete: 'username',
-      }),
-    );
-    const passwordBlock = createInputElement('password', 'Password*', 'password', 'auth', true, {
+  protected addEmail = (title: string = 'E-mail*', id: string = 'email'): HTMLDivElement => {
+    return createInputElement('email', title, id, 'auth', true, {
+      name: 'username',
+      autocomplete: 'username',
+    });
+  };
+
+  protected addPassword = (
+    typeOfPassword: string,
+    id: string = 'password',
+    label: string = 'Password*',
+  ): HTMLDivElement => {
+    const passwordBlock = createInputElement('password', label, id, 'auth', true, {
       name: 'password',
       autocomplete: typeOfPassword,
     });
-    const boxShowPassword = createCheckBoxElement('Show password', 'showPassword');
+    const boxShowPassword = createCheckBoxElement('Show password', `showPassword-${id}`);
     passwordBlock.append(boxShowPassword);
-    parent.append(passwordBlock);
+    return passwordBlock;
   };
 }
 

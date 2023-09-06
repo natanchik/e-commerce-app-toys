@@ -7,16 +7,20 @@ export const nullUserState: UserState = {
   email: '',
   addresses: [],
   id: '',
+  version: 0,
   billingAddressIds: [],
   shippingAddressIds: [],
   defaultBillingAddressId: '',
   defaultShippingAddressId: '',
 };
 
-export const createElement = (tag: string, classes: string[], text?: string): HTMLElement => {
+export const createElement = (tag: string, classes: string[], text?: string, attributes?: object): HTMLElement => {
   const element = document.createElement(tag) as HTMLElement;
   element.classList.add(...classes);
   if (text) element.innerHTML = text;
+  if (attributes) {
+    Object.entries(attributes).forEach((entry) => element.setAttribute(entry[0], entry[1]));
+  }
 
   return element;
 };
@@ -28,6 +32,7 @@ export const createInputElement = (
   page: string,
   required: boolean = true,
   attributes?: object,
+  ifError: boolean = true,
 ): HTMLDivElement => {
   const label = createElement('label', [`${page}-label`], labelText);
   label.setAttribute('for', inputId);
@@ -42,11 +47,14 @@ export const createInputElement = (
     Object.entries(attributes).forEach((entry) => input.setAttribute(entry[0], entry[1]));
   }
 
-  const notation = createElement('p', ['error-message']) as HTMLParagraphElement;
-  notation.dataset.input = inputId;
-
   const inputBlock = createElement('div', [`${page}-item`]) as HTMLDivElement;
-  inputBlock.append(label, input, notation);
+  inputBlock.append(label, input);
+
+  if (ifError) {
+    const notation = createElement('p', ['error-message']) as HTMLParagraphElement;
+    notation.dataset.input = inputId;
+    inputBlock.append(notation);
+  }
 
   return inputBlock;
 };
@@ -89,19 +97,56 @@ export const createCheckBoxElement = (
   labelText: string,
   inputId: string,
   required: boolean = false,
+  additionalClassName?: string,
+  typeOfFilters?: string,
 ): HTMLDivElement => {
   const label = createElement('label', ['checkbox-label'], labelText);
+  if (additionalClassName) label.classList.add(`${additionalClassName}__label`);
   label.setAttribute('for', inputId);
 
   const input = createElement('input', ['checkbox-input']) as HTMLInputElement;
+  if (additionalClassName) input.classList.add(`${additionalClassName}__checkbox`);
   input.setAttribute('type', 'checkbox');
   input.setAttribute('id', inputId);
   if (required) {
     input.required = true;
   }
+  if (typeOfFilters) {
+    input.dataset.filters = typeOfFilters;
+  }
 
   const checkBoxBlock = createElement('div', ['checkbox-block']) as HTMLDivElement;
+  if (additionalClassName) checkBoxBlock.classList.add(`${additionalClassName}__checkbox-block`);
   checkBoxBlock.append(input, label);
 
   return checkBoxBlock;
+};
+
+export const createImageElement = (url: string, classes: string[], attributes?: object): HTMLImageElement => {
+  const image = document.createElement('img') as HTMLImageElement;
+  image.classList.add(...classes);
+  image.src = url;
+  if (attributes) {
+    Object.entries(attributes).forEach((entry) => image.setAttribute(entry[0], entry[1]));
+  }
+
+  return image;
+};
+
+export const encodeText = (text: string): string => {
+  return text.replace(',', ' ').replace(/ {2}/g, '').split(' ').join('%20');
+};
+
+export const showLoadig = (): void => {
+  const body = document.querySelector('body') as HTMLBodyElement;
+  const loading = createElement('div', ['main__loading']) as HTMLDivElement;
+  const loadingImg = createElement('div', ['main__loading-img']) as HTMLDivElement;
+
+  loading.append(loadingImg);
+  body.append(loading);
+};
+
+export const hideLoading = (): void => {
+  const loading = document.querySelector('.main__loading') as HTMLBodyElement;
+  loading.remove();
 };

@@ -8,7 +8,8 @@ class LoginPage extends AuthPage {
   };
 
   private drawFormBlock = (parent: HTMLFormElement): void => {
-    this.addEmailPassword(parent, 'current-password');
+    parent.append(this.addEmail());
+    parent.append(this.addPassword('current-password'));
   };
 }
 

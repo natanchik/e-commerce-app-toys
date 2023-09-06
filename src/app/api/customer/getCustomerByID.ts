@@ -40,7 +40,7 @@ export const fillUserState = async (email: string): Promise<void> => {
   };
 
   await fetch(
-    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers',
+    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers?limit=500',
     requestOptions,
   )
     .then((res) => {

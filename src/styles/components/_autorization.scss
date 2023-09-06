@@ -39,6 +39,7 @@
   font-size: 1.3rem;
   font-weight: 600;
   color: #747474;
+  font-style: italic;
 }
 
 .auth-btn {
@@ -84,10 +85,6 @@
     width: 15px;
     cursor: pointer;
   }
-
-  & .checkbox-label {
-    font-style: italic;
-  }
 }
 
 .address-block {
@@ -95,6 +92,10 @@
   flex-direction: column;
   border-bottom: 1px dashed $blue;
   margin: 20px 0;
+}
+
+.postalCode {
+  max-width: 85px;
 }
 
 .postalCode::-webkit-outer-spin-button,

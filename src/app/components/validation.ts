@@ -61,12 +61,31 @@ export const validateInput = (input: HTMLInputElement, notation: HTMLParagraphEl
   if (input.value) {
     if (input.id === 'email' && !input.value.match(/^\w+[._-]?\w+@((\w){2,10}\.)?(\w){2,10}\.(\w){2,4}$/)) {
       warnings += checkEmail(input.value);
-    } else if (input.id === 'password') {
+    } else if (input.id.includes('password')) {
       warnings += checkWithReqs(passwordRequirements, input.value);
+      if (input.id === 'new-password-check' || input.id === 'new-password') {
+        const repeatPasswordId = input.id === 'new-password-check' ? 'new-password' : 'new-password-check';
+        const repeatPassword = document.getElementById(repeatPasswordId);
+        if (repeatPassword && repeatPassword instanceof HTMLInputElement) {
+          const repeatNotation = document.querySelector(`[data-input="${repeatPassword.id}"]`) as HTMLParagraphElement;
+          if (repeatPassword.value !== input.value) {
+            warnings += 'New password and new password check must be the same';
+          } else {
+            repeatPassword.classList.remove('error-input');
+            repeatNotation.innerHTML = '';
+          }
+        }
+      }
     } else if (input.id === 'dateOfBirth') {
       warnings += checkDate(input.value);
     } else {
-      const id = input.id.startsWith('shipping') || input.id.startsWith('billing') ? input.id.split('-')[1] : input.id;
+      const id =
+        input.id.startsWith('shipping') ||
+        input.id.startsWith('Shipping') ||
+        input.id.startsWith('billing') ||
+        input.id.startsWith('Billing')
+          ? input.id.split('-')[1]
+          : input.id;
       if (id === 'postalCode') {
         warnings += checkPostalCode(input);
       } else {

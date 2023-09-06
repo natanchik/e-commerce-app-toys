@@ -1,4 +1,4 @@
-import pages from '../router/pages';
+import { pages } from '../router/pages';
 import Router from '../router/router';
 import { createElement } from '../components/utils';
 

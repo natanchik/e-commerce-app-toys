@@ -1,4 +1,4 @@
-import pages from './router/pages';
+import { ID_SELECTOR, SUBCATEGORY, pages } from './router/pages';
 import { RouteInfo } from './types/types';
 import MainPage from './pages/main-page';
 import LoginPage from './pages/login-page';
@@ -13,6 +13,8 @@ import Terms from './pages/terms-conditions';
 import RegPage from './pages/registration-page';
 import User from './components/user';
 import UserProfile from './pages/user-profile';
+import Catalog from './pages/catalog';
+import Card from './pages/card';
 
 class App {
   router: Router;
@@ -26,11 +28,11 @@ class App {
   user: User;
 
   constructor() {
+    this.user = new User();
     this.router = new Router(this.createRoutes());
     this.header = new Header(this.router);
     this.main = new Main(this.router);
     this.footer = new Footer(this.router);
-    this.user = new User();
   }
 
   public startApp(): void {}
@@ -77,6 +79,31 @@ class App {
         callback: (): void => {
           const userProfile = new UserProfile();
           Main.setContent(userProfile.drawProfile());
+        },
+      },
+      {
+        path: `${pages.CATALOG}`,
+        callback: async (): Promise<void> => {
+          const catalog = new Catalog();
+          Main.setContent(await catalog.drawCatalog());
+          Catalog.drawProducts();
+        },
+      },
+      {
+        path: `${pages.CATALOG}/${SUBCATEGORY}`,
+        callback: async (): Promise<void> => {
+          const catalog = new Catalog();
+          Main.setContent(await catalog.drawCatalog());
+          Catalog.drawProducts();
+        },
+      },
+      {
+        path: `${pages.CATALOG}/${ID_SELECTOR}`,
+        callback: async (id): Promise<void> => {
+          if (id) {
+            const card = new Card(id);
+            Main.setContent(await card.drawCard());
+          }
         },
       },
       {

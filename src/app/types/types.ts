@@ -1,11 +1,11 @@
 export interface RouteInfo {
   path: string;
-  callback: () => void;
+  callback: (id?: string) => void;
 }
 
 export interface UrlInfo {
   pathname: string;
-  cardId: string;
+  id: string;
 }
 
 export interface ValidTemplates {
@@ -44,6 +44,7 @@ export interface UserState {
   email: string;
   addresses: Address[];
   id: string;
+  version: number;
   billingAddressIds: string[];
   shippingAddressIds: string[];
   defaultBillingAddressId: string;
@@ -52,5 +53,134 @@ export interface UserState {
 
 export interface CurrentAction {
   action: string;
+  [dataTitile: string]: string | object;
+}
+
+export interface CurrentActionWithId {
+  action: string;
   addressId: string;
+  [dataTitile: string]: string | object;
+}
+
+export interface CardData {
+  title: string;
+  images: { dimensions: { w: number; h: number }; url: string }[];
+  prices: {
+    value: string;
+    discounted: string;
+    currency: string;
+  };
+  details: string;
+}
+
+export interface Product {
+  id: string;
+  productType: ProductTypeReference;
+  masterData: ProductCatalogData;
+}
+
+export interface ProductTypeReference {
+  id: string;
+  typeId: string;
+  version: number;
+  versionModifiedAt: string;
+}
+
+export interface ProductCatalogData {
+  current: ProductData;
+}
+
+export interface ProductData {
+  name: LocalizedString;
+  categories: CategoryReference[];
+  description: LocalizedString;
+  slug: string;
+  masterVariant: ProductVariant;
+  variants: ProductVariant[];
+}
+
+export type LocalizedString = {
+  'en-US': string;
+  'ru-KZ': string;
+};
+
+export interface CategoryReference {
+  id: string;
+  typeId: string;
+}
+
+export interface ProductVariant {
+  id: number;
+  key: string;
+  sku: string;
+  prices: Price[];
+  price: Price;
+  images: Image[];
+}
+
+export interface Price {
+  country: string;
+  id: string;
+  key: string;
+  value: TypedMoney;
+  discounted: DiscountedPrice;
+}
+
+export interface TypedMoney {
+  centAmount: number;
+  currencyCode: string;
+  fractionDigits: number;
+  type: string;
+}
+
+export interface DiscountedPrice {
+  value: TypedMoney;
+  discount: ProductDiscountReference;
+}
+
+export interface ProductDiscountReference {
+  id: string;
+  typeId: string;
+}
+
+export interface Image {
+  url: string;
+  dimensions: ImageDimensions;
+}
+
+export interface ImageDimensions {
+  w: number;
+  h: number;
+}
+
+export interface Category {
+  id: string;
+  version: number;
+  key: string;
+  name: LocalizedString;
+  slug: LocalizedString;
+  description: LocalizedString;
+  ancestors: CategoryReference;
+  parent: CategoryReference;
+  orderHint: string;
+}
+
+export interface QueryParam {
+  key: string;
+  value: number | string;
+}
+
+export interface ProductType {
+  id: string;
+  version: number;
+  key: string;
+  name: string;
+  description: LocalizedString;
+  createdAt: Date;
+  lastModifiedAt: Date;
+}
+
+export interface PriceFilterValue {
+  value: string;
+  query: string;
 }

@@ -8,8 +8,8 @@ const requestOptions = {
   body: '',
 };
 
-const getAnonymousToken = (): void => {
-  fetch(
+const getAnonymousToken = async (): Promise<void> => {
+  return fetch(
     'https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=client_credentials',
     requestOptions,
   )
@@ -21,14 +21,12 @@ const getAnonymousToken = (): void => {
       }
     })
     .then((res) => {
-      localStorage.setItem('token_info', JSON.stringify(res));
-      localStorage.setItem('type_of_token', 'anonymous');
+      localStorage.setItem('anonymous_token', JSON.stringify(res));
+    })
+    .catch((error) => {
+      if (error) localStorage.setItem('error_get-anonymous-token', error.message);
+      alert('Sorry, this is taking an unusually long time...');
     });
-  // .catch((err) => {
-  //   if (err instanceof Error) {
-  //     console.log(`${err.message}`);
-  //   }
-  // });
 };
 
 export default getAnonymousToken;
