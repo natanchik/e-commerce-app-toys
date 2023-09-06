@@ -1,22 +1,17 @@
 import { AddressFromAPI, CurrentAction, RegisterData } from '../../types/types';
+import { pushCurrentAction } from '../helpers/utils';
 import { getCustomerByID } from './getCustomerByID';
 import { loginAfterRegistration } from './loginCustomer';
 
 const customersURL = 'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers';
 
-const pushCurrentActions = (actionValue: string, id: string): CurrentAction => {
-  const currentAction: CurrentAction = {
-    action: actionValue,
-    addressId: id,
-  };
-  return currentAction;
-};
+const pushCurrentActions = pushCurrentAction.bind(null, 'addressId');
 
 const getCurrentActions = (
   addresses: AddressFromAPI[],
   checkDefaultBilling: boolean,
   checkDefaultShipping: boolean,
-): { action: string; addressId: string }[] => {
+): CurrentAction[] => {
   const currentActions: CurrentAction[] = [];
   switch (addresses.length) {
     case 1:
@@ -96,23 +91,15 @@ const createCustomer = async (
         version: 1,
         actions: currentActions,
       });
-      await fetch(`${customersURL}/${customerID}`, { method: 'POST', headers: myHeaders, body: dataForAddressActions })
-        .then(async () => {
-          await loginAfterRegistration(data.email, data.password);
-          await getCustomerByID(customerID);
-          addApiStatus('success-status__register', `Enjoy the shopping!`);
-        })
-        .catch((err) => {
-          if (err instanceof Error) {
-            addApiStatus('error-status__register', err.message);
-
-            if (
-              apiStatus.innerHTML === `This email address already exists, please log in or use another email address`
-            ) {
-              emailInput.classList.add('error-input');
-            }
-          }
-        });
+      await fetch(`${customersURL}/${customerID}`, {
+        method: 'POST',
+        headers: myHeaders,
+        body: dataForAddressActions,
+      }).then(async () => {
+        await loginAfterRegistration(data.email, data.password);
+        await getCustomerByID(customerID);
+        addApiStatus('success-status__register', `Enjoy the shopping!`);
+      });
     })
     .catch((err) => {
       if (err instanceof Error) {

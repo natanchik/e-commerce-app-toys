@@ -2,11 +2,11 @@ import { createElement, encodeText } from './utils';
 import Sidebar from './sidebar';
 import Router from '../router/router';
 import { pages } from '../router/pages';
-import { validateInput } from './validation';
 import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { loginCustomer } from '../api/customer/loginCustomer';
 import createCustomer from '../api/customer/createCustomer';
+import removeCustomerAddress from '../api/customer/update/remove-address';
 import User from './user';
 import getAllProducts from '../api/getProduct/getAllProducts';
 import {
@@ -20,6 +20,20 @@ import Filters from './filters';
 import { sorterParametrs } from './constants';
 import getProductsBySearch from '../api/getProduct/getProductsBySearch';
 import { addNewQueryParam } from '../api/helpers/utils';
+import {
+  toggleProfileEditMode,
+  toggleProfileItems,
+  toggleAccordion,
+  handlerSameAddresses,
+  handlerCountry,
+  handlerShowPassword,
+  handlerValInput,
+  handlersProfileUpdates,
+  handlerChangePaswwordSubmit,
+  handlerChangeEmailSubmit,
+  handlerAddAddressSubmit,
+  handlerDefaultAddress,
+} from '../components/handlers';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -98,18 +112,6 @@ class Main {
       }, 1500);
     } else {
       submitBtn.removeAttribute('disabled');
-    }
-  }
-
-  private toggleAccordion(id: string, target: HTMLElement, className: string): void {
-    const content = document.querySelector(`[data-content = '${id}']`);
-
-    if (target.classList.contains(`${className}__item_active`)) {
-      target.classList.remove(`${className}__item_active`);
-      content?.classList.add(`${className}__content_hidden`);
-    } else {
-      target.classList.add(`${className}__item_active`);
-      content?.classList.remove(`${className}__content_hidden`);
     }
   }
 
@@ -427,8 +429,59 @@ class Main {
         router.navigate(pages.AUTORIZATION);
       }
 
-      if (target.classList.contains('profile__item')) {
-        this.toggleAccordion(target.id, target, 'profile');
+      if (
+        !(
+          target.classList.contains('profile__content') ||
+          target.closest('.profile__content') ||
+          target.classList.contains('profile__address__btn')
+        ) &&
+        target.closest('.profile__item_inline')
+      ) {
+        toggleProfileItems(target);
+      }
+
+      if (
+        (!(target.classList.contains('profile__modal') || target.closest('.profile__modal')) &&
+          target.closest('.profile__item_modal')) ||
+        target.classList.contains('modal-cancel')
+      ) {
+        toggleProfileItems(target);
+      }
+
+      if (target.classList.contains('profile__edit-btn')) {
+        toggleProfileEditMode(target);
+      }
+
+      if (target.classList.contains('profile__update')) {
+        handlersProfileUpdates(target);
+      }
+
+      if (target.classList.contains('profile__address__delete-btn')) {
+        const address = target.closest('.profile__address');
+        if (address && address instanceof HTMLElement && address.dataset.id) {
+          removeCustomerAddress(address.dataset.id);
+        }
+      }
+
+      if (target.classList.contains('profile__address__edit-btn')) {
+        const item = target.closest('.profile__item_inline') as HTMLLIElement;
+        const addressItem = target.closest('.profile__address') as HTMLLIElement;
+        const editText = createElement('p', ['profile__address__edit-text'], 'Input your changes into form below');
+        if (!item.classList.contains('change')) {
+          item.classList.add('change');
+          addressItem.classList.add('change');
+          addressItem.classList.add('change-address');
+          addressItem.append(editText);
+        } else {
+          item.classList.remove('change');
+          addressItem.classList.remove('change');
+          addressItem.classList.remove('change-address');
+          const text = document.querySelector('.profile__address__edit-text');
+          text?.remove();
+        }
+      }
+      if (target.classList.contains('profile__address__default-btn')) {
+        handlerDefaultAddress(target);
       }
 
       if (target.classList.contains('main-page__page')) {
@@ -466,7 +519,7 @@ class Main {
       }
 
       if (target.classList.contains('filters__item')) {
-        this.toggleAccordion(target.id, target, 'filters');
+        toggleAccordion(target.id, target, 'filters');
       }
 
       if (target.classList.contains('filters__checkbox')) {
@@ -480,7 +533,7 @@ class Main {
       }
 
       if (target.classList.contains('mobile-filters__item')) {
-        this.toggleAccordion('mobile-filters', target, 'mobile-filters');
+        toggleAccordion('mobile-filters', target, 'mobile-filters');
       }
 
       if (target.classList.contains('filters__apply_prices')) {
@@ -522,7 +575,6 @@ class Main {
       if (target.classList.contains('login-form')) {
         event.preventDefault();
         const isValid: boolean = checkValidity();
-
         if (isValid) {
           this.loginViaForm(target as HTMLFormElement, router);
         }
@@ -531,7 +583,6 @@ class Main {
       if (target.classList.contains('register-form')) {
         event.preventDefault();
         const isValid: boolean = checkValidity();
-
         if (isValid) {
           this.registerViaForm(router);
         }
@@ -539,6 +590,18 @@ class Main {
 
       if (target.classList.contains('product-card__form')) {
         event.preventDefault();
+      }
+
+      if (target.classList.contains('profile__password__form')) {
+        handlerChangePaswwordSubmit(event, target);
+      }
+
+      if (target.classList.contains('profile__e-mail__form')) {
+        handlerChangeEmailSubmit(event, target);
+      }
+
+      if (target.classList.contains('profile__address__form')) {
+        handlerAddAddressSubmit(event, target);
       }
     });
 
@@ -551,16 +614,7 @@ class Main {
         !target.classList.contains('filters__price-input') &&
         !target.classList.contains('filters__select')
       ) {
-        const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
-        apiStatus.className = 'api-status';
-        apiStatus.innerHTML = '';
-
-        if (target.classList.contains('auth-input')) {
-          const notation = document.querySelector(`[data-input="${target.id}"]`) as HTMLParagraphElement;
-          if (notation) {
-            validateInput(target, notation);
-          }
-        }
+        handlerValInput(event);
       }
     });
 
@@ -568,39 +622,25 @@ class Main {
       const target = event.target as HTMLElement;
 
       if (target.id === 'are-same-addresses') {
-        const shippingBlock = document.getElementById('shipping-block') as HTMLDivElement;
-        const shippingInputs = [
-          document.getElementById('shipping-country') as HTMLInputElement,
-          document.getElementById('shipping-city') as HTMLInputElement,
-          document.getElementById('shipping-streetName') as HTMLInputElement,
-          document.getElementById('shipping-postalCode') as HTMLInputElement,
-        ];
-        shippingBlock.classList.toggle('hidden');
-        if (shippingInputs[0].hasAttribute('required')) {
-          shippingInputs.forEach((input) => {
-            input.removeAttribute('required');
-          });
-        } else {
-          shippingInputs.forEach((input) => {
-            input.setAttribute('required', 'true');
-          });
-        }
+        handlerSameAddresses();
       }
 
-      if (target.id === 'billing-country' || target.id === 'shipping-country') {
-        const inputId = `${target.id.split('-')[0]}-postalCode`;
-        const postalCode = document.getElementById(inputId) as HTMLInputElement;
-        const notation = document.querySelector(`[data-input="${inputId}"]`) as HTMLParagraphElement;
-        if (notation) {
-          validateInput(postalCode, notation);
-        }
+      if (target.id.includes('country')) {
+        handlerCountry(target);
       }
 
-      if (target.id === 'showPassword') {
-        const passwordInput = document.getElementById('password');
-        if (passwordInput && passwordInput instanceof HTMLInputElement) {
-          passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-        }
+      if (target.id.includes('showPassword')) {
+        handlerShowPassword(target);
+      }
+
+      if (target.classList.contains('filters__select')) {
+        const currentTarget = target as HTMLSelectElement;
+        this.addFilterNavigationForSelect(currentTarget);
+      }
+
+      if (target.classList.contains('filters__search')) {
+        const currentTarget = target as HTMLInputElement;
+        this.addFilterNavigationForSearch(currentTarget);
       }
 
       if (target.classList.contains('filters__select')) {

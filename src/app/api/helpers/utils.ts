@@ -1,5 +1,5 @@
 import { catalogQueryParams } from '../../state/state';
-import { QueryParam, UserState } from '../../types/types';
+import { QueryParam, UserState, CurrentAction } from '../../types/types';
 
 export const addUserState = (customer: UserState): void => {
   const userState: UserState = {
@@ -9,6 +9,7 @@ export const addUserState = (customer: UserState): void => {
     email: customer.email,
     addresses: customer.addresses,
     id: customer.id,
+    version: customer.version,
     shippingAddressIds: customer.shippingAddressIds,
     billingAddressIds: customer.billingAddressIds,
     defaultBillingAddressId: customer.defaultBillingAddressId,
@@ -35,4 +36,21 @@ export const addNewQueryParam = (id: string, key: string, value: string): void =
     value: value,
   };
   catalogQueryParams.set(id, queryParam);
+};
+
+export const pushCurrentAction = (dataTitle: string, action: string, data: string | object): CurrentAction => {
+  const currentAction = {
+    action: action,
+    [dataTitle]: data,
+  };
+  return currentAction;
+};
+
+export const addApiStatus = async (
+  apiStatus: HTMLParagraphElement,
+  className: string,
+  errMessage: string,
+): Promise<void> => {
+  apiStatus.classList.add(className);
+  apiStatus.innerHTML = errMessage;
 };

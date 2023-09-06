@@ -8,14 +8,12 @@ class RegPage extends AuthPage {
   };
 
   private drawFormBlock = (parent: HTMLFormElement): void => {
-    const emailBlock = createElement('div', ['auth-row']);
-    this.addEmailPassword(emailBlock, 'new-password');
-    parent.append(emailBlock);
+    const emailPasswordBlock = createElement('div', ['auth-row']);
+    emailPasswordBlock.append(this.addEmail());
+    emailPasswordBlock.append(this.addPassword('current-password'));
+    parent.append(emailPasswordBlock);
 
-    const nameBlock = createElement('div', ['auth-row']);
-    nameBlock.append(createInputElement('text', 'First name*', 'firstName', 'auth', true, { name: 'firstName' }));
-    nameBlock.append(createInputElement('text', 'Last name*', 'lastName', 'auth', true, { name: 'lastName' }));
-    parent.append(nameBlock);
+    parent.append(this.addnameBlock());
 
     const userInfo = createElement('div', ['auth-row']);
     userInfo.append(createInputElement('date', 'Date of birth*', 'dateOfBirth', 'auth', true, { name: 'dateOfBirth' }));
@@ -32,6 +30,16 @@ class RegPage extends AuthPage {
     const policyAgreeText =
       'I agree with <span class="link-terms">The terms of personal data processing</span> and <span class="link-privacy"> Privacy policy</span>';
     parent.append(createCheckBoxElement(policyAgreeText, 'policyInput', true));
+  };
+
+  protected addnameBlock = (
+    firstNameTitle: string = 'First name*',
+    lastNameTitle: string = 'Last name*',
+  ): HTMLDivElement => {
+    const nameBlock = createElement('div', ['auth-row']) as HTMLDivElement;
+    nameBlock.append(createInputElement('text', firstNameTitle, 'firstName', 'auth', true, { name: 'firstName' }));
+    nameBlock.append(createInputElement('text', lastNameTitle, 'lastName', 'auth', true, { name: 'lastName' }));
+    return nameBlock;
   };
 
   protected drawAddressBlock = (type: string): HTMLDivElement => {
