@@ -1,3 +1,4 @@
+import { getCustomerByID } from '../api/customer/getCustomerByID';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
