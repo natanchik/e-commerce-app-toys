@@ -10,10 +10,13 @@ import refreshToken from './app/api/tokens/refreshToken';
 const loadTokens = async (): Promise<void> => {
   showLoadig();
   if (!localStorage.getItem('token_info') && localStorage.getItem('token_info') !== 'customer') await getAccessToken();
-  if (!localStorage.getItem('anonymous_token')) await getAnonymousToken();
-  setInterval(() => {
-    refreshToken(JSON.parse(localStorage.anonymous_token).refreshToken);
-  }, 10800000);
+  if (!localStorage.getItem('anonymous_token')) {
+    await getAnonymousToken();
+  } else {
+    await setInterval(async () => {
+      await refreshToken(JSON.parse(localStorage.getItem('anonymous_token') as string).refresh_token);
+    }, 10800000);
+  }
   if (!localStorage.getItem('all_products')) await getAllProducts();
   if (!localStorage.getItem('categories')) await getCategories();
 };

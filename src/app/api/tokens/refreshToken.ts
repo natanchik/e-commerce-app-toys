@@ -25,7 +25,7 @@ const refreshToken = async (refreshToken: string): Promise<void> => {
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_get-anonymous-token', error.message);
-      alert('Sorry, this is taking an unusually long time...');
+      alert('Sorry, your token has expired. Please refresh to continue.');
     });
 };
 
