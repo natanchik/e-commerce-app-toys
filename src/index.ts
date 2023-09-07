@@ -6,6 +6,7 @@ import getAllProducts from './app/api/getProduct/getAllProducts';
 import getCategories from './app/api/category/getCategories';
 import { hideLoading, showLoadig } from './app/components/utils';
 import refreshToken from './app/api/tokens/refreshToken';
+import { createMyCart } from './app/api/cart/createMyCart';
 
 const loadTokens = async (): Promise<void> => {
   showLoadig();
@@ -19,6 +20,7 @@ const loadTokens = async (): Promise<void> => {
   }
   if (!localStorage.getItem('all_products')) await getAllProducts();
   if (!localStorage.getItem('categories')) await getCategories();
+  if (!localStorage.getItem('cart')) await createMyCart();
 };
 
 loadTokens().then(() => {

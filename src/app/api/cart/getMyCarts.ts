@@ -1,4 +1,4 @@
-export const getMyCarts = (): void => {
+export const getMyCarts = async (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -9,7 +9,7 @@ export const getMyCarts = (): void => {
     headers: myHeaders,
   };
 
-  fetch(
+  await fetch(
     'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts',
     requestOptions,
   ).then((res) => {
@@ -18,6 +18,8 @@ export const getMyCarts = (): void => {
     } else {
       throw new Error(`The error with status code ${res.status} has occured, please try later`);
     }
+  })
+  .then((res) => {
+    localStorage.setItem('cart', JSON.stringify(res));
   });
-  // .then((res) => console.log(res));
 };

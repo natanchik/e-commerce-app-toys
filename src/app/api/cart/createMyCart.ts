@@ -1,4 +1,4 @@
-export const createCart = async (): Promise<void> => {
+export const createMyCart = async (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -21,6 +21,8 @@ export const createCart = async (): Promise<void> => {
     } else {
       throw new Error(`The error with status code ${res.status} has occured, please try later`);
     }
+  })
+  .then((res) => {
+    localStorage.setItem('cart', JSON.stringify(res));
   });
-  // .then((res) => console.log(res));
 };
