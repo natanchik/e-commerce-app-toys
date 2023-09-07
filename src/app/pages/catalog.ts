@@ -1,4 +1,3 @@
-import { getCustomerByID } from '../api/customer/getCustomerByID';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
@@ -141,7 +140,7 @@ class Catalog {
     const addBtn = createElement('span', ['product__button', 'product__add-button'], '+') as HTMLSpanElement;
     const addText = createElement('span', ['product__button', 'product__add-text'], 'add to cart') as HTMLSpanElement;
     addProductBtns.append(addText, addBtn);
-
+    
     productBlock.append(img, addProductBtns, name, description, prices);
     return productBlock;
   }
