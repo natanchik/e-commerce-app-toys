@@ -8,9 +8,9 @@ const requestOptions = {
   body: '',
 };
 
-const refreshToken = async (refreshToken: string): Promise<void> => {
+const refreshToken = async (refreshTokenValue: string): Promise<void> => {
   return fetch(
-    `https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=refresh_token&refresh_token=${refreshToken}`,
+    `https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=refresh_token&refresh_token=${refreshTokenValue}`,
     requestOptions,
   )
     .then((res) => {

@@ -11,16 +11,15 @@ import { createMyCart } from './app/api/cart/createMyCart';
 const loadTokens = async (): Promise<void> => {
   showLoadig();
   if (!localStorage.getItem('token_info') && localStorage.getItem('token_info') !== 'customer') await getAccessToken();
-  if (!localStorage.getItem('anonymous_token')) {
-    await getAnonymousToken();
-  } else {
+  if (!localStorage.getItem('anonymous_token')) await getAnonymousToken();
+  if (!localStorage.getItem('all_products')) await getAllProducts();
+  if (!localStorage.getItem('categories')) await getCategories();
+  if (!localStorage.getItem('cart')) await createMyCart();
+  if (localStorage.getItem('anonymous_token')) {
     await setInterval(async () => {
       await refreshToken(JSON.parse(localStorage.getItem('anonymous_token') as string).refresh_token);
     }, 10800000);
   }
-  if (!localStorage.getItem('all_products')) await getAllProducts();
-  if (!localStorage.getItem('categories')) await getCategories();
-  if (!localStorage.getItem('cart')) await createMyCart();
 };
 
 loadTokens().then(() => {
