@@ -1,3 +1,4 @@
+import { getCustomerByID } from '../api/customer/getCustomerByID';
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
@@ -135,8 +136,10 @@ class Catalog {
     const prices = this.drawPrices(product);
 
     productBlock.id = product.id;
-
-    productBlock.append(img, name, description, prices);
+    //TODO проверка есть ли товар в коррзине -> add -> иначе delete
+    const addProductBtn = createElement('button', ['product__button', 'product__add-button', 'button', 'button_white'], 'add to cart')
+    
+    productBlock.append(img, name, addProductBtn, description, prices);
     return productBlock;
   }
 
