@@ -1,5 +1,5 @@
-// это единственный промокод в проекте - вынести потом в константы
-const discountID = 'f9e37b1a-182f-4f4d-aaeb-65fcc6cd3477';
+import { discountID } from '../../components/constants'; // это единственный промокод в проекте
+
 const cartForTest = 'e4f384c9-06d2-4300-8e11-213a1800dd07';
 
 export const addOrRemoveDiscountCode = async (
@@ -14,8 +14,7 @@ export const addOrRemoveDiscountCode = async (
   };
 
   const currentBody: { version: number; actions: object[] } = {
-    // нужно как в профиле сохранять cart в localStorage, чтобы брать оттуда актуальную версию корзины и в теле ее динамически менять
-    version: 13,
+    version: JSON.parse(localStorage.cart) ? JSON.parse(localStorage.cart).version : 1,
     actions: [],
   };
 
@@ -43,12 +42,15 @@ export const addOrRemoveDiscountCode = async (
   await fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${cartId}`,
     requestOptions,
-  ).then((res) => {
-    if (res.status >= 200 && res.status < 300) {
-      return res.json();
-    } else {
-      throw new Error(`The error with status code ${res.status} has occured, please try later`);
-    }
-  });
-  // .then((res) => console.log(res));
+  )
+    .then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        return res.json();
+      } else {
+        throw new Error(`The error with status code ${res.status} has occured, please try later`);
+      }
+    })
+    .then((res) => {
+      localStorage.setItem('cart', JSON.stringify(res));
+    });
 };

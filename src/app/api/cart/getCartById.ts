@@ -1,9 +1,13 @@
-import User from "../../components/user";
+import User from '../../components/user';
 
 export const getCartById = async (cartId: string): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${User.isLogged() ? JSON.parse(localStorage.token_info).access_token : JSON.parse(localStorage.anonymous_token).access_token}`,
+    Authorization: `Bearer ${
+      User.isLogged()
+        ? JSON.parse(localStorage.token_info).access_token
+        : JSON.parse(localStorage.anonymous_token).access_token
+    }`,
   };
 
   const requestOptions = {

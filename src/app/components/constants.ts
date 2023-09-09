@@ -36,3 +36,5 @@ export const sorterParametrs = {
   'price-asc': 'Price: Low to High',
   'price-desc': 'Price: High to Low',
 };
+
+export const discountID = 'f9e37b1a-182f-4f4d-aaeb-65fcc6cd3477';

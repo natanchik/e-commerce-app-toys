@@ -1,9 +1,13 @@
-import User from "../../components/user";
+import User from '../../components/user';
 
 export const getMyCarts = async (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${User.isLogged() ? JSON.parse(localStorage.token_info).access_token : JSON.parse(localStorage.anonymous_token).access_token}`,
+    Authorization: `Bearer ${
+      User.isLogged()
+        ? JSON.parse(localStorage.token_info).access_token
+        : JSON.parse(localStorage.anonymous_token).access_token
+    }`,
   };
 
   const requestOptions = {
@@ -23,7 +27,7 @@ export const getMyCarts = async (): Promise<void> => {
       }
     })
     .then((res) => {
-      //localStorage.setItem('all_carts', JSON.stringify(res));
+      localStorage.setItem('cart', JSON.stringify(res.results[res.count - 1]));
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_get-carts', error.message);

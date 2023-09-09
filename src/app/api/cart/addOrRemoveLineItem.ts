@@ -20,8 +20,7 @@ export const addLineItem = async (
   };
 
   const currentBody: { version: number; actions: object[] } = {
-    // нужно как в профиле сохранять cart в localStorage, чтобы брать оттуда актуальную версию корзины и в теле ее динамически менять
-    version: 18,
+    version: JSON.parse(localStorage.cart) ? JSON.parse(localStorage.cart).version : 1,
     actions: [],
   };
 
@@ -55,12 +54,15 @@ export const addLineItem = async (
   await fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${cartId}`,
     requestOptions,
-  ).then((res) => {
-    if (res.status >= 200 && res.status < 300) {
-      return res.json();
-    } else {
-      throw new Error(`The error with status code ${res.status} has occured, please try later`);
-    }
-  });
-  // .then((res) => console.log(res));
+  )
+    .then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        return res.json();
+      } else {
+        throw new Error(`The error with status code ${res.status} has occured, please try later`);
+      }
+    })
+    .then((res) => {
+      localStorage.setItem('cart', JSON.stringify(res));
+    });
 };
