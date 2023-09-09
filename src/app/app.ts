@@ -15,6 +15,7 @@ import User from './components/user';
 import UserProfile from './pages/user-profile';
 import Catalog from './pages/catalog';
 import Card from './pages/card';
+import CartPage from './pages/cart-page';
 
 class App {
   router: Router;
@@ -104,6 +105,13 @@ class App {
             const card = new Card(id);
             Main.setContent(await card.drawCard());
           }
+        },
+      },
+      {
+        path: `${pages.CART}`,
+        callback: (): void => {
+          const cart = new CartPage();
+          Main.setContent(cart.drawCart());
         },
       },
       {

@@ -12,7 +12,7 @@ describe('Class MainPage: drawMainPage function', () => {
   });
 
   it('should contain all pages from pages array', () => {
-    expect(pages).toHaveLength(9);
+    expect(pages).toHaveLength(10);
   });
 
   it('should create note for catalog item', () => {

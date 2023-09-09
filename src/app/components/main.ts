@@ -34,6 +34,8 @@ import {
   handlerAddAddressSubmit,
   handlerDefaultAddress,
 } from '../components/handlers';
+import { getMyCarts } from '../api/cart/getMyCarts';
+// import { addLineItem } from '../api/cart/addOrRemoveLineItem';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -561,6 +563,19 @@ class Main {
         const currentID = target.id;
         router.navigate(`${pages.CATALOG}/${currentID}`);
       }
+
+      if (target.classList.contains('header__icon-bascket')) {
+        // addLineItem('129ae40f-9c4f-49b7-a5ca-2aba067d8c7b', 2, JSON.parse(localStorage.cart).id)
+        getMyCarts().then(() => {
+          router.navigate(pages.CART);
+        });
+      }
+
+      // if (target.classList.contains('cart__btn__delete')) {
+      //   const id = `${target.id.slice(3)}`;
+      //   const quantity = document.getElementById(`count${id}`);
+      //   addLineItem(id, quantity, JSON.parse(localStorage.cart).id, 'remove')
+      // }
 
       if (target.parentElement?.classList.contains('catalog__product')) {
         const parentDiv = target.parentNode as HTMLDivElement;
