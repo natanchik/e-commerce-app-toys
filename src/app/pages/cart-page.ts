@@ -8,24 +8,36 @@ export default class CartPage {
     const cartPage = createElement('div', ['cart', 'main__wrapper']) as HTMLDivElement;
     const cartTitle = createElement('h3', ['cart__title'], 'Cart');
     const cartGrid = createElement('div', ['cart__list']) as HTMLUListElement;
+    const emptyCartMessage = createElement(
+      'div',
+      ['cart__is-empty-message', 'cart__hidden'],
+      '<p>Cart is empty.</p><p>You can visit <a class="cart__link-to-catalog" href="">Catalog</a> to add products to it...</p>',
+    );
 
     if (cart) {
       const products: LineItem[] = cart.lineItems;
-      products.forEach((product, ind) => {
-        this.addCartItem(product, ind, cartGrid);
-      });
+      if (products.length) {
+        emptyCartMessage.className = 'cart__is-empty-message cart__hidden';
+        products.forEach((product, ind) => {
+          this.addCartItem(product, ind, cartGrid);
+        });
+        const emptyBlock = createElement('div', ['cart__item']);
+        const totalSumTitle = createElement('div', ['cart__item', 'cart__sum-title'], 'Total sum');
+        const totalSum = createElement(
+          'div',
+          ['cart__item', 'cart__sum'],
+          `${(cart.totalPrice.centAmount / 100).toFixed(2)}`,
+        );
+        cartGrid.append(emptyBlock, totalSumTitle, totalSum);
+      } else {
+        emptyCartMessage.className = 'cart__is-empty-message';
+      }
+    } else {
+      emptyCartMessage.className = 'cart__is-empty-message';
     }
-    const emptyBlock = createElement('div', ['cart__item']);
-    const totalSumTitle = createElement('div', ['cart__item', 'cart__sum-title'], 'Total sum');
-    const totalSum = createElement(
-      'div',
-      ['cart__item', 'cart__sum'],
-      `${(cart.totalPrice.centAmount / 100).toFixed(2)}`,
-    );
 
-    cartGrid.append(emptyBlock, totalSumTitle, totalSum);
     const warning = createElement('div', ['cart__warning']);
-    cartPage.append(cartTitle, warning, cartGrid);
+    cartPage.append(cartTitle, emptyCartMessage, warning, cartGrid);
     return cartPage;
   }
 

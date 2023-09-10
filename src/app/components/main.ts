@@ -518,7 +518,7 @@ class Main {
         } else {
           const input = document.querySelector('.product-card__quantity') as HTMLInputElement;
           const quantity = input ? Number(input.value) : 1;
-          changeLineItem(id, JSON.parse(localStorage.cart).id, 'add', quantity).then(() => {
+          changeLineItem(id, JSON.parse(localStorage.cart).id, 'add', quantity ? quantity : 1).then(() => {
             target.textContent = 'Remove from cart';
             target.classList.remove('button_green');
           });
@@ -573,6 +573,12 @@ class Main {
         getMyCarts().then(() => {
           router.navigate(pages.CART);
         });
+      }
+
+      if (target.classList.contains('cart__link-to-catalog')) {
+        event.preventDefault();
+        Catalog.clearSortedProducts();
+        router.navigate(pages.CATALOG);
       }
 
       if (target.classList.contains('cart__btn__plus')) {

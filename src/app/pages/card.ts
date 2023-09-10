@@ -141,7 +141,7 @@ class Card {
     const quantity = createElement('input', ['product-card__quantity']) as HTMLInputElement;
     quantity.type = 'number';
     quantity.placeholder = '1';
-    quantity.min = '0';
+    quantity.min = '1';
     quantity.value = '1';
     const increaseQuanity = createElement(
       'button',
