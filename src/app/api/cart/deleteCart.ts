@@ -1,4 +1,4 @@
-export async function deleteMyCart(id: string): Promise<void> {
+export async function deleteCart(id: string): Promise<void> {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
@@ -9,7 +9,7 @@ export async function deleteMyCart(id: string): Promise<void> {
     headers: myHeaders,
   };
 
-  const version = localStorage.cartState ? JSON.parse(localStorage.cartState).version : 1;
+  const version = localStorage.cart ? JSON.parse(localStorage.cart).version : 1;
 
   fetch(
     `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${id}?version=${version}`,

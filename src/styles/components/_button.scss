@@ -23,3 +23,13 @@
     background-color: darken($green, 5%);
   }
 }
+
+.button_white_red {
+  background-color: white;
+  outline: 2px solid rgb(206, 106, 82, 0.3);
+  padding: 5px 9px;
+  &:hover {
+    border: none;
+    background-color: rgb(206, 106, 82, 0.3);
+  }
+}

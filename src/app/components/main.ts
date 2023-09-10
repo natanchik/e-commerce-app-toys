@@ -34,6 +34,7 @@ import {
   handlerAddAddressSubmit,
   handlerProfileEditMode,
   handlerDefaultAddress,
+  clearCart,
 } from '../components/handlers';
 import { getMyCarts } from '../api/cart/getMyCarts';
 import { changeLineItem } from '../api/cart/addOrRemoveLineItem';
@@ -575,13 +576,19 @@ class Main {
         });
       }
 
+      if (target.classList.contains('cart__delete-cart-btn')) {
+        clearCart().then(() => {
+          router.navigate(pages.CART);
+        });
+      }
+
       if (target.classList.contains('cart__link-to-catalog')) {
         event.preventDefault();
         Catalog.clearSortedProducts();
         router.navigate(pages.CATALOG);
       }
 
-      if (target.classList.contains('cart__btn__plus')) {
+      if (target.classList.contains('cart__item__btn-plus')) {
         if (target instanceof HTMLButtonElement) {
           target.disabled = true;
         }
@@ -590,7 +597,7 @@ class Main {
         });
       }
 
-      if (target.classList.contains('cart__btn__minus')) {
+      if (target.classList.contains('cart__item__btn-minus')) {
         if (target instanceof HTMLButtonElement) {
           target.disabled = true;
         }
@@ -599,7 +606,7 @@ class Main {
         });
       }
 
-      if (target.classList.contains('cart__btn__delete')) {
+      if (target.classList.contains('cart__item__btn-delete')) {
         changeLineItem(target.id.slice(6), JSON.parse(localStorage.cart).id, 'remove').then(() => {
           router.navigate(pages.CART);
         });

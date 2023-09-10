@@ -1,3 +1,12 @@
+.cart__header {
+  display: flex;
+  justify-content: space-between;
+
+  & > * {
+    display: inline-block;
+  }
+}
+
 .cart__empty {
   display: flex;
   flex-direction: column;
@@ -62,6 +71,7 @@
   .cart__item__amount > * {
     margin-bottom: 6px;
   }
+
   .cart__item__amount-block {
     display: Flex;
     flex-wrap: nowrap;
@@ -81,8 +91,8 @@
     text-decoration: line-through;
   }
 
-  .cart__btn__plus,
-  .cart__btn__minus {
+  .cart__item__btn-plus,
+  .cart__item__btn-minus {
     font-size: 2rem;
     align-items: start;
     cursor: pointer;
@@ -93,7 +103,7 @@
     padding-top: 5px;
   }
 
-  .cart__btn__delete {
+  .cart__item__btn-delete {
     width: 20px;
     height: 20px;
     background-size: cover;

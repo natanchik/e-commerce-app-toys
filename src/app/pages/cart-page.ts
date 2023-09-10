@@ -6,7 +6,14 @@ export default class CartPage {
     const cart = localStorage.cart ? JSON.parse(localStorage.cart) : '';
 
     const cartPage = createElement('div', ['cart', 'main__wrapper']) as HTMLDivElement;
+    const cartHeader = createElement('div', ['cart__header']);
     const cartTitle = createElement('h3', ['cart__title'], 'Cart');
+    const deleteCartBtn = createElement(
+      'button',
+      ['button', 'button_white_red', 'cart__delete-cart-btn'],
+      'Clear Cart',
+    );
+    cartHeader.append(cartTitle, deleteCartBtn);
     const cartGrid = createElement('div', ['cart__list']) as HTMLUListElement;
     const emptyCartBlock = createElement('div', ['cart__empty', 'cart__hidden']);
     const emptyCartImage = createElement('div', ['cart__empty__img']);
@@ -33,16 +40,16 @@ export default class CartPage {
         );
         cartGrid.append(emptyBlock, totalSumTitle, totalSum);
       } else {
-        cartTitle.className = 'cart__title cart__hidden';
+        cartHeader.className = 'cart__header cart__hidden';
         emptyCartBlock.className = 'cart__empty';
       }
     } else {
-      cartTitle.className = 'cart__title cart__hidden';
+      cartHeader.className = 'cart__header cart__hidden';
       emptyCartBlock.className = 'cart__empty';
     }
 
     const warning = createElement('div', ['cart__warning']);
-    cartPage.append(cartTitle, emptyCartBlock, warning, cartGrid);
+    cartPage.append(cartHeader, emptyCartBlock, warning, cartGrid);
     return cartPage;
   }
 
@@ -78,12 +85,12 @@ export default class CartPage {
 
     const itemAmounts = createElement('div', ['cart__item', 'cart__item__amount']);
     const amountBlock = createElement('div', ['cart__item__amount-block']);
-    const plusBtn = createElement('button', ['cart__btn__plus'], '+');
+    const plusBtn = createElement('button', ['cart__item__btn-plus'], '+');
     plusBtn.id = `plus${lineitem.productId}`;
     const amountTablo = createElement('div', ['cart__item__amount-value'], `${lineitem.quantity}`);
-    const minusBtn = createElement('button', ['cart__btn__minus'], '-');
+    const minusBtn = createElement('button', ['cart__item__btn-minus'], '-');
     minusBtn.id = `minus${lineitem.id}`;
-    const itemDelete = createElement('div', ['cart__btn__delete']);
+    const itemDelete = createElement('div', ['cart__item__btn-delete']);
     itemDelete.id = `delete${lineitem.id}`;
     amountBlock.append(minusBtn, amountTablo, plusBtn);
     itemAmounts.append(amountBlock, itemDelete);
