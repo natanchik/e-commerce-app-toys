@@ -135,8 +135,13 @@ class Catalog {
     const prices = this.drawPrices(product);
 
     productBlock.id = product.id;
-
-    productBlock.append(img, name, description, prices);
+    //TODO проверка есть ли товар в коррзине -> add -> иначе delete
+    const addProductBtns = createElement('div', ['product__buttons']) as HTMLDivElement;
+    const addBtn = createElement('span', ['product__button', 'product__add-button'], '+') as HTMLSpanElement;
+    const addText = createElement('span', ['product__button', 'product__add-text'], 'add to cart') as HTMLSpanElement;
+    addProductBtns.append(addText, addBtn);
+    
+    productBlock.append(img, addProductBtns, name, description, prices);
     return productBlock;
   }
 
