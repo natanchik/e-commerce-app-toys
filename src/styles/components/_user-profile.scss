@@ -152,7 +152,8 @@
   }
 }
 
-.profile__warning {
+.profile__warning,
+.cart__warning {
   position: fixed;
   top: calc(50vh - 50px);
   left: calc(50vw - 175px);

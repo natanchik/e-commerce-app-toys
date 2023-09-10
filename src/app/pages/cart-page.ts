@@ -24,7 +24,8 @@ export default class CartPage {
     );
 
     cartGrid.append(emptyBlock, totalSumTitle, totalSum);
-    cartPage.append(cartTitle, cartGrid);
+    const warning = createElement('div', ['cart__warning']);
+    cartPage.append(cartTitle, warning, cartGrid);
     return cartPage;
   }
 
@@ -59,12 +60,14 @@ export default class CartPage {
     itemPrice.append(fullPrice);
 
     const itemAmounts = createElement('div', ['cart__item', 'cart__item__amount']);
-    itemAmounts.id = `count${lineitem.productId}`;
     const amountBlock = createElement('div', ['cart__item__amount-block']);
     const plusBtn = createElement('button', ['cart__btn__plus'], '+');
+    plusBtn.id = `plus${lineitem.productId}`;
     const amountTablo = createElement('div', ['cart__item__amount-value'], `${lineitem.quantity}`);
     const minusBtn = createElement('button', ['cart__btn__minus'], '-');
+    minusBtn.id = `minus${lineitem.id}`;
     const itemDelete = createElement('div', ['cart__btn__delete']);
+    itemDelete.id = `delete${lineitem.id}`;
     amountBlock.append(minusBtn, amountTablo, plusBtn);
     itemAmounts.append(amountBlock, itemDelete);
 

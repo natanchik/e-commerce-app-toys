@@ -24,5 +24,8 @@ export async function deleteMyCart(id: string): Promise<void> {
     })
     .then((res) => {
       localStorage.setItem('cart', JSON.stringify(res));
+    })
+    .catch((error) => {
+      if (error) localStorage.setItem('error_get-cart', error.message);
     });
 }

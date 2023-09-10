@@ -1,14 +1,14 @@
 import User from '../../components/user';
-
+import { showWarning } from '../../components/handlers';
 // const productForTest = '1f64c46d-652f-45c4-925b-eaaf68c70889';
 // const cartForTest = 'e4f384c9-06d2-4300-8e11-213a1800dd07';
 
-export const addLineItem = async (
+export const changeLineItem = async (
   productId: string,
-  quantity: number,
   cartId: string,
-  action: 'add' | 'remove' = 'add',
-  price?: number,
+  action: 'add' | 'decrease' | 'remove' = 'add',
+  quantity?: number,
+  // price?: number,
 ): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
@@ -33,15 +33,20 @@ export const addLineItem = async (
       // здесь id нашей единственной tax-category
       externalTaxRate: 'bf2a4dc1-dd08-4b29-9b16-efbd7b905a42',
     });
-  } else {
+  } else if (action === 'decrease') {
     currentBody.actions.push({
       action: 'removeLineItem',
       lineItemId: `${productId}`,
       quantity: quantity,
-      externalPrice: {
-        currencyCode: 'USD',
-        centAmount: price,
-      },
+      // externalPrice: {
+      //   currencyCode: 'USD',
+      //   centAmount: price,
+      // },
+    });
+  } else if (action === 'remove') {
+    currentBody.actions.push({
+      action: 'removeLineItem',
+      lineItemId: `${productId}`,
     });
   }
 
@@ -64,5 +69,10 @@ export const addLineItem = async (
     })
     .then((res) => {
       localStorage.setItem('cart', JSON.stringify(res));
+    })
+    .catch((err) => {
+      if (err instanceof Error) {
+        showWarning('error', err.message, 'cart');
+      }
     });
 };

@@ -53,6 +53,7 @@
   .cart__btn__minus {
     font-size: 2rem;
     align-items: start;
+    cursor: pointer;
   }
 
   .cart__item__amount-value {
@@ -67,6 +68,7 @@
     background-repeat: no-repeat;
     background-image: url('../assets/icons/trash.svg');
     margin: 0 auto;
+    cursor: pointer;
   }
   .cart__sum-title {
     grid-column: 2 / -2;
@@ -82,5 +84,3 @@
     color: $blue;
   }
 }
-// #040000
-// #5D5D5D

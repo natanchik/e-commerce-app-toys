@@ -1,4 +1,5 @@
 import { discountID } from '../../components/constants'; // это единственный промокод в проекте
+import { showWarning } from '../../components/handlers';
 
 const cartForTest = 'e4f384c9-06d2-4300-8e11-213a1800dd07';
 
@@ -52,5 +53,10 @@ export const addOrRemoveDiscountCode = async (
     })
     .then((res) => {
       localStorage.setItem('cart', JSON.stringify(res));
+    })
+    .catch((err) => {
+      if (err instanceof Error) {
+        showWarning('error', err.message, 'cart');
+      }
     });
 };

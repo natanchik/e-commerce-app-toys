@@ -32,10 +32,11 @@ import {
   handlerChangePaswwordSubmit,
   handlerChangeEmailSubmit,
   handlerAddAddressSubmit,
+  handlerProfileEditMode,
   handlerDefaultAddress,
 } from '../components/handlers';
 import { getMyCarts } from '../api/cart/getMyCarts';
-// import { addLineItem } from '../api/cart/addOrRemoveLineItem';
+import { changeLineItem } from '../api/cart/addOrRemoveLineItem';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -466,21 +467,7 @@ class Main {
       }
 
       if (target.classList.contains('profile__address__edit-btn')) {
-        const item = target.closest('.profile__item_inline') as HTMLLIElement;
-        const addressItem = target.closest('.profile__address') as HTMLLIElement;
-        const editText = createElement('p', ['profile__address__edit-text'], 'Input your changes into form below');
-        if (!item.classList.contains('change')) {
-          item.classList.add('change');
-          addressItem.classList.add('change');
-          addressItem.classList.add('change-address');
-          addressItem.append(editText);
-        } else {
-          item.classList.remove('change');
-          addressItem.classList.remove('change');
-          addressItem.classList.remove('change-address');
-          const text = document.querySelector('.profile__address__edit-text');
-          text?.remove();
-        }
+        handlerProfileEditMode(target);
       }
       if (target.classList.contains('profile__address__default-btn')) {
         handlerDefaultAddress(target);
@@ -518,6 +505,24 @@ class Main {
         const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
         const currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
         this.toggleCardModal(currentIndex);
+      }
+
+      if (target.classList.contains('product-card__add-to-cart')) {
+        const form = target.closest('.product-card__form');
+        const id = form ? form.id.slice(4) : '';
+        if (target.textContent !== 'Add to cart') {
+          changeLineItem(id, JSON.parse(localStorage.cart).id, 'remove').then(() => {
+            target.textContent = 'Add to cart';
+            target.classList.add('button_green');
+          });
+        } else {
+          const input = document.querySelector('.product-card__quantity') as HTMLInputElement;
+          const quantity = input ? Number(input.value) : 1;
+          changeLineItem(id, JSON.parse(localStorage.cart).id, 'add', quantity).then(() => {
+            target.textContent = 'Remove from cart';
+            target.classList.remove('button_green');
+          });
+        }
       }
 
       if (target.classList.contains('filters__item')) {
@@ -565,17 +570,34 @@ class Main {
       }
 
       if (target.classList.contains('header__icon-bascket')) {
-        // addLineItem('129ae40f-9c4f-49b7-a5ca-2aba067d8c7b', 2, JSON.parse(localStorage.cart).id)
         getMyCarts().then(() => {
           router.navigate(pages.CART);
         });
       }
 
-      // if (target.classList.contains('cart__btn__delete')) {
-      //   const id = `${target.id.slice(3)}`;
-      //   const quantity = document.getElementById(`count${id}`);
-      //   addLineItem(id, quantity, JSON.parse(localStorage.cart).id, 'remove')
-      // }
+      if (target.classList.contains('cart__btn__plus')) {
+        if (target instanceof HTMLButtonElement) {
+          target.disabled = true;
+        }
+        changeLineItem(target.id.slice(4), JSON.parse(localStorage.cart).id, 'add', 1).then(() => {
+          router.navigate(pages.CART);
+        });
+      }
+
+      if (target.classList.contains('cart__btn__minus')) {
+        if (target instanceof HTMLButtonElement) {
+          target.disabled = true;
+        }
+        changeLineItem(target.id.slice(5), JSON.parse(localStorage.cart).id, 'decrease', 1).then(() => {
+          router.navigate(pages.CART);
+        });
+      }
+
+      if (target.classList.contains('cart__btn__delete')) {
+        changeLineItem(target.id.slice(6), JSON.parse(localStorage.cart).id, 'remove').then(() => {
+          router.navigate(pages.CART);
+        });
+      }
 
       if (target.parentElement?.classList.contains('catalog__product')) {
         const parentDiv = target.parentNode as HTMLDivElement;

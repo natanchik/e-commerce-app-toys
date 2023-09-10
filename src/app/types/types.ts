@@ -186,6 +186,7 @@ export interface PriceFilterValue {
 }
 
 export interface LineItem {
+  id: string;
   key: string;
   productId: string;
   productKey: string;
