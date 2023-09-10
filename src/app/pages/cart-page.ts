@@ -8,16 +8,19 @@ export default class CartPage {
     const cartPage = createElement('div', ['cart', 'main__wrapper']) as HTMLDivElement;
     const cartTitle = createElement('h3', ['cart__title'], 'Cart');
     const cartGrid = createElement('div', ['cart__list']) as HTMLUListElement;
+    const emptyCartBlock = createElement('div', ['cart__empty', 'cart__hidden']);
+    const emptyCartImage = createElement('div', ['cart__empty__img']);
     const emptyCartMessage = createElement(
       'div',
-      ['cart__is-empty-message', 'cart__hidden'],
-      '<p>Cart is empty.</p><p>You can visit <a class="cart__link-to-catalog" href="">Catalog</a> to add products to it...</p>',
+      ['cart__empty__message'],
+      '<h4>Your cart is empty...</h4><p>You can visit <a class="cart__link-to-catalog" href="">Catalog</a> to add products to it...</p>',
     );
+    emptyCartBlock.append(emptyCartImage, emptyCartMessage);
 
     if (cart) {
       const products: LineItem[] = cart.lineItems;
       if (products.length) {
-        emptyCartMessage.className = 'cart__is-empty-message cart__hidden';
+        emptyCartBlock.className = 'cart__empty cart__hidden';
         products.forEach((product, ind) => {
           this.addCartItem(product, ind, cartGrid);
         });
@@ -30,14 +33,16 @@ export default class CartPage {
         );
         cartGrid.append(emptyBlock, totalSumTitle, totalSum);
       } else {
-        emptyCartMessage.className = 'cart__is-empty-message';
+        cartTitle.className = 'cart__title cart__hidden';
+        emptyCartBlock.className = 'cart__empty';
       }
     } else {
-      emptyCartMessage.className = 'cart__is-empty-message';
+      cartTitle.className = 'cart__title cart__hidden';
+      emptyCartBlock.className = 'cart__empty';
     }
 
     const warning = createElement('div', ['cart__warning']);
-    cartPage.append(cartTitle, emptyCartMessage, warning, cartGrid);
+    cartPage.append(cartTitle, emptyCartBlock, warning, cartGrid);
     return cartPage;
   }
 
