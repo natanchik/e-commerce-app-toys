@@ -201,4 +201,7 @@ export interface Cart {
   id: string;
   version: number;
   lineItems: LineItem[];
+  totalPrice: TypedMoney;
+  discountCodes: string[];
+  origin: string;
 }
