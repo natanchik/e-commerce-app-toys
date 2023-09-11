@@ -31,7 +31,7 @@ export default class CartPage {
         products.forEach((product, ind) => {
           this.addCartItem(product, ind, cartGrid);
         });
-        const emptyBlock = createElement('div', ['cart__item']);
+        const emptyBlock = createElement('div', ['cart__item', 'cart__item__empty-left']);
         const totalSumTitle = createElement('div', ['cart__item', 'cart__sum-title'], 'Total sum');
         const totalSum = createElement(
           'div',
