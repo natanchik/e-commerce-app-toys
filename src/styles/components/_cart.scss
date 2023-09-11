@@ -138,7 +138,7 @@
 .cart__sum-with-discount {
   font-weight: 600;
   font-size: 1.6rem;
-  color: $blue;
+  color: $green;
 }
 
 .cart__discount-title {
@@ -153,9 +153,15 @@
 
   .cart-input {
     display: inline-block;
-    border: 1px solid $blue;
+    border: 1px solid $green;
     height: 25px;
     max-width: 100px;
+
+    &:active,
+    &:focus,
+    &:hover {
+      border: 2px solid $green;
+    }
   }
 
   .cart__discont-btn {
@@ -190,8 +196,4 @@
     display: inline-block;
     grid-column: span 2;
   }
-
-  // .cart__discount-sum {
-  //   grid-column: 3 / 4;
-  // }
 }
