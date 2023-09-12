@@ -96,7 +96,7 @@ export default class CartPage {
 
   private addTotalToCart(cart: Cart, parent: HTMLDivElement): void {
     const emptyBlock = createElement('div', ['cart__item', 'cart__item__empty-left']);
-    const totalSumTitle = createElement('div', ['cart__item', 'cart__sum-title'], 'Total sum');
+    const totalSumTitle = createElement('div', ['cart__item', 'cart__sum-title'], 'Total sum (USD)');
     const totalSum = createElement(
       'div',
       ['cart__item', 'cart__sum'],
@@ -107,7 +107,7 @@ export default class CartPage {
     const emptyBlock2 = createElement('div', ['cart__item', 'cart__item__empty-left']);
     const discountTitle = createElement('div', ['cart__item', 'cart__discount-title'], 'Discount code');
     const discountCode = createInputElement('text', '', 'cart__discount-code', 'cart', false);
-    const btn = createElement('button', ['cart__discont-btn'], 'Input code', { width: 'content' });
+    const btn = createElement('button', ['cart__discont-btn'], 'apply code', { width: 'content' });
     discountCode.className = 'cart__item cart__discount-code';
     discountCode.append(btn);
     const emptyBlock3 = createElement('div', ['cart__item', 'cart__item__empty-discount']);
@@ -118,7 +118,7 @@ export default class CartPage {
     const totalSumWithDiscoutTitle = createElement(
       'div',
       ['cart__item', 'cart__sum-with-discount-title'],
-      'Total sum with discount',
+      'Total sum with discount (USD)',
     );
     const totalSumWithDiscout = createElement(
       'div',
