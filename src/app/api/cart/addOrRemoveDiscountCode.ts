@@ -1,12 +1,9 @@
 import { discountID } from '../../components/constants'; // это единственный промокод в проекте
 import { showWarning } from '../../components/handlers';
 
-const cartForTest = 'e4f384c9-06d2-4300-8e11-213a1800dd07';
-
 export const addOrRemoveDiscountCode = async (
   code: string,
   action: 'add' | 'remove' = 'add',
-  cartId = cartForTest,
   discount = discountID,
 ): Promise<void> => {
   const myHeaders = {
@@ -14,8 +11,9 @@ export const addOrRemoveDiscountCode = async (
     Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
   };
 
+  const cart = JSON.parse(localStorage.cart);
   const currentBody: { version: number; actions: object[] } = {
-    version: JSON.parse(localStorage.cart) ? JSON.parse(localStorage.cart).version : 1,
+    version: cart ? cart.version : 1,
     actions: [],
   };
 
@@ -41,7 +39,7 @@ export const addOrRemoveDiscountCode = async (
   };
 
   await fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${cartId}`,
+    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${cart.id}`,
     requestOptions,
   )
     .then((res) => {

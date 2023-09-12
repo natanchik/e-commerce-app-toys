@@ -1,14 +1,10 @@
 import User from '../../components/user';
 import { showWarning } from '../../components/handlers';
-// const productForTest = '1f64c46d-652f-45c4-925b-eaaf68c70889';
-// const cartForTest = 'e4f384c9-06d2-4300-8e11-213a1800dd07';
 
 export const changeLineItem = async (
-  productId: string,
-  cartId: string,
+  productId: string, // add: product.id, decrease or remove: lineItem.id
   action: 'add' | 'decrease' | 'remove' = 'add',
   quantity?: number,
-  // price?: number,
 ): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
@@ -19,8 +15,9 @@ export const changeLineItem = async (
     }`,
   };
 
+  const cart = JSON.parse(localStorage.cart);
   const currentBody: { version: number; actions: object[] } = {
-    version: JSON.parse(localStorage.cart) ? JSON.parse(localStorage.cart).version : 1,
+    version: cart ? cart.version : 1,
     actions: [],
   };
 
@@ -38,10 +35,6 @@ export const changeLineItem = async (
       action: 'removeLineItem',
       lineItemId: `${productId}`,
       quantity: quantity,
-      // externalPrice: {
-      //   currencyCode: 'USD',
-      //   centAmount: price,
-      // },
     });
   } else if (action === 'remove') {
     currentBody.actions.push({
@@ -57,7 +50,7 @@ export const changeLineItem = async (
   };
 
   await fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${cartId}`,
+    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${cart.id}`,
     requestOptions,
   )
     .then((res) => {
