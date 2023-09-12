@@ -1,3 +1,5 @@
+import { createMyCart } from '../cart/createMyCart';
+import { getCartById } from '../cart/getCartById';
 import getCustomerToken from '../tokens/getCustomerToken';
 import { getAllCustomersEmails } from './getAllCustomers';
 import { fillUserState } from './getCustomerByID';
@@ -51,6 +53,7 @@ export const loginCustomer = async (username: string, password: string): Promise
     .then(async () => {
       await fillUserState(username);
       await getCustomerToken(username, password);
+      //await getCartById( /*TODO: add 'cart' to type UserState, and then add cart.id from local storage here*/);
       apiStatus.classList.add('success-status');
       apiStatus.innerHTML = `Enjoy the shopping!`;
     })
@@ -93,5 +96,6 @@ export const loginAfterRegistration = async (username: string, password: string)
     })
     .then(async () => {
       await getCustomerToken(username, password);
+      await createMyCart();
     });
 };
