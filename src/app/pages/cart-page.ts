@@ -23,13 +23,14 @@ export default class CartPage {
       '<h4>Your cart is empty...</h4><p>You can visit <a class="cart__link-to-catalog" href="">Catalog</a> to add products to it...</p>',
     );
     emptyCartBlock.append(emptyCartImage, emptyCartMessage);
-
+    let itemsTotalAmount = 0;
     if (cart) {
       const products: LineItem[] = cart.lineItems;
       if (products.length) {
         emptyCartBlock.className = 'cart__empty cart__hidden';
         products.forEach((product, ind) => {
           this.addCartItem(product, ind, cartGrid);
+          itemsTotalAmount += product.quantity;
         });
 
         this.addTotalToCart(cart, cartGrid);
@@ -41,7 +42,8 @@ export default class CartPage {
       cartHeader.className = 'cart__header cart__hidden';
       emptyCartBlock.className = 'cart__empty';
     }
-
+    const itemsTotalAmountDisplay = document.querySelector('.header__icon-bascket__count');
+    if (itemsTotalAmountDisplay) itemsTotalAmountDisplay.textContent = `${itemsTotalAmount}`;
     const warning = createElement('div', ['cart__warning']);
     cartPage.append(cartHeader, emptyCartBlock, warning, cartGrid);
     return cartPage;

@@ -35,6 +35,16 @@
 
 .header__icon-bascket {
   background-image: url('../assets/icons/bascket.svg');
+  position: relative;
+
+  .header__icon-bascket__count {
+    position: absolute;
+    bottom: 15px;
+    left: 10px;
+    font-weight: 600;
+    color: $green;
+    z-index: 10;
+  }
 }
 
 .header__icon-logout {
