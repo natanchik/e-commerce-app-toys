@@ -401,6 +401,10 @@ export async function handlerDefaultAddress(target: HTMLElement): Promise<void> 
 }
 
 export async function clearCart(): Promise<void> {
+  const itemsBtns = document.querySelectorAll('button');
+  itemsBtns.forEach((btn) => {
+    if (btn instanceof HTMLButtonElement) btn.disabled = true;
+  });
   await deleteCart(JSON.parse(localStorage.cart).id);
   await createMyCart();
   setTimeout(() => {

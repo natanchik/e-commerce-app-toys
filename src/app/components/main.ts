@@ -512,14 +512,14 @@ class Main {
         const form = target.closest('.product-card__form');
         const id = form ? form.id.slice(4) : '';
         if (target.textContent !== 'Add to cart') {
-          changeLineItem(id, JSON.parse(localStorage.cart).id, 'remove').then(() => {
+          changeLineItem(id, 'remove').then(() => {
             target.textContent = 'Add to cart';
             target.classList.add('button_green');
           });
         } else {
           const input = document.querySelector('.product-card__quantity') as HTMLInputElement;
           const quantity = input ? Number(input.value) : 1;
-          changeLineItem(id, JSON.parse(localStorage.cart).id, 'add', quantity ? quantity : 1).then(() => {
+          changeLineItem(id, 'add', quantity ? quantity : 1).then(() => {
             target.textContent = 'Remove from cart';
             target.classList.remove('button_green');
           });
@@ -589,25 +589,31 @@ class Main {
       }
 
       if (target.classList.contains('cart__item__btn-plus')) {
-        if (target instanceof HTMLButtonElement) {
-          target.disabled = true;
-        }
-        changeLineItem(target.id.slice(4), JSON.parse(localStorage.cart).id, 'add', 1).then(() => {
+        const itemsBtns = document.querySelectorAll('button');
+        itemsBtns.forEach((btn) => {
+          if (btn instanceof HTMLButtonElement) btn.disabled = true;
+        });
+        changeLineItem(target.id.slice(4), 'add', 1).then(() => {
           router.navigate(pages.CART);
         });
       }
 
       if (target.classList.contains('cart__item__btn-minus')) {
-        if (target instanceof HTMLButtonElement) {
-          target.disabled = true;
-        }
-        changeLineItem(target.id.slice(5), JSON.parse(localStorage.cart).id, 'decrease', 1).then(() => {
+        const itemsBtns = document.querySelectorAll('button');
+        itemsBtns.forEach((btn) => {
+          if (btn instanceof HTMLButtonElement) btn.disabled = true;
+        });
+        changeLineItem(target.id.slice(5), 'decrease', 1).then(() => {
           router.navigate(pages.CART);
         });
       }
 
       if (target.classList.contains('cart__item__btn-delete')) {
-        changeLineItem(target.id.slice(6), JSON.parse(localStorage.cart).id, 'remove').then(() => {
+        const itemsBtns = document.querySelectorAll('button');
+        itemsBtns.forEach((btn) => {
+          if (btn instanceof HTMLButtonElement) btn.disabled = true;
+        });
+        changeLineItem(target.id.slice(6), 'remove').then(() => {
           router.navigate(pages.CART);
         });
       }
