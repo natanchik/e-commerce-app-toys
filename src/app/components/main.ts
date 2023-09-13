@@ -570,7 +570,10 @@ class Main {
         router.navigate(`${pages.CATALOG}/${currentID}`);
       }
 
-      if (target.classList.contains('header__icon-bascket')) {
+      if (
+        target.classList.contains('header__icon-bascket') ||
+        target.classList.contains('header__icon-bascket__count')
+      ) {
         getMyCarts().then(() => {
           router.navigate(pages.CART);
         });
