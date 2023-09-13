@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   gap: 55px;
-  text-align: start;
+  text-align: justify;
   margin-bottom: 30px;
 }
 
@@ -17,19 +17,89 @@
 
 .rs-school-logo {
   display: block;
-  width: 60px;
-  height: 22px;
+  width: 80px;
+  height: 35px;
   margin: 0 auto;
   background-image: url('../assets/icons/rs_school.svg');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
-.about-us__common-img {
+.about-us__common-img,
+.teammate_img-0,
+.teammate_img-1,
+.teammate_img-2 {
   width: 250px;
   height: 250px;
-  background-image: url(../assets/images/debug-girls.jpg);
   background-size: contain;
   background-repeat: no-repeat;
   border-radius: 100%;
+}
+
+.about-us__common-img {
+  background-image: url(../assets/images/debug-girls.jpg);
+}
+
+.about-us__team-title {
+  margin-bottom: 30px;
+}
+
+.teammate-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 55px;
+}
+
+.teammate_img-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.teammate_img-0 {
+  background-image: url(../assets/images/team1.jpg);
+}
+
+.teammate_img-1 {
+  background-image: url(../assets/images/team2.jpg);
+}
+
+.teammate_img-2 {
+  background-image: url(../assets/images/team3.jpg);
+}
+
+.teammate_socials {
+  display: flex;
+  gap: 10px;
+}
+
+.teammate_socials-github,
+.teammate_socials-telegram {
+  width: 40px;
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 100%;
+}
+
+// .teammate_socials-github {
+
+// }
+
+// .teammate_socials-telegram {
+
+// }
+
+.teammate_info-block {
+  max-width: 50%;
+}
+
+.teammate_info-bio {
+  text-align: justify;
+}
+
+.teammate_info-name {
+  font-size: 2em;
 }
