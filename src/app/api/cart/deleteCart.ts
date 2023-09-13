@@ -16,14 +16,9 @@ export async function deleteCart(id: string): Promise<void> {
     requestOptions,
   )
     .then((res) => {
-      if (res.status >= 200 && res.status < 300) {
-        return res.json();
-      } else {
+      if (res.status < 200 || res.status >= 300) {
         throw new Error(`The error with status code ${res.status} has occured, please try later`);
       }
-    })
-    .then((res) => {
-      localStorage.setItem('cart', JSON.stringify(res));
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_get-cart', error.message);

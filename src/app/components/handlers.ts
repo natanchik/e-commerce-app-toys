@@ -11,7 +11,6 @@ import { checkValidity } from '../api/helpers/checkValidity';
 import { UserState } from '../types/types';
 import { deleteCart } from '../api/cart/deleteCart';
 import { createMyCart } from '../api/cart/createMyCart';
-import { getMyCarts } from '../api/cart/getMyCarts';
 
 function toggleProfileItemBtns(target: HTMLElement, action: string): void {
   const saveBtn = target.querySelector('.profile__update');
@@ -409,8 +408,5 @@ export async function clearCart(): Promise<void> {
     });
     await deleteCart(JSON.parse(localStorage.cart).id);
     await createMyCart();
-    setTimeout(() => {
-      getMyCarts();
-    }, 0);
   }
 }
