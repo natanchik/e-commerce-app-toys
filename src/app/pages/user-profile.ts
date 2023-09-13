@@ -114,13 +114,12 @@ class UserProfile extends RegPage {
 
     const currentEmail = this.addEmail('Your current E-mail', `${title}__cur-email`);
     currentEmail.classList.add('profile__email__current');
-    const apiStatus = createElement('p', ['api-status'], '');
     const btnBlock = createElement('div', ['profile__modal__btn-block']);
     const cancelBtn = createElement('button', ['button', 'modal-cancel'], `Cancel`);
     const submitBtn = createElement('button', ['button', 'button_green', 'modal-submit'], `Change ${title}`);
     btnBlock.append(cancelBtn, submitBtn);
 
-    modalForm.append(currentEmail, ...components, apiStatus, btnBlock);
+    modalForm.append(currentEmail, ...components, btnBlock);
     const itemTitle = title[0].toUpperCase() + title.slice(1);
     const item = this.addProfileItem(`change-${title}`, itemTitle, modalBg, false);
     item.className = 'profile__item profile__item_modal';

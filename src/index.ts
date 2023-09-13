@@ -16,7 +16,7 @@ const loadTokens = async (): Promise<void> => {
   if (!localStorage.getItem('categories')) await getCategories();
   if (!localStorage.getItem('cart')) await createMyCart();
   if (localStorage.getItem('anonymous_token')) {
-    await setInterval(async () => {
+    setInterval(async () => {
       await refreshToken(JSON.parse(localStorage.getItem('anonymous_token') as string).refresh_token);
     }, 10800000);
   }

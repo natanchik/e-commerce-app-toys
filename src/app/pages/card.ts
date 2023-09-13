@@ -24,7 +24,7 @@ class Card {
         data.masterData.current.name['en-US'],
       ) as HTMLElement;
       const priceWrapper = this.drawPriceWrapper(data);
-      const form = this.drawCartForm();
+      const form = this.drawCartForm(this.id);
       const smallHeading = createElement('h4', ['product-card__detail-heading'], 'Details') as HTMLElement;
       const details = createElement(
         'p',
@@ -33,7 +33,8 @@ class Card {
       ) as HTMLParagraphElement;
 
       info.append(heading, priceWrapper, form, smallHeading, details);
-      wrapper.append(modal, slider, info);
+      const warning = createElement('div', ['cart__warning']);
+      wrapper.append(modal, slider, info, warning);
     });
 
     return wrapper;
@@ -128,8 +129,9 @@ class Card {
     return priceWrapper;
   }
 
-  private drawCartForm(): HTMLFormElement {
+  private drawCartForm(id: string): HTMLFormElement {
     const form = createElement('form', ['product-card__form']) as HTMLFormElement;
+    form.id = `card${id}`;
     const quantityWrapper = createElement('div', ['product-card__quantity-wrapper']) as HTMLDivElement;
     const decreaseQuanity = createElement(
       'button',
@@ -139,7 +141,7 @@ class Card {
     const quantity = createElement('input', ['product-card__quantity']) as HTMLInputElement;
     quantity.type = 'number';
     quantity.placeholder = '1';
-    quantity.min = '0';
+    quantity.min = '1';
     quantity.value = '1';
     const increaseQuanity = createElement(
       'button',

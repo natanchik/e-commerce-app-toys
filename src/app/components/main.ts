@@ -32,8 +32,12 @@ import {
   handlerChangePaswwordSubmit,
   handlerChangeEmailSubmit,
   handlerAddAddressSubmit,
+  handlerProfileEditMode,
   handlerDefaultAddress,
+  clearCart,
 } from '../components/handlers';
+import { getMyCarts } from '../api/cart/getMyCarts';
+import { changeLineItem } from '../api/cart/addOrRemoveLineItem';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -464,21 +468,7 @@ class Main {
       }
 
       if (target.classList.contains('profile__address__edit-btn')) {
-        const item = target.closest('.profile__item_inline') as HTMLLIElement;
-        const addressItem = target.closest('.profile__address') as HTMLLIElement;
-        const editText = createElement('p', ['profile__address__edit-text'], 'Input your changes into form below');
-        if (!item.classList.contains('change')) {
-          item.classList.add('change');
-          addressItem.classList.add('change');
-          addressItem.classList.add('change-address');
-          addressItem.append(editText);
-        } else {
-          item.classList.remove('change');
-          addressItem.classList.remove('change');
-          addressItem.classList.remove('change-address');
-          const text = document.querySelector('.profile__address__edit-text');
-          text?.remove();
-        }
+        handlerProfileEditMode(target);
       }
       if (target.classList.contains('profile__address__default-btn')) {
         handlerDefaultAddress(target);
@@ -516,6 +506,24 @@ class Main {
         const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
         const currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
         this.toggleCardModal(currentIndex);
+      }
+
+      if (target.classList.contains('product-card__add-to-cart')) {
+        const form = target.closest('.product-card__form');
+        const id = form ? form.id.slice(4) : '';
+        if (target.textContent !== 'Add to cart') {
+          changeLineItem(id, 'remove').then(() => {
+            target.textContent = 'Add to cart';
+            target.classList.add('button_green');
+          });
+        } else {
+          const input = document.querySelector('.product-card__quantity') as HTMLInputElement;
+          const quantity = input ? Number(input.value) : 1;
+          changeLineItem(id, 'add', quantity ? quantity : 1).then(() => {
+            target.textContent = 'Remove from cart';
+            target.classList.remove('button_green');
+          });
+        }
       }
 
       if (target.classList.contains('filters__item')) {
@@ -560,6 +568,57 @@ class Main {
       if (target.classList.contains('catalog__product')) {
         const currentID = target.id;
         router.navigate(`${pages.CATALOG}/${currentID}`);
+      }
+
+      if (
+        target.classList.contains('header__icon-bascket') ||
+        target.classList.contains('header__icon-bascket__count')
+      ) {
+        getMyCarts().then(() => {
+          router.navigate(pages.CART);
+        });
+      }
+
+      if (target.classList.contains('cart__delete-cart-btn')) {
+        clearCart().then(() => {
+          router.navigate(pages.CART);
+        });
+      }
+
+      if (target.classList.contains('cart__link-to-catalog')) {
+        event.preventDefault();
+        Catalog.clearSortedProducts();
+        router.navigate(pages.CATALOG);
+      }
+
+      if (target.classList.contains('cart__item__btn-plus')) {
+        const itemsBtns = document.querySelectorAll('button');
+        itemsBtns.forEach((btn) => {
+          if (btn instanceof HTMLButtonElement) btn.disabled = true;
+        });
+        changeLineItem(target.id.slice(4), 'add', 1).then(() => {
+          router.navigate(pages.CART);
+        });
+      }
+
+      if (target.classList.contains('cart__item__btn-minus')) {
+        const itemsBtns = document.querySelectorAll('button');
+        itemsBtns.forEach((btn) => {
+          if (btn instanceof HTMLButtonElement) btn.disabled = true;
+        });
+        changeLineItem(target.id.slice(5), 'decrease', 1).then(() => {
+          router.navigate(pages.CART);
+        });
+      }
+
+      if (target.classList.contains('cart__item__btn-delete')) {
+        const itemsBtns = document.querySelectorAll('button');
+        itemsBtns.forEach((btn) => {
+          if (btn instanceof HTMLButtonElement) btn.disabled = true;
+        });
+        changeLineItem(target.id.slice(6), 'remove').then(() => {
+          router.navigate(pages.CART);
+        });
       }
 
       if (target.parentElement?.classList.contains('catalog__product')) {

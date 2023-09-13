@@ -26,7 +26,11 @@ class Header {
     const icons = createElement('div', ['header__icons']) as HTMLDivElement;
     const iconUser = createElement('span', ['header__icon', 'header__icon-user']) as HTMLSpanElement;
     const iconLogout = createElement('span', ['header__icon', 'header__icon-logout']) as HTMLSpanElement;
-    const iconBascket = createElement('span', ['header__icon', 'header__icon-bascket']) as HTMLSpanElement;
+    const iconBascket = createElement(
+      'span',
+      ['header__icon', 'header__icon-bascket'],
+      '<p class="header__icon-bascket__count"></p>',
+    ) as HTMLSpanElement;
 
     nav.append(burger, navList);
     icons.append(iconUser, iconBascket, iconLogout);
