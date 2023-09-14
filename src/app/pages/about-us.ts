@@ -28,7 +28,7 @@ const teammates: { [key: string]: string }[] = [
 class AboutUS {
   public drawAboutUs(): HTMLDivElement {
     const aboutUs = createElement('div', ['about-us', 'main__wrapper', 'main__wrapper_thin']) as HTMLDivElement;
-    const title = createElement('h2', ['about-us__title'], `We're Debug Girls 😊`) as HTMLDivElement;
+    const title = createElement('h2', ['about-us__title'], `MEET OUR TEAM`) as HTMLDivElement;
     const decorator = Main.createTitleDecorator() as HTMLDivElement;
     const commonInfoWrapper = createElement('div', ['about-us__common']) as HTMLDivElement;
     const commonParagWrapper = createElement(
@@ -40,12 +40,11 @@ class AboutUS {
     <p class="paragraph">We appreciate our teammates for the best teamwork ever. We are grateful to our cool mentors for their responsiveness and valuable advice and RS School for the training.</p>
     <a class="rs-school-logo" href="https://rs.school/" target="blank"></a>`,
     );
-    const commonImg = createElement('div', ['about-us__common-img']);
-    const teamTitle = createElement('h2', ['about-us__team-title'], `MEET OUR TEAM`) as HTMLDivElement;
+    const commonImg = createElement('div', ['about-us__common-img']) as HTMLDivElement;
     const content = createElement('div', ['about-us__content']) as HTMLDivElement;
 
     commonInfoWrapper.append(commonParagWrapper, commonImg);
-    content.append(commonInfoWrapper, teamTitle);
+    content.append(commonInfoWrapper);
     teammates.forEach((teammate, idx) => {
       content.append(this.drawTeammate(teammate, idx));
     });
