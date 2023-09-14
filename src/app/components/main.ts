@@ -489,6 +489,11 @@ class Main {
         router.navigate(pageName);
       }
 
+      if (target.classList.contains('promo__btn-to-catalog')) {
+        Catalog.clearSortedProducts();
+        router.navigate(pages.CATALOG);
+      }
+
       if (
         target.classList.contains('product-card__next-slide') ||
         target.classList.contains('modal-card__next-slide')
