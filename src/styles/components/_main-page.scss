@@ -1,18 +1,105 @@
-.main-page__page {
-  text-transform: uppercase;
-  margin: 5px 0;
-  cursor: pointer;
-  p {
-    margin: 0 10px;
-    text-transform: lowercase;
-    display: inline-block;
-    font-size: 0;
-    transition: all 0.4s ease-in-out;
+// .main-page__page {
+//   text-transform: uppercase;
+//   margin: 5px 0;
+//   cursor: pointer;
+//   p {
+//     margin: 0 10px;
+//     text-transform: lowercase;
+//     display: inline-block;
+//     font-size: 0;
+//     transition: all 0.4s ease-in-out;
+//   }
+//   &:hover {
+//     color: $blue;
+//     p {
+//       font-size: 1.4rem;
+//     }
+//   }
+// }
+
+// .promo-wrapper {
+//   position: relative;
+// }
+
+// .promo__next-slide,
+// .promo__prev-slide {
+//   position: absolute;
+//   top: 50%;
+//   transform: translate(-50%, -50%);
+//   width: 36px;
+//   padding: 5px 0;
+//   opacity: 0.8;
+//   color: $background-beige;
+//   background-color: $light-blue;
+//   text-align: center;
+//   font-size: 22px;
+//   transition: 0.3s;
+//   border-radius: 50%;
+//   cursor: pointer;
+
+//   &:hover {
+//     opacity: 1;
+//     // background-color: $light-blue;
+//   }
+// }
+
+// .promo__next-slide {
+//   right: 3%;
+// }
+
+// .promo__prev-slide {
+//   left: 2%;
+// }
+
+.promo__slide {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.promo__slide-1 {
+  flex-direction: row-reverse;
+}
+
+.promo__img {
+  width: 45%;
+  height: 33vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.promo__img-0 {
+  background-image: url(../assets/images/baby_discount.jpg);
+}
+
+.promo__img-1 {
+  background-image: url(../assets/images/fall_discount.jpg);
+}
+
+.promo__info-block {
+  width: 50%;
+  height: auto;
+  background-color: $background-blue;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.promo__info-heading {
+  font-size: 3em;
+  margin-bottom: 15px;
+}
+
+.promo__info-text {
+  font-size: 1.4em;
+  margin-bottom: 15px;
+
+  span {
+    font-weight: 600;
+    cursor: pointer;
   }
-  &:hover {
-    color: $blue;
-    p {
-      font-size: 1.4rem;
-    }
-  }
+}
+
+.promo__btn-to-catalog {
+  color: white;
 }
