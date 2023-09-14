@@ -1,29 +1,6 @@
 import Main from '../components/main';
 import { createElement } from '../components/utils';
-
-const teammates: { [key: string]: string }[] = [
-  {
-    name: 'Kristina Morozova',
-    role: 'Developer',
-    bio: `Novice frontend-developer with technical education. I became interested in programming by writing small scripts to automate routine operations and creating extensions for engineering software in Python. And one day I participated in the development of a small web application and from that moment I understood that I want to become web developer. I am constantly striving to learn new technologies and look to ways to better myself in the field of web development.`,
-    github: 'https://github.com/kris-vadi',
-    telegram: 'https://t.me/@kristinavadi',
-  },
-  {
-    name: 'Natalia Lebedeva',
-    role: 'Developer',
-    bio: `Novice frontend-developer with technical education. I became interested in programming by writing small scripts to automate routine operations and creating extensions for engineering software in Python. And one day I participated in the development of a small web application and from that moment I understood that I want to become web developer. I am constantly striving to learn new technologies and look to ways to better myself in the field of web development.`,
-    github: 'https://github.com/natanchik',
-    telegram: 'https://t.me/@natanchik1',
-  },
-  {
-    name: 'Irina Akhanteva',
-    role: 'Developer',
-    bio: `Novice frontend-developer with technical education. I became interested in programming by writing small scripts to automate routine operations and creating extensions for engineering software in Python. And one day I participated in the development of a small web application and from that moment I understood that I want to become web developer. I am constantly striving to learn new technologies and look to ways to better myself in the field of web development.`,
-    github: 'https://github.com/IrinaEnotova',
-    telegram: 'https://t.me/irinaenotova',
-  },
-];
+import { teammates } from '../components/constants';
 
 class AboutUS {
   public drawAboutUs(): HTMLDivElement {
