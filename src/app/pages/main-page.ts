@@ -9,44 +9,24 @@ const promoCodes: { [key: string]: string }[] = [
 class MainPage {
   public drawMainPage(): HTMLDivElement {
     const mainPage = createElement('div', ['main-page', 'main__wrapper']) as HTMLDivElement;
-    const promos = this.drawPromosSlider();
+    const promos = this.drawPromoContainer();
 
     mainPage.append(promos);
     return mainPage;
   }
 
-  private drawPromosSlider(): HTMLDivElement {
-    // const pagesBlock = createElement('div', ['main-page__pages-list']) as HTMLDivElement;
-    // Object.values(pages).forEach((page) => {
-    //   const pageBlock = createElement('div', ['main-page__page'], page === '' ? 'main' : page) as HTMLDivElement;
-    //   pageBlock.dataset.page = page;
-    //   if (page === 'catalog') {
-    //     const note = createElement(
-    //       'p',
-    //       ['main-page__pagen-note', 'main__green-text'],
-    //       'note: you can choose the category you need in burger menu',
-    //     );
-    //     pageBlock.append(note);
-    //   }
-    //   pagesBlock.append(pageBlock);
-    // });
-    // return pagesBlock;
-    const promoWrapper = createElement('div', ['promo-wrapper']) as HTMLDivElement;
-    // const nextBtn = createElement('span', ['promo__next-slide'], '&#10095') as HTMLSpanElement;
-    // const prevBtn = createElement('span', ['promo__prev-slide'], '&#10094') as HTMLSpanElement;
-    const slidesContainer = createElement('div', ['promo__slider']) as HTMLDivElement;
+  private drawPromoContainer(): HTMLDivElement {
+    const promoContainer = createElement('div', ['promo__container']) as HTMLDivElement;
     promoCodes.forEach((promocode, idx) => {
-      const slide = this.drawPromo(promocode, idx);
-      slidesContainer.append(slide);
+      const item = this.drawPromo(promocode, idx);
+      promoContainer.append(item);
     });
 
-    promoWrapper.append(slidesContainer);
-
-    return promoWrapper;
+    return promoContainer;
   }
 
   private drawPromo(promocode: { [key: string]: string }, idx: number): HTMLDivElement {
-    const promo = createElement('div', ['promo__slide', `promo__slide-${idx}`]) as HTMLDivElement;
+    const promo = createElement('div', ['promo__item', `promo__item-${idx}`]) as HTMLDivElement;
     const img = createElement('div', ['promo__img', `promo__img-${idx}`]);
     const promoInfo = createElement('div', ['promo__info-block']);
     const promoHeading = createElement('div', ['promo__info-heading'], `${promocode.discount} OFF`);

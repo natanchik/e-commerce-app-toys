@@ -1,68 +1,17 @@
-// .main-page__page {
-//   text-transform: uppercase;
-//   margin: 5px 0;
-//   cursor: pointer;
-//   p {
-//     margin: 0 10px;
-//     text-transform: lowercase;
-//     display: inline-block;
-//     font-size: 0;
-//     transition: all 0.4s ease-in-out;
-//   }
-//   &:hover {
-//     color: $blue;
-//     p {
-//       font-size: 1.4rem;
-//     }
-//   }
-// }
-
-// .promo-wrapper {
-//   position: relative;
-// }
-
-// .promo__next-slide,
-// .promo__prev-slide {
-//   position: absolute;
-//   top: 50%;
-//   transform: translate(-50%, -50%);
-//   width: 36px;
-//   padding: 5px 0;
-//   opacity: 0.8;
-//   color: $background-beige;
-//   background-color: $light-blue;
-//   text-align: center;
-//   font-size: 22px;
-//   transition: 0.3s;
-//   border-radius: 50%;
-//   cursor: pointer;
-
-//   &:hover {
-//     opacity: 1;
-//     // background-color: $light-blue;
-//   }
-// }
-
-// .promo__next-slide {
-//   right: 3%;
-// }
-
-// .promo__prev-slide {
-//   left: 2%;
-// }
-
-.promo__slide {
+.promo__item {
   display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
   margin-bottom: 20px;
 }
 
-.promo__slide-1 {
+.promo__item-1 {
   flex-direction: row-reverse;
 }
 
 .promo__img {
-  width: 45%;
-  height: 33vh;
+  width: 60%;
+  height: 400px;
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -76,8 +25,9 @@
 }
 
 .promo__info-block {
-  width: 50%;
+  width: 40%;
   height: auto;
+  padding: 20px;
   background-color: $background-blue;
   display: flex;
   flex-direction: column;
@@ -102,4 +52,28 @@
 
 .promo__btn-to-catalog {
   color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+  .promo__item {
+    flex-direction: column;
+  }
+
+  .promo__img {
+    width: 100%;
+    height: 200px;
+  }
+
+  .promo__info-block {
+    width: 100%;
+  }
+
+  .promo__info-heading {
+    font-size: 1.7em;
+  }
+
+  .promo__info-text {
+    font-size: 1.2em;
+  }
 }
