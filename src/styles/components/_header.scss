@@ -55,6 +55,11 @@
   display: none;
 }
 
+.header__icon-team {
+  background-image: url('../assets/icons/team.png');
+  margin-left: 5px;
+}
+
 @media (max-width: 520px) {
   .header__wrapper {
     gap: 10px;

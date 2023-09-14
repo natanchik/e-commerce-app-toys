@@ -420,6 +420,15 @@ class Main {
         this.sidebar.closeSidebar();
       }
 
+      if (target.classList.contains('sidebar__link') && target.dataset.page === 'about-us') {
+        router.navigate(pages.ABOUT_US);
+        this.sidebar.closeSidebar();
+      }
+
+      if (target.classList.contains('header__icon-team')) {
+        router.navigate(pages.ABOUT_US);
+      }
+
       if (target.classList.contains('logo') || target.parentElement?.classList.contains('logo')) {
         router.navigate(pages.MAIN);
         this.sidebar.closeSidebar();

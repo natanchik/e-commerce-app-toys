@@ -60,7 +60,8 @@ class Sidebar {
       'div',
       ['sidebar__common-links'],
       `<h4 class="sidebar__link" data-page="main">Home</h4>
-    <h4 class="sidebar__link" data-page="catalog">Catalog</h4>`,
+    <h4 class="sidebar__link" data-page="catalog">Catalog</h4>
+    <h4 class="sidebar__link" data-page="about-us">About us</h4>`,
     ) as HTMLDivElement;
 
     const categoriesList = createElement('ul', ['sidebar__categories-list']) as HTMLUListElement;
