@@ -37,7 +37,10 @@ export const sorterParametrs = {
   'price-desc': 'Price: High to Low',
 };
 
-export const discountID = 'f9e37b1a-182f-4f4d-aaeb-65fcc6cd3477';
+export const promoCodes: { [key: string]: string }[] = [
+  { discount: '25%', promocode: 'BABY', discountID: '73449353-776a-41c3-965b-830320d60836' },
+  { discount: '10%', promocode: 'FALL', discountID: 'f9e37b1a-182f-4f4d-aaeb-65fcc6cd3477' },
+];
 
 export const teammates: { [key: string]: string }[] = [
   {
