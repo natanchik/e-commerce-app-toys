@@ -1,5 +1,5 @@
 import { catalogQueryParams } from '../../state/state';
-import { QueryParam, UserState, CurrentAction } from '../../types/types';
+import { QueryParam, UserState, CurrentAction, Cart, LineItem } from '../../types/types';
 
 export const addUserState = (customer: UserState): void => {
   const userState: UserState = {
@@ -54,3 +54,7 @@ export const addApiStatus = async (
   apiStatus.classList.add(className);
   apiStatus.innerHTML = errMessage;
 };
+
+export const getLineItemId = (productId: string | undefined, cart: Cart): string | undefined => {
+  return cart.lineItems.find((lineItem: LineItem) => lineItem.productId === productId)?.id;
+}

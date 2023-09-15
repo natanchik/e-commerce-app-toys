@@ -37,7 +37,9 @@ import {
   clearCart,
 } from '../components/handlers';
 import { getMyCarts } from '../api/cart/getMyCarts';
-import { changeLineItem } from '../api/cart/addOrRemoveLineItem';
+import { changeLineItem } from '../api/cart/changeLineItem';
+import { toggleCatalogAddProductButton } from './handlers-catalog';
+import { getActiveCart } from '../api/cart/getActiveCart';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -574,6 +576,7 @@ class Main {
         target.classList.contains('header__icon-bascket') ||
         target.classList.contains('header__icon-bascket__count')
       ) {
+        getActiveCart();
         getMyCarts().then(() => {
           router.navigate(pages.CART);
         });
@@ -596,7 +599,7 @@ class Main {
         itemsBtns.forEach((btn) => {
           if (btn instanceof HTMLButtonElement) btn.disabled = true;
         });
-        changeLineItem(target.id.slice(4), 'add', 1).then(() => {
+        changeLineItem(target.dataset.id, 'add', 1).then(() => {
           router.navigate(pages.CART);
         });
       }
@@ -606,9 +609,13 @@ class Main {
         itemsBtns.forEach((btn) => {
           if (btn instanceof HTMLButtonElement) btn.disabled = true;
         });
-        changeLineItem(target.id.slice(5), 'decrease', 1).then(() => {
+        changeLineItem(target.dataset.id, 'decrease', 1).then(() => {
           router.navigate(pages.CART);
         });
+      }
+
+      if (target.classList.contains('product__buttons') || target.classList.contains('product__button')) {
+        toggleCatalogAddProductButton(target);
       }
 
       if (target.classList.contains('cart__item__btn-delete')) {
@@ -616,7 +623,7 @@ class Main {
         itemsBtns.forEach((btn) => {
           if (btn instanceof HTMLButtonElement) btn.disabled = true;
         });
-        changeLineItem(target.id.slice(6), 'remove').then(() => {
+        changeLineItem(target.dataset.id, 'remove').then(() => {
           router.navigate(pages.CART);
         });
       }

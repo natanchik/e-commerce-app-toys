@@ -2,6 +2,7 @@ import { createElement } from './utils';
 import Router from '../router/router';
 import { pages } from '../router/pages';
 import User from './user';
+import getAnonymousToken from '../api/tokens/getAnonymousToken';
 
 class Header {
   header: HTMLHeadElement;
@@ -58,7 +59,7 @@ class Header {
   }
 
   private setEventListeners(router: Router): void {
-    this.header.addEventListener('click', (event: Event): void => {
+    this.header.addEventListener('click', async (event: Event): Promise<void> => {
       const target = event.target as HTMLElement;
 
       if (target.classList.contains('header__icon-user') || target.classList.contains('header__name')) {
@@ -72,6 +73,8 @@ class Header {
       if (target.classList.contains('header__icon-logout')) {
         User.userLogout();
         router.navigate(pages.AUTORIZATION);
+        localStorage.removeItem('cart');
+        await getAnonymousToken();
       }
     });
   }

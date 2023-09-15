@@ -1,6 +1,6 @@
 import User from '../../components/user';
 
-export const getCartById = async (cartId: string): Promise<void> => {
+export const getActiveCart = async (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${
@@ -16,7 +16,7 @@ export const getCartById = async (cartId: string): Promise<void> => {
   };
 
   await fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${cartId}`,
+    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/active-cart`,
     requestOptions,
   )
     .then((res) => {
@@ -27,6 +27,8 @@ export const getCartById = async (cartId: string): Promise<void> => {
       }
     })
     .then((res) => {
+      console.log('activecart');
+      console.log(res);
       localStorage.setItem('cart', JSON.stringify(res));
     })
     .catch((error) => {
