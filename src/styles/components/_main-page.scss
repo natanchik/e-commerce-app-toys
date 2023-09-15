@@ -47,10 +47,16 @@
 .promo__info-text {
   font-size: 1.4em;
   margin-bottom: 15px;
+  text-align: center;
 
   span {
     font-weight: 600;
     cursor: pointer;
+  }
+
+  div {
+    font-size: 0.7em;
+    font-weight: 600;
   }
 }
 
@@ -78,6 +84,10 @@
   }
 
   .promo__info-text {
-    font-size: 1.2em;
+    font-size: 1.1em;
+
+    div {
+      font-size: 0.8em;
+    }
   }
 }
