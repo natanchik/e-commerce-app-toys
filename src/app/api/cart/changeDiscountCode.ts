@@ -1,10 +1,7 @@
-import { discountID } from '../../components/constants'; // это единственный промокод в проекте
-import { showWarning } from '../../components/handlers';
-
-export const addOrRemoveDiscountCode = async (
-  code: string,
+export const changeDiscountCode = async (
+  code?: string,
+  discountID?: string,
   action: 'add' | 'remove' = 'add',
-  discount = discountID,
 ): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
@@ -27,7 +24,7 @@ export const addOrRemoveDiscountCode = async (
       action: 'removeDiscountCode',
       discountCode: {
         typeId: 'discount-code',
-        id: discount,
+        id: discountID,
       },
     });
   }
@@ -50,11 +47,33 @@ export const addOrRemoveDiscountCode = async (
       }
     })
     .then((res) => {
+      const discountInput = document.querySelector('.cart-input') as HTMLInputElement;
+      const actualCode = document.querySelector('.cart__delete-discont') as HTMLButtonElement;
+      const applyBtn = document.querySelector('.cart__discont-btn') as HTMLButtonElement;
+
+      if (action === 'add') {
+        discountInput.value = '';
+        actualCode.textContent = code as string;
+        actualCode.style.display = 'block';
+        applyBtn.style.display = 'none';
+      } else {
+        actualCode.style.display = 'none';
+        applyBtn.style.display = 'block';
+      }
       localStorage.setItem('cart', JSON.stringify(res));
     })
     .catch((err) => {
       if (err instanceof Error) {
-        showWarning('error', err.message, 'cart');
+        const errorBlock = document.querySelector('.error-message') as HTMLParagraphElement;
+        errorBlock.classList.add('incorrect-code');
+        if (action === 'add') {
+          errorBlock.textContent = 'Incorrect code';
+        } else {
+          errorBlock.textContent = 'Try again';
+        }
+        setInterval(() => {
+          errorBlock.textContent = '';
+        }, 1500);
       }
     });
 };
