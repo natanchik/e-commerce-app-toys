@@ -55,9 +55,6 @@ export const loginCustomer = async (username: string, password: string): Promise
       await fillUserState(username);
       await getCustomerToken(username, password);
       await getMyCarts();
-      // await getMyCarts().then(async (result: LineItem[]): Promise<void> => {
-      //   if (!result) await createMyCart();
-      // });
       apiStatus .classList.add('success-status');
       apiStatus.innerHTML = `Enjoy the shopping!`;
     })
@@ -100,6 +97,5 @@ export const loginAfterRegistration = async (username: string, password: string)
     })
     .then(async () => {
       await getCustomerToken(username, password);
-      await createMyCart();
     });
 };
