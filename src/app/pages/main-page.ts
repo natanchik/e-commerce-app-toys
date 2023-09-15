@@ -1,10 +1,5 @@
 import { createElement } from '../components/utils';
-// import { pages } from '../router/pages';
-
-const promoCodes: { [key: string]: string }[] = [
-  { discount: '25%', promocode: 'BABY' },
-  { discount: '10%', promocode: 'FALL' },
-];
+import { promoCodes } from '../components/constants';
 
 class MainPage {
   public drawMainPage(): HTMLDivElement {
@@ -33,7 +28,9 @@ class MainPage {
     const promoText = createElement(
       'div',
       ['promo__info-text'],
-      `Use Code: <span class="">${promocode.promocode}</span> at your cart`,
+      `Use Code: <span>${promocode.promocode}</span> at your cart.${
+        promocode.promocode === 'BABY' ? '<div>Only for Baby Toys: 0-12 Months</div>' : ''
+      }`,
     );
     const promoBtn = createElement('div', ['promo__btn-to-catalog', 'button'], 'Shop Now');
 
