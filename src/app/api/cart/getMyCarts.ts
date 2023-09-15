@@ -27,7 +27,7 @@ export const getMyCarts = async (): Promise<void> => {
       }
     })
     .then((res) => {
-      localStorage.setItem('cart', JSON.stringify(res.results[res.count - 1]));
+      localStorage.setItem('cart', JSON.stringify(res.results[0]));
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_get-carts', error.message);
