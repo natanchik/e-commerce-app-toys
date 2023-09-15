@@ -36,10 +36,10 @@ import {
   handlerDefaultAddress,
   clearCart,
 } from '../components/handlers';
-import { getMyCarts } from '../api/cart/getMyCarts';
+
 import { changeLineItem } from '../api/cart/changeLineItem';
 import { toggleCatalogAddProductButton } from './handlers-catalog';
-import { getActiveCart } from '../api/cart/getActiveCart';
+import { createMyCart } from '../api/cart/createMyCart';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -408,7 +408,7 @@ class Main {
   }
 
   private setEventListeners(router: Router): void {
-    document.addEventListener('click', (event: Event) => {
+    document.addEventListener('click', async (event: Event): Promise<void> => {
       const target = event.target as HTMLElement;
 
       if (target.classList.contains('sidebar__link') && target.dataset.page === 'main') {
@@ -511,6 +511,7 @@ class Main {
       }
 
       if (target.classList.contains('product-card__add-to-cart')) {
+        if (!localStorage.cart) await createMyCart();
         const form = target.closest('.product-card__form');
         const id = form ? form.id.slice(4) : '';
         if (target.textContent !== 'Add to cart') {
@@ -570,16 +571,6 @@ class Main {
       if (target.classList.contains('catalog__product')) {
         const currentID = target.id;
         router.navigate(`${pages.CATALOG}/${currentID}`);
-      }
-
-      if (
-        target.classList.contains('header__icon-bascket') ||
-        target.classList.contains('header__icon-bascket__count')
-      ) {
-        getActiveCart();
-        getMyCarts().then(() => {
-          router.navigate(pages.CART);
-        });
       }
 
       if (target.classList.contains('cart__delete-cart-btn')) {

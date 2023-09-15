@@ -3,6 +3,8 @@ import Router from '../router/router';
 import { pages } from '../router/pages';
 import User from './user';
 import getAnonymousToken from '../api/tokens/getAnonymousToken';
+import { getMyCarts } from '../api/cart/getMyCarts';
+import { createMyCart } from '../api/cart/createMyCart';
 
 class Header {
   header: HTMLHeadElement;
@@ -75,6 +77,15 @@ class Header {
         router.navigate(pages.AUTORIZATION);
         localStorage.removeItem('cart');
         await getAnonymousToken();
+      }
+
+      if (
+        target.classList.contains('header__icon-bascket') ||
+        target.classList.contains('header__icon-bascket__count')
+      ) {
+        if (!localStorage.cart) await createMyCart();
+        await getMyCarts();
+        router.navigate(pages.CART);
       }
     });
   }

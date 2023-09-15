@@ -1,7 +1,7 @@
-import { discountID } from '../../components/constants'; // это единственный промокод в проекте
+import { discountID } from '../../components/constants';
 import { showWarning } from '../../components/handlers';
 
-export const addOrRemoveDiscountCode = async (
+export const changeDiscountCode = async (
   code: string,
   action: 'add' | 'remove' = 'add',
   discount = discountID,
