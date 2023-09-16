@@ -37,7 +37,7 @@ import {
   clearCart,
 } from '../components/handlers';
 
-import { toggleCatalogAddProductButton } from './handlers-catalog';
+import { addFilterNavigationForCheckbox, addFilterNavigationForPrices, addFilterNavigationForSearch, addFilterNavigationForSelect, addNavigationForSidebar, clearFilterForPrices, clearFilterForSearch, redrawProducts, toggleCatalogAddProductButton } from './handlers-catalog';
 import { changeCartItemQuantityFromCart } from './handlers-cart';
 import { toggleCardAddProductButton, changeCartItemQuantityFromCard } from './handlers-card';
 import Header from './header';
@@ -120,88 +120,6 @@ class Main {
       }, 1500);
     } else {
       submitBtn.removeAttribute('disabled');
-    }
-  }
-
-  private async redrawProducts(): Promise<void> {
-    await getAllProducts();
-    Catalog.drawProducts();
-  }
-
-  private addFilterNavigationForCheckbox(currentTarget: HTMLInputElement): void {
-    if (currentTarget.checked === true) {
-      switch (currentTarget.dataset.filters) {
-        case 'age':
-          productAgeSelectedIds.add(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'age',
-            'where',
-            `masterData%28current%28categories%28id%20in%20%28${Array.from(productAgeSelectedIds).join(
-              ',%20',
-            )}%29%29%29%29`,
-          );
-          break;
-        case 'genders':
-          productGendersSelectedIds.add(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'genders',
-            'where',
-            `masterData%28current%28categories%28id%20in%20%28${Array.from(productGendersSelectedIds).join(
-              ',%20',
-            )}%29%29%29%29`,
-          );
-          break;
-        case 'product-type':
-          productTypesSelectedIds.add(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'product-type',
-            'where',
-            `productType%28id%20in%20%28${Array.from(productTypesSelectedIds).join(',%20')}%29%29`,
-          );
-          break;
-      }
-      this.redrawProducts();
-    } else {
-      switch (currentTarget.dataset.filters) {
-        case 'age':
-          productAgeSelectedIds.delete(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'age',
-            'where',
-            `masterData%28current%28categories%28id%20in%20%28${Array.from(productAgeSelectedIds).join(
-              ',%20',
-            )}%29%29%29%29`,
-          );
-          if (productAgeSelectedIds.size === 0) {
-            catalogQueryParams.delete('age');
-          }
-          break;
-        case 'genders':
-          productGendersSelectedIds.delete(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'genders',
-            'where',
-            `masterData%28current%28categories%28id%20in%20%28${Array.from(productGendersSelectedIds).join(
-              ',%20',
-            )}%29%29%29%29`,
-          );
-          if (productGendersSelectedIds.size === 0) {
-            catalogQueryParams.delete('genders');
-          }
-          break;
-        case 'product-type':
-          productTypesSelectedIds.delete(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'product-type',
-            'where',
-            `productType%28id%20in%20%28${Array.from(productTypesSelectedIds).join(',%20')}%29%29`,
-          );
-          if (productTypesSelectedIds.size === 0) {
-            catalogQueryParams.delete('product-type');
-          }
-          break;
-      }
-      this.redrawProducts();
     }
   }
 
@@ -303,109 +221,6 @@ class Main {
       if (miniRow) {
         this.makeMiniActive(slideIndex);
       }
-    }
-  }
-
-  private deleteSortFromQueryParam(): void {
-    Object.keys(sorterParametrs).forEach((key: string) => {
-      catalogQueryParams.delete(key);
-    });
-  }
-
-  private addFilterNavigationForSelect(currentTarget: HTMLSelectElement): void {
-    switch (currentTarget.value) {
-      case 'name-asc':
-        this.deleteSortFromQueryParam();
-        addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20asc`);
-        this.redrawProducts();
-        break;
-      case 'name-desc':
-        this.deleteSortFromQueryParam();
-        addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20desc`);
-        this.redrawProducts();
-        break;
-      case 'price-asc':
-        this.deleteSortFromQueryParam();
-        addNewQueryParam(currentTarget.value, 'sort', `key%20asc`);
-        this.redrawProducts();
-        break;
-      case 'price-desc':
-        this.deleteSortFromQueryParam();
-        addNewQueryParam(currentTarget.value, 'sort', `key%20desc`);
-        this.redrawProducts();
-        break;
-      default:
-        localStorage.removeItem('sorted_products');
-        this.deleteSortFromQueryParam();
-        this.redrawProducts();
-        break;
-    }
-  }
-
-  private async addFilterNavigationForSearch(currentTarget: HTMLInputElement): Promise<void> {
-    const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
-    close.classList.remove('filters__close_hidden');
-    if (currentTarget.value.length === 0) {
-      localStorage.removeItem('search_products');
-      Catalog.drawProducts();
-      close.classList.add('filters__close_hidden');
-    } else {
-      await getProductsBySearch(encodeText(currentTarget.value)).then(() => {
-        Catalog.drawProducts();
-      });
-    }
-  }
-
-  private clearFilterForSearch(): void {
-    const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
-    const search = document.querySelector('.filters__search') as HTMLInputElement;
-    search.value = '';
-    localStorage.removeItem('search_products');
-    close.classList.add('filters__close_hidden');
-    this.redrawProducts();
-  }
-
-  private addFilterNavigationForPrices(): void {
-    const close = document.querySelector('.filters__close_prices') as HTMLParagraphElement;
-    close.classList.remove('filters__close_hidden');
-    const from = document.getElementById('price-from') as HTMLInputElement;
-    const to = document.getElementById('price-to') as HTMLInputElement;
-    const fromValue = Number(from.value) * 100;
-    const toValue = to.value ? Number(to.value) * 100 : 5000000;
-    addNewQueryParam(
-      'price',
-      'where',
-      `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%20or%20discounted%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%29%29%29%29%29%29`,
-    );
-    this.redrawProducts();
-  }
-
-  private clearFilterForPrices(): void {
-    const from = document.getElementById('price-from') as HTMLInputElement;
-    const to = document.getElementById('price-to') as HTMLInputElement;
-    from.value = '';
-    to.value = '';
-    catalogQueryParams.delete('price');
-    this.redrawProducts();
-  }
-
-  private async addNavigationForSidebar(currentTarget: HTMLLIElement, router: Router): Promise<void> {
-    Catalog.clearSortedProducts();
-    if (currentTarget.dataset.page !== 'catalog') {
-      addNewQueryParam(
-        'sidebar',
-        'where',
-        `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
-      );
-    }
-
-    await getAllProducts();
-
-    this.sidebar.closeSidebar();
-    if (currentTarget.dataset.page === 'catalog') {
-      router.navigate(pages.CATALOG);
-    } else {
-      router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
     }
   }
 
@@ -530,12 +345,12 @@ class Main {
 
       if (target.classList.contains('filters__checkbox')) {
         const currentTarget = target as HTMLInputElement;
-        this.addFilterNavigationForCheckbox(currentTarget);
+        addFilterNavigationForCheckbox(currentTarget);
       }
 
       if (target.classList.contains('filters__button')) {
         Filters.resetAllFilters();
-        this.redrawProducts();
+        redrawProducts();
       }
 
       if (target.classList.contains('mobile-filters__item')) {
@@ -543,15 +358,15 @@ class Main {
       }
 
       if (target.classList.contains('filters__apply_prices')) {
-        this.addFilterNavigationForPrices();
+        addFilterNavigationForPrices();
       }
 
       if (target.classList.contains('filters__close_prices')) {
-        this.clearFilterForPrices();
+        clearFilterForPrices();
       }
 
       if (target.classList.contains('filters__close_search')) {
-        this.clearFilterForSearch();
+        clearFilterForSearch();
       }
 
       if (
@@ -560,7 +375,7 @@ class Main {
         target.classList.contains('catalog__breadcrumb')
       ) {
         const currentTarget = target as HTMLLIElement;
-        this.addNavigationForSidebar(currentTarget, router);
+        addNavigationForSidebar(currentTarget, router, this.sidebar);
       }
 
       if (target.classList.contains('catalog__product')) {
@@ -670,23 +485,14 @@ class Main {
 
       if (target.classList.contains('filters__select')) {
         const currentTarget = target as HTMLSelectElement;
-        this.addFilterNavigationForSelect(currentTarget);
+        addFilterNavigationForSelect(currentTarget);
       }
 
       if (target.classList.contains('filters__search')) {
         const currentTarget = target as HTMLInputElement;
-        this.addFilterNavigationForSearch(currentTarget);
+        addFilterNavigationForSearch(currentTarget);
       }
 
-      if (target.classList.contains('filters__select')) {
-        const currentTarget = target as HTMLSelectElement;
-        this.addFilterNavigationForSelect(currentTarget);
-      }
-
-      if (target.classList.contains('filters__search')) {
-        const currentTarget = target as HTMLInputElement;
-        this.addFilterNavigationForSearch(currentTarget);
-      }
     });
   }
 }

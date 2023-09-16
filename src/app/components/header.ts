@@ -97,6 +97,7 @@ class Header {
     let quality: string = cart.totalLineItemQuantity ? cart.totalLineItemQuantity.toString() : '';
 
     if(quality === '0') quality = '';
+    console.log(quality);
 
     const itemsTotalAmountDisplay = document.querySelector('.header__icon-bascket__count');
     if (itemsTotalAmountDisplay) itemsTotalAmountDisplay.textContent = `${quality}`;
