@@ -568,7 +568,7 @@ class Main {
 
       if (target.classList.contains('product__buttons') || target.classList.contains('product__button')) {
         event.stopPropagation();
-        toggleCatalogAddProductButton(target, router);
+        toggleCatalogAddProductButton(target);
       }
 
       if (target.parentElement?.classList.contains('catalog__product')) {
