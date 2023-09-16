@@ -1,5 +1,6 @@
 import Filters from '../components/filters';
-import { createElement } from '../components/utils';
+import Header from '../components/header';
+import { createElement, getLineItem } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
 import { Cart, Category, LineItem, Price, Product } from '../types/types';
 
@@ -22,6 +23,8 @@ class Catalog {
 
     content.append(mobileFiltersButton, filters, products);
     catalog.append(breadcrumbs, content);
+
+    Header.addProductsNumberInBasket();
 
     return catalog;
   }
@@ -118,10 +121,8 @@ class Catalog {
   }
 
   static drawProduct(product: Product): HTMLDivElement {
-    const cart: Cart = localStorage.cart ? JSON.parse(localStorage.cart) : '';
-    const lineItem: LineItem | undefined = cart
-      ? cart.lineItems.find((item: LineItem) => item.productId === product.id)
-      : undefined;
+    const lineItem: LineItem | undefined = getLineItem(product.id);
+
     const productBlock = createElement('div', ['catalog__product', 'product']) as HTMLDivElement;
     const img = createElement('img', ['product__img']) as HTMLImageElement;
     const url: string = product.masterData.current.masterVariant.images[0].url;

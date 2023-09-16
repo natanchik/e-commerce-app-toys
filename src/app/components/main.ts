@@ -40,6 +40,7 @@ import {
 import { toggleCatalogAddProductButton } from './handlers-catalog';
 import { changeCartItemQuantityFromCart } from './handlers-cart';
 import { toggleCardAddProductButton, changeCartItemQuantityFromCard } from './handlers-card';
+import Header from './header';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -59,6 +60,7 @@ class Main {
     const body = document.querySelector('body') as HTMLBodyElement;
     const main = createElement('div', ['main']) as HTMLDivElement;
     const dimming = createElement('div', ['sidebar__dimming']) as HTMLDivElement;
+    Header.addProductsNumberInBasket();
 
     body.append(main, this.sidebarWrapper, dimming);
 

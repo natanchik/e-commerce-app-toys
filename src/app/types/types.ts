@@ -204,4 +204,5 @@ export interface Cart {
   totalPrice: TypedMoney;
   discountCodes: string[];
   origin: string;
+  totalLineItemQuantity: number;
 }

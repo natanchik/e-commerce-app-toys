@@ -1,3 +1,4 @@
+import Header from '../../components/header';
 import { getMyCarts } from '../cart/getMyCarts';
 import getCustomerToken from '../tokens/getCustomerToken';
 import { getAllCustomersEmails } from './getAllCustomers';
@@ -54,6 +55,7 @@ export const loginCustomer = async (username: string, password: string): Promise
       await fillUserState(username);
       await getCustomerToken(username, password);
       await getMyCarts();
+      Header.addProductsNumberInBasket();
       apiStatus.classList.add('success-status');
       apiStatus.innerHTML = `Enjoy the shopping!`;
     })

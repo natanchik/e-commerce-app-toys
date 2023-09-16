@@ -14,4 +14,5 @@ export const changeCartItemQuantityFromCart = (
   changeLineItem(target.dataset.id, action, 1).then(() => {
     router.navigate(pages.CART);
   });
+  
 };

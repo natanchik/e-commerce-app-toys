@@ -5,6 +5,7 @@ import User from './user';
 import getAnonymousToken from '../api/tokens/getAnonymousToken';
 import { getMyCarts } from '../api/cart/getMyCarts';
 import { createMyCart } from '../api/cart/createMyCart';
+import { Cart } from '../types/types';
 
 class Header {
   header: HTMLHeadElement;
@@ -77,6 +78,7 @@ class Header {
         router.navigate(pages.AUTORIZATION);
         localStorage.removeItem('cart');
         await getAnonymousToken();
+        Header.addProductsNumberInBasket();
       }
 
       if (
@@ -88,6 +90,16 @@ class Header {
         router.navigate(pages.CART);
       }
     });
+  }
+
+  static addProductsNumberInBasket(): void {
+    const cart: Cart = localStorage.cart ? JSON.parse(localStorage.cart) : '';
+    let quality: string = cart.totalLineItemQuantity ? cart.totalLineItemQuantity.toString() : '';
+
+    if(quality === '0') quality = '';
+
+    const itemsTotalAmountDisplay = document.querySelector('.header__icon-bascket__count');
+    if (itemsTotalAmountDisplay) itemsTotalAmountDisplay.textContent = `${quality}`;
   }
 }
 

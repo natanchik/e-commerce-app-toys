@@ -1,4 +1,5 @@
 import getProductByID from '../api/getProduct/getProductByID';
+import Header from '../components/header';
 import { createElement, createImageElement } from '../components/utils';
 import { Product, Price, Cart, LineItem } from '../types/types';
 
@@ -15,6 +16,9 @@ class Card {
     }) as HTMLDivElement;
 
     await getProductByID(this.id).then((data) => {
+      const lineItem: LineItem = localStorage.cart
+      ? JSON.parse(localStorage.cart).lineItems.find((item: LineItem) => item.productId === this.id)
+      : undefined;
       const slider = this.drawSlider(data);
       const modal = this.drawModal(data);
       const info = createElement('div', ['product-card__info']) as HTMLDivElement;
@@ -24,7 +28,7 @@ class Card {
         data.masterData.current.name['en-US'],
       ) as HTMLElement;
       const priceWrapper = this.drawPriceWrapper(data);
-      const form = this.drawCartForm(this.id);
+      const form = this.drawCartForm(this.id, lineItem);
       const smallHeading = createElement('h4', ['product-card__detail-heading'], 'Details') as HTMLElement;
       const details = createElement(
         'p',
@@ -36,6 +40,8 @@ class Card {
       const warning = createElement('div', ['cart__warning']);
       wrapper.append(modal, slider, info, warning);
     });
+
+    Header.addProductsNumberInBasket();
 
     return wrapper;
   }
@@ -129,11 +135,7 @@ class Card {
     return priceWrapper;
   }
 
-  private drawCartForm(id: string): HTMLFormElement {
-    const cart: Cart = localStorage.cart ? JSON.parse(localStorage.cart) : '';
-    const lineItem: LineItem | undefined = cart
-      ? cart.lineItems.find((item: LineItem) => item.productId === id)
-      : undefined;
+  private drawCartForm(id: string, lineItem: LineItem): HTMLFormElement {
 
     const form = createElement('form', ['product-card__form']) as HTMLFormElement;
     form.dataset.id = id;

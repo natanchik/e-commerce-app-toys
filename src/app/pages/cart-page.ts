@@ -1,5 +1,6 @@
 import { Cart, LineItem } from '../types/types';
 import { createElement, createInputElement } from '../components/utils';
+import Header from '../components/header';
 
 export default class CartPage {
   public drawCart(): HTMLDivElement {
@@ -42,8 +43,8 @@ export default class CartPage {
       cartHeader.className = 'cart__header cart__hidden';
       emptyCartBlock.className = 'cart__empty';
     }
-    const itemsTotalAmountDisplay = document.querySelector('.header__icon-bascket__count');
-    if (itemsTotalAmountDisplay) itemsTotalAmountDisplay.textContent = `${itemsTotalAmount}`;
+    Header.addProductsNumberInBasket();
+
     const warning = createElement('div', ['cart__warning']);
     cartPage.append(cartHeader, emptyCartBlock, warning, cartGrid);
     return cartPage;

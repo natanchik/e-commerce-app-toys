@@ -1,6 +1,7 @@
 import { changeLineItem } from '../api/cart/changeLineItem';
 import { createMyCart } from '../api/cart/createMyCart';
-import Router from '../router/router';
+import { Cart } from '../types/types';
+import Header from './header';
 
 export const toggleCatalogAddProductButton = async (target: HTMLElement): Promise<void> => {
   if (!localStorage.cart) await createMyCart();
@@ -10,8 +11,10 @@ export const toggleCatalogAddProductButton = async (target: HTMLElement): Promis
   const buttonIcon = addButton.querySelector('.product__add-button') as HTMLSpanElement;
 
   if (buttonText.innerText === 'add to cart') {
-    changeLineItem(id, 'add', 1);
+    await changeLineItem(id, 'add', 1);
     addButton.classList.remove('product__buttons_active');
     buttonIcon.innerText = '✓';
+
+    Header.addProductsNumberInBasket();
   }
 };

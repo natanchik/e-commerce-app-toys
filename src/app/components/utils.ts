@@ -1,4 +1,4 @@
-import { UserState } from '../types/types';
+import { Cart, LineItem, UserState } from '../types/types';
 
 export const nullUserState: UserState = {
   firstName: '',
@@ -150,3 +150,10 @@ export const hideLoading = (): void => {
   const loading = document.querySelector('.main__loading') as HTMLBodyElement;
   loading.remove();
 };
+
+export const getLineItem = (id: string): LineItem | undefined => {
+  const cart: Cart = localStorage.cart ? JSON.parse(localStorage.cart) : '';
+  return cart
+      ? cart.lineItems.find((item: LineItem) => item.productId === id)
+      : undefined;
+}
