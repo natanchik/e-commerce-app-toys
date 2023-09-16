@@ -82,7 +82,7 @@ export default class CartPage {
     const itemAmounts = createElement('div', ['cart__item', 'cart__item__amount']);
     const amountBlock = createElement('div', ['cart__item__amount-block']);
     const plusBtn = createElement('button', ['cart__item__btn-plus'], '&plus;');
-    plusBtn.dataset.id = `${lineitem.productId}`; 
+    plusBtn.dataset.id = `${lineitem.productId}`;
     const amountTablo = createElement('div', ['cart__item__amount-value'], `${lineitem.quantity}`);
     const minusBtn = createElement('button', ['cart__item__btn-minus'], '&minus;');
     minusBtn.dataset.id = `${lineitem.productId}`;

@@ -140,7 +140,7 @@ class Catalog {
     const addBtn = createElement('span', ['product__button', 'product__add-button'], '+') as HTMLSpanElement;
     const addText = createElement('span', ['product__button', 'product__add-text'], 'add to cart') as HTMLSpanElement;
     addProductBtns.append(addText, addBtn);
-    
+
     productBlock.append(img, addProductBtns, name, description, prices);
     return productBlock;
   }

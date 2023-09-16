@@ -57,4 +57,4 @@ export const addApiStatus = async (
 
 export const getLineItemId = (productId: string | undefined, cart: Cart): string | undefined => {
   return cart.lineItems.find((lineItem: LineItem) => lineItem.productId === productId)?.id;
-}
+};

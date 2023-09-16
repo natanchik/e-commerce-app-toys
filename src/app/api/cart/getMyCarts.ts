@@ -28,7 +28,6 @@ export const getMyCarts = async (): Promise<LineItem[]> => {
       }
     })
     .then((res) => {
-      console.log(res.results);
       if (res.results.length > 0) {
         localStorage.setItem('cart', JSON.stringify(res.results[0]));
       }

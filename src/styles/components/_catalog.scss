@@ -181,14 +181,14 @@
   font-size: 2.48em;
   opacity: 0.5;
   color: $green;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .product__add-text {
   font-weight: 600;
   transform: translateX(140%);
   opacity: 0;
-  transition: all .5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 .mobile-filters__item {

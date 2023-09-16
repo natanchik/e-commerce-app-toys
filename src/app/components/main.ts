@@ -37,9 +37,9 @@ import {
   clearCart,
 } from '../components/handlers';
 
-import { changeLineItem } from '../api/cart/changeLineItem';
 import { toggleCatalogAddProductButton } from './handlers-catalog';
-import { createMyCart } from '../api/cart/createMyCart';
+import { changeCartItemQuantityFromCart } from './handlers-cart';
+import { toggleCardAddProductButton, changeCartItemQuantityFromCard } from './handlers-card';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -511,22 +511,15 @@ class Main {
       }
 
       if (target.classList.contains('product-card__add-to-cart')) {
-        if (!localStorage.cart) await createMyCart();
-        const form = target.closest('.product-card__form');
-        const id = form ? form.id.slice(4) : '';
-        if (target.textContent !== 'Add to cart') {
-          changeLineItem(id, 'remove').then(() => {
-            target.textContent = 'Add to cart';
-            target.classList.add('button_green');
-          });
-        } else {
-          const input = document.querySelector('.product-card__quantity') as HTMLInputElement;
-          const quantity = input ? Number(input.value) : 1;
-          changeLineItem(id, 'add', quantity ? quantity : 1).then(() => {
-            target.textContent = 'Remove from cart';
-            target.classList.remove('button_green');
-          });
-        }
+        toggleCardAddProductButton(target, router);
+      }
+
+      if (target.classList.contains('product-card__increase-quantity')) {
+        changeCartItemQuantityFromCard(target, router, 'add');
+      }
+
+      if (target.classList.contains('product-card__decrease-quantity')) {
+        changeCartItemQuantityFromCard(target, router, 'decrease');
       }
 
       if (target.classList.contains('filters__item')) {
@@ -573,6 +566,16 @@ class Main {
         router.navigate(`${pages.CATALOG}/${currentID}`);
       }
 
+      if (target.classList.contains('product__buttons') || target.classList.contains('product__button')) {
+        toggleCatalogAddProductButton(target);
+      }
+
+      if (target.parentElement?.classList.contains('catalog__product')) {
+        const parentDiv = target.parentNode as HTMLDivElement;
+        const currentID = parentDiv.id;
+        router.navigate(`${pages.CATALOG}/${currentID}`);
+      }
+
       if (target.classList.contains('cart__delete-cart-btn')) {
         clearCart().then(() => {
           router.navigate(pages.CART);
@@ -586,43 +589,15 @@ class Main {
       }
 
       if (target.classList.contains('cart__item__btn-plus')) {
-        const itemsBtns = document.querySelectorAll('button');
-        itemsBtns.forEach((btn) => {
-          if (btn instanceof HTMLButtonElement) btn.disabled = true;
-        });
-        changeLineItem(target.dataset.id, 'add', 1).then(() => {
-          router.navigate(pages.CART);
-        });
+        changeCartItemQuantityFromCart(target, router, 'add');
       }
 
       if (target.classList.contains('cart__item__btn-minus')) {
-        const itemsBtns = document.querySelectorAll('button');
-        itemsBtns.forEach((btn) => {
-          if (btn instanceof HTMLButtonElement) btn.disabled = true;
-        });
-        changeLineItem(target.dataset.id, 'decrease', 1).then(() => {
-          router.navigate(pages.CART);
-        });
-      }
-
-      if (target.classList.contains('product__buttons') || target.classList.contains('product__button')) {
-        toggleCatalogAddProductButton(target);
+        changeCartItemQuantityFromCart(target, router, 'decrease');
       }
 
       if (target.classList.contains('cart__item__btn-delete')) {
-        const itemsBtns = document.querySelectorAll('button');
-        itemsBtns.forEach((btn) => {
-          if (btn instanceof HTMLButtonElement) btn.disabled = true;
-        });
-        changeLineItem(target.dataset.id, 'remove').then(() => {
-          router.navigate(pages.CART);
-        });
-      }
-
-      if (target.parentElement?.classList.contains('catalog__product')) {
-        const parentDiv = target.parentNode as HTMLDivElement;
-        const currentID = parentDiv.id;
-        router.navigate(`${pages.CATALOG}/${currentID}`);
+        changeCartItemQuantityFromCart(target, router, 'remove');
       }
     });
 

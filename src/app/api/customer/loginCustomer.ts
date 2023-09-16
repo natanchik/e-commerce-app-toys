@@ -1,4 +1,3 @@
-import { createMyCart } from '../cart/createMyCart';
 import { getMyCarts } from '../cart/getMyCarts';
 import getCustomerToken from '../tokens/getCustomerToken';
 import { getAllCustomersEmails } from './getAllCustomers';
@@ -55,7 +54,7 @@ export const loginCustomer = async (username: string, password: string): Promise
       await fillUserState(username);
       await getCustomerToken(username, password);
       await getMyCarts();
-      apiStatus .classList.add('success-status');
+      apiStatus.classList.add('success-status');
       apiStatus.innerHTML = `Enjoy the shopping!`;
     })
     .catch((err) => {
