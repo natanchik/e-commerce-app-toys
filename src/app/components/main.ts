@@ -41,6 +41,7 @@ import { addFilterNavigationForCheckbox, addFilterNavigationForPrices, addFilter
 import { changeCartItemQuantityFromCart } from './handlers-cart';
 import { toggleCardAddProductButton, changeCartItemQuantityFromCard, switchNextSlide, switchPrevSlide, getImagebyMini, toggleCardModal } from './handlers-card';
 import Header from './header';
+import { loginViaForm, registerViaForm } from './handlers-autorizarion';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -81,46 +82,6 @@ class Main {
 
     decorator.append(blue, peach, green);
     return decorator;
-  }
-
-  private async loginViaForm(target: HTMLFormElement, router: Router): Promise<void> {
-    const submitBtn = document.querySelector('.auth-btn.submit-login') as HTMLButtonElement;
-    const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
-    const data = getLoginData(target as HTMLFormElement);
-
-    submitBtn.setAttribute('disabled', 'true');
-    await loginCustomer(data.username, data.password);
-
-    if (apiStatus.classList.contains('success-status')) {
-      setTimeout(() => {
-        router.navigate(pages.MAIN);
-        User.userLogin();
-      }, 1500);
-    } else {
-      submitBtn.removeAttribute('disabled');
-    }
-  }
-
-  private async registerViaForm(router: Router): Promise<void> {
-    const submitBtn = document.querySelector('.auth-btn.submit-register') as HTMLButtonElement;
-    const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
-    const data = getRegisterData();
-    const defaultBilling = document.getElementById('as-default-billing') as HTMLInputElement;
-    const defaultShipping = document.getElementById('as-default-shipping') as HTMLInputElement;
-    const checkDefaultBilling = defaultBilling.checked;
-    const checkDefaultShipping = defaultShipping.checked;
-
-    submitBtn.setAttribute('disabled', 'true');
-    await createCustomer(data, checkDefaultBilling, checkDefaultShipping);
-
-    if (apiStatus.classList.contains('success-status__register')) {
-      setTimeout(() => {
-        router.navigate(pages.MAIN);
-        User.userLogin();
-      }, 1500);
-    } else {
-      submitBtn.removeAttribute('disabled');
-    }
   }
 
   private setEventListeners(router: Router): void {
@@ -325,7 +286,7 @@ class Main {
         event.preventDefault();
         const isValid: boolean = checkValidity();
         if (isValid) {
-          this.loginViaForm(target as HTMLFormElement, router);
+          loginViaForm(target as HTMLFormElement, router);
         }
       }
 
@@ -333,7 +294,7 @@ class Main {
         event.preventDefault();
         const isValid: boolean = checkValidity();
         if (isValid) {
-          this.registerViaForm(router);
+          registerViaForm(router);
         }
       }
 
