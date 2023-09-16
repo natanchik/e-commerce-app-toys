@@ -1,7 +1,7 @@
 import Filters from '../components/filters';
 import { createElement } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
-import { Category, Price, Product } from '../types/types';
+import { Cart, Category, LineItem, Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
@@ -118,6 +118,10 @@ class Catalog {
   }
 
   static drawProduct(product: Product): HTMLDivElement {
+    const cart: Cart = localStorage.cart ? JSON.parse(localStorage.cart) : '';
+    const lineItem: LineItem | undefined = cart
+      ? cart.lineItems.find((item: LineItem) => item.productId === product.id)
+      : undefined;
     const productBlock = createElement('div', ['catalog__product', 'product']) as HTMLDivElement;
     const img = createElement('img', ['product__img']) as HTMLImageElement;
     const url: string = product.masterData.current.masterVariant.images[0].url;
@@ -135,10 +139,17 @@ class Catalog {
     const prices = this.drawPrices(product);
 
     productBlock.id = product.id;
-    //TODO проверка есть ли товар в коррзине -> add -> иначе delete
+
     const addProductBtns = createElement('div', ['product__buttons']) as HTMLDivElement;
-    const addBtn = createElement('span', ['product__button', 'product__add-button'], '+') as HTMLSpanElement;
+    const addBtn = createElement('span', ['product__button', 'product__add-button']) as HTMLSpanElement;
     const addText = createElement('span', ['product__button', 'product__add-text'], 'add to cart') as HTMLSpanElement;
+    if (!lineItem) {
+      addProductBtns.classList.add('product__buttons_active');
+      addBtn.innerText = '+';
+    } else {
+      addBtn.innerText = '✓';
+    }
+
     addProductBtns.append(addText, addBtn);
 
     productBlock.append(img, addProductBtns, name, description, prices);
