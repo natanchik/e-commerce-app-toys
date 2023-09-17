@@ -6,6 +6,10 @@
   &:hover {
     background-color: darken($blue, 5%);
   }
+  &:disabled {
+    border-color: #d8d8d8;
+    pointer-events: none;
+  }
 }
 
 .button_white {
