@@ -24,7 +24,7 @@ export default class CartPage {
       '<h4>Your cart is empty...</h4><p>You can visit <a class="cart__link-to-catalog" href="">Catalog</a> to add products to it...</p>',
     );
     emptyCartBlock.append(emptyCartImage, emptyCartMessage);
-    let itemsTotalAmount = 0;
+    let itemsTotalAmount: number = 0;
     if (cart) {
       const products: LineItem[] = cart.lineItems;
       if (products.length) {

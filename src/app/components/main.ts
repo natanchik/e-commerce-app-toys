@@ -2,24 +2,10 @@ import { createElement, encodeText } from './utils';
 import Sidebar from './sidebar';
 import Router from '../router/router';
 import { pages } from '../router/pages';
-import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import { checkValidity } from '../api/helpers/checkValidity';
-import { loginCustomer } from '../api/customer/loginCustomer';
-import createCustomer from '../api/customer/createCustomer';
 import removeCustomerAddress from '../api/customer/update/remove-address';
-import User from './user';
-import getAllProducts from '../api/getProduct/getAllProducts';
-import {
-  catalogQueryParams,
-  productAgeSelectedIds,
-  productGendersSelectedIds,
-  productTypesSelectedIds,
-} from '../state/state';
 import Catalog from '../pages/catalog';
 import Filters from './filters';
-import { sorterParametrs } from './constants';
-import getProductsBySearch from '../api/getProduct/getProductsBySearch';
-import { addNewQueryParam } from '../api/helpers/utils';
 import {
   toggleProfileEditMode,
   toggleProfileItems,
@@ -36,10 +22,26 @@ import {
   handlerDefaultAddress,
   clearCart,
 } from '../components/handlers';
-
-import { addFilterNavigationForCheckbox, addFilterNavigationForPrices, addFilterNavigationForSearch, addFilterNavigationForSelect, addNavigationForSidebar, clearFilterForPrices, clearFilterForSearch, redrawProducts, toggleCatalogAddProductButton } from './handlers-catalog';
+import {
+  addFilterNavigationForCheckbox,
+  addFilterNavigationForPrices,
+  addFilterNavigationForSearch,
+  addFilterNavigationForSelect,
+  addNavigationForSidebar,
+  clearFilterForPrices,
+  clearFilterForSearch,
+  redrawProducts,
+  toggleCatalogAddProductButton,
+} from './handlers-catalog';
 import { changeCartItemQuantityFromCart } from './handlers-cart';
-import { toggleCardAddProductButton, changeCartItemQuantityFromCard, switchNextSlide, switchPrevSlide, getImagebyMini, toggleCardModal } from './handlers-card';
+import {
+  toggleCardAddProductButton,
+  changeCartItemQuantityFromCard,
+  switchNextSlide,
+  switchPrevSlide,
+  getImagebyMini,
+  toggleCardModal,
+} from './handlers-card';
 import Header from './header';
 import { loginViaForm, registerViaForm } from './handlers-autorizarion';
 
@@ -352,7 +354,6 @@ class Main {
         const currentTarget = target as HTMLInputElement;
         addFilterNavigationForSearch(currentTarget);
       }
-
     });
   }
 }

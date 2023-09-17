@@ -94,13 +94,12 @@ class Header {
 
   static addProductsNumberInBasket(): void {
     const cart: Cart = localStorage.cart ? JSON.parse(localStorage.cart) : '';
-    let quality: string = cart.totalLineItemQuantity ? cart.totalLineItemQuantity.toString() : '';
+    let quantity: string = cart.totalLineItemQuantity ? cart.totalLineItemQuantity.toString() : '';
 
-    if(quality === '0') quality = '';
-    console.log(quality);
+    if (quantity === '0') quantity = '';
 
     const itemsTotalAmountDisplay = document.querySelector('.header__icon-bascket__count');
-    if (itemsTotalAmountDisplay) itemsTotalAmountDisplay.textContent = `${quality}`;
+    if (itemsTotalAmountDisplay) itemsTotalAmountDisplay.textContent = `${quantity}`;
   }
 }
 

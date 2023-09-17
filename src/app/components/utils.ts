@@ -153,7 +153,5 @@ export const hideLoading = (): void => {
 
 export const getLineItem = (id: string): LineItem | undefined => {
   const cart: Cart = localStorage.cart ? JSON.parse(localStorage.cart) : '';
-  return cart
-      ? cart.lineItems.find((item: LineItem) => item.productId === id)
-      : undefined;
-}
+  return cart ? cart.lineItems.find((item: LineItem) => item.productId === id) : undefined;
+};

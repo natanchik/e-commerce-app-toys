@@ -47,7 +47,7 @@ const makeMiniActive = (slideIndex: number): void => {
     mini.classList.remove('active-mini');
   });
   minis[slideIndex - 1].classList.add('active-mini');
-}
+};
 
 export const toggleCardModal = (slideIndex: number): void => {
   const modal = document.querySelector('.modal-card__dimming');
@@ -69,7 +69,7 @@ export const toggleCardModal = (slideIndex: number): void => {
       makeMiniActive(slideIndex);
     }
   }
-}
+};
 
 export const getImagebyMini = (target: HTMLElement): void => {
   const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
@@ -83,7 +83,7 @@ export const getImagebyMini = (target: HTMLElement): void => {
   cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
   slidesRow.style.transform = `translateX(${-width * (currentIndex - 1)}px)`;
   makeMiniActive(currentIndex);
-}
+};
 
 export const switchNextSlide = (): void => {
   const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
@@ -111,7 +111,7 @@ export const switchNextSlide = (): void => {
     cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
   }
   makeMiniActive(currentIndex);
-}
+};
 
 export const switchPrevSlide = (): void => {
   const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
@@ -139,4 +139,4 @@ export const switchPrevSlide = (): void => {
     slidesRowModal.style.transform = `translateX(${-widthModal * (currentIndex - 1)}px)`;
   }
   makeMiniActive(currentIndex);
-}
+};

@@ -2,7 +2,7 @@ import Filters from '../components/filters';
 import Header from '../components/header';
 import { createElement, getLineItem } from '../components/utils';
 import { catalogQueryParams } from '../state/state';
-import { Cart, Category, LineItem, Price, Product } from '../types/types';
+import { Category, LineItem, Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
@@ -115,6 +115,10 @@ class Catalog {
         const productBlock = this.drawProduct(product);
         products.append(productBlock);
       });
+      const loadMore = createElement('div', ['catalog__load-more-button']) as HTMLDivElement;
+      const loadMoreButton = createElement('button', ['button', 'button_white'], 'load more') as HTMLButtonElement;
+      loadMore.append(loadMoreButton);
+      products.append(loadMore);
     } else {
       products.innerHTML = 'Sorry, no products matched your selection.';
     }

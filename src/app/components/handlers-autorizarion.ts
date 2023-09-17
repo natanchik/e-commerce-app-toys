@@ -1,9 +1,9 @@
-import createCustomer from "../api/customer/createCustomer";
-import { loginCustomer } from "../api/customer/loginCustomer";
-import { getLoginData, getRegisterData } from "../api/helpers/getDataFromInput";
-import { pages } from "../router/pages";
-import Router from "../router/router";
-import User from "./user";
+import createCustomer from '../api/customer/createCustomer';
+import { loginCustomer } from '../api/customer/loginCustomer';
+import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
+import { pages } from '../router/pages';
+import Router from '../router/router';
+import User from './user';
 
 export const loginViaForm = async (target: HTMLFormElement, router: Router): Promise<void> => {
   const submitBtn = document.querySelector('.auth-btn.submit-login') as HTMLButtonElement;
@@ -21,7 +21,7 @@ export const loginViaForm = async (target: HTMLFormElement, router: Router): Pro
   } else {
     submitBtn.removeAttribute('disabled');
   }
-}
+};
 
 export const registerViaForm = async (router: Router): Promise<void> => {
   const submitBtn = document.querySelector('.auth-btn.submit-register') as HTMLButtonElement;
@@ -43,4 +43,4 @@ export const registerViaForm = async (router: Router): Promise<void> => {
   } else {
     submitBtn.removeAttribute('disabled');
   }
-}
+};

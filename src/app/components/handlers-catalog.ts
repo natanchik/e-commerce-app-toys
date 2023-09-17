@@ -6,7 +6,12 @@ import { addNewQueryParam } from '../api/helpers/utils';
 import Catalog from '../pages/catalog';
 import { pages } from '../router/pages';
 import Router from '../router/router';
-import { catalogQueryParams, productAgeSelectedIds, productGendersSelectedIds, productTypesSelectedIds } from '../state/state';
+import {
+  catalogQueryParams,
+  productAgeSelectedIds,
+  productGendersSelectedIds,
+  productTypesSelectedIds,
+} from '../state/state';
 import { sorterParametrs } from './constants';
 import Header from './header';
 import Sidebar from './sidebar';
@@ -31,12 +36,12 @@ export const deleteSortFromQueryParam = (): void => {
   Object.keys(sorterParametrs).forEach((key: string) => {
     catalogQueryParams.delete(key);
   });
-}
+};
 
 export const redrawProducts = async (): Promise<void> => {
   await getAllProducts();
   Catalog.drawProducts();
-}
+};
 
 export const addFilterNavigationForCheckbox = (currentTarget: HTMLInputElement): void => {
   if (currentTarget.checked === true) {
@@ -113,7 +118,7 @@ export const addFilterNavigationForCheckbox = (currentTarget: HTMLInputElement):
     }
     redrawProducts();
   }
-}
+};
 
 export const addFilterNavigationForSelect = (currentTarget: HTMLSelectElement): void => {
   switch (currentTarget.value) {
@@ -143,7 +148,7 @@ export const addFilterNavigationForSelect = (currentTarget: HTMLSelectElement): 
       redrawProducts();
       break;
   }
-}
+};
 
 export const addFilterNavigationForSearch = async (currentTarget: HTMLInputElement): Promise<void> => {
   const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
@@ -157,7 +162,7 @@ export const addFilterNavigationForSearch = async (currentTarget: HTMLInputEleme
       Catalog.drawProducts();
     });
   }
-}
+};
 
 export const clearFilterForSearch = (): void => {
   const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
@@ -166,7 +171,7 @@ export const clearFilterForSearch = (): void => {
   localStorage.removeItem('search_products');
   close.classList.add('filters__close_hidden');
   redrawProducts();
-}
+};
 
 export const addFilterNavigationForPrices = (): void => {
   const close = document.querySelector('.filters__close_prices') as HTMLParagraphElement;
@@ -181,7 +186,7 @@ export const addFilterNavigationForPrices = (): void => {
     `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%20or%20discounted%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%29%29%29%29%29%29`,
   );
   redrawProducts();
-}
+};
 
 export const clearFilterForPrices = (): void => {
   const from = document.getElementById('price-from') as HTMLInputElement;
@@ -190,16 +195,16 @@ export const clearFilterForPrices = (): void => {
   to.value = '';
   catalogQueryParams.delete('price');
   redrawProducts();
-}
+};
 
-export const addNavigationForSidebar = async (currentTarget: HTMLLIElement, router: Router, sidebar: Sidebar): Promise<void> => {
+export const addNavigationForSidebar = async (
+  currentTarget: HTMLLIElement,
+  router: Router,
+  sidebar: Sidebar,
+): Promise<void> => {
   Catalog.clearSortedProducts();
   if (currentTarget.dataset.page !== 'catalog') {
-    addNewQueryParam(
-      'sidebar',
-      'where',
-      `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
-    );
+    addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`);
   }
 
   await getAllProducts();
@@ -210,4 +215,4 @@ export const addNavigationForSidebar = async (currentTarget: HTMLLIElement, rout
   } else {
     router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
   }
-}
+};

@@ -17,8 +17,8 @@ class Card {
 
     await getProductByID(this.id).then((data) => {
       const lineItem: LineItem = localStorage.cart
-      ? JSON.parse(localStorage.cart).lineItems.find((item: LineItem) => item.productId === this.id)
-      : undefined;
+        ? JSON.parse(localStorage.cart).lineItems.find((item: LineItem) => item.productId === this.id)
+        : undefined;
       const slider = this.drawSlider(data);
       const modal = this.drawModal(data);
       const info = createElement('div', ['product-card__info']) as HTMLDivElement;
@@ -136,7 +136,6 @@ class Card {
   }
 
   private drawCartForm(id: string, lineItem: LineItem): HTMLFormElement {
-
     const form = createElement('form', ['product-card__form']) as HTMLFormElement;
     form.dataset.id = id;
     const quantityWrapper = createElement('div', ['product-card__quantity-wrapper']) as HTMLDivElement;
