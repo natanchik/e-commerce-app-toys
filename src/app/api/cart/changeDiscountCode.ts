@@ -77,9 +77,9 @@ export const changeDiscountCode = async (
         } else {
           errorBlock.textContent = 'Try again';
         }
-        setInterval(() => {
+        setTimeout(() => {
           errorBlock.textContent = '';
-        }, 1500);
+        }, 2000);
       }
     });
 };

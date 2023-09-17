@@ -18,7 +18,10 @@ class AboutUS {
     );
     const imgBlock = createElement('div', ['about-us__img-contaiter']) as HTMLDivElement;
     const commonImg = createElement('div', ['about-us__common-img']) as HTMLDivElement;
-    const rsLink = createElement('a', ['rs-school-logo'], '', { target: 'blank' });
+    const rsLink = createElement('a', ['rs-school-logo'], '', {
+      target: 'blank',
+      href: 'https://rs.school/',
+    }) as HTMLLinkElement;
     const content = createElement('div', ['about-us__content']) as HTMLDivElement;
 
     imgBlock.append(commonImg, rsLink);
