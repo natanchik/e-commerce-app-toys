@@ -1,5 +1,4 @@
 import { createMyCart } from '../cart/createMyCart';
-// import { getCartById } from '../cart/getCartById';
 import getCustomerToken from '../tokens/getCustomerToken';
 import { getAllCustomersEmails } from './getAllCustomers';
 import { fillUserState } from './getCustomerByID';
@@ -13,7 +12,7 @@ const incorrectPassText = `The password you entered is incorrect, please try aga
 export const loginCustomer = async (username: string, password: string): Promise<void> => {
   const signinHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
+    Authorization: `Bearer ${JSON.parse(localStorage.anonymous_token).access_token}`,
   };
 
   const requestOptions = {
@@ -74,7 +73,7 @@ export const loginCustomer = async (username: string, password: string): Promise
 export const loginAfterRegistration = async (username: string, password: string): Promise<void> => {
   const signinHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
+    Authorization: `Bearer ${JSON.parse(localStorage.anonymous_token).access_token}`,
   };
 
   const requestOptions = {

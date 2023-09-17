@@ -1,12 +1,16 @@
 .promo__item {
   display: flex;
-  max-width: 1100px;
+  max-width: 1280px;
   margin: 0 auto;
   margin-bottom: 20px;
 }
 
 .promo__item-1 {
   flex-direction: row-reverse;
+
+  .promo__info-block {
+    background-color: $background-beige;
+  }
 }
 
 .promo__img {
@@ -43,10 +47,16 @@
 .promo__info-text {
   font-size: 1.4em;
   margin-bottom: 15px;
+  text-align: center;
 
   span {
     font-weight: 600;
     cursor: pointer;
+  }
+
+  div {
+    font-size: 0.7em;
+    font-weight: 600;
   }
 }
 
@@ -74,6 +84,10 @@
   }
 
   .promo__info-text {
-    font-size: 1.2em;
+    font-size: 1.1em;
+
+    div {
+      font-size: 0.8em;
+    }
   }
 }

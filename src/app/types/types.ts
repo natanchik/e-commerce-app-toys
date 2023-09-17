@@ -194,6 +194,10 @@ export interface LineItem {
   variant: ProductVariant;
   quantity: number;
   price: Price;
+  discountedPrice: {
+    includedDiscounts: object[];
+    value: { type: string; currencyCode: string; centAmount: number; fractionDigits: number };
+  };
   totalPrice: TypedMoney;
 }
 
@@ -202,6 +206,7 @@ export interface Cart {
   version: number;
   lineItems: LineItem[];
   totalPrice: TypedMoney;
-  discountCodes: string[];
+  discountCodes: [] | { discountCode: { typeId: string; id: string }; state: string }[];
   origin: string;
+  totalLineItemQuantity: number;
 }

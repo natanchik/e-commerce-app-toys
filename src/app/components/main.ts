@@ -17,7 +17,7 @@ import {
 } from '../state/state';
 import Catalog from '../pages/catalog';
 import Filters from './filters';
-import { sorterParametrs } from './constants';
+import { promoCodes, sorterParametrs } from './constants';
 import getProductsBySearch from '../api/getProduct/getProductsBySearch';
 import { addNewQueryParam } from '../api/helpers/utils';
 import {
@@ -38,6 +38,7 @@ import {
 } from '../components/handlers';
 import { getMyCarts } from '../api/cart/getMyCarts';
 import { changeLineItem } from '../api/cart/addOrRemoveLineItem';
+import { changeDiscountCode } from '../api/cart/changeDiscountCode';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -406,7 +407,7 @@ class Main {
   }
 
   private setEventListeners(router: Router): void {
-    document.addEventListener('click', (event: Event) => {
+    document.addEventListener('click', async (event: Event) => {
       const target = event.target as HTMLElement;
 
       if (target.classList.contains('sidebar__link') && target.dataset.page === 'main') {
@@ -633,6 +634,32 @@ class Main {
         changeLineItem(target.id.slice(6), 'remove').then(() => {
           router.navigate(pages.CART);
         });
+      }
+
+      if (target.classList.contains('cart__discont-btn')) {
+        const discountInput = document.querySelector('.cart-input') as HTMLInputElement;
+        const enteredCode = discountInput.value.toUpperCase();
+        const errorBlock = document.querySelector('.error-message') as HTMLParagraphElement;
+        if (enteredCode) {
+          await changeDiscountCode(enteredCode, '', 'add');
+          if (!errorBlock.textContent) {
+            router.navigate(pages.CART);
+          }
+        }
+      }
+
+      if (target.classList.contains('cart__delete-discont')) {
+        const deletedCode = target.textContent;
+        const errorBlock = document.querySelector('.error-message') as HTMLParagraphElement;
+        const discountData = promoCodes.find((promo) => {
+          return promo.promocode === deletedCode;
+        });
+        if (discountData) {
+          await changeDiscountCode('', discountData.discountID, 'remove');
+          if (!errorBlock.textContent) {
+            router.navigate(pages.CART);
+          }
+        }
       }
 
       if (target.parentElement?.classList.contains('catalog__product')) {

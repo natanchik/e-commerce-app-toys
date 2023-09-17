@@ -155,7 +155,7 @@
     display: inline-block;
     border: 1px solid $green;
     height: 25px;
-    max-width: 100px;
+    max-width: 60px;
 
     &:active,
     &:focus,
@@ -168,10 +168,42 @@
     text-decoration: underline;
     background-color: white;
   }
+
+  .cart__delete-discont {
+    display: none;
+    margin-left: 10px;
+    padding-right: 17px;
+    background-image: url(../assets/icons/sidebar-close.svg);
+    background-size: 13px 13px;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-color: transparent;
+    color: $blue;
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+
+  .active-discount-btn {
+    display: block;
+  }
+
+  .inactive-discount-btn {
+    display: none;
+  }
+
+  .incorrect-code {
+    margin: 0 10px;
+  }
 }
 
 .cart__item__empty-discount {
   display: none;
+}
+
+.cart__discount-sum {
+  color: $wine;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 @media (max-width: 520px) {
