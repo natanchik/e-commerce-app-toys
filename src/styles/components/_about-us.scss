@@ -13,6 +13,7 @@
 
 .about-us__common-info {
   max-width: 50%;
+  line-height: 1.4;
 }
 
 .rs-school-logo {
@@ -20,20 +21,27 @@
   width: 80px;
   height: 35px;
   margin: 0 auto;
+  margin-top: 20px;
   background-image: url('../assets/icons/rs_school.svg');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .about-us__common-img,
-.teammate_img-0,
-.teammate_img-1,
-.teammate_img-2 {
-  width: 250px;
-  height: 250px;
+.teammate_img {
   background-size: contain;
   background-repeat: no-repeat;
   border-radius: 100%;
+}
+
+.about-us__common-img {
+  width: 250px;
+  height: 250px;
+}
+
+.teammate_img {
+  width: 200px;
+  height: 200px;
 }
 
 .about-us__common-img {
@@ -74,6 +82,7 @@
 
 .teammate_socials {
   display: flex;
+  align-items: center;
   gap: 10px;
 }
 
@@ -104,11 +113,11 @@
 
 .teammate_info-bio {
   text-align: justify;
+  line-height: 1.4;
 }
 
 .teammate_info-name {
-  margin-bottom: 5px;
-  font-size: 2em;
+  font-size: 1.9em;
   color: $blue;
   font-weight: 600;
 }
