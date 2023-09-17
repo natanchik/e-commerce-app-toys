@@ -111,16 +111,23 @@
 
 .profile__address {
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: 10px;
+  align-items: center;
 
   &.change {
-    background-color: $background-blue;
+    padding-top: 10px;
     border: 1px solid $background-blue;
   }
 
   & p {
     margin-left: 10px;
   }
+}
+
+.profile__address__edit-text {
+  margin: 0 10px 0 auto;
+  color: $wine;
 }
 
 .profile__address__btn-block {
@@ -138,12 +145,17 @@
   right: 40px;
 }
 
+.profile__address__default-btn {
+  margin-right: auto;
+}
+
 .profile__address__title {
   margin-bottom: 10px;
 }
 
 .profile__address__btn {
   margin-left: 20px;
+  margin-bottom: 10px;
   height: fit-content;
   background-color: white;
   opacity: 0.5;
@@ -188,3 +200,4 @@
   color: darken($color: $disabled, $amount: 40%);
   cursor: auto;
 }
+
