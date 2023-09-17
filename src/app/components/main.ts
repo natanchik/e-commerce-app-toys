@@ -246,7 +246,7 @@ class Main {
         router.navigate(`${pages.CATALOG}/${currentID}`);
       }
 
-      if (target.classList.contains('product__buttons') || target.classList.contains('product__button')) {
+      if (target.classList.contains('product__buttons_active') || target.classList.contains('product__button')) {
         event.stopPropagation();
         await toggleCatalogAddProductButton(target);
       }
