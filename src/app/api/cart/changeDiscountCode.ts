@@ -1,3 +1,5 @@
+import User from '../../components/user';
+
 export const changeDiscountCode = async (
   code?: string,
   discountID?: string,
@@ -5,7 +7,11 @@ export const changeDiscountCode = async (
 ): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
+    Authorization: `Bearer ${
+      User.isLogged()
+        ? JSON.parse(localStorage.token_info).access_token
+        : JSON.parse(localStorage.anonymous_token).access_token
+    }`,
   };
 
   const cart = JSON.parse(localStorage.cart);
