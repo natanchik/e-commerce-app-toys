@@ -62,6 +62,10 @@
 
 .cart__item__title {
   text-align: left;
+  cursor: pointer;
+  &:hover {
+    color: $blue;
+  }
 }
 
 .cart__item__img-block {

@@ -57,6 +57,7 @@ export default class CartPage {
     itemImgBlock.append(itemImg);
 
     const itemTitle = createElement('div', ['cart__item', 'cart__item__title'], lineitem.name['en-US']);
+    itemTitle.dataset.id = `${lineitem.productId}`;
 
     const itemPrice = createElement('div', ['cart__item', 'cart__item__price']);
     const itemTotalPrice = createElement(

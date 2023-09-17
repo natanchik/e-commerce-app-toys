@@ -284,6 +284,11 @@ class Main {
       if (target.classList.contains('cart__item__btn-delete')) {
         await changeCartItemQuantityFromCart(target, router, 'remove');
       }
+
+      if (target.classList.contains('cart__item__title')) {
+        const currentID = target.dataset.id;
+        router.navigate(`${pages.CATALOG}/${currentID}`);
+      }
     });
 
     document.addEventListener('submit', async (event: Event) => {
