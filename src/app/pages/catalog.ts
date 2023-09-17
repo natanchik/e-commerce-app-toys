@@ -84,11 +84,15 @@ class Catalog {
     }
   }
 
-  static async haveMoreProducts(): Promise<boolean> {
+  static async haveMoreProducts(searchProductsAmount: number): Promise<boolean> {
     const allProductsAmount: number = (await getAllProducts(500)).length;
     const currentAmount: number = (await getAllProducts(productLimit.limit)).length;
 
-    return allProductsAmount <= currentAmount;
+    if (searchProductsAmount > 0) {
+      return searchProductsAmount <= currentAmount;
+    }
+    
+    return (allProductsAmount <= currentAmount);
   }
 
   static async drawProducts(): Promise<void> {
@@ -136,7 +140,7 @@ class Catalog {
       loadMore.append(loadMoreButton);
       products.append(loadMore);
 
-      if (await this.haveMoreProducts()) loadMoreButton.disabled = true;
+      if (await this.haveMoreProducts(searchProducts.length)) loadMoreButton.disabled = true;
     } else {
       products.innerHTML = 'Sorry, no products matched your selection.';
     }

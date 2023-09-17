@@ -1,5 +1,5 @@
 import { addUserState } from '../../helpers/utils';
-import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
+import { addProfileWarning, removeProfileWarning } from '../../../handlers/handlers-profile';
 
 const makeAddressDefault = async (target: HTMLElement, type: string): Promise<void> => {
   const myHeaders = {

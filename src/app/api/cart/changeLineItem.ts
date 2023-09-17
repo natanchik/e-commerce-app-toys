@@ -1,5 +1,5 @@
 import User from '../../components/user';
-import { showWarning } from '../../components/handlers';
+import { showWarning } from '../../handlers/handlers-profile';
 import { Cart } from '../../types/types';
 import { getLineItemId } from '../helpers/utils';
 

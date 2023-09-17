@@ -21,7 +21,7 @@ import {
   handlerProfileEditMode,
   handlerDefaultAddress,
   clearCart,
-} from '../components/handlers';
+} from '../handlers/handlers-profile';
 import {
   addFilterNavigationForCheckbox,
   addFilterNavigationForPrices,
@@ -33,8 +33,8 @@ import {
   loadMoreProducts,
   redrawProducts,
   toggleCatalogAddProductButton,
-} from './handlers-catalog';
-import { changeCartItemQuantityFromCart } from './handlers-cart';
+} from '../handlers/handlers-catalog';
+import { changeCartItemQuantityFromCart } from '../handlers/handlers-cart';
 import {
   toggleCardAddProductButton,
   changeCartItemQuantityFromCard,
@@ -42,9 +42,9 @@ import {
   switchPrevSlide,
   getImagebyMini,
   toggleCardModal,
-} from './handlers-card';
+} from '../handlers/handlers-card';
 import Header from './header';
-import { loginViaForm, registerViaForm } from './handlers-autorizarion';
+import { loginViaForm, registerViaForm } from '../handlers/handlers-autorizarion';
 
 class Main {
   mainElement: HTMLDivElement;
@@ -139,7 +139,7 @@ class Main {
       }
 
       if (target.classList.contains('profile__update')) {
-        handlersProfileUpdates(target);
+        await handlersProfileUpdates(target);
       }
 
       if (target.classList.contains('profile__address__delete-btn')) {
@@ -150,10 +150,10 @@ class Main {
       }
 
       if (target.classList.contains('profile__address__edit-btn')) {
-        handlerProfileEditMode(target);
+        await handlerProfileEditMode(target);
       }
       if (target.classList.contains('profile__address__default-btn')) {
-        handlerDefaultAddress(target);
+        await handlerDefaultAddress(target);
       }
 
       if (target.classList.contains('main-page__page')) {
@@ -310,15 +310,15 @@ class Main {
       }
 
       if (target.classList.contains('profile__password__form')) {
-        handlerChangePaswwordSubmit(event, target);
+        await handlerChangePaswwordSubmit(event, target);
       }
 
       if (target.classList.contains('profile__e-mail__form')) {
-        handlerChangeEmailSubmit(event, target);
+        await handlerChangeEmailSubmit(event, target);
       }
 
       if (target.classList.contains('profile__address__form')) {
-        handlerAddAddressSubmit(event, target);
+        await handlerAddAddressSubmit(event, target);
       }
     });
 

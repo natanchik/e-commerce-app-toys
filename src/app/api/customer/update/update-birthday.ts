@@ -1,5 +1,5 @@
 import { pushCurrentAction, addUserState } from '../../helpers/utils';
-import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
+import { addProfileWarning, removeProfileWarning } from '../../../handlers/handlers-profile';
 
 const updateCustomerBirthday = async (birthday: string): Promise<void> => {
   const myHeaders = {

@@ -13,10 +13,10 @@ import {
   productLimit,
   productTypesSelectedIds,
 } from '../state/state';
-import { sorterParametrs } from './constants';
-import Header from './header';
-import Sidebar from './sidebar';
-import { encodeText } from './utils';
+import { sorterParametrs } from '../components/constants';
+import Header from '../components/header';
+import Sidebar from '../components/sidebar';
+import { encodeText } from '../components/utils';
 
 export const toggleCatalogAddProductButton = async (target: HTMLElement): Promise<void> => {
   if (!localStorage.cart) await createMyCart();

@@ -1,6 +1,6 @@
 import { addUserState } from '../../helpers/utils';
 import getCustomerToken from '../../tokens/getCustomerToken';
-import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
+import { addProfileWarning, removeProfileWarning } from '../../../handlers/handlers-profile';
 
 const customerURL = `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/password`;
 

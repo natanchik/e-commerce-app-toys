@@ -3,7 +3,7 @@ import { loginCustomer } from '../api/customer/loginCustomer';
 import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import { pages } from '../router/pages';
 import Router from '../router/router';
-import User from './user';
+import User from '../components/user';
 
 export const loginViaForm = async (target: HTMLFormElement, router: Router): Promise<void> => {
   const submitBtn = document.querySelector('.auth-btn.submit-login') as HTMLButtonElement;

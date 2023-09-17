@@ -1,5 +1,5 @@
 import { discountID } from '../../components/constants';
-import { showWarning } from '../../components/handlers';
+import { showWarning } from '../../handlers/handlers-profile';
 
 export const changeDiscountCode = async (
   code: string,
