@@ -1,12 +1,13 @@
 import Filters from '../components/filters';
 import Header from '../components/header';
 import { createElement, getLineItem } from '../components/utils';
-import { catalogQueryParams } from '../state/state';
+import { catalogQueryParams, productLimit } from '../state/state';
 import { Category, LineItem, Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
     localStorage.removeItem('search_products');
+    productLimit.limit = 12;
   }
 
   public async drawCatalog(): Promise<HTMLDivElement> {
@@ -115,8 +116,8 @@ class Catalog {
         const productBlock = this.drawProduct(product);
         products.append(productBlock);
       });
-      const loadMore = createElement('div', ['catalog__load-more-button']) as HTMLDivElement;
-      const loadMoreButton = createElement('button', ['button', 'button_white'], 'load more') as HTMLButtonElement;
+      const loadMore = createElement('div', ['catalog__load-more']) as HTMLDivElement;
+      const loadMoreButton = createElement('button', ['catalog__load-more-button', 'button', 'button_white'], 'load more') as HTMLButtonElement;
       loadMore.append(loadMoreButton);
       products.append(loadMore);
     } else {

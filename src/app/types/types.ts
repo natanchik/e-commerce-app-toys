@@ -206,3 +206,7 @@ export interface Cart {
   origin: string;
   totalLineItemQuantity: number;
 }
+
+export interface ProductLimit {
+  limit: number;
+}

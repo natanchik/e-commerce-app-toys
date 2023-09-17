@@ -10,6 +10,7 @@ import {
   catalogQueryParams,
   productAgeSelectedIds,
   productGendersSelectedIds,
+  productLimit,
   productTypesSelectedIds,
 } from '../state/state';
 import { sorterParametrs } from './constants';
@@ -44,6 +45,7 @@ export const redrawProducts = async (): Promise<void> => {
 };
 
 export const addFilterNavigationForCheckbox = (currentTarget: HTMLInputElement): void => {
+  productLimit.limit = 12;
   if (currentTarget.checked === true) {
     switch (currentTarget.dataset.filters) {
       case 'age':
@@ -151,6 +153,7 @@ export const addFilterNavigationForSelect = (currentTarget: HTMLSelectElement): 
 };
 
 export const addFilterNavigationForSearch = async (currentTarget: HTMLInputElement): Promise<void> => {
+  productLimit.limit = 12;
   const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
   close.classList.remove('filters__close_hidden');
   if (currentTarget.value.length === 0) {
@@ -165,6 +168,7 @@ export const addFilterNavigationForSearch = async (currentTarget: HTMLInputEleme
 };
 
 export const clearFilterForSearch = (): void => {
+  productLimit.limit = 12;
   const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
   const search = document.querySelector('.filters__search') as HTMLInputElement;
   search.value = '';
@@ -174,6 +178,7 @@ export const clearFilterForSearch = (): void => {
 };
 
 export const addFilterNavigationForPrices = (): void => {
+  productLimit.limit = 12;
   const close = document.querySelector('.filters__close_prices') as HTMLParagraphElement;
   close.classList.remove('filters__close_hidden');
   const from = document.getElementById('price-from') as HTMLInputElement;
@@ -189,6 +194,7 @@ export const addFilterNavigationForPrices = (): void => {
 };
 
 export const clearFilterForPrices = (): void => {
+  productLimit.limit = 12;
   const from = document.getElementById('price-from') as HTMLInputElement;
   const to = document.getElementById('price-to') as HTMLInputElement;
   from.value = '';
@@ -206,7 +212,8 @@ export const addNavigationForSidebar = async (
   if (currentTarget.dataset.page !== 'catalog') {
     addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`);
   }
-
+  
+  productLimit.limit = 12;
   await getAllProducts();
 
   sidebar.closeSidebar();
@@ -216,3 +223,24 @@ export const addNavigationForSidebar = async (
     router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
   }
 };
+
+// const haveMoreProducts = async (): Promise<boolean> => {
+//   const allProductsAmount: number = await getAllProducts(500);
+//   const currentAmount: number = await getAllProducts();
+
+//   return allProductsAmount > currentAmount;
+// }
+
+export const loadMoreProducts = async (target: HTMLElement): Promise<void> => {
+  const currentTarget = target as HTMLButtonElement;
+
+  productLimit.limit += 12;
+  console.log(productLimit.limit);
+  
+  currentTarget.disabled = true;
+  await redrawProducts();
+  
+  // if (await haveMoreProducts) {
+  //   currentTarget.disabled = false;
+  // }
+} 

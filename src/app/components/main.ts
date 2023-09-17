@@ -30,6 +30,7 @@ import {
   addNavigationForSidebar,
   clearFilterForPrices,
   clearFilterForSearch,
+  loadMoreProducts,
   redrawProducts,
   toggleCatalogAddProductButton,
 } from './handlers-catalog';
@@ -260,6 +261,10 @@ class Main {
         clearCart().then(() => {
           router.navigate(pages.CART);
         });
+      }
+
+      if (target.classList.contains('catalog__load-more-button')) {
+        await loadMoreProducts(target);
       }
 
       if (target.classList.contains('cart__link-to-catalog')) {

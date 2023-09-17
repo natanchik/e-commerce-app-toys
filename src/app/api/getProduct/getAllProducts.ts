@@ -1,5 +1,5 @@
 import { generateQueryParams } from '../helpers/utils';
-import { catalogQueryParams } from '../../state/state';
+import { catalogQueryParams, productLimit } from '../../state/state';
 
 const getAllProducts = async (): Promise<void> => {
   const myHeaders = {
@@ -13,7 +13,7 @@ const getAllProducts = async (): Promise<void> => {
   };
 
   return fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/products?limit=500${
+    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/products?limit=${productLimit.limit}${
       catalogQueryParams.size > 0 ? generateQueryParams(catalogQueryParams) : ''
     }`,
     requestOptions,
@@ -27,8 +27,10 @@ const getAllProducts = async (): Promise<void> => {
     })
     .then((result) => {
       if (catalogQueryParams.size === 0) {
+        console.log('all-products');
         localStorage.setItem('all_products', JSON.stringify(result.results));
       } else {
+        console.log('sorted-products');
         localStorage.setItem('sorted_products', JSON.stringify(result.results));
       }
     })
