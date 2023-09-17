@@ -208,4 +208,5 @@ export interface Cart {
   totalPrice: TypedMoney;
   discountCodes: [] | { discountCode: { typeId: string; id: string }; state: string }[];
   origin: string;
+  totalLineItemQuantity: number;
 }

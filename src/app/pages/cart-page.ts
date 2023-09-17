@@ -24,14 +24,12 @@ export default class CartPage {
       '<h4>Your cart is empty...</h4><p>You can visit <a class="cart__link-to-catalog" href="">Catalog</a> to add products to it...</p>',
     );
     emptyCartBlock.append(emptyCartImage, emptyCartMessage);
-    let itemsTotalAmount = 0;
     if (cart) {
       const products: LineItem[] = cart.lineItems;
       if (products.length) {
         emptyCartBlock.className = 'cart__empty cart__hidden';
         products.forEach((product, ind) => {
           this.addCartItem(product, ind, cartGrid);
-          itemsTotalAmount += product.quantity;
         });
 
         this.addTotalToCart(cart, cartGrid);
@@ -44,7 +42,7 @@ export default class CartPage {
       emptyCartBlock.className = 'cart__empty';
     }
     const itemsTotalAmountDisplay = document.querySelector('.header__icon-bascket__count');
-    if (itemsTotalAmountDisplay) itemsTotalAmountDisplay.textContent = `${itemsTotalAmount}`;
+    if (itemsTotalAmountDisplay) itemsTotalAmountDisplay.textContent = `${cart.totalLineItemQuantity}`;
     const warning = createElement('div', ['cart__warning']);
     cartPage.append(cartHeader, emptyCartBlock, warning, cartGrid);
     return cartPage;
@@ -61,22 +59,28 @@ export default class CartPage {
     const itemTitle = createElement('div', ['cart__item', 'cart__item__title'], lineitem.name['en-US']);
 
     const itemPrice = createElement('div', ['cart__item', 'cart__item__price']);
-    const itemTotalPrice = createElement(
+    const itemSum = createElement(
       'div',
       ['cart__item', 'cart__item__price'],
       `<p>${(lineitem.totalPrice.centAmount / 100).toFixed(2)}</p>`,
     );
     const fullPrice = createElement('p', [], `${(lineitem.price.value.centAmount / 100).toFixed(2)}`);
-    if (lineitem.price.discounted) {
-      fullPrice.classList.add('cart__item__price-full');
-      const discountPrice = createElement('p', [], `${(lineitem.price.discounted.value.centAmount / 100).toFixed(2)}`);
-      const oldTotalPrice = createElement(
+    if (lineitem.price.discounted || lineitem.discountedPrice) {
+      if (lineitem.price.discounted) {
+        fullPrice.classList.add('cart__item__price-full');
+        const discountPrice = createElement(
+          'p',
+          [],
+          `${(lineitem.price.discounted.value.centAmount / 100).toFixed(2)}`,
+        );
+        itemPrice.append(discountPrice);
+      }
+      const oldSum = createElement(
         'p',
         ['cart__item__price-full'],
         `${((lineitem.price.value.centAmount / 100) * lineitem.quantity).toFixed(2)}`,
       );
-      itemPrice.append(discountPrice);
-      itemTotalPrice.append(oldTotalPrice);
+      itemSum.append(oldSum);
     }
     itemPrice.append(fullPrice);
 
@@ -92,7 +96,7 @@ export default class CartPage {
     amountBlock.append(minusBtn, amountTablo, plusBtn);
     itemAmounts.append(amountBlock, itemDelete);
 
-    cartList.append(itemIndex, itemImgBlock, itemTitle, itemPrice, itemAmounts, itemTotalPrice);
+    cartList.append(itemIndex, itemImgBlock, itemTitle, itemPrice, itemAmounts, itemSum);
   }
 
   private addTotalToCart(cart: Cart, parent: HTMLDivElement): void {
@@ -100,7 +104,7 @@ export default class CartPage {
     const totalSumTitle = createElement('div', ['cart__item', 'cart__sum-title'], 'Total sum (USD)');
 
     const emptyBlock2 = createElement('div', ['cart__item', 'cart__item__empty-left']);
-    const discountTitle = createElement('div', ['cart__item', 'cart__discount-title'], 'Discount code');
+    const discountTitle = createElement('div', ['cart__item', 'cart__discount-title'], 'Discount');
     const discountCode = createInputElement('text', '', 'cart__discount-code', 'cart', false);
     const btn = createElement('button', ['cart__discont-btn'], 'apply code', { width: 'content' });
     const appliedCode = createElement('button', ['cart__delete-discont']);
@@ -110,7 +114,7 @@ export default class CartPage {
     cart.lineItems.forEach((lineItem) => {
       sumTotal += (lineItem.price.value.centAmount / 100) * lineItem.quantity;
     });
-    let sumWithDiscount = sumTotal;
+    const sumWithDiscount = +(cart.totalPrice.centAmount / 100).toFixed(2);
 
     if (cart.discountCodes.length) {
       const currentDiscountID = cart.discountCodes[0].discountCode.id;
@@ -120,15 +124,6 @@ export default class CartPage {
       btn.style.display = 'none';
       appliedCode.style.display = 'block';
       appliedCode.textContent = discountData?.promocode as string;
-
-      sumWithDiscount = 0;
-      cart.lineItems.forEach((lineItem) => {
-        if (lineItem.discountedPrice) {
-          sumWithDiscount += (lineItem.discountedPrice.value.centAmount / 100) * lineItem.quantity;
-        } else {
-          sumWithDiscount += (lineItem.price.value.centAmount / 100) * lineItem.quantity;
-        }
-      });
     }
 
     const totalSum = createElement('div', ['cart__item', 'cart__sum'], `${sumTotal.toFixed(2)}`);
