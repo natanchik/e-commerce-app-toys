@@ -16,13 +16,13 @@ export const toggleCardAddProductButton = async (target: HTMLElement, router: Ro
     changeLineItem(id, 'remove').then(() => {
       target.innerText = 'add to cart';
       target.classList.add('button_green');
-      router.navigate(`${pages.CATALOG}/${id}`);
+      router.navigate(`${pages.CATALOG}/${id}`, true);
     });
   } else {
     changeLineItem(id, 'add', 1).then(() => {
       target.innerText = 'remove from cart';
       target.classList.remove('button_green');
-      router.navigate(`${pages.CATALOG}/${id}`);
+      router.navigate(`${pages.CATALOG}/${id}`, true);
     });
   }
 };
@@ -36,7 +36,7 @@ export const changeCartItemQuantityFromCard = async (
   const id = await getId(target);
 
   changeLineItem(id, action, 1).then(() => {
-    router.navigate(`${pages.CATALOG}/${id}`);
+    router.navigate(`${pages.CATALOG}/${id}`, true);
   });
 };
 

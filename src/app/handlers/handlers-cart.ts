@@ -12,6 +12,6 @@ export const changeCartItemQuantityFromCart = (
     if (btn instanceof HTMLButtonElement) btn.disabled = true;
   });
   changeLineItem(target.dataset.id, action, 1).then(() => {
-    router.navigate(pages.CART);
+    router.navigate(pages.CART, true);
   });
 };
