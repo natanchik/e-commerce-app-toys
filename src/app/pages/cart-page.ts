@@ -24,16 +24,14 @@ export default class CartPage {
       '<h4>Your cart is empty...</h4><p>You can visit <a class="cart__link-to-catalog" href="">Catalog</a> to add products to it...</p>',
     );
     emptyCartBlock.append(emptyCartImage, emptyCartMessage);
-    let itemsTotalAmount: number = 0;
+
     if (cart) {
       const products: LineItem[] = cart.lineItems;
       if (products.length) {
         emptyCartBlock.className = 'cart__empty cart__hidden';
         products.forEach((product, ind) => {
           this.addCartItem(product, ind, cartGrid);
-          itemsTotalAmount += product.quantity;
         });
-
         this.addTotalToCart(cart, cartGrid);
       } else {
         cartHeader.className = 'cart__header cart__hidden';

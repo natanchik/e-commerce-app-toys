@@ -1,3 +1,4 @@
+import getAllProducts from '../api/getProduct/getAllProducts';
 import Filters from '../components/filters';
 import Header from '../components/header';
 import { createElement, getLineItem } from '../components/utils';
@@ -7,7 +8,6 @@ import { Category, LineItem, Price, Product } from '../types/types';
 class Catalog {
   constructor() {
     localStorage.removeItem('search_products');
-    productLimit.limit = 12;
   }
 
   public async drawCatalog(): Promise<HTMLDivElement> {
@@ -26,6 +26,9 @@ class Catalog {
     catalog.append(breadcrumbs, content);
 
     Header.addProductsNumberInBasket();
+
+    productLimit.limit = 12;
+    await getAllProducts();
 
     return catalog;
   }
@@ -81,7 +84,14 @@ class Catalog {
     }
   }
 
-  static drawProducts(): void {
+  static async haveMoreProducts(): Promise<boolean> {
+    const allProductsAmount: number = (await getAllProducts(500)).length;
+    const currentAmount: number = (await getAllProducts(productLimit.limit)).length;
+
+    return allProductsAmount <= currentAmount;
+  }
+
+  static async drawProducts(): Promise<void> {
     const products = document.querySelector('.catalog__products') as HTMLDivElement;
     products.innerHTML = '';
     let currentProducts: Product[] = [];
@@ -116,10 +126,17 @@ class Catalog {
         const productBlock = this.drawProduct(product);
         products.append(productBlock);
       });
+
       const loadMore = createElement('div', ['catalog__load-more']) as HTMLDivElement;
-      const loadMoreButton = createElement('button', ['catalog__load-more-button', 'button', 'button_white'], 'load more') as HTMLButtonElement;
+      const loadMoreButton = createElement(
+        'button',
+        ['catalog__load-more-button', 'button', 'button_white'],
+        'load more',
+      ) as HTMLButtonElement;
       loadMore.append(loadMoreButton);
       products.append(loadMore);
+
+      if (await this.haveMoreProducts()) loadMoreButton.disabled = true;
     } else {
       products.innerHTML = 'Sorry, no products matched your selection.';
     }

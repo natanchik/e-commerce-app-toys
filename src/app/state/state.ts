@@ -1,4 +1,4 @@
-import { ProductLimit } from "../types/types";
+import { ProductLimit } from '../types/types';
 
 export const catalogQueryParams = new Map();
 
@@ -11,5 +11,5 @@ export const productGendersSelectedIds: Set<string> = new Set();
 export const productTypesSelectedIds: Set<string> = new Set();
 
 export const productLimit: ProductLimit = {
-  limit: 12
+  limit: 12,
 };

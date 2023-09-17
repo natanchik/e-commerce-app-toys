@@ -1,7 +1,7 @@
 import getProductByID from '../api/getProduct/getProductByID';
 import Header from '../components/header';
 import { createElement, createImageElement } from '../components/utils';
-import { Product, Price, Cart, LineItem } from '../types/types';
+import { Product, Price, LineItem } from '../types/types';
 
 class Card {
   id: string;

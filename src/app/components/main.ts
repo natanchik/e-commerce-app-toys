@@ -1,4 +1,4 @@
-import { createElement, encodeText } from './utils';
+import { createElement } from './utils';
 import Sidebar from './sidebar';
 import Router from '../router/router';
 import { pages } from '../router/pages';
@@ -191,15 +191,15 @@ class Main {
       }
 
       if (target.classList.contains('product-card__add-to-cart')) {
-        toggleCardAddProductButton(target, router);
+        await toggleCardAddProductButton(target, router);
       }
 
       if (target.classList.contains('product-card__increase-quantity')) {
-        changeCartItemQuantityFromCard(target, router, 'add');
+        await changeCartItemQuantityFromCard(target, router, 'add');
       }
 
       if (target.classList.contains('product-card__decrease-quantity')) {
-        changeCartItemQuantityFromCard(target, router, 'decrease');
+        await changeCartItemQuantityFromCard(target, router, 'decrease');
       }
 
       if (target.classList.contains('filters__item')) {
@@ -208,12 +208,12 @@ class Main {
 
       if (target.classList.contains('filters__checkbox')) {
         const currentTarget = target as HTMLInputElement;
-        addFilterNavigationForCheckbox(currentTarget);
+        await addFilterNavigationForCheckbox(currentTarget);
       }
 
       if (target.classList.contains('filters__button')) {
         Filters.resetAllFilters();
-        redrawProducts();
+        await redrawProducts();
       }
 
       if (target.classList.contains('mobile-filters__item')) {
@@ -221,15 +221,15 @@ class Main {
       }
 
       if (target.classList.contains('filters__apply_prices')) {
-        addFilterNavigationForPrices();
+        await addFilterNavigationForPrices();
       }
 
       if (target.classList.contains('filters__close_prices')) {
-        clearFilterForPrices();
+        await clearFilterForPrices();
       }
 
       if (target.classList.contains('filters__close_search')) {
-        clearFilterForSearch();
+        await clearFilterForSearch();
       }
 
       if (
@@ -238,7 +238,7 @@ class Main {
         target.classList.contains('catalog__breadcrumb')
       ) {
         const currentTarget = target as HTMLLIElement;
-        addNavigationForSidebar(currentTarget, router, this.sidebar);
+        await addNavigationForSidebar(currentTarget, router, this.sidebar);
       }
 
       if (target.classList.contains('catalog__product')) {
@@ -248,7 +248,7 @@ class Main {
 
       if (target.classList.contains('product__buttons') || target.classList.contains('product__button')) {
         event.stopPropagation();
-        toggleCatalogAddProductButton(target);
+        await toggleCatalogAddProductButton(target);
       }
 
       if (target.parentElement?.classList.contains('catalog__product')) {
@@ -274,15 +274,15 @@ class Main {
       }
 
       if (target.classList.contains('cart__item__btn-plus')) {
-        changeCartItemQuantityFromCart(target, router, 'add');
+        await changeCartItemQuantityFromCart(target, router, 'add');
       }
 
       if (target.classList.contains('cart__item__btn-minus')) {
-        changeCartItemQuantityFromCart(target, router, 'decrease');
+        await changeCartItemQuantityFromCart(target, router, 'decrease');
       }
 
       if (target.classList.contains('cart__item__btn-delete')) {
-        changeCartItemQuantityFromCart(target, router, 'remove');
+        await changeCartItemQuantityFromCart(target, router, 'remove');
       }
     });
 

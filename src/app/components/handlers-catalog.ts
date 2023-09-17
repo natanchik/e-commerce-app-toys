@@ -41,10 +41,10 @@ export const deleteSortFromQueryParam = (): void => {
 
 export const redrawProducts = async (): Promise<void> => {
   await getAllProducts();
-  Catalog.drawProducts();
+  await Catalog.drawProducts();
 };
 
-export const addFilterNavigationForCheckbox = (currentTarget: HTMLInputElement): void => {
+export const addFilterNavigationForCheckbox = async (currentTarget: HTMLInputElement): Promise<void> => {
   productLimit.limit = 12;
   if (currentTarget.checked === true) {
     switch (currentTarget.dataset.filters) {
@@ -77,7 +77,7 @@ export const addFilterNavigationForCheckbox = (currentTarget: HTMLInputElement):
         );
         break;
     }
-    redrawProducts();
+    await redrawProducts();
   } else {
     switch (currentTarget.dataset.filters) {
       case 'age':
@@ -118,36 +118,36 @@ export const addFilterNavigationForCheckbox = (currentTarget: HTMLInputElement):
         }
         break;
     }
-    redrawProducts();
+    await redrawProducts();
   }
 };
 
-export const addFilterNavigationForSelect = (currentTarget: HTMLSelectElement): void => {
+export const addFilterNavigationForSelect = async (currentTarget: HTMLSelectElement): Promise<void> => {
   switch (currentTarget.value) {
     case 'name-asc':
       deleteSortFromQueryParam();
       addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20asc`);
-      redrawProducts();
+      await redrawProducts();
       break;
     case 'name-desc':
       deleteSortFromQueryParam();
       addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20desc`);
-      redrawProducts();
+      await redrawProducts();
       break;
     case 'price-asc':
       deleteSortFromQueryParam();
       addNewQueryParam(currentTarget.value, 'sort', `key%20asc`);
-      redrawProducts();
+      await redrawProducts();
       break;
     case 'price-desc':
       deleteSortFromQueryParam();
       addNewQueryParam(currentTarget.value, 'sort', `key%20desc`);
-      redrawProducts();
+      await redrawProducts();
       break;
     default:
       localStorage.removeItem('sorted_products');
       deleteSortFromQueryParam();
-      redrawProducts();
+      await redrawProducts();
       break;
   }
 };
@@ -158,7 +158,7 @@ export const addFilterNavigationForSearch = async (currentTarget: HTMLInputEleme
   close.classList.remove('filters__close_hidden');
   if (currentTarget.value.length === 0) {
     localStorage.removeItem('search_products');
-    Catalog.drawProducts();
+    await Catalog.drawProducts();
     close.classList.add('filters__close_hidden');
   } else {
     await getProductsBySearch(encodeText(currentTarget.value)).then(() => {
@@ -167,17 +167,17 @@ export const addFilterNavigationForSearch = async (currentTarget: HTMLInputEleme
   }
 };
 
-export const clearFilterForSearch = (): void => {
+export const clearFilterForSearch = async (): Promise<void> => {
   productLimit.limit = 12;
   const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
   const search = document.querySelector('.filters__search') as HTMLInputElement;
   search.value = '';
   localStorage.removeItem('search_products');
   close.classList.add('filters__close_hidden');
-  redrawProducts();
+  await redrawProducts();
 };
 
-export const addFilterNavigationForPrices = (): void => {
+export const addFilterNavigationForPrices = async (): Promise<void> => {
   productLimit.limit = 12;
   const close = document.querySelector('.filters__close_prices') as HTMLParagraphElement;
   close.classList.remove('filters__close_hidden');
@@ -190,17 +190,17 @@ export const addFilterNavigationForPrices = (): void => {
     'where',
     `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%20or%20discounted%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%29%29%29%29%29%29`,
   );
-  redrawProducts();
+  await redrawProducts();
 };
 
-export const clearFilterForPrices = (): void => {
-  productLimit.limit = 12;
+export const clearFilterForPrices = async (): Promise<void> => {
   const from = document.getElementById('price-from') as HTMLInputElement;
   const to = document.getElementById('price-to') as HTMLInputElement;
   from.value = '';
   to.value = '';
   catalogQueryParams.delete('price');
-  redrawProducts();
+  productLimit.limit = 12;
+  await redrawProducts();
 };
 
 export const addNavigationForSidebar = async (
@@ -212,7 +212,7 @@ export const addNavigationForSidebar = async (
   if (currentTarget.dataset.page !== 'catalog') {
     addNewQueryParam('sidebar', 'where', `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`);
   }
-  
+
   productLimit.limit = 12;
   await getAllProducts();
 
@@ -224,23 +224,11 @@ export const addNavigationForSidebar = async (
   }
 };
 
-// const haveMoreProducts = async (): Promise<boolean> => {
-//   const allProductsAmount: number = await getAllProducts(500);
-//   const currentAmount: number = await getAllProducts();
-
-//   return allProductsAmount > currentAmount;
-// }
-
 export const loadMoreProducts = async (target: HTMLElement): Promise<void> => {
   const currentTarget = target as HTMLButtonElement;
 
   productLimit.limit += 12;
-  console.log(productLimit.limit);
-  
+
   currentTarget.disabled = true;
   await redrawProducts();
-  
-  // if (await haveMoreProducts) {
-  //   currentTarget.disabled = false;
-  // }
-} 
+};
