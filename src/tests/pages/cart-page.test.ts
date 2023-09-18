@@ -4,26 +4,6 @@ const cartInfo = {
   type: 'Cart',
   id: 'd3de1a68-165a-4ad5-b6bf-016d30c786e7',
   version: 22,
-  // versionModifiedAt: '2023-09-09T04:52:40.104Z',
-  // lastMessageSequenceNumber: 1,
-  // createdAt: '2023-09-08T10:04:40.463Z',
-  // lastModifiedAt: '2023-09-09T04:52:40.104Z',
-  // lastModifiedBy: {
-  //   clientId: 'mX81A3Qp98Rg9ZauNsjL1TRV',
-  //   isPlatformClient: false,
-  //   customer: {
-  //     typeId: 'customer',
-  //     id: '5eed1696-d822-4d08-9bd7-79b2e979ed8a',
-  //   },
-  // },
-  // createdBy: {
-  //   clientId: 'mX81A3Qp98Rg9ZauNsjL1TRV',
-  //   isPlatformClient: false,
-  //   customer: {
-  //     typeId: 'customer',
-  //     id: '5eed1696-d822-4d08-9bd7-79b2e979ed8a',
-  //   },
-  // },
   customerId: '5eed1696-d822-4d08-9bd7-79b2e979ed8a',
   lineItems: [
     {
@@ -34,15 +14,6 @@ const cartInfo = {
         'ru-KZ': 'Liewood Ishan Puzzle',
         'en-US': 'Liewood Ishan Puzzle',
       },
-      // productType: {
-      //   typeId: 'product-type',
-      //   id: 'ab52b4af-bddd-498f-9e1f-5c3f5b4c5cc5',
-      //   version: 11,
-      // },
-      // productSlug: {
-      //   'ru-KZ': 'liewood-ishan-puzzle-blue-mix',
-      //   'en-US': 'liewood-ishan-puzzle-blue-mix',
-      // },
       variant: {
         id: 1,
         sku: 'RST-PJ-001-blue',
@@ -106,8 +77,6 @@ const cartInfo = {
       quantity: 2,
       discountedPricePerQuantity: [],
       perMethodTaxRate: [],
-      // addedAt: '2023-09-08T11:02:21.427Z',
-      // lastModifiedAt: '2023-09-08T11:02:21.427Z',
       state: [
         {
           quantity: 2,
@@ -135,15 +104,6 @@ const cartInfo = {
         'en-US': 'Little Dutch Wooden Stacking Train',
         'ru-KZ': 'Little Dutch Wooden Stacking Train',
       },
-      // productType: {
-      //   typeId: 'product-type',
-      //   id: 'facb2e2d-b696-4e2c-a8de-32c38dfc20e9',
-      //   version: 1,
-      // },
-      // productSlug: {
-      //   'en-US': 'little-dutch-wooden-stacking-train',
-      //   'ru-KZ': 'little-dutch-wooden-stacking-train',
-      // },
       variant: {
         id: 1,
         sku: 'RST-TRW-001',
@@ -232,17 +192,6 @@ const cartInfo = {
       quantity: 9,
       discountedPricePerQuantity: [],
       perMethodTaxRate: [],
-      // addedAt: '2023-09-09T04:48:50.391Z',
-      // lastModifiedAt: '2023-09-09T04:52:40.095Z',
-      // state: [
-      //   {
-      //     quantity: 9,
-      //     state: {
-      //       typeId: 'state',
-      //       id: '6c03f77f-3741-420d-a073-c66b37a91161',
-      //     },
-      //   },
-      // ],
       priceMode: 'Platform',
       lineItemMode: 'Standard',
       totalPrice: {
@@ -261,19 +210,12 @@ const cartInfo = {
     centAmount: 35880,
     fractionDigits: 2,
   },
-  // shippingMode: 'Single',
-  // shipping: [],
-  // customLineItems: [],
   discountCodes: [],
   directDiscounts: [],
   inventoryMode: 'None',
   taxMode: 'Platform',
   taxRoundingMode: 'HalfEven',
   taxCalculationMode: 'LineItemLevel',
-  // deleteDaysAfterLastModification: 90,
-  // refusedGifts: [],
-  // origin: 'Customer',
-  // itemShippingAddresses: [],
   totalLineItemQuantity: 11,
 };
 
