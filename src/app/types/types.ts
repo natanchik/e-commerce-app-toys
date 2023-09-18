@@ -202,6 +202,7 @@ export interface LineItem {
 }
 
 export interface Cart {
+  cartState: string;
   id: string;
   version: number;
   lineItems: LineItem[];
@@ -209,4 +210,8 @@ export interface Cart {
   discountCodes: [] | { discountCode: { typeId: string; id: string }; state: string }[];
   origin: string;
   totalLineItemQuantity: number;
+}
+
+export interface ProductLimit {
+  limit: number;
 }

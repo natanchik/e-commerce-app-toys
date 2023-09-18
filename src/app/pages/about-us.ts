@@ -14,13 +14,18 @@ class AboutUS {
       `
     <p class="paragraph">We're an optimistic and gratitude-filled group of remote workers dedicated to creating a product people will use and love.</p>
     <p class="paragraph">We desire to be better every day and know that improvement can be found in small changes. Daily communication and competent distribution of tasks allowed each teammate to work on all types of tasks - from creating page layouts to working with API.</p>
-    <p class="paragraph">We appreciate our teammates for the best teamwork ever. We are grateful to our cool mentors for their responsiveness and valuable advice and RS School for the training.</p>
-    <a class="rs-school-logo" href="https://rs.school/" target="blank"></a>`,
+    <p class="paragraph">We appreciate our teammates for the best teamwork ever. We are grateful to our cool mentors for their responsiveness and valuable advice and RS School for the training.</p>`,
     );
+    const imgBlock = createElement('div', ['about-us__img-contaiter']) as HTMLDivElement;
     const commonImg = createElement('div', ['about-us__common-img']) as HTMLDivElement;
+    const rsLink = createElement('a', ['rs-school-logo'], '', {
+      target: 'blank',
+      href: 'https://rs.school/',
+    }) as HTMLLinkElement;
     const content = createElement('div', ['about-us__content']) as HTMLDivElement;
 
-    commonInfoWrapper.append(commonParagWrapper, commonImg);
+    imgBlock.append(commonImg, rsLink);
+    commonInfoWrapper.append(commonParagWrapper, imgBlock);
     content.append(commonInfoWrapper);
     teammates.forEach((teammate, idx) => {
       content.append(this.drawTeammate(teammate, idx));
@@ -33,7 +38,7 @@ class AboutUS {
     const wrapper = createElement('div', ['teammate-block']) as HTMLDivElement;
 
     const imgBlock = createElement('div', ['teammate_img-block']) as HTMLDivElement;
-    const img = createElement('div', [`teammate_img-${idx}`]) as HTMLDivElement;
+    const img = createElement('div', ['teammate_img', `teammate_img-${idx}`]) as HTMLDivElement;
     const socials = createElement('div', ['teammate_socials']) as HTMLDivElement;
     const github = createElement('a', ['teammate_socials-github'], '', {
       href: `${teammate.github}`,

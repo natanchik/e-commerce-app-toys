@@ -1,6 +1,6 @@
 import { pushCurrentAction, addUserState } from '../../helpers/utils';
 import { CurrentAction } from '../../../types/types';
-import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
+import { addProfileWarning, removeProfileWarning } from '../../../handlers/handlers-profile';
 
 const updateCustomerNames = async (newFirstName: string, newLastName: string): Promise<void> => {
   const myHeaders = {

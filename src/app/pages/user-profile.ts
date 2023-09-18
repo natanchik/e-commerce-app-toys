@@ -1,7 +1,7 @@
 import { createElement, createInputElement, nullUserState } from '../components/utils';
 import { UserState } from '../types/types';
 import RegPage from '../pages/registration-page';
-import { drawCurrentAddresses } from '../components/handlers';
+import { drawCurrentAddresses } from '../handlers/handlers-profile';
 
 class UserProfile extends RegPage {
   public drawProfile(): HTMLDivElement {

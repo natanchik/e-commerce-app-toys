@@ -11,16 +11,18 @@
 @import 'components/logo';
 @import 'components/footer';
 @import 'components/button';
-@import 'components/autorization';
 @import 'components/sidebar';
-@import 'components/not-found';
-@import 'components/card';
 @import 'components/decorator';
-@import 'components/contacts';
-@import 'components/user-profile';
-@import 'components/main-page';
-@import 'components/catalog';
 @import 'components/filters';
 @import 'components/loading';
-@import 'components/cart';
-@import 'components/about-us';
+
+//pages
+@import 'pages/main-page';
+@import 'pages/autorization';
+@import 'pages/card';
+@import 'pages/user-profile';
+@import 'pages/not-found';
+@import 'pages/contacts';
+@import 'pages/catalog';
+@import 'pages/cart';
+@import 'pages/about-us';

@@ -1,6 +1,6 @@
 import getCategories from '../api/category/getCategories';
 import getProductsTypes from '../api/products-types/getProductsTypes';
-import { catalogQueryParams } from '../state/state';
+import { catalogQueryParams, productLimit } from '../state/state';
 import { Category, ProductType, QueryParam } from '../types/types';
 import { sorterParametrs } from './constants';
 import { createCheckBoxElement, createElement, createInputElement } from './utils';
@@ -168,12 +168,14 @@ class Filters {
 
     const search = document.querySelector('.filters__search') as HTMLInputElement;
     search.value = '';
-    localStorage.removeItem('search_products');
 
-    localStorage.removeItem('sorted_products');
+    localStorage.removeItem('search_products');
+    catalogQueryParams.clear();
     catalogQueryParams.forEach((param: QueryParam) => {
       if (param.key !== 'sidebar') catalogQueryParams.delete(param.key);
     });
+
+    productLimit.limit = 12;
   }
 }
 

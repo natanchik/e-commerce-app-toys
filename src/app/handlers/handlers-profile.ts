@@ -1,4 +1,4 @@
-import { validateInput } from './validation';
+import { validateInput } from '../components/validation';
 import { createElement, nullUserState } from '../components/utils';
 import updateCustomerNames from '../api/customer/update/update-names';
 import updateCustomerBirthday from '../api/customer/update/update-birthday';

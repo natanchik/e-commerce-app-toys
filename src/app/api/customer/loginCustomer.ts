@@ -1,4 +1,5 @@
-import { createMyCart } from '../cart/createMyCart';
+import Header from '../../components/header';
+import { getMyCarts } from '../cart/getMyCarts';
 import getCustomerToken from '../tokens/getCustomerToken';
 import { getAllCustomersEmails } from './getAllCustomers';
 import { fillUserState } from './getCustomerByID';
@@ -21,6 +22,7 @@ export const loginCustomer = async (username: string, password: string): Promise
     body: JSON.stringify({
       email: `${username}`,
       password: `${password}`,
+      activeCartSignInMode: 'MergeWithExistingCustomerCart',
     }),
   };
 
@@ -52,7 +54,8 @@ export const loginCustomer = async (username: string, password: string): Promise
     .then(async () => {
       await fillUserState(username);
       await getCustomerToken(username, password);
-      //await getCartById( /*TODO: add 'cart' to type UserState, and then add cart.id from local storage here*/);
+      await getMyCarts();
+      Header.addProductsNumberInBasket();
       apiStatus.classList.add('success-status');
       apiStatus.innerHTML = `Enjoy the shopping!`;
     })
@@ -95,6 +98,5 @@ export const loginAfterRegistration = async (username: string, password: string)
     })
     .then(async () => {
       await getCustomerToken(username, password);
-      await createMyCart();
     });
 };

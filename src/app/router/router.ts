@@ -53,9 +53,13 @@ class Router {
   }
 
   public isProductId(id: string): boolean {
-    const products: Product[] = localStorage.getItem('all_products')
-      ? JSON.parse(localStorage.getItem('all_products') as string)
-      : [];
+    let products: Product[];
+
+    if (localStorage.sorted_products) {
+      products = localStorage.all_products ? JSON.parse(localStorage.getItem('sorted_products') as string) : [];
+    } else {
+      products = localStorage.all_products ? JSON.parse(localStorage.getItem('all_products') as string) : [];
+    }
     const allProductsIds: string[] = [];
 
     products.forEach((product: Product) => {

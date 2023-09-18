@@ -1,6 +1,6 @@
 import { addUserState, pushCurrentAction } from '../../helpers/utils';
 import { CurrentAction, CurrentActionWithId } from '../../../types/types';
-import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
+import { addProfileWarning, removeProfileWarning } from '../../../handlers/handlers-profile';
 
 const changeCustomerAddress = async (data: object, type: string, isDefault: boolean): Promise<void> => {
   const myHeaders = {

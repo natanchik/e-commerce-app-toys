@@ -1,13 +1,16 @@
 import User from '../../components/user';
-import { showWarning } from '../../components/handlers';
+import { showWarning } from '../../handlers/handlers-profile';
+import { Cart } from '../../types/types';
+import { getLineItemId } from '../helpers/utils';
 
 export const changeLineItem = async (
-  productId: string, // add: product.id, decrease or remove: lineItem.id
+  productId: string | undefined,
   action: 'add' | 'decrease' | 'remove' = 'add',
   quantity?: number,
 ): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
+
     Authorization: `Bearer ${
       User.isLogged()
         ? JSON.parse(localStorage.token_info).access_token
@@ -15,7 +18,7 @@ export const changeLineItem = async (
     }`,
   };
 
-  const cart = JSON.parse(localStorage.cart);
+  const cart: Cart = JSON.parse(localStorage.cart);
   const currentBody: { version: number; actions: object[] } = {
     version: cart ? cart.version : 1,
     actions: [],
@@ -27,19 +30,18 @@ export const changeLineItem = async (
       productId: `${productId}`,
       variantId: 1,
       quantity: quantity,
-      // здесь id нашей единственной tax-category
       externalTaxRate: 'bf2a4dc1-dd08-4b29-9b16-efbd7b905a42',
     });
   } else if (action === 'decrease') {
     currentBody.actions.push({
       action: 'removeLineItem',
-      lineItemId: `${productId}`,
+      lineItemId: `${getLineItemId(productId, cart)}`,
       quantity: quantity,
     });
   } else if (action === 'remove') {
     currentBody.actions.push({
       action: 'removeLineItem',
-      lineItemId: `${productId}`,
+      lineItemId: `${getLineItemId(productId, cart)}`,
     });
   }
 

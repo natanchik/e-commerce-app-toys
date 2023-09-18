@@ -1,5 +1,6 @@
 import { Cart, LineItem } from '../types/types';
 import { createElement, createInputElement } from '../components/utils';
+import Header from '../components/header';
 import { promoCodes } from '../components/constants';
 
 export default class CartPage {
@@ -24,6 +25,7 @@ export default class CartPage {
       '<h4>Your cart is empty...</h4><p>You can visit <a class="cart__link-to-catalog" href="">Catalog</a> to add products to it...</p>',
     );
     emptyCartBlock.append(emptyCartImage, emptyCartMessage);
+
     if (cart) {
       const products: LineItem[] = cart.lineItems;
       if (products.length) {
@@ -31,7 +33,6 @@ export default class CartPage {
         products.forEach((product, ind) => {
           this.addCartItem(product, ind, cartGrid);
         });
-
         this.addTotalToCart(cart, cartGrid);
       } else {
         cartHeader.className = 'cart__header cart__hidden';
@@ -41,8 +42,8 @@ export default class CartPage {
       cartHeader.className = 'cart__header cart__hidden';
       emptyCartBlock.className = 'cart__empty';
     }
-    const itemsTotalAmountDisplay = document.querySelector('.header__icon-bascket__count');
-    if (itemsTotalAmountDisplay) itemsTotalAmountDisplay.textContent = `${cart.totalLineItemQuantity}`;
+    Header.addProductsNumberInBasket();
+
     const warning = createElement('div', ['cart__warning']);
     cartPage.append(cartHeader, emptyCartBlock, warning, cartGrid);
     return cartPage;
@@ -57,6 +58,7 @@ export default class CartPage {
     itemImgBlock.append(itemImg);
 
     const itemTitle = createElement('div', ['cart__item', 'cart__item__title'], lineitem.name['en-US']);
+    itemTitle.dataset.id = `${lineitem.productId}`;
 
     const itemPrice = createElement('div', ['cart__item', 'cart__item__price']);
     const itemSum = createElement(
@@ -87,12 +89,12 @@ export default class CartPage {
     const itemAmounts = createElement('div', ['cart__item', 'cart__item__amount']);
     const amountBlock = createElement('div', ['cart__item__amount-block']);
     const plusBtn = createElement('button', ['cart__item__btn-plus'], '&plus;');
-    plusBtn.id = `plus${lineitem.productId}`;
+    plusBtn.dataset.id = `${lineitem.productId}`;
     const amountTablo = createElement('div', ['cart__item__amount-value'], `${lineitem.quantity}`);
     const minusBtn = createElement('button', ['cart__item__btn-minus'], '&minus;');
-    minusBtn.id = `minus${lineitem.id}`;
+    minusBtn.dataset.id = `${lineitem.productId}`;
     const itemDelete = createElement('button', ['cart__item__btn-delete']);
-    itemDelete.id = `delete${lineitem.id}`;
+    itemDelete.dataset.id = `${lineitem.productId}`;
     amountBlock.append(minusBtn, amountTablo, plusBtn);
     itemAmounts.append(amountBlock, itemDelete);
 

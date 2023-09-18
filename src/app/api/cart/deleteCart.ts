@@ -1,7 +1,13 @@
+import User from '../../components/user';
+
 export async function deleteCart(id: string): Promise<void> {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
+    Authorization: `Bearer ${
+      User.isLogged()
+        ? JSON.parse(localStorage.token_info).access_token
+        : JSON.parse(localStorage.anonymous_token).access_token
+    }`,
   };
 
   const requestOptions = {
