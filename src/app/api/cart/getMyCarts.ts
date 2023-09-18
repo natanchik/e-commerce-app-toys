@@ -1,5 +1,5 @@
 import User from '../../components/user';
-import { LineItem } from '../../types/types';
+import { Cart, LineItem } from '../../types/types';
 
 export const getMyCarts = async (): Promise<LineItem[]> => {
   const myHeaders = {
@@ -29,7 +29,10 @@ export const getMyCarts = async (): Promise<LineItem[]> => {
     })
     .then((res) => {
       if (res.results.length > 0) {
-        localStorage.setItem('cart', JSON.stringify(res.results[0]));
+        const activeCart = res.results.find((cart: Cart) => {
+          return cart.cartState === 'Active';
+        });
+        localStorage.setItem('cart', JSON.stringify(activeCart));
       }
       return res.results;
     })

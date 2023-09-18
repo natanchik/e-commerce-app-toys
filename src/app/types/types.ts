@@ -202,6 +202,7 @@ export interface LineItem {
 }
 
 export interface Cart {
+  cartState: string;
   id: string;
   version: number;
   lineItems: LineItem[];
