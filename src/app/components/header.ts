@@ -13,6 +13,11 @@ class Header {
   constructor(router: Router) {
     this.header = this.drawHeader();
     this.setEventListeners(router);
+    if (!User.isLogged()) {
+      User.toggleLogoutIcon();
+    } else {
+      User.toggleLogoutIcon(true);
+    }
   }
 
   private drawHeader(): HTMLHeadElement {
