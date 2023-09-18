@@ -1,31 +1,42 @@
 import { createElement } from '../components/utils';
-import { pages } from '../router/pages';
+import { promoCodes } from '../components/constants';
 
 class MainPage {
   public drawMainPage(): HTMLDivElement {
-    const mainPage = createElement('div', ['main-page', 'main__wrapper'], '<h2>Main page:</h2>') as HTMLDivElement;
-    const pagesBlock = this.addPages();
+    const mainPage = createElement('div', ['main-page', 'main__wrapper']) as HTMLDivElement;
+    const promos = this.drawPromoContainer();
 
-    mainPage.append(pagesBlock);
+    mainPage.append(promos);
     return mainPage;
   }
 
-  private addPages(): HTMLDivElement {
-    const pagesBlock = createElement('div', ['main-page__pages-list']) as HTMLDivElement;
-    Object.values(pages).forEach((page) => {
-      const pageBlock = createElement('div', ['main-page__page'], page === '' ? 'main' : page) as HTMLDivElement;
-      pageBlock.dataset.page = page;
-      if (page === 'catalog') {
-        const note = createElement(
-          'p',
-          ['main-page__pagen-note', 'main__green-text'],
-          'note: you can choose the category you need in burger menu',
-        );
-        pageBlock.append(note);
-      }
-      pagesBlock.append(pageBlock);
+  private drawPromoContainer(): HTMLDivElement {
+    const promoContainer = createElement('div', ['promo__container']) as HTMLDivElement;
+    promoCodes.forEach((promocode, idx) => {
+      const item = this.drawPromo(promocode, idx);
+      promoContainer.append(item);
     });
-    return pagesBlock;
+
+    return promoContainer;
+  }
+
+  private drawPromo(promocode: { [key: string]: string }, idx: number): HTMLDivElement {
+    const promo = createElement('div', ['promo__item', `promo__item-${idx}`]) as HTMLDivElement;
+    const img = createElement('div', ['promo__img', `promo__img-${idx}`]);
+    const promoInfo = createElement('div', ['promo__info-block']);
+    const promoHeading = createElement('div', ['promo__info-heading'], `${promocode.discount} OFF`);
+    const promoText = createElement(
+      'div',
+      ['promo__info-text'],
+      `Use Code: <span>${promocode.promocode}</span> at your cart.${
+        promocode.promocode === 'BABY' ? '<div>Only for Baby Toys: 0-12 Months</div>' : ''
+      }`,
+    );
+    const promoBtn = createElement('div', ['promo__btn-to-catalog', 'button'], 'Shop Now');
+
+    promoInfo.append(promoHeading, promoText, promoBtn);
+    promo.append(img, promoInfo);
+    return promo;
   }
 }
 

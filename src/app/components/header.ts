@@ -35,10 +35,11 @@ class Header {
       ['header__icon', 'header__icon-bascket'],
       '<p class="header__icon-bascket__count"></p>',
     ) as HTMLSpanElement;
+    const iconTeam = createElement('span', ['header__icon', 'header__icon-team']) as HTMLSpanElement;
 
     nav.append(burger, navList);
     icons.append(iconUser, iconBascket, iconLogout);
-    wrapper.append(nav, logo, icons);
+    wrapper.append(nav, iconTeam, logo, icons);
     header.append(wrapper);
     body.append(header);
 

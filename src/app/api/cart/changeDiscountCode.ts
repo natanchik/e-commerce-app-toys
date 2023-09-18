@@ -1,14 +1,17 @@
-import { discountID } from '../../components/constants';
-import { showWarning } from '../../handlers/handlers-profile';
+import User from '../../components/user';
 
 export const changeDiscountCode = async (
-  code: string,
+  code?: string,
+  discountID?: string,
   action: 'add' | 'remove' = 'add',
-  discount = discountID,
 ): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
+    Authorization: `Bearer ${
+      User.isLogged()
+        ? JSON.parse(localStorage.token_info).access_token
+        : JSON.parse(localStorage.anonymous_token).access_token
+    }`,
   };
 
   const cart = JSON.parse(localStorage.cart);
@@ -27,7 +30,7 @@ export const changeDiscountCode = async (
       action: 'removeDiscountCode',
       discountCode: {
         typeId: 'discount-code',
-        id: discount,
+        id: discountID,
       },
     });
   }
@@ -50,11 +53,33 @@ export const changeDiscountCode = async (
       }
     })
     .then((res) => {
+      const discountInput = document.querySelector('.cart-input') as HTMLInputElement;
+      const actualCode = document.querySelector('.cart__delete-discont') as HTMLButtonElement;
+      const applyBtn = document.querySelector('.cart__discont-btn') as HTMLButtonElement;
+
+      if (action === 'add') {
+        discountInput.value = '';
+        actualCode.textContent = code as string;
+        actualCode.style.display = 'block';
+        applyBtn.style.display = 'none';
+      } else {
+        actualCode.style.display = 'none';
+        applyBtn.style.display = 'block';
+      }
       localStorage.setItem('cart', JSON.stringify(res));
     })
     .catch((err) => {
       if (err instanceof Error) {
-        showWarning('error', err.message, 'cart');
+        const errorBlock = document.querySelector('.error-message') as HTMLParagraphElement;
+        errorBlock.classList.add('incorrect-code');
+        if (action === 'add') {
+          errorBlock.textContent = 'Incorrect code';
+        } else {
+          errorBlock.textContent = 'Try again';
+        }
+        setTimeout(() => {
+          errorBlock.textContent = '';
+        }, 2000);
       }
     });
 };

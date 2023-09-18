@@ -6,6 +6,9 @@ import { checkValidity } from '../api/helpers/checkValidity';
 import removeCustomerAddress from '../api/customer/update/remove-address';
 import Catalog from '../pages/catalog';
 import Filters from './filters';
+import { promoCodes, sorterParametrs } from './constants';
+import getProductsBySearch from '../api/getProduct/getProductsBySearch';
+import { addNewQueryParam } from '../api/helpers/utils';
 import {
   toggleProfileEditMode,
   toggleProfileItems,
@@ -102,6 +105,15 @@ class Main {
         this.sidebar.closeSidebar();
       }
 
+      if (target.classList.contains('sidebar__link') && target.dataset.page === 'about-us') {
+        router.navigate(pages.ABOUT_US);
+        this.sidebar.closeSidebar();
+      }
+
+      if (target.classList.contains('header__icon-team')) {
+        router.navigate(pages.ABOUT_US);
+      }
+
       if (target.classList.contains('logo') || target.parentElement?.classList.contains('logo')) {
         router.navigate(pages.MAIN);
         this.sidebar.closeSidebar();
@@ -160,6 +172,11 @@ class Main {
         const pageName: string = target.dataset.page ? target.dataset.page : '';
         if (pageName === 'catalog') Catalog.clearSortedProducts();
         router.navigate(pageName);
+      }
+
+      if (target.classList.contains('promo__btn-to-catalog')) {
+        Catalog.clearSortedProducts();
+        router.navigate(pages.CATALOG);
       }
 
       if (

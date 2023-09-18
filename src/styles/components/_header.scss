@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: space-between;
   min-height: 70px;
-  gap: 25px;
+  gap: 10px;
 }
 
 .header__icons {
@@ -53,6 +53,13 @@
 
 .header__icon-logout_hidden {
   display: none;
+}
+
+.header__icon-team {
+  background-image: url('../assets/icons/team.svg');
+  width: 29px;
+  height: 25px;
+  background-size: cover;
 }
 
 @media (max-width: 520px) {
