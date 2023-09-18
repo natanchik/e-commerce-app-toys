@@ -18,7 +18,7 @@ export const changeCartItemQuantityFromCart = (
   });
 };
 
-export const applyDiscountCode = async (router: Router) => {
+export const applyDiscountCode = async (router: Router): Promise<void> => {
   const discountInput = document.querySelector('.cart-input') as HTMLInputElement;
   const enteredCode = discountInput.value.toUpperCase();
   const errorBlock = document.querySelector('.error-message') as HTMLParagraphElement;
@@ -28,9 +28,9 @@ export const applyDiscountCode = async (router: Router) => {
       router.navigate(pages.CART);
     }
   }
-}
+};
 
-export const deleteDiscountCode = async (target: HTMLElement, router: Router) => {
+export const deleteDiscountCode = async (target: HTMLElement, router: Router): Promise<void> => {
   const deletedCode = target.textContent;
   const errorBlock = document.querySelector('.error-message') as HTMLParagraphElement;
   const discountData = promoCodes.find((promo) => {
@@ -42,4 +42,4 @@ export const deleteDiscountCode = async (target: HTMLElement, router: Router) =>
       router.navigate(pages.CART);
     }
   }
-}
+};

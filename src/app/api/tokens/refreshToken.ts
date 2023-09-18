@@ -24,6 +24,7 @@ const refreshToken = async (refreshTokenValue: string): Promise<void> => {
       localStorage.setItem('anonymous_token', JSON.stringify(res));
     })
     .catch((error) => {
+      if (error) localStorage.setItem('error_refresh-token', error.message);
     });
 };
 

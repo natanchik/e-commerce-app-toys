@@ -25,7 +25,7 @@ export const toggleCatalogAddProductButton = async (target: HTMLElement): Promis
   const buttonText = addButton.querySelector('.product__add-text') as HTMLSpanElement;
   const buttonIcon = addButton.querySelector('.product__add-button') as HTMLSpanElement;
 
-  if (buttonText.innerText === 'add to cart' ) {
+  if (buttonText.innerText === 'add to cart') {
     await changeLineItem(id, 'add', 1);
     addButton.classList.remove('product__buttons_active');
     buttonText.innerText = '';

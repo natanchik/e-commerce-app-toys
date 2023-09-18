@@ -91,8 +91,8 @@ class Catalog {
     if (searchProductsAmount > 0) {
       return searchProductsAmount <= currentAmount;
     }
-    
-    return (allProductsAmount <= currentAmount);
+
+    return allProductsAmount <= currentAmount;
   }
 
   static async drawProducts(): Promise<void> {

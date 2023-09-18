@@ -176,6 +176,9 @@
   .cart__discont-btn {
     text-decoration: underline;
     background-color: white;
+    &:hover {
+      color: $green;
+    }
   }
 
   .cart__delete-discont {
