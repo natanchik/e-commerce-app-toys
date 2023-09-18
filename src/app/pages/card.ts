@@ -1,6 +1,7 @@
 import getProductByID from '../api/getProduct/getProductByID';
+import Header from '../components/header';
 import { createElement, createImageElement } from '../components/utils';
-import { Product, Price } from '../types/types';
+import { Product, Price, LineItem } from '../types/types';
 
 class Card {
   id: string;
@@ -15,6 +16,9 @@ class Card {
     }) as HTMLDivElement;
 
     await getProductByID(this.id).then((data) => {
+      const lineItem: LineItem = localStorage.cart
+        ? JSON.parse(localStorage.cart).lineItems.find((item: LineItem) => item.productId === this.id)
+        : undefined;
       const slider = this.drawSlider(data);
       const modal = this.drawModal(data);
       const info = createElement('div', ['product-card__info']) as HTMLDivElement;
@@ -24,7 +28,7 @@ class Card {
         data.masterData.current.name['en-US'],
       ) as HTMLElement;
       const priceWrapper = this.drawPriceWrapper(data);
-      const form = this.drawCartForm(this.id);
+      const form = this.drawCartForm(this.id, lineItem);
       const smallHeading = createElement('h4', ['product-card__detail-heading'], 'Details') as HTMLElement;
       const details = createElement(
         'p',
@@ -36,6 +40,8 @@ class Card {
       const warning = createElement('div', ['cart__warning']);
       wrapper.append(modal, slider, info, warning);
     });
+
+    Header.addProductsNumberInBasket();
 
     return wrapper;
   }
@@ -129,30 +135,32 @@ class Card {
     return priceWrapper;
   }
 
-  private drawCartForm(id: string): HTMLFormElement {
+  private drawCartForm(id: string, lineItem: LineItem): HTMLFormElement {
     const form = createElement('form', ['product-card__form']) as HTMLFormElement;
-    form.id = `card${id}`;
+    form.dataset.id = id;
     const quantityWrapper = createElement('div', ['product-card__quantity-wrapper']) as HTMLDivElement;
     const decreaseQuanity = createElement(
       'button',
       ['product-card__decrease-quantity', 'quantity-btn'],
-      '-',
+      '−',
     ) as HTMLButtonElement;
-    const quantity = createElement('input', ['product-card__quantity']) as HTMLInputElement;
-    quantity.type = 'number';
-    quantity.placeholder = '1';
-    quantity.min = '1';
-    quantity.value = '1';
+    const quantity = createElement('div', ['product-card__quantity']) as HTMLInputElement;
+    quantity.innerText = lineItem ? lineItem.quantity.toString() : '0';
     const increaseQuanity = createElement(
       'button',
-      ['product-card__decrease-quantity', 'quantity-btn'],
+      ['product-card__increase-quantity', 'quantity-btn'],
       '+',
     ) as HTMLButtonElement;
-    const addToCart = createElement(
-      'button',
-      ['product-card__add-to-cart', 'button', 'button_green'],
-      'Add to cart',
-    ) as HTMLButtonElement;
+    const addToCart = createElement('button', ['product-card__add-to-cart', 'button']) as HTMLButtonElement;
+
+    if (!lineItem) {
+      addToCart.classList.add('button_green');
+      addToCart.innerText = 'add to cart';
+      decreaseQuanity.disabled = true;
+    } else {
+      addToCart.innerText = 'remove from cart';
+      decreaseQuanity.disabled = false;
+    }
 
     quantityWrapper.append(decreaseQuanity, quantity, increaseQuanity);
     form.append(quantityWrapper, addToCart);

@@ -1,7 +1,9 @@
+import getAllProducts from '../api/getProduct/getAllProducts';
 import Filters from '../components/filters';
-import { createElement } from '../components/utils';
-import { catalogQueryParams } from '../state/state';
-import { Category, Price, Product } from '../types/types';
+import Header from '../components/header';
+import { createElement, getLineItem } from '../components/utils';
+import { catalogQueryParams, productLimit } from '../state/state';
+import { Category, LineItem, Price, Product } from '../types/types';
 
 class Catalog {
   constructor() {
@@ -22,6 +24,11 @@ class Catalog {
 
     content.append(mobileFiltersButton, filters, products);
     catalog.append(breadcrumbs, content);
+
+    Header.addProductsNumberInBasket();
+
+    productLimit.limit = 12;
+    await getAllProducts();
 
     return catalog;
   }
@@ -77,7 +84,18 @@ class Catalog {
     }
   }
 
-  static drawProducts(): void {
+  static async haveMoreProducts(searchProductsAmount: number): Promise<boolean> {
+    const allProductsAmount: number = (await getAllProducts(500)).length;
+    const currentAmount: number = (await getAllProducts(productLimit.limit)).length;
+
+    if (searchProductsAmount > 0) {
+      return searchProductsAmount <= currentAmount;
+    }
+
+    return allProductsAmount <= currentAmount;
+  }
+
+  static async drawProducts(): Promise<void> {
     const products = document.querySelector('.catalog__products') as HTMLDivElement;
     products.innerHTML = '';
     let currentProducts: Product[] = [];
@@ -112,12 +130,25 @@ class Catalog {
         const productBlock = this.drawProduct(product);
         products.append(productBlock);
       });
+
+      const loadMore = createElement('div', ['catalog__load-more']) as HTMLDivElement;
+      const loadMoreButton = createElement(
+        'button',
+        ['catalog__load-more-button', 'button', 'button_white'],
+        'load more',
+      ) as HTMLButtonElement;
+      loadMore.append(loadMoreButton);
+      products.append(loadMore);
+
+      if (await this.haveMoreProducts(searchProducts.length)) loadMoreButton.disabled = true;
     } else {
       products.innerHTML = 'Sorry, no products matched your selection.';
     }
   }
 
   static drawProduct(product: Product): HTMLDivElement {
+    const lineItem: LineItem | undefined = getLineItem(product.id);
+
     const productBlock = createElement('div', ['catalog__product', 'product']) as HTMLDivElement;
     const img = createElement('img', ['product__img']) as HTMLImageElement;
     const url: string = product.masterData.current.masterVariant.images[0].url;
@@ -135,10 +166,17 @@ class Catalog {
     const prices = this.drawPrices(product);
 
     productBlock.id = product.id;
-    //TODO проверка есть ли товар в коррзине -> add -> иначе delete
+
     const addProductBtns = createElement('div', ['product__buttons']) as HTMLDivElement;
-    const addBtn = createElement('span', ['product__button', 'product__add-button'], '+') as HTMLSpanElement;
+    const addBtn = createElement('span', ['product__button', 'product__add-button']) as HTMLSpanElement;
     const addText = createElement('span', ['product__button', 'product__add-text'], 'add to cart') as HTMLSpanElement;
+    if (!lineItem) {
+      addProductBtns.classList.add('product__buttons_active');
+      addBtn.innerText = '+';
+    } else {
+      addBtn.innerText = '✓';
+    }
+
     addProductBtns.append(addText, addBtn);
 
     productBlock.append(img, addProductBtns, name, description, prices);
