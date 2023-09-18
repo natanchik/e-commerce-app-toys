@@ -15,8 +15,8 @@
 }
 
 .cart__empty__img {
-  width: 350px;
-  height: 350px;
+  width: 250px;
+  height: 250px;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url('../assets/images/adorable-panda.png');
@@ -24,7 +24,7 @@
 }
 
 .cart__empty__message {
-  margin: 20px auto;
+  margin: 0 auto;
 
   & > * {
     margin: 10px 0;
@@ -32,6 +32,8 @@
 
   a {
     text-decoration: underline;
+    color: #97a4c3;
+    font-weight: 600;
   }
 }
 

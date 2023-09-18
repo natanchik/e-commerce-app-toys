@@ -47,28 +47,20 @@ import Header from './header';
 import { loginViaForm, registerViaForm } from '../handlers/handlers-autorizarion';
 
 class Main {
-  mainElement: HTMLDivElement;
-
   sidebar: Sidebar;
 
-  sidebarWrapper: HTMLDivElement;
-
-  constructor(router: Router) {
-    this.sidebar = new Sidebar();
-    this.sidebarWrapper = this.sidebar.drawSidebar();
-    this.mainElement = this.drawMain();
+  constructor(router: Router, sidebar: Sidebar) {
+    this.sidebar = sidebar;
+    this.drawMain();
     this.setEventListeners(router);
   }
 
-  public drawMain(): HTMLDivElement {
+  public drawMain(): void {
     const body = document.querySelector('body') as HTMLBodyElement;
     const main = createElement('div', ['main']) as HTMLDivElement;
-    const dimming = createElement('div', ['sidebar__dimming']) as HTMLDivElement;
     Header.addProductsNumberInBasket();
 
-    body.append(main, this.sidebarWrapper, dimming);
-
-    return main;
+    body.append(main);
   }
 
   static setContent(element: HTMLDivElement): void {

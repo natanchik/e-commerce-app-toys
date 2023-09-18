@@ -1,11 +1,12 @@
 import getCategories from '../api/category/getCategories';
-import getAnonymousToken from '../api/tokens/getAnonymousToken';
 import { Category } from '../types/types';
 import { createElement } from './utils';
 
 class Sidebar {
-  public drawSidebar(): HTMLDivElement {
+  public async drawSidebar(): Promise<void> {
+    const body = document.querySelector('body') as HTMLBodyElement;
     const wrapper = createElement('div', ['sidebar__wrapper']) as HTMLDivElement;
+    const dimming = createElement('div', ['sidebar__dimming']) as HTMLDivElement;
     const header = createElement('div', ['sidebar__header']) as HTMLDivElement;
     const logo = createElement(
       'div',
@@ -13,7 +14,7 @@ class Sidebar {
       '<h1 class="logo">t<span class="logo__peach">o</span><span class="logo__green">y</span><span class="logo__wine">s</span></h1>',
     ) as HTMLDivElement;
     const closeBtn = createElement('button', ['sidebar__close-btn']) as HTMLButtonElement;
-    const content = this.drawSidebarContent();
+    const content = await this.drawSidebarContent();
 
     header.append(logo, closeBtn);
     wrapper.append(header, content);
@@ -51,10 +52,10 @@ class Sidebar {
       }
     });
 
-    return wrapper;
+    body.append(wrapper, dimming);
   }
 
-  private drawSidebarContent(): HTMLDivElement {
+  private async drawSidebarContent(): Promise<HTMLDivElement> {
     const content = createElement('div', ['sidebar__content']) as HTMLDivElement;
     const commonLinks = createElement(
       'div',
@@ -65,7 +66,7 @@ class Sidebar {
     ) as HTMLDivElement;
 
     const categoriesList = createElement('ul', ['sidebar__categories-list']) as HTMLUListElement;
-    this.drawCategoriesList(categoriesList);
+    await this.drawCategoriesList(categoriesList);
 
     content.append(commonLinks, categoriesList);
 
@@ -80,46 +81,39 @@ class Sidebar {
     wrapper?.classList.remove('active-sidebar');
   }
 
-  private drawCategoriesList(categoriesList: HTMLUListElement): void {
-    getAnonymousToken()
-      .then(() => getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]))
-      .then(() => {
-        const topCategories = JSON.parse(localStorage.getItem('top_categories') as string);
+  private async drawCategoriesList(categoriesList: HTMLUListElement): Promise<void> {
+    await getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
 
-        topCategories.forEach((category: Category): void => {
-          const name = category.name['en-US'].toLocaleLowerCase();
-          const slug = category.slug['en-US'];
+    const topCategories = JSON.parse(localStorage.getItem('top_categories') as string);
 
-          if (slug !== 'age' && slug !== 'genders') {
-            const categoryItem = createElement('li', ['sidebar__category', 'sidebar__link'], name) as HTMLLIElement;
-            const categoryContentList = createElement('ul', ['sidebar__category-list']) as HTMLUListElement;
-            categoryItem.id = category.id;
-            categoryItem.dataset.page = slug;
-            categoryContentList.dataset.content = category.id;
+    topCategories.forEach(async (category: Category): Promise<void> => {
+      const name = category.name['en-US'].toLocaleLowerCase();
+      const slug = category.slug['en-US'];
 
-            getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]).then(() => {
-              const subcategories: Category[] = localStorage.getItem(`${name}_categories`)
-                ? JSON.parse(localStorage.getItem(`${name}_categories`) as string)
-                : [];
+      if (slug !== 'age' && slug !== 'genders') {
+        const categoryItem = createElement('li', ['sidebar__category', 'sidebar__link'], name) as HTMLLIElement;
+        const categoryContentList = createElement('ul', ['sidebar__category-list']) as HTMLUListElement;
+        categoryItem.id = category.id;
+        categoryItem.dataset.page = slug;
+        categoryContentList.dataset.content = category.id;
 
-              subcategories.forEach((subcategory: Category): void => {
-                const item = createElement(
-                  'li',
-                  ['sidebar__category-item'],
-                  subcategory.name['en-US'],
-                ) as HTMLLIElement;
-                item.id = subcategory.id;
-                item.dataset.page = subcategory.slug['ru-KZ'];
-                item.dataset.parent = category.id;
+        await getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
+        const subcategories: Category[] = localStorage.getItem(`${name}_categories`)
+          ? JSON.parse(localStorage.getItem(`${name}_categories`) as string)
+          : [];
 
-                categoryContentList.append(item);
-              });
-            });
+        subcategories.forEach((subcategory: Category): void => {
+          const item = createElement('li', ['sidebar__category-item'], subcategory.name['en-US']) as HTMLLIElement;
+          item.id = subcategory.id;
+          item.dataset.page = subcategory.slug['ru-KZ'];
+          item.dataset.parent = category.id;
 
-            categoriesList.append(categoryItem, categoryContentList);
-          }
+          categoryContentList.append(item);
         });
-      });
+
+        categoriesList.append(categoryItem, categoryContentList);
+      }
+    });
   }
 }
 
