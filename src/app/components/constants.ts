@@ -46,7 +46,7 @@ export const teammates: { [key: string]: string }[] = [
   {
     name: 'Kristina Morozova',
     role: 'Developer',
-    bio: `Novice frontend-developer with technical education. I became interested in programming by writing small scripts to automate routine operations and creating extensions for engineering software in Python. And one day I participated in the development of a small web application and from that moment I understood that I want to become web developer. I am constantly striving to learn new technologies and look to ways to better myself in the field of web development.`,
+    bio: `I have always been interested in web development. I am a creative person with technical skills. For years, I was passionate about logo design and built small websites on weekends while working my full-time job. It was a hobby for me. The best thing is to turn your hobby into a career. I thoroughly enjoyed the learning process at RS School and realized that I made the right choice in both selecting the school and the profession. I can't wait to apply my new skills in practice and continue to grow in this field.`,
     github: 'https://github.com/kris-vadi',
     telegram: 'https://t.me/@kristinavadi',
   },
