@@ -6,9 +6,6 @@ import { checkValidity } from '../api/helpers/checkValidity';
 import removeCustomerAddress from '../api/customer/update/remove-address';
 import Catalog from '../pages/catalog';
 import Filters from './filters';
-import { promoCodes, sorterParametrs } from './constants';
-import getProductsBySearch from '../api/getProduct/getProductsBySearch';
-import { addNewQueryParam } from '../api/helpers/utils';
 import {
   toggleProfileEditMode,
   toggleProfileItems,
@@ -37,7 +34,7 @@ import {
   redrawProducts,
   toggleCatalogAddProductButton,
 } from '../handlers/handlers-catalog';
-import { changeCartItemQuantityFromCart } from '../handlers/handlers-cart';
+import { applyDiscountCode, changeCartItemQuantityFromCart, deleteDiscountCode } from '../handlers/handlers-cart';
 import {
   toggleCardAddProductButton,
   changeCartItemQuantityFromCard,
@@ -266,6 +263,14 @@ class Main {
       if (target.classList.contains('product__buttons_active') || target.classList.contains('product__button')) {
         event.stopPropagation();
         await toggleCatalogAddProductButton(target);
+      }
+
+      if (target.classList.contains('cart__discont-btn')) {
+        await applyDiscountCode(router);
+      }
+
+      if (target.classList.contains('cart__delete-discont')) {
+        await deleteDiscountCode(target, router);
       }
 
       if (target.parentElement?.classList.contains('catalog__product')) {

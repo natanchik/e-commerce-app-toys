@@ -1,4 +1,6 @@
+import { changeDiscountCode } from '../api/cart/changeDiscountCode';
 import { changeLineItem } from '../api/cart/changeLineItem';
+import { promoCodes } from '../components/constants';
 import { pages } from '../router/pages';
 import Router from '../router/router';
 
@@ -15,3 +17,29 @@ export const changeCartItemQuantityFromCart = (
     router.navigate(pages.CART, true);
   });
 };
+
+export const applyDiscountCode = async (router: Router) => {
+  const discountInput = document.querySelector('.cart-input') as HTMLInputElement;
+  const enteredCode = discountInput.value.toUpperCase();
+  const errorBlock = document.querySelector('.error-message') as HTMLParagraphElement;
+  if (enteredCode) {
+    await changeDiscountCode(enteredCode, '', 'add');
+    if (!errorBlock.textContent) {
+      router.navigate(pages.CART);
+    }
+  }
+}
+
+export const deleteDiscountCode = async (target: HTMLElement, router: Router) => {
+  const deletedCode = target.textContent;
+  const errorBlock = document.querySelector('.error-message') as HTMLParagraphElement;
+  const discountData = promoCodes.find((promo) => {
+    return promo.promocode === deletedCode;
+  });
+  if (discountData) {
+    await changeDiscountCode('', discountData.discountID, 'remove');
+    if (!errorBlock.textContent) {
+      router.navigate(pages.CART);
+    }
+  }
+}
