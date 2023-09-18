@@ -15,8 +15,6 @@ class Header {
     this.setEventListeners(router);
     if (!User.isLogged()) {
       User.toggleLogoutIcon();
-    } else {
-      User.toggleLogoutIcon(true);
     }
   }
 

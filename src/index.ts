@@ -27,8 +27,10 @@ const loadTokens = async (): Promise<void> => {
   if (!localStorage.getItem('categories')) await getCategories();
 };
 
+const app = new App();
+
 loadTokens().then(async () => {
   hideLoading();
-  const app = new App();
   await app.startApp();
 });
+
