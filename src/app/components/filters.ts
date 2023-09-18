@@ -168,9 +168,9 @@ class Filters {
 
     const search = document.querySelector('.filters__search') as HTMLInputElement;
     search.value = '';
+    
     localStorage.removeItem('search_products');
-
-    localStorage.removeItem('sorted_products');
+    catalogQueryParams.clear();
     catalogQueryParams.forEach((param: QueryParam) => {
       if (param.key !== 'sidebar') catalogQueryParams.delete(param.key);
     });
