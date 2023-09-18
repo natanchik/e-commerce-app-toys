@@ -33,4 +33,3 @@ loadTokens().then(async () => {
   hideLoading();
   await app.startApp();
 });
-

@@ -14,7 +14,6 @@ class User {
 
   static toggleLogoutIcon(remove: boolean = false): void {
     const logoutIcon = document.querySelector('.header__icon-logout') as HTMLDivElement;
-    console.log(logoutIcon);
 
     if (remove && logoutIcon.classList.contains('header__icon-logout_hidden')) {
       logoutIcon.classList.remove('header__icon-logout_hidden');

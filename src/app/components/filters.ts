@@ -168,7 +168,7 @@ class Filters {
 
     const search = document.querySelector('.filters__search') as HTMLInputElement;
     search.value = '';
-    
+
     localStorage.removeItem('search_products');
     catalogQueryParams.clear();
     catalogQueryParams.forEach((param: QueryParam) => {
