@@ -154,6 +154,11 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+
+  & > label {
+    display: none;
+  }
 
   .cart-input {
     display: inline-block;
@@ -196,7 +201,9 @@
   }
 
   .incorrect-code {
-    margin: 0 10px;
+    max-width: 48px;
+    word-break: normal;
+    min-height: 27px;
   }
 }
 
