@@ -11,10 +11,16 @@ class MainPage {
   }
 
   private drawPromoContainer(): HTMLDivElement {
-    const promoContainer = createElement('div', ['promo__container']) as HTMLDivElement;
+    const promoContainer = createElement('div', ['main-page__promo', 'promo__container']) as HTMLDivElement;
     new Slider();
 
     return promoContainer;
+  }
+
+  private async drawCategoriesGrid(): Promise<HTMLDivElement> {
+    const categoriesGrid = createElement('div', ['main-page__catgories']) as HTMLDivElement;
+
+    return categoriesGrid;
   }
 }
 

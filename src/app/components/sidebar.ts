@@ -1,4 +1,5 @@
 import getCategories from '../api/category/getCategories';
+import { stateCategories } from '../state/state';
 import { Category } from '../types/types';
 import { createElement } from './utils';
 
@@ -82,11 +83,10 @@ class Sidebar {
   }
 
   private async drawCategoriesList(categoriesList: HTMLUListElement): Promise<void> {
-    await getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
+    if (!stateCategories.has('top')) await getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
+    const topCategories: Category[] | undefined = stateCategories.has('top') ? stateCategories.get('top') : [];
 
-    const topCategories = JSON.parse(localStorage.getItem('top_categories') as string);
-
-    topCategories.forEach(async (category: Category): Promise<void> => {
+    topCategories?.forEach(async (category: Category): Promise<void> => {
       const name = category.name['en-US'].toLocaleLowerCase();
       const slug = category.slug['en-US'];
 
@@ -97,12 +97,11 @@ class Sidebar {
         categoryItem.dataset.page = slug;
         categoryContentList.dataset.content = category.id;
 
-        await getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
-        const subcategories: Category[] = localStorage.getItem(`${name}_categories`)
-          ? JSON.parse(localStorage.getItem(`${name}_categories`) as string)
-          : [];
+        if (!stateCategories.has(name))
+          await getCategories(name, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
+        const subcategories: Category[] | undefined = stateCategories.has(name) ? stateCategories.get(name) : [];
 
-        subcategories.forEach((subcategory: Category): void => {
+        subcategories?.forEach((subcategory: Category): void => {
           const item = createElement('li', ['sidebar__category-item'], subcategory.name['en-US']) as HTMLLIElement;
           item.id = subcategory.id;
           item.dataset.page = subcategory.slug['ru-KZ'];

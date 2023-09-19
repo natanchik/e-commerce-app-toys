@@ -1,3 +1,4 @@
+import { stateCategories } from '../../state/state';
 import { Category, QueryParam } from '../../types/types';
 import { generateQueryParams } from '../helpers/utils';
 
@@ -30,13 +31,13 @@ const getCategories = async (
     })
     .then((result) => {
       if (queryParams && dataName !== '') {
-        localStorage.setItem(`${dataName}_categories`, JSON.stringify(result.results));
+        stateCategories.set(dataName, result.results);
       } else {
-        localStorage.setItem('all_categories', JSON.stringify(result.results));
+        stateCategories.set('all', result.results);
       }
 
       if (!queryParams && !dataName) {
-        localStorage.setItem('categories', JSON.stringify(result.results));
+        stateCategories.set('categories', result.results);
       }
 
       return result.results;

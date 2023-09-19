@@ -1,6 +1,6 @@
 import getCategories from '../api/category/getCategories';
 import getProductsTypes from '../api/products-types/getProductsTypes';
-import { catalogQueryParams, productLimit } from '../state/state';
+import { catalogQueryParams, stateCategories, productLimit } from '../state/state';
 import { Category, ProductType } from '../types/types';
 import { sorterParametrs } from './constants';
 import { createCheckBoxElement, createElement, createInputElement } from './utils';
@@ -25,13 +25,11 @@ class Filters {
   }
 
   private async drawByCategoryFilter(filters: HTMLDivElement): Promise<void> {
-    if (!localStorage.getItem('top_categories'))
+    if (!stateCategories.has('top_categories'))
       await getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
-    const topCategories: Category[] = localStorage.getItem('top_categories')
-      ? JSON.parse(localStorage.getItem('top_categories') as string)
-      : [];
+    const topCategories: Category[] | undefined = stateCategories.has('top') ? stateCategories.get('top') : [];
 
-    topCategories.forEach(async (category: Category): Promise<void> => {
+    topCategories?.forEach(async (category: Category): Promise<void> => {
       const name = category.name['en-US'].toLocaleLowerCase();
       const slug = category.slug['en-US'];
 
@@ -41,13 +39,11 @@ class Filters {
         filter.id = slug;
         filterContent.dataset.content = slug;
 
-        if (!localStorage.getItem(`${name}_categories`))
+        if (!stateCategories.has(name))
           await getCategories(`${name}`, [{ key: 'where', value: `parent%28id%3D%22${category.id}%22%29` }]);
-        const currentCategories: Category[] = localStorage.getItem(`${name}_categories`)
-          ? JSON.parse(localStorage.getItem(`${name}_categories`) as string)
-          : [];
+        const currentCategories: Category[] | undefined = stateCategories.has(name) ? stateCategories.get(name) : [];
 
-        currentCategories.forEach((currentCategory: Category): void => {
+        currentCategories?.forEach((currentCategory: Category): void => {
           const currentCheckbox = createCheckBoxElement(
             currentCategory.name['en-US'],
             currentCategory.id,

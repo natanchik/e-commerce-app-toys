@@ -2,6 +2,7 @@ import getAllProducts from '../api/getProduct/getAllProducts';
 import { addNewQueryParam } from '../api/helpers/utils';
 import User from '../components/user';
 import Catalog from '../pages/catalog';
+import { stateCategories } from '../state/state';
 import { Category, Product, RouteInfo, UrlInfo } from '../types/types';
 import { ID_SELECTOR, pages, SUBCATEGORY } from './pages';
 
@@ -40,12 +41,12 @@ class Router {
   }
 
   public isCategory(id: string): boolean {
-    const categories: Category[] = localStorage.getItem('categories')
-      ? JSON.parse(localStorage.getItem('categories') as string)
+    const categories: Category[] | undefined = stateCategories.has('categories')
+      ? stateCategories.get('categories')
       : [];
     const allCategoriesIds: string[] = [];
 
-    categories.forEach((category: Category) => {
+    categories?.forEach((category: Category) => {
       allCategoriesIds.push(category.slug['ru-KZ']);
     });
 
@@ -101,10 +102,8 @@ class Router {
 
   private async navigationByStagedCategories(path: string, id: string): Promise<void> {
     if (this.isCategory(id)) {
-      const categories: Category[] = localStorage.getItem('categories')
-        ? JSON.parse(localStorage.getItem('categories') as string)
-        : [];
-      const currentId: string | undefined = categories.find((category: Category) => {
+      const categories: Category[] | undefined = stateCategories.get('categories');
+      const currentId: string | undefined = categories?.find((category: Category) => {
         return category.slug['ru-KZ'] === id;
       })?.id;
 
@@ -121,10 +120,8 @@ class Router {
 
   private async navigationByCategories(id: string): Promise<void> {
     if (this.isCategory(id)) {
-      const categories: Category[] = localStorage.getItem('categories')
-        ? JSON.parse(localStorage.getItem('categories') as string)
-        : [];
-      const currentId: string | undefined = categories.find((category: Category) => {
+      const categories: Category[] | undefined = stateCategories.get('categories');
+      const currentId: string | undefined = categories?.find((category: Category) => {
         return category.slug['ru-KZ'] === id;
       })?.id;
 
