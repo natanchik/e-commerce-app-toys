@@ -1,17 +1,48 @@
 #  🎠 Toys eCommerce application
 
-Welcome to our eCommerce application! It's a comprehensive online shopping portal that provides an interactive and seamless experience to users. From product discovery to checkout, the application ensures a smooth journey for the user, enhancing their engagement and boosting their purchasing confidence 🚀.
+Welcome to our comprehensive online shopping portal that provides:
 
-Users can browse through a vast range of toys 🎠🎈🎁, view detailed descriptions, add their favorite items to the basket 🛒, and proceed to checkout 💳. It includes features such as user registration and login 📝🔐, product search 🔍, product categorization, and sorting to make the shopping experience more streamlined and convenient.
+- a responsive and adaptive design;
+- product categorization and sorting;
+- user registration and login📝🔐; 
 
-An important aspect of our application is that it's responsive 📲, ensuring it looks great on various devices with a minimum resolution of 390px. This feature makes the shopping experience enjoyable, irrespective of the device users prefer.
+Users can:
+- browse through a vast range of toys 🎠🎈🎁,
+- search product 🔍;
+- view detailed descriptions,
+- add their favorite items to the basket 🛒,
+- use promo codes;
+- proceed to checkout.
+
+These features make your customers shopping experience enjoyable.
 
 
 ## 📚 Tech Stack
 
-**Client:** TypeScript, HTML, SASS
+**Client:** Webpack, TypeScript, HTML, SASS, Husky, Prettier, ESLint, Jest
 
 **Server:** powered by CommerceTools 🌐
+
+
+
+## 🚀 Getting Started
+To get started you can simply clone this `eCommerce-Application` repository and install the dependencies.
+
+Clone the `eCommerce-Application` repository using git:
+
+```
+git clone https://github.com/kris-vadi/eCommerce-Application.git
+cd eCommerce-Application
+```
+Install dependencies with this command:
+
+```
+npm install
+```
+Run the application with this command:
+```
+npm start
+```
 
 
 ## 🔧 Available Scripts
@@ -54,6 +85,12 @@ npm run format:fix
 npm run test
 ```
 
+- Launche the test runner and report test coverage information
+
+```bash
+npm run test:cover
+```
+
 - Prepare husky
 
 ```bash
@@ -69,29 +106,8 @@ npm run build
 - Build the app for production to the `dist` folder and update deploy on gh-pages
 
 ```bash
-npm run deploy
-```
+npm run deploy```
 
-
-
-## 🚀 Getting Started
-To get started you can simply clone this `eCommerce-Application` repository and install the dependencies.
-
-Clone the `eCommerce-Application` repository using git:
-
-```
-git clone https://github.com/kris-vadi/eCommerce-Application.git
-cd eCommerce-Application
-```
-Install dependencies with this command:
-
-```
-npm install
-```
-Run the application with this command:
-```
-npm start
-```
 
 
 ## 💻 Authors
