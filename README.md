@@ -4,13 +4,13 @@ Welcome to our comprehensive online shopping portal that provides:
 
 - a responsive and adaptive design;
 - product categorization and sorting;
-- user registration and login📝🔐; 
+- user registration and login📝🔐.
 
 Users can:
-- browse through a vast range of toys 🎠🎈🎁,
-- search product 🔍;
-- view detailed descriptions,
-- add their favorite items to the basket 🛒,
+- browse through a vast range of toys 🎠🎈🎁;
+- search products 🔍;
+- view detailed descriptions;
+- add their favorite items to the basket 🛒;
 - use promo codes;
 - proceed to checkout.
 
@@ -24,8 +24,8 @@ These features make your customers shopping experience enjoyable.
 **Server:** powered by CommerceTools 🌐
 
 
-
 ## 🚀 Getting Started
+
 To get started you can simply clone this `eCommerce-Application` repository and install the dependencies.
 
 Clone the `eCommerce-Application` repository using git:
