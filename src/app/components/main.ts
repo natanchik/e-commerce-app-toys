@@ -303,6 +303,10 @@ class Main {
         const currentID = target.dataset.id;
         router.navigate(`${pages.CATALOG}/${currentID}`);
       }
+
+      if (target.classList.contains('main-page__category')) {
+        await addNavigationForSidebar(target, router, this.sidebar);
+      }
     });
 
     document.addEventListener('submit', async (event: Event) => {

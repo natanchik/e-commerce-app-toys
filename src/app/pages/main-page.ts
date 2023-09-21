@@ -36,10 +36,9 @@ class MainPage {
         const subcategories: Category[] | undefined = stateCategories.has(name) ? stateCategories.get(name) : [];
   
         subcategories?.forEach((subcategory: Category): void => {
-          const currentCategory = createElement('div', [`main-page__category`]) as HTMLDivElement;
-          // const img = createElement('img', ['main-page__category-img']) as HTMLImageElement;
-          // img.src = `@/assets/img/categories/${subcategory.slug['en-US']}.png`;
-          // currentCategory.append(img);
+          const currentCategory = createElement('div', [`main-page__category`,  `main-page__${subcategory.slug['en-US']}`], `<p class="main-page__category-text">${subcategory.name['en-US']}</p>`) as HTMLDivElement;
+          currentCategory.id = subcategory.id;
+          currentCategory.dataset.page = subcategory.slug['en-US'];
           categoriesGrid.append(currentCategory);
         })
       }
