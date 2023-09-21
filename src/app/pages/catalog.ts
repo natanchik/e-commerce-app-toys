@@ -2,7 +2,7 @@ import getAllProducts from '../api/getProduct/getAllProducts';
 import Filters from '../components/filters';
 import Header from '../components/header';
 import { createElement, getLineItem } from '../components/utils';
-import { catalogQueryParams, productLimit } from '../state/state';
+import { catalogQueryParams, productLimit, stateCategories } from '../state/state';
 import { Category, LineItem, Price, Product } from '../types/types';
 
 class Catalog {
@@ -49,10 +49,9 @@ class Catalog {
         .replace('masterData%28current%28categories%28id%3D%22', '')
         .replace('%22%29%29%29', '');
 
-      const categories: Category[] = localStorage.getItem('categories')
-        ? JSON.parse(localStorage.getItem('categories') as string)
-        : [];
-      categories.forEach((category: Category) => {
+      const categories: Category[] | undefined = stateCategories.has('categories') ? stateCategories.get('categories') : [];
+      
+      categories?.forEach((category: Category) => {
         if (category.id === currentCategoryId) {
           if (category.parent) {
             categories.forEach((parentCategory: Category) => {

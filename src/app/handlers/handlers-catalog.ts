@@ -221,7 +221,6 @@ export const addNavigationForSidebar = async (
   if (currentTarget.dataset.page === 'catalog') {
     router.navigate(pages.CATALOG);
   } else {
-    console.log(currentTarget.dataset.page);
     router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
   }
 };
