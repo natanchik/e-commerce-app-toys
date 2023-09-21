@@ -65,6 +65,12 @@
   cursor: pointer;
 }
 
+.main-page__categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 200px 200px;
+}
+
 @media (max-width: 1100px) {
   .promo__item {
     flex-direction: column;

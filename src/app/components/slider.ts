@@ -9,6 +9,8 @@ class Slider {
   constructor() {
     this.index = 0;
     this.maxLength = promoCodes.length;
+    this.prepareCurrentSlide(this.index);
+    this.index += 1;
     this.nextSlide();
   }
 
@@ -18,7 +20,7 @@ class Slider {
       this.prepareCurrentSlide(this.index);
       setTimeout(this.nextSlide.bind(this), 7000);
     } else {
-      this.index++;
+      this.index += 1;
       this.prepareCurrentSlide(this.index);
       setTimeout(this.nextSlide.bind(this), 7000);
     }

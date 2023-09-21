@@ -48,9 +48,11 @@ class App {
     return [
       {
         path: `${pages.MAIN}`,
-        callback: (): void => {
+        callback: async (): Promise<void> => {
           const mainPage = new MainPage();
           Main.setContent(mainPage.drawMainPage());
+          const cat = document.querySelector('.main-page__categories') as HTMLDivElement;
+          await mainPage.drawCategoriesGrid(cat);
         },
       },
       {
