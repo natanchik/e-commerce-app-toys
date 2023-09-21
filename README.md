@@ -106,8 +106,8 @@ npm run build
 - Build the app for production to the `dist` folder and update deploy on gh-pages
 
 ```bash
-npm run deploy```
-
+npm run deploy
+```
 
 
 ## 💻 Authors
