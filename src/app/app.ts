@@ -49,10 +49,12 @@ class App {
       {
         path: `${pages.MAIN}`,
         callback: async (): Promise<void> => {
-          const mainPage = new MainPage();
-          Main.setContent(mainPage.drawMainPage());
-          const cat = document.querySelector('.main-page__categories') as HTMLDivElement;
-          await mainPage.drawCategoriesGrid(cat);
+          setTimeout (async () => {
+            const mainPage = new MainPage();
+            Main.setContent(await mainPage.drawMainPage());
+            const cat = document.querySelector('.main-page__categories') as HTMLDivElement;
+            await mainPage.drawCategoriesGrid(cat);
+          }, 2000);
         },
       },
       {

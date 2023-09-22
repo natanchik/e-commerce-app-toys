@@ -5,7 +5,7 @@ import getCategories from '../api/category/getCategories';
 import { Category } from '../types/types';
 
 class MainPage {
-  public drawMainPage(): HTMLDivElement {
+  public async drawMainPage(): Promise<HTMLDivElement> {
     const mainPage = createElement('div', ['main-page', 'main__wrapper']) as HTMLDivElement;
     const categoriesTitle = createElement('h2', ['main-page__categories-title'], 'Shop by category:') as HTMLHeadingElement;
     const categoriesGrid = createElement('div', ['main-page__categories']) as HTMLDivElement;
@@ -23,11 +23,10 @@ class MainPage {
   }
 
   public async drawCategoriesGrid(categoriesGrid: HTMLDivElement): Promise<void> {
-
     if (!stateCategories.has('top')) await getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
     const topCategories: Category[] | undefined = stateCategories.has('top') ? stateCategories.get('top') : [];
 
-    topCategories?.forEach(async (category: Category): Promise<void> => {
+    await topCategories?.forEach(async (category: Category): Promise<void> => {
       const name = category.name['en-US'].toLocaleLowerCase();
       const slug = category.slug['en-US'];
 

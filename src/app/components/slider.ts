@@ -9,7 +9,9 @@ class Slider {
   constructor() {
     this.index = 0;
     this.maxLength = promoCodes.length;
-    this.nextSlide();
+    setTimeout(() => {
+      this.nextSlide();
+    }, 300);
   }
 
   private nextSlide(): void {
@@ -25,14 +27,12 @@ class Slider {
   }
 
   private prepareCurrentSlide(index: number): void {
-    setTimeout(() => {
       const promoContainer = document.querySelector('.promo__container') as HTMLDivElement;
       const item = this.drawPromo(promoCodes[index], index) as HTMLDivElement;
       if (promoContainer) {
         promoContainer.innerHTML = '';
         promoContainer.append(item);
       }
-    }, 200);
   }
 
   private drawPromo(promocode: { [key: string]: string }, idx: number): HTMLDivElement {
