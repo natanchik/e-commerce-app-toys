@@ -49,8 +49,10 @@ class Catalog {
         .replace('masterData%28current%28categories%28id%3D%22', '')
         .replace('%22%29%29%29', '');
 
-      const categories: Category[] | undefined = stateCategories.has('categories') ? stateCategories.get('categories') : [];
-      
+      const categories: Category[] | undefined = stateCategories.has('categories')
+        ? stateCategories.get('categories')
+        : [];
+
       categories?.forEach((category: Category) => {
         if (category.id === currentCategoryId) {
           if (category.parent) {

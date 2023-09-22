@@ -65,7 +65,10 @@ class AboutUS {
   }
 
   private addСontributions(): HTMLDivElement {
-    const contributions = createElement('div', ['about-us__contributions'], `
+    const contributions = createElement(
+      'div',
+      ['about-us__contributions'],
+      `
     <h3>Contributions:</h3>
     <div class="about-us__contributions-grid">
       <div class="about-us__contributions-item"><h4>Kristina</h4></div>
@@ -84,7 +87,8 @@ class AboutUS {
       <div class="about-us__contributions-item">Bascket page</div>
       <div class="about-us__contributions-item">About us page</div>
     </div>
-    `) as HTMLDivElement;
+    `,
+    ) as HTMLDivElement;
 
     return contributions;
   }
