@@ -23,6 +23,7 @@ class AboutUS {
       href: 'https://rs.school/',
     }) as HTMLLinkElement;
     const content = createElement('div', ['about-us__content']) as HTMLDivElement;
+    const contributions = this.addСontributions();
 
     imgBlock.append(commonImg, rsLink);
     commonInfoWrapper.append(commonParagWrapper, imgBlock);
@@ -30,7 +31,7 @@ class AboutUS {
     teammates.forEach((teammate, idx) => {
       content.append(this.drawTeammate(teammate, idx));
     });
-    aboutUs.append(title, decorator, content);
+    aboutUs.append(title, decorator, content, contributions);
     return aboutUs;
   }
 
@@ -61,6 +62,35 @@ class AboutUS {
 
     wrapper.append(imgBlock, infoBlock);
     return wrapper;
+  }
+
+  private addСontributions(): HTMLDivElement {
+    const contributions = createElement(
+      'div',
+      ['about-us__contributions'],
+      `
+    <h3>Contributions:</h3>
+    <div class="about-us__contributions-grid">
+      <div class="about-us__contributions-item"><h4>Kristina</h4></div>
+      <div class="about-us__contributions-item"><h4>Natalia</h4></div>
+      <div class="about-us__contributions-item"><h4>Irina</h4></div>
+      <div class="about-us__contributions-item">Repository setup</div>
+      <div class="about-us__contributions-item">Development environment configuration</div>
+      <div class="about-us__contributions-item">Commercetools configuration</div>
+      <div class="about-us__contributions-item">Routing</div>
+      <div class="about-us__contributions-item">Login and registration layout and validation</div>
+      <div class="about-us__contributions-item">Login and registration integration with Commercetools</div>
+      <div class="about-us__contributions-item">Catalog page</div>
+      <div class="about-us__contributions-item">User profile page</div>
+      <div class="about-us__contributions-item">Product page</div>
+      <div class="about-us__contributions-item">Catalog enhancements</div>
+      <div class="about-us__contributions-item">Basket page</div>
+      <div class="about-us__contributions-item">About us page</div>
+    </div>
+    `,
+    ) as HTMLDivElement;
+
+    return contributions;
   }
 }
 

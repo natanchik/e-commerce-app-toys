@@ -205,7 +205,7 @@ export const clearFilterForPrices = async (): Promise<void> => {
 };
 
 export const addNavigationForSidebar = async (
-  currentTarget: HTMLLIElement,
+  currentTarget: HTMLElement,
   router: Router,
   sidebar: Sidebar,
 ): Promise<void> => {

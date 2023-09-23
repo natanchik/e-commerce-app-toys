@@ -8,6 +8,7 @@ import { hideLoading, showLoadig } from './app/components/utils';
 import refreshToken from './app/api/tokens/refreshToken';
 import { createMyCart } from './app/api/cart/createMyCart';
 import User from './app/components/user';
+import { stateCategories } from './app/state/state';
 
 const loadTokens = async (): Promise<void> => {
   showLoadig();
@@ -22,9 +23,11 @@ const loadTokens = async (): Promise<void> => {
         location.reload();
         alert('Your anonimous session has timed out. Please start shopping again or register.');
       }
-    }, 10800000);
+    }, 10700000);
   }
   if (!localStorage.getItem('categories')) await getCategories();
+  await getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
+
 };
 
 const app = new App();
