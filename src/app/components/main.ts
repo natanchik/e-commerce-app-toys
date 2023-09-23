@@ -1,25 +1,11 @@
-import { createElement, encodeText } from './utils';
+import { createElement } from './utils';
 import Sidebar from './sidebar';
 import Router from '../router/router';
 import { pages } from '../router/pages';
-import { getLoginData, getRegisterData } from '../api/helpers/getDataFromInput';
 import { checkValidity } from '../api/helpers/checkValidity';
-import { loginCustomer } from '../api/customer/loginCustomer';
-import createCustomer from '../api/customer/createCustomer';
 import removeCustomerAddress from '../api/customer/update/remove-address';
-import User from './user';
-import getAllProducts from '../api/getProduct/getAllProducts';
-import {
-  catalogQueryParams,
-  productAgeSelectedIds,
-  productGendersSelectedIds,
-  productTypesSelectedIds,
-} from '../state/state';
 import Catalog from '../pages/catalog';
 import Filters from './filters';
-import { sorterParametrs } from './constants';
-import getProductsBySearch from '../api/getProduct/getProductsBySearch';
-import { addNewQueryParam } from '../api/helpers/utils';
 import {
   toggleProfileEditMode,
   toggleProfileItems,
@@ -32,31 +18,49 @@ import {
   handlerChangePaswwordSubmit,
   handlerChangeEmailSubmit,
   handlerAddAddressSubmit,
+  handlerProfileEditMode,
   handlerDefaultAddress,
-} from '../components/handlers';
+  clearCart,
+} from '../handlers/handlers-profile';
+import {
+  addFilterNavigationForCheckbox,
+  addFilterNavigationForPrices,
+  addFilterNavigationForSearch,
+  addFilterNavigationForSelect,
+  addNavigationForSidebar,
+  clearFilterForPrices,
+  clearFilterForSearch,
+  loadMoreProducts,
+  redrawProducts,
+  toggleCatalogAddProductButton,
+} from '../handlers/handlers-catalog';
+import { applyDiscountCode, changeCartItemQuantityFromCart, deleteDiscountCode } from '../handlers/handlers-cart';
+import {
+  toggleCardAddProductButton,
+  changeCartItemQuantityFromCard,
+  switchNextSlide,
+  switchPrevSlide,
+  getImagebyMini,
+  toggleCardModal,
+} from '../handlers/handlers-card';
+import Header from './header';
+import { loginViaForm, registerViaForm } from '../handlers/handlers-autorizarion';
 
 class Main {
-  mainElement: HTMLDivElement;
-
   sidebar: Sidebar;
 
-  sidebarWrapper: HTMLDivElement;
-
-  constructor(router: Router) {
-    this.sidebar = new Sidebar();
-    this.sidebarWrapper = this.sidebar.drawSidebar();
-    this.mainElement = this.drawMain();
+  constructor(router: Router, sidebar: Sidebar) {
+    this.sidebar = sidebar;
+    this.drawMain();
     this.setEventListeners(router);
   }
 
-  public drawMain(): HTMLDivElement {
+  public drawMain(): void {
     const body = document.querySelector('body') as HTMLBodyElement;
     const main = createElement('div', ['main']) as HTMLDivElement;
-    const dimming = createElement('div', ['sidebar__dimming']) as HTMLDivElement;
+    Header.addProductsNumberInBasket();
 
-    body.append(main, this.sidebarWrapper, dimming);
-
-    return main;
+    body.append(main);
   }
 
   static setContent(element: HTMLDivElement): void {
@@ -75,334 +79,8 @@ class Main {
     return decorator;
   }
 
-  private async loginViaForm(target: HTMLFormElement, router: Router): Promise<void> {
-    const submitBtn = document.querySelector('.auth-btn.submit-login') as HTMLButtonElement;
-    const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
-    const data = getLoginData(target as HTMLFormElement);
-
-    submitBtn.setAttribute('disabled', 'true');
-    await loginCustomer(data.username, data.password);
-
-    if (apiStatus.classList.contains('success-status')) {
-      setTimeout(() => {
-        router.navigate(pages.MAIN);
-        User.userLogin();
-      }, 1500);
-    } else {
-      submitBtn.removeAttribute('disabled');
-    }
-  }
-
-  private async registerViaForm(router: Router): Promise<void> {
-    const submitBtn = document.querySelector('.auth-btn.submit-register') as HTMLButtonElement;
-    const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
-    const data = getRegisterData();
-    const defaultBilling = document.getElementById('as-default-billing') as HTMLInputElement;
-    const defaultShipping = document.getElementById('as-default-shipping') as HTMLInputElement;
-    const checkDefaultBilling = defaultBilling.checked;
-    const checkDefaultShipping = defaultShipping.checked;
-
-    submitBtn.setAttribute('disabled', 'true');
-    await createCustomer(data, checkDefaultBilling, checkDefaultShipping);
-
-    if (apiStatus.classList.contains('success-status__register')) {
-      setTimeout(() => {
-        router.navigate(pages.MAIN);
-        User.userLogin();
-      }, 1500);
-    } else {
-      submitBtn.removeAttribute('disabled');
-    }
-  }
-
-  private async redrawProducts(): Promise<void> {
-    await getAllProducts();
-    Catalog.drawProducts();
-  }
-
-  private addFilterNavigationForCheckbox(currentTarget: HTMLInputElement): void {
-    if (currentTarget.checked === true) {
-      switch (currentTarget.dataset.filters) {
-        case 'age':
-          productAgeSelectedIds.add(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'age',
-            'where',
-            `masterData%28current%28categories%28id%20in%20%28${Array.from(productAgeSelectedIds).join(
-              ',%20',
-            )}%29%29%29%29`,
-          );
-          break;
-        case 'genders':
-          productGendersSelectedIds.add(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'genders',
-            'where',
-            `masterData%28current%28categories%28id%20in%20%28${Array.from(productGendersSelectedIds).join(
-              ',%20',
-            )}%29%29%29%29`,
-          );
-          break;
-        case 'product-type':
-          productTypesSelectedIds.add(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'product-type',
-            'where',
-            `productType%28id%20in%20%28${Array.from(productTypesSelectedIds).join(',%20')}%29%29`,
-          );
-          break;
-      }
-      this.redrawProducts();
-    } else {
-      switch (currentTarget.dataset.filters) {
-        case 'age':
-          productAgeSelectedIds.delete(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'age',
-            'where',
-            `masterData%28current%28categories%28id%20in%20%28${Array.from(productAgeSelectedIds).join(
-              ',%20',
-            )}%29%29%29%29`,
-          );
-          if (productAgeSelectedIds.size === 0) {
-            catalogQueryParams.delete('age');
-          }
-          break;
-        case 'genders':
-          productGendersSelectedIds.delete(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'genders',
-            'where',
-            `masterData%28current%28categories%28id%20in%20%28${Array.from(productGendersSelectedIds).join(
-              ',%20',
-            )}%29%29%29%29`,
-          );
-          if (productGendersSelectedIds.size === 0) {
-            catalogQueryParams.delete('genders');
-          }
-          break;
-        case 'product-type':
-          productTypesSelectedIds.delete(`%22${currentTarget.id}%22`);
-          addNewQueryParam(
-            'product-type',
-            'where',
-            `productType%28id%20in%20%28${Array.from(productTypesSelectedIds).join(',%20')}%29%29`,
-          );
-          if (productTypesSelectedIds.size === 0) {
-            catalogQueryParams.delete('product-type');
-          }
-          break;
-      }
-      this.redrawProducts();
-    }
-  }
-
-  private makeMiniActive(slideIndex: number): void {
-    const minis = document.querySelectorAll('.product-card__mini') as NodeListOf<HTMLDivElement>;
-
-    minis.forEach((mini) => {
-      mini.classList.remove('active-mini');
-    });
-    minis[slideIndex - 1].classList.add('active-mini');
-  }
-
-  private switchNextSlide(): void {
-    const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
-    let currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
-
-    const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
-    const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
-    const width = slides[0].clientWidth + 60;
-
-    const slidesRowModal = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
-    const slidesModal = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
-    const widthModal = slidesModal[0].clientWidth + 60;
-
-    if (currentIndex > slides.length - 1) {
-      currentIndex = 1;
-      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
-
-      slidesRow.style.transform = `none`;
-      slidesRowModal.style.transform = `none`;
-    } else {
-      slidesRow.style.transform = `translateX(${-width * currentIndex}px)`;
-      slidesRowModal.style.transform = `translateX(${-widthModal * currentIndex}px)`;
-
-      currentIndex++;
-      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
-    }
-    this.makeMiniActive(currentIndex);
-  }
-
-  private switchPrevSlide(): void {
-    const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
-    let currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
-
-    const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
-    const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
-    const width = slides[0].clientWidth + 60;
-
-    const slidesRowModal = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
-    const slidesModal = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
-    const widthModal = slidesModal[0].clientWidth + 60;
-
-    if (currentIndex <= 1) {
-      currentIndex = slides.length;
-      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
-
-      slidesRow.style.transform = `translateX(${-width * (currentIndex - 1)}px)`;
-      slidesRowModal.style.transform = `translateX(${-widthModal * (currentIndex - 1)}px)`;
-    } else {
-      currentIndex--;
-      cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
-
-      slidesRow.style.transform = `translateX(${-width * (currentIndex - 1)}px)`;
-      slidesRowModal.style.transform = `translateX(${-widthModal * (currentIndex - 1)}px)`;
-    }
-    this.makeMiniActive(currentIndex);
-  }
-
-  private getImagebyMini(target: HTMLElement): void {
-    const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
-    let currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
-
-    const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
-    const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
-    const width = slides[0].clientWidth + 60;
-
-    currentIndex = +target.getAttribute('data-index')!;
-    cardWrapper.setAttribute('data-slideIndex', `${currentIndex}`);
-    slidesRow.style.transform = `translateX(${-width * (currentIndex - 1)}px)`;
-    this.makeMiniActive(currentIndex);
-  }
-
-  private toggleCardModal(slideIndex: number): void {
-    const modal = document.querySelector('.modal-card__dimming');
-    modal?.classList.toggle('modal-active');
-    if (modal?.classList.contains('modal-active')) {
-      const slidesRow = document.querySelector('.modal-card__slides-row') as HTMLDivElement;
-      const slides = document.querySelectorAll('.modal-card__slide') as NodeListOf<HTMLDivElement>;
-      const width = slides[0].clientWidth + 60;
-
-      slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
-    } else {
-      const slidesRow = document.querySelector('.product-card__slides-row') as HTMLDivElement;
-      const slides = document.querySelectorAll('.product-card__slide') as NodeListOf<HTMLDivElement>;
-      const miniRow = document.querySelector('.product-card__minis-row');
-      const width = slides[0].clientWidth + 60;
-
-      slidesRow.style.transform = `translateX(${-width * (slideIndex - 1)}px)`;
-      if (miniRow) {
-        this.makeMiniActive(slideIndex);
-      }
-    }
-  }
-
-  private deleteSortFromQueryParam(): void {
-    Object.keys(sorterParametrs).forEach((key: string) => {
-      catalogQueryParams.delete(key);
-    });
-  }
-
-  private addFilterNavigationForSelect(currentTarget: HTMLSelectElement): void {
-    switch (currentTarget.value) {
-      case 'name-asc':
-        this.deleteSortFromQueryParam();
-        addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20asc`);
-        this.redrawProducts();
-        break;
-      case 'name-desc':
-        this.deleteSortFromQueryParam();
-        addNewQueryParam(currentTarget.value, 'sort', `masterData.current.name.en-US%20desc`);
-        this.redrawProducts();
-        break;
-      case 'price-asc':
-        this.deleteSortFromQueryParam();
-        addNewQueryParam(currentTarget.value, 'sort', `key%20asc`);
-        this.redrawProducts();
-        break;
-      case 'price-desc':
-        this.deleteSortFromQueryParam();
-        addNewQueryParam(currentTarget.value, 'sort', `key%20desc`);
-        this.redrawProducts();
-        break;
-      default:
-        localStorage.removeItem('sorted_products');
-        this.deleteSortFromQueryParam();
-        this.redrawProducts();
-        break;
-    }
-  }
-
-  private async addFilterNavigationForSearch(currentTarget: HTMLInputElement): Promise<void> {
-    const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
-    close.classList.remove('filters__close_hidden');
-    if (currentTarget.value.length === 0) {
-      localStorage.removeItem('search_products');
-      Catalog.drawProducts();
-      close.classList.add('filters__close_hidden');
-    } else {
-      await getProductsBySearch(encodeText(currentTarget.value)).then(() => {
-        Catalog.drawProducts();
-      });
-    }
-  }
-
-  private clearFilterForSearch(): void {
-    const close = document.querySelector('.filters__close_search') as HTMLParagraphElement;
-    const search = document.querySelector('.filters__search') as HTMLInputElement;
-    search.value = '';
-    localStorage.removeItem('search_products');
-    close.classList.add('filters__close_hidden');
-    this.redrawProducts();
-  }
-
-  private addFilterNavigationForPrices(): void {
-    const close = document.querySelector('.filters__close_prices') as HTMLParagraphElement;
-    close.classList.remove('filters__close_hidden');
-    const from = document.getElementById('price-from') as HTMLInputElement;
-    const to = document.getElementById('price-to') as HTMLInputElement;
-    const fromValue = Number(from.value) * 100;
-    const toValue = to.value ? Number(to.value) * 100 : 5000000;
-    addNewQueryParam(
-      'price',
-      'where',
-      `masterData%28current%28masterVariant%28prices%28country%3D%22US%22%20and%20%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%20or%20discounted%28%28value%28centAmount%20%3E%3D%20${fromValue}%29%20and%20value%28centAmount%20%3C%3D%20${toValue}%29%29%29%29%29%29%29%29`,
-    );
-    this.redrawProducts();
-  }
-
-  private clearFilterForPrices(): void {
-    const from = document.getElementById('price-from') as HTMLInputElement;
-    const to = document.getElementById('price-to') as HTMLInputElement;
-    from.value = '';
-    to.value = '';
-    catalogQueryParams.delete('price');
-    this.redrawProducts();
-  }
-
-  private async addNavigationForSidebar(currentTarget: HTMLLIElement, router: Router): Promise<void> {
-    Catalog.clearSortedProducts();
-    if (currentTarget.dataset.page !== 'catalog') {
-      addNewQueryParam(
-        'sidebar',
-        'where',
-        `masterData%28current%28categories%28id%3D%22${currentTarget.id}%22%29%29%29`,
-      );
-    }
-
-    await getAllProducts();
-
-    this.sidebar.closeSidebar();
-    if (currentTarget.dataset.page === 'catalog') {
-      router.navigate(pages.CATALOG);
-    } else {
-      router.navigate(`${pages.CATALOG}/${currentTarget.dataset.page}`);
-    }
-  }
-
   private setEventListeners(router: Router): void {
-    document.addEventListener('click', (event: Event) => {
+    document.addEventListener('click', async (event: Event): Promise<void> => {
       const target = event.target as HTMLElement;
 
       if (target.classList.contains('sidebar__link') && target.dataset.page === 'main') {
@@ -414,6 +92,15 @@ class Main {
         Catalog.clearSortedProducts();
         router.navigate(pages.CATALOG);
         this.sidebar.closeSidebar();
+      }
+
+      if (target.classList.contains('sidebar__link') && target.dataset.page === 'about-us') {
+        router.navigate(pages.ABOUT_US);
+        this.sidebar.closeSidebar();
+      }
+
+      if (target.classList.contains('header__icon-team')) {
+        router.navigate(pages.ABOUT_US);
       }
 
       if (target.classList.contains('logo') || target.parentElement?.classList.contains('logo')) {
@@ -453,7 +140,7 @@ class Main {
       }
 
       if (target.classList.contains('profile__update')) {
-        handlersProfileUpdates(target);
+        await handlersProfileUpdates(target);
       }
 
       if (target.classList.contains('profile__address__delete-btn')) {
@@ -464,24 +151,10 @@ class Main {
       }
 
       if (target.classList.contains('profile__address__edit-btn')) {
-        const item = target.closest('.profile__item_inline') as HTMLLIElement;
-        const addressItem = target.closest('.profile__address') as HTMLLIElement;
-        const editText = createElement('p', ['profile__address__edit-text'], 'Input your changes into form below');
-        if (!item.classList.contains('change')) {
-          item.classList.add('change');
-          addressItem.classList.add('change');
-          addressItem.classList.add('change-address');
-          addressItem.append(editText);
-        } else {
-          item.classList.remove('change');
-          addressItem.classList.remove('change');
-          addressItem.classList.remove('change-address');
-          const text = document.querySelector('.profile__address__edit-text');
-          text?.remove();
-        }
+        await handlerProfileEditMode(target);
       }
       if (target.classList.contains('profile__address__default-btn')) {
-        handlerDefaultAddress(target);
+        await handlerDefaultAddress(target);
       }
 
       if (target.classList.contains('main-page__page')) {
@@ -490,22 +163,27 @@ class Main {
         router.navigate(pageName);
       }
 
+      if (target.classList.contains('promo__btn-to-catalog')) {
+        Catalog.clearSortedProducts();
+        router.navigate(pages.CATALOG);
+      }
+
       if (
         target.classList.contains('product-card__next-slide') ||
         target.classList.contains('modal-card__next-slide')
       ) {
-        this.switchNextSlide();
+        switchNextSlide();
       }
 
       if (
         target.classList.contains('product-card__prev-slide') ||
         target.classList.contains('modal-card__prev-slide')
       ) {
-        this.switchPrevSlide();
+        switchPrevSlide();
       }
 
       if (target.classList.contains('product-card__mini-img')) {
-        this.getImagebyMini(target);
+        getImagebyMini(target);
       }
 
       if (
@@ -515,7 +193,19 @@ class Main {
       ) {
         const cardWrapper = document.querySelector('.product-card') as HTMLDivElement;
         const currentIndex = +cardWrapper.getAttribute('data-slideIndex')!;
-        this.toggleCardModal(currentIndex);
+        toggleCardModal(currentIndex);
+      }
+
+      if (target.classList.contains('product-card__add-to-cart')) {
+        await toggleCardAddProductButton(target, router);
+      }
+
+      if (target.classList.contains('product-card__increase-quantity')) {
+        await changeCartItemQuantityFromCard(target, router, 'add');
+      }
+
+      if (target.classList.contains('product-card__decrease-quantity')) {
+        await changeCartItemQuantityFromCard(target, router, 'decrease');
       }
 
       if (target.classList.contains('filters__item')) {
@@ -524,12 +214,12 @@ class Main {
 
       if (target.classList.contains('filters__checkbox')) {
         const currentTarget = target as HTMLInputElement;
-        this.addFilterNavigationForCheckbox(currentTarget);
+        await addFilterNavigationForCheckbox(currentTarget);
       }
 
       if (target.classList.contains('filters__button')) {
         Filters.resetAllFilters();
-        this.redrawProducts();
+        await redrawProducts();
       }
 
       if (target.classList.contains('mobile-filters__item')) {
@@ -537,15 +227,15 @@ class Main {
       }
 
       if (target.classList.contains('filters__apply_prices')) {
-        this.addFilterNavigationForPrices();
+        await addFilterNavigationForPrices();
       }
 
       if (target.classList.contains('filters__close_prices')) {
-        this.clearFilterForPrices();
+        await clearFilterForPrices();
       }
 
       if (target.classList.contains('filters__close_search')) {
-        this.clearFilterForSearch();
+        await clearFilterForSearch();
       }
 
       if (
@@ -554,7 +244,7 @@ class Main {
         target.classList.contains('catalog__breadcrumb')
       ) {
         const currentTarget = target as HTMLLIElement;
-        this.addNavigationForSidebar(currentTarget, router);
+        await addNavigationForSidebar(currentTarget, router, this.sidebar);
       }
 
       if (target.classList.contains('catalog__product')) {
@@ -562,10 +252,60 @@ class Main {
         router.navigate(`${pages.CATALOG}/${currentID}`);
       }
 
+      if (target.classList.contains('product__buttons_active') || target.classList.contains('product__button')) {
+        event.stopPropagation();
+        await toggleCatalogAddProductButton(target);
+      }
+
+      if (target.classList.contains('cart__discont-btn')) {
+        await applyDiscountCode(router);
+      }
+
+      if (target.classList.contains('cart__delete-discont')) {
+        await deleteDiscountCode(target, router);
+      }
+
       if (target.parentElement?.classList.contains('catalog__product')) {
         const parentDiv = target.parentNode as HTMLDivElement;
         const currentID = parentDiv.id;
         router.navigate(`${pages.CATALOG}/${currentID}`);
+      }
+
+      if (target.classList.contains('cart__delete-cart-btn')) {
+        clearCart().then(() => {
+          router.navigate(pages.CART);
+        });
+      }
+
+      if (target.classList.contains('catalog__load-more-button')) {
+        await loadMoreProducts(target);
+      }
+
+      if (target.classList.contains('cart__link-to-catalog')) {
+        event.preventDefault();
+        Catalog.clearSortedProducts();
+        router.navigate(pages.CATALOG);
+      }
+
+      if (target.classList.contains('cart__item__btn-plus')) {
+        await changeCartItemQuantityFromCart(target, router, 'add');
+      }
+
+      if (target.classList.contains('cart__item__btn-minus')) {
+        await changeCartItemQuantityFromCart(target, router, 'decrease');
+      }
+
+      if (target.classList.contains('cart__item__btn-delete')) {
+        await changeCartItemQuantityFromCart(target, router, 'remove');
+      }
+
+      if (target.classList.contains('cart__item__title')) {
+        const currentID = target.dataset.id;
+        router.navigate(`${pages.CATALOG}/${currentID}`);
+      }
+
+      if (target.classList.contains('main-page__category')) {
+        await addNavigationForSidebar(target, router, this.sidebar);
       }
     });
 
@@ -576,7 +316,7 @@ class Main {
         event.preventDefault();
         const isValid: boolean = checkValidity();
         if (isValid) {
-          this.loginViaForm(target as HTMLFormElement, router);
+          loginViaForm(target as HTMLFormElement, router);
         }
       }
 
@@ -584,7 +324,7 @@ class Main {
         event.preventDefault();
         const isValid: boolean = checkValidity();
         if (isValid) {
-          this.registerViaForm(router);
+          registerViaForm(router);
         }
       }
 
@@ -593,15 +333,15 @@ class Main {
       }
 
       if (target.classList.contains('profile__password__form')) {
-        handlerChangePaswwordSubmit(event, target);
+        await handlerChangePaswwordSubmit(event, target);
       }
 
       if (target.classList.contains('profile__e-mail__form')) {
-        handlerChangeEmailSubmit(event, target);
+        await handlerChangeEmailSubmit(event, target);
       }
 
       if (target.classList.contains('profile__address__form')) {
-        handlerAddAddressSubmit(event, target);
+        await handlerAddAddressSubmit(event, target);
       }
     });
 
@@ -635,22 +375,12 @@ class Main {
 
       if (target.classList.contains('filters__select')) {
         const currentTarget = target as HTMLSelectElement;
-        this.addFilterNavigationForSelect(currentTarget);
+        addFilterNavigationForSelect(currentTarget);
       }
 
       if (target.classList.contains('filters__search')) {
         const currentTarget = target as HTMLInputElement;
-        this.addFilterNavigationForSearch(currentTarget);
-      }
-
-      if (target.classList.contains('filters__select')) {
-        const currentTarget = target as HTMLSelectElement;
-        this.addFilterNavigationForSelect(currentTarget);
-      }
-
-      if (target.classList.contains('filters__search')) {
-        const currentTarget = target as HTMLInputElement;
-        this.addFilterNavigationForSearch(currentTarget);
+        addFilterNavigationForSearch(currentTarget);
       }
     });
   }

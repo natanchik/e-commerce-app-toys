@@ -1,5 +1,5 @@
 import { addUserState, pushCurrentAction } from '../../helpers/utils';
-import { addProfileWarning, removeProfileWarning } from '../../../components/handlers';
+import { addProfileWarning, removeProfileWarning } from '../../../handlers/handlers-profile';
 import { Address } from '../../../types/types';
 
 const addCustomerAddress = async (data: object, type: string, isDefault: boolean): Promise<void> => {

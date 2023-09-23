@@ -114,16 +114,16 @@ export interface ProductVariant {
   key: string;
   sku: string;
   prices: Price[];
-  price: Price;
+  price?: Price;
   images: Image[];
 }
 
 export interface Price {
-  country: string;
+  country?: string;
   id: string;
   key: string;
   value: TypedMoney;
-  discounted: DiscountedPrice;
+  discounted?: DiscountedPrice;
 }
 
 export interface TypedMoney {
@@ -183,4 +183,35 @@ export interface ProductType {
 export interface PriceFilterValue {
   value: string;
   query: string;
+}
+
+export interface LineItem {
+  id: string;
+  key: string;
+  productId: string;
+  productKey: string;
+  name: LocalizedString;
+  variant: ProductVariant;
+  quantity: number;
+  price: Price;
+  discountedPrice: {
+    includedDiscounts: object[];
+    value: { type: string; currencyCode: string; centAmount: number; fractionDigits: number };
+  };
+  totalPrice: TypedMoney;
+}
+
+export interface Cart {
+  cartState: string;
+  id: string;
+  version: number;
+  lineItems: LineItem[];
+  totalPrice: TypedMoney;
+  discountCodes: [] | { discountCode: { typeId: string; id: string }; state: string }[];
+  origin: string;
+  totalLineItemQuantity: number;
+}
+
+export interface ProductLimit {
+  limit: number;
 }

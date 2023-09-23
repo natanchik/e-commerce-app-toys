@@ -2,6 +2,10 @@ import { createElement } from './utils';
 import Router from '../router/router';
 import { pages } from '../router/pages';
 import User from './user';
+import getAnonymousToken from '../api/tokens/getAnonymousToken';
+import { getMyCarts } from '../api/cart/getMyCarts';
+import { createMyCart } from '../api/cart/createMyCart';
+import { Cart } from '../types/types';
 
 class Header {
   header: HTMLHeadElement;
@@ -9,6 +13,9 @@ class Header {
   constructor(router: Router) {
     this.header = this.drawHeader();
     this.setEventListeners(router);
+    if (!User.isLogged()) {
+      User.toggleLogoutIcon();
+    }
   }
 
   private drawHeader(): HTMLHeadElement {
@@ -26,11 +33,16 @@ class Header {
     const icons = createElement('div', ['header__icons']) as HTMLDivElement;
     const iconUser = createElement('span', ['header__icon', 'header__icon-user']) as HTMLSpanElement;
     const iconLogout = createElement('span', ['header__icon', 'header__icon-logout']) as HTMLSpanElement;
-    const iconBascket = createElement('span', ['header__icon', 'header__icon-bascket']) as HTMLSpanElement;
+    const iconBascket = createElement(
+      'span',
+      ['header__icon', 'header__icon-bascket'],
+      '<p class="header__icon-bascket__count"></p>',
+    ) as HTMLSpanElement;
+    const iconTeam = createElement('span', ['header__icon', 'header__icon-team']) as HTMLSpanElement;
 
     nav.append(burger, navList);
     icons.append(iconUser, iconBascket, iconLogout);
-    wrapper.append(nav, logo, icons);
+    wrapper.append(nav, iconTeam, logo, icons);
     header.append(wrapper);
     body.append(header);
 
@@ -54,7 +66,7 @@ class Header {
   }
 
   private setEventListeners(router: Router): void {
-    this.header.addEventListener('click', (event: Event): void => {
+    this.header.addEventListener('click', async (event: Event): Promise<void> => {
       const target = event.target as HTMLElement;
 
       if (target.classList.contains('header__icon-user') || target.classList.contains('header__name')) {
@@ -68,8 +80,30 @@ class Header {
       if (target.classList.contains('header__icon-logout')) {
         User.userLogout();
         router.navigate(pages.AUTORIZATION);
+        localStorage.removeItem('cart');
+        await getAnonymousToken();
+        Header.addProductsNumberInBasket();
+      }
+
+      if (
+        target.classList.contains('header__icon-bascket') ||
+        target.classList.contains('header__icon-bascket__count')
+      ) {
+        if (!localStorage.cart) await createMyCart();
+        await getMyCarts();
+        router.navigate(pages.CART);
       }
     });
+  }
+
+  static addProductsNumberInBasket(): void {
+    const cart: Cart = localStorage.cart ? JSON.parse(localStorage.cart) : '';
+    let quantity: string = cart.totalLineItemQuantity ? cart.totalLineItemQuantity.toString() : '';
+
+    if (quantity === '0') quantity = '';
+
+    const itemsTotalAmountDisplay = document.querySelector('.header__icon-bascket__count');
+    if (itemsTotalAmountDisplay) itemsTotalAmountDisplay.textContent = `${quantity}`;
   }
 }
 

@@ -4,6 +4,7 @@ export const pages = {
   REGISTRATION: 'registration',
   USER_PROFILE: 'user-profile',
   CATALOG: 'catalog',
+  CART: 'cart',
   ABOUT_US: 'about-us',
   CONTACTS: 'contacts',
   TERMS_AND_CONDITIONS: 'terms-and-condition',

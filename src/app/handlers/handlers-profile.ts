@@ -1,4 +1,4 @@
-import { validateInput } from './validation';
+import { validateInput } from '../components/validation';
 import { createElement, nullUserState } from '../components/utils';
 import updateCustomerNames from '../api/customer/update/update-names';
 import updateCustomerBirthday from '../api/customer/update/update-birthday';
@@ -9,6 +9,8 @@ import changeCustomerAddress from '../api/customer/update/change-address';
 import makeAddressDefault from '../api/customer/update/make-address-default';
 import { checkValidity } from '../api/helpers/checkValidity';
 import { UserState } from '../types/types';
+import { deleteCart } from '../api/cart/deleteCart';
+import { createMyCart } from '../api/cart/createMyCart';
 
 function toggleProfileItemBtns(target: HTMLElement, action: string): void {
   const saveBtn = target.querySelector('.profile__update');
@@ -139,8 +141,10 @@ export function handlerValInput(event: Event): void {
   const target = event.target as HTMLInputElement;
   if (!target.parentElement?.classList.contains('filters__checkbox-block')) {
     const apiStatus = document.querySelector('.api-status') as HTMLParagraphElement;
-    apiStatus.className = 'api-status';
-    apiStatus.innerHTML = '';
+    if (apiStatus) {
+      apiStatus.className = 'api-status';
+      apiStatus.innerHTML = '';
+    }
 
     if (target.classList.contains('auth-input') && target instanceof HTMLInputElement) {
       const notation = document.querySelector(`[data-input="${target.id}"]`) as HTMLParagraphElement;
@@ -192,10 +196,10 @@ export async function handlersProfileUpdates(target: HTMLElement): Promise<void>
   }
 }
 
-export function addProfileWarning(type: string, message: string): void {
-  const warning = document.querySelector('.profile__warning');
+export function addProfileWarning(type: string, message: string, page: string = 'profile'): void {
+  const warning = document.querySelector(`.${page}__warning`);
   if (warning) {
-    warning.className = 'profile__warning';
+    warning.className = `${page}__warning`;
     if (type === 'success') {
       warning.classList.add('success');
     } else {
@@ -205,12 +209,19 @@ export function addProfileWarning(type: string, message: string): void {
   }
 }
 
-export function removeProfileWarning(): void {
-  const warning = document.querySelector('.profile__warning');
+export function removeProfileWarning(page: string = 'profile'): void {
+  const warning = document.querySelector(`.${page}__warning`);
   if (warning) {
-    warning.className = 'profile__warning';
+    warning.className = `${page}__warning`;
     warning.innerHTML = '';
   }
+}
+
+export function showWarning(type: string, message: string, page: string = 'profile'): void {
+  addProfileWarning(type, message, page);
+  setTimeout(() => {
+    removeProfileWarning(page);
+  }, 3000);
 }
 
 export async function handlerChangePaswwordSubmit(event: Event, target: HTMLElement): Promise<void> {
@@ -310,6 +321,24 @@ export function drawCurrentAddresses(type: string, curAddresses: HTMLDivElement)
   });
 }
 
+export function handlerProfileEditMode(target: HTMLElement): void {
+  const item = target.closest('.profile__item_inline') as HTMLLIElement;
+  const addressItem = target.closest('.profile__address') as HTMLLIElement;
+  const editText = createElement('p', ['profile__address__edit-text'], 'Input your changes into form below');
+  if (!item.classList.contains('change')) {
+    item.classList.add('change');
+    addressItem.classList.add('change');
+    addressItem.classList.add('change-address');
+    addressItem.append(editText);
+  } else {
+    item.classList.remove('change');
+    addressItem.classList.remove('change');
+    addressItem.classList.remove('change-address');
+    const text = document.querySelector('.profile__address__edit-text');
+    text?.remove();
+  }
+}
+
 export async function handlerAddAddressSubmit(event: Event, target: HTMLElement): Promise<void> {
   event.preventDefault();
   const item = target.closest('.profile__item_inline') as HTMLLIElement;
@@ -368,4 +397,16 @@ export async function handlerDefaultAddress(target: HTMLElement): Promise<void> 
     drawCurrentAddresses(type ? type : '', curAddressesBlock);
   }
   toggleAccordion(item.id, item, 'profile');
+}
+
+export async function clearCart(): Promise<void> {
+  const confirm = window.confirm('Are you sure you want to empty the Basket?');
+  if (confirm) {
+    const itemsBtns = document.querySelectorAll('button');
+    itemsBtns.forEach((btn) => {
+      if (btn instanceof HTMLButtonElement) btn.disabled = true;
+    });
+    await deleteCart(JSON.parse(localStorage.cart).id);
+    await createMyCart();
+  }
 }

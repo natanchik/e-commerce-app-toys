@@ -15,11 +15,15 @@ import User from './components/user';
 import UserProfile from './pages/user-profile';
 import Catalog from './pages/catalog';
 import Card from './pages/card';
+import CartPage from './pages/cart-page';
+import Sidebar from './components/sidebar';
 
 class App {
   router: Router;
 
   header: Header;
+
+  sidebar: Sidebar;
 
   main: Main;
 
@@ -31,19 +35,26 @@ class App {
     this.user = new User();
     this.router = new Router(this.createRoutes());
     this.header = new Header(this.router);
-    this.main = new Main(this.router);
+    this.sidebar = new Sidebar();
+    this.main = new Main(this.router, this.sidebar);
     this.footer = new Footer(this.router);
   }
 
-  public startApp(): void {}
+  public async startApp(): Promise<void> {
+    await this.sidebar.drawSidebar();
+  }
 
   private createRoutes(): RouteInfo[] {
     return [
       {
         path: `${pages.MAIN}`,
-        callback: (): void => {
-          const mainPage = new MainPage();
-          Main.setContent(mainPage.drawMainPage());
+        callback: async (): Promise<void> => {
+          setTimeout (async () => {
+            const mainPage = new MainPage();
+            Main.setContent(await mainPage.drawMainPage());
+            const cat = document.querySelector('.main-page__categories') as HTMLDivElement;
+            await mainPage.drawCategoriesGrid(cat);
+          }, 2000);
         },
       },
       {
@@ -104,6 +115,13 @@ class App {
             const card = new Card(id);
             Main.setContent(await card.drawCard());
           }
+        },
+      },
+      {
+        path: `${pages.CART}`,
+        callback: (): void => {
+          const cart = new CartPage();
+          Main.setContent(cart.drawCart());
         },
       },
       {

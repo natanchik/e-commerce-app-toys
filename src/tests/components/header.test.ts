@@ -19,6 +19,6 @@ describe('Class Header: drawHeader function', () => {
 
   it('should create all needed icons', () => {
     const headerIcons = document.querySelectorAll('.header__icon');
-    expect(headerIcons).toHaveLength(3);
+    expect(headerIcons).toHaveLength(4);
   });
 });

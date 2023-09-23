@@ -1,3 +1,5 @@
+import Header from '../../components/header';
+import { getMyCarts } from '../cart/getMyCarts';
 import getCustomerToken from '../tokens/getCustomerToken';
 import { getAllCustomersEmails } from './getAllCustomers';
 import { fillUserState } from './getCustomerByID';
@@ -11,7 +13,7 @@ const incorrectPassText = `The password you entered is incorrect, please try aga
 export const loginCustomer = async (username: string, password: string): Promise<void> => {
   const signinHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
+    Authorization: `Bearer ${JSON.parse(localStorage.anonymous_token).access_token}`,
   };
 
   const requestOptions = {
@@ -20,6 +22,7 @@ export const loginCustomer = async (username: string, password: string): Promise
     body: JSON.stringify({
       email: `${username}`,
       password: `${password}`,
+      activeCartSignInMode: 'MergeWithExistingCustomerCart',
     }),
   };
 
@@ -51,6 +54,8 @@ export const loginCustomer = async (username: string, password: string): Promise
     .then(async () => {
       await fillUserState(username);
       await getCustomerToken(username, password);
+      await getMyCarts();
+      Header.addProductsNumberInBasket();
       apiStatus.classList.add('success-status');
       apiStatus.innerHTML = `Enjoy the shopping!`;
     })
@@ -71,7 +76,7 @@ export const loginCustomer = async (username: string, password: string): Promise
 export const loginAfterRegistration = async (username: string, password: string): Promise<void> => {
   const signinHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${JSON.parse(localStorage.token_info).access_token}`,
+    Authorization: `Bearer ${JSON.parse(localStorage.anonymous_token).access_token}`,
   };
 
   const requestOptions = {

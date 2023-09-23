@@ -12,10 +12,10 @@ describe('Class AboutUS: drawAboutUs function', () => {
   });
 
   it('should create title', () => {
-    expect(title?.innerHTML).toBe(`About us`);
+    expect(title?.innerHTML).toBe(`MEET OUR TEAM`);
   });
 
   it('should create content', () => {
-    expect(content?.length).toEqual(5);
+    expect(content?.length).toEqual(4);
   });
 });

@@ -37,10 +37,6 @@ class User {
       if (localStorage.length === 0) {
         getAccessToken();
       }
-
-      if (!User.isLogged()) {
-        User.toggleLogoutIcon();
-      }
     });
   }
 }
