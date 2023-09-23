@@ -14,22 +14,27 @@ class Filters {
     ]) as HTMLDivElement;
     filters.dataset.content = 'mobile-filters';
 
+    this.drawAllFilters(filters).then(() => {
+      this.drawResetButton(filters);
+    })
+
+    return filters;
+  }
+
+  private async drawAllFilters(filters: HTMLDivElement): Promise<void> {
     this.drawSearch(filters);
     this.drawSort(filters);
     this.drawPriceFilter(filters);
     await this.drawByCategoryFilter(filters);
     await this.drawByTypeFilter(filters);
-    this.drawResetButton(filters);
-
-    return filters;
   }
-
+ 
   private async drawByCategoryFilter(filters: HTMLDivElement): Promise<void> {
     if (!stateCategories.has('top_categories'))
       await getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
     const topCategories: Category[] | undefined = stateCategories.has('top') ? stateCategories.get('top') : [];
 
-    topCategories?.forEach(async (category: Category): Promise<void> => {
+    await topCategories?.forEach(async (category: Category): Promise<void> => {
       const name = category.name['en-US'].toLocaleLowerCase();
       const slug = category.slug['en-US'];
 
