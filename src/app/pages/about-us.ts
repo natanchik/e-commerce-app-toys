@@ -81,10 +81,10 @@ class AboutUS {
       <div class="about-us__contributions-item">Login and registration layout and validation</div>
       <div class="about-us__contributions-item">Login and registration integration with Commercetools</div>
       <div class="about-us__contributions-item">Catalog page</div>
-      <div class="about-us__contributions-item">User prifile page</div>
+      <div class="about-us__contributions-item">User profile page</div>
       <div class="about-us__contributions-item">Product page</div>
       <div class="about-us__contributions-item">Catalog enhancements</div>
-      <div class="about-us__contributions-item">Bascket page</div>
+      <div class="about-us__contributions-item">Basket page</div>
       <div class="about-us__contributions-item">About us page</div>
     </div>
     `,
