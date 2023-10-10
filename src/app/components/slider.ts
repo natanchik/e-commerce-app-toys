@@ -27,12 +27,12 @@ class Slider {
   }
 
   private prepareCurrentSlide(index: number): void {
-      const promoContainer = document.querySelector('.promo__container') as HTMLDivElement;
-      const item = this.drawPromo(promoCodes[index], index) as HTMLDivElement;
-      if (promoContainer) {
-        promoContainer.innerHTML = '';
-        promoContainer.append(item);
-      }
+    const promoContainer = document.querySelector('.promo__container') as HTMLDivElement;
+    const item = this.drawPromo(promoCodes[index], index) as HTMLDivElement;
+    if (promoContainer) {
+      promoContainer.innerHTML = '';
+      promoContainer.append(item);
+    }
   }
 
   private drawPromo(promocode: { [key: string]: string }, idx: number): HTMLDivElement {

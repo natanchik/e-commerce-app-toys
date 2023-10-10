@@ -1,3 +1,5 @@
+import { BaseUrl } from '../../components/constants';
+
 const getProductsTypes = async (): Promise<void> => {
   const myHeaders = {
     'Content-Type': 'application/json',
@@ -9,10 +11,7 @@ const getProductsTypes = async (): Promise<void> => {
     headers: myHeaders,
   };
 
-  await fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/product-types`,
-    requestOptions,
-  )
+  await fetch(`${BaseUrl}/product-types`, requestOptions)
     .then((response) => {
       if (response.status >= 200 && response.status < 300) {
         return response.json();

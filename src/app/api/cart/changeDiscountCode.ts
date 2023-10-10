@@ -1,4 +1,5 @@
 import User from '../../components/user';
+import { BaseUrl } from '../../components/constants';
 
 export const changeDiscountCode = async (
   code?: string,
@@ -41,10 +42,7 @@ export const changeDiscountCode = async (
     body: JSON.stringify(currentBody),
   };
 
-  await fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${cart.id}`,
-    requestOptions,
-  )
+  await fetch(`${BaseUrl}/me/carts/${cart.id}`, requestOptions)
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();

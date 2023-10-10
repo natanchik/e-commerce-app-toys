@@ -3,8 +3,9 @@ import { getMyCarts } from '../cart/getMyCarts';
 import getCustomerToken from '../tokens/getCustomerToken';
 import { getAllCustomersEmails } from './getAllCustomers';
 import { fillUserState } from './getCustomerByID';
+import { BaseUrl } from '../../components/constants';
 
-const signinURL = `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/login`;
+const signinURL = `${BaseUrl}/me/login`;
 
 const incorrectResponseText = 'Incorrect response from the server, please try later';
 const notExistEmailText = `The email address doesn't exist, please enter correct one or register`;

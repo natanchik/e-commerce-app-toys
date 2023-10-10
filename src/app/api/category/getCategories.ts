@@ -1,6 +1,7 @@
 import { stateCategories } from '../../state/state';
 import { Category, QueryParam } from '../../types/types';
 import { generateQueryParams } from '../helpers/utils';
+import { BaseUrl } from '../../components/constants';
 
 const getCategories = async (
   dataName?: string,
@@ -16,12 +17,7 @@ const getCategories = async (
     headers: myHeaders,
   };
 
-  return fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/categories?limit=500${generateQueryParams(
-      queryParams,
-    )}`,
-    requestOptions,
-  )
+  return fetch(`${BaseUrl}/categories?limit=500${generateQueryParams(queryParams)}`, requestOptions)
     .then((response) => {
       if (response.status >= 200 && response.status < 300) {
         return response.json();

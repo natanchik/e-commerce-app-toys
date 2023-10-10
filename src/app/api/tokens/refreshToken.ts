@@ -1,3 +1,5 @@
+import { Base } from '../../components/constants';
+
 const myHeaders = {
   Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
 };
@@ -10,7 +12,7 @@ const requestOptions = {
 
 const refreshToken = async (refreshTokenValue: string): Promise<void> => {
   return fetch(
-    `https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=refresh_token&refresh_token=${refreshTokenValue}`,
+    `${Base}/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=refresh_token&refresh_token=${refreshTokenValue}`,
     requestOptions,
   )
     .then((res) => {

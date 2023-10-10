@@ -1,4 +1,5 @@
 import User from '../../components/user';
+import { BaseUrl } from '../../components/constants';
 
 export const createMyCart = async (): Promise<void> => {
   const myHeaders = {
@@ -18,10 +19,7 @@ export const createMyCart = async (): Promise<void> => {
     }),
   };
 
-  await fetch(
-    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts',
-    requestOptions,
-  )
+  await fetch(`${BaseUrl}/me/carts`, requestOptions)
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();

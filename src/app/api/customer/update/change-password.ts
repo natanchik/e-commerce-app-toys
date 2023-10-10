@@ -1,8 +1,9 @@
 import { addUserState } from '../../helpers/utils';
 import getCustomerToken from '../../tokens/getCustomerToken';
 import { addProfileWarning, removeProfileWarning } from '../../../handlers/handlers-profile';
+import { BaseUrl } from '../../../components/constants';
 
-const customerURL = `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/password`;
+const customerURL = `${BaseUrl}/me/password`;
 
 const getChangePasswordData = (): { version: string; currentPassword: string; newPassword: string } | undefined => {
   const curPassword = document.getElementById('cur-password') as HTMLInputElement;

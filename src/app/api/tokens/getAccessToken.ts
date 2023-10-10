@@ -1,3 +1,5 @@
+import { Base } from '../../components/constants';
+
 const requestOptions = {
   method: 'POST',
   headers: {
@@ -6,10 +8,7 @@ const requestOptions = {
 };
 
 const getAccessToken = async (): Promise<void> => {
-  return fetch(
-    'https://auth.australia-southeast1.gcp.commercetools.com/oauth/token?grant_type=client_credentials',
-    requestOptions,
-  )
+  return fetch(`${Base}/oauth/token?grant_type=client_credentials`, requestOptions)
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();

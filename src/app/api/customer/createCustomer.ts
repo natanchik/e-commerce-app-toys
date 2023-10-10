@@ -2,8 +2,9 @@ import { AddressFromAPI, CurrentAction, RegisterData } from '../../types/types';
 import { pushCurrentAction } from '../helpers/utils';
 import { getCustomerByID } from './getCustomerByID';
 import { loginAfterRegistration } from './loginCustomer';
+import { BaseUrl } from '../../components/constants';
 
-const customersURL = 'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers';
+const customersURL = `${BaseUrl}/customers`;
 
 const pushCurrentActions = pushCurrentAction.bind(null, 'addressId');
 

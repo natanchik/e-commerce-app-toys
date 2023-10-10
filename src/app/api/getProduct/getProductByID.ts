@@ -1,4 +1,5 @@
 import { Product } from '../../types/types';
+import { BaseUrl } from '../../components/constants';
 
 const getProductByID = async (productID: string): Promise<Product> => {
   const myHeaders = {
@@ -11,10 +12,7 @@ const getProductByID = async (productID: string): Promise<Product> => {
     headers: myHeaders,
   };
 
-  const res = await fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/products/${productID}`,
-    requestOptions,
-  );
+  const res = await fetch(`${BaseUrl}/products/${productID}`, requestOptions);
 
   const result = await res.json();
   return result;

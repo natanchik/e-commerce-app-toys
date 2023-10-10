@@ -1,4 +1,6 @@
-const customerTokenURL = `https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/customers/token`;
+import { Base } from '../../components/constants';
+
+const customerTokenURL = `${Base}/oauth/ecommerce-application-jsfe2023/customers/token`;
 
 const myHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded',

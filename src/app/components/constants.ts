@@ -1,5 +1,8 @@
 import { ValidTemplates } from '../types/types';
 
+export const Base = 'https://api.europe-west1.gcp.commercetools.com';
+export const BaseUrl = `${Base}/ecommerce-rs2023/`;
+
 export const countries = { '': '', 'United States': 'US', Kazakhstan: 'KZ' };
 
 export const salutation = { '': '', Mr: 'Mr', Mrs: 'Mrs' };
