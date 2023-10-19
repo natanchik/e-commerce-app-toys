@@ -1,6 +1,7 @@
 import { addUserState, pushCurrentAction } from '../../helpers/utils';
 import { addProfileWarning, removeProfileWarning } from '../../../handlers/handlers-profile';
 import { Address } from '../../../types/types';
+import { BASIC_URL } from '../../helpers/constants';
 
 const addCustomerAddress = async (data: object, type: string, isDefault: boolean): Promise<void> => {
   const myHeaders = {
@@ -21,7 +22,7 @@ const addCustomerAddress = async (data: object, type: string, isDefault: boolean
   curAddresses.forEach((address) => (address.id ? ids.push(address.id) : ''));
 
   const customerId = JSON.parse(localStorage.userState).id;
-  const customerURL = `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers/${customerId}`;
+  const customerURL = `${BASIC_URL}customers/${customerId}`;
 
   await fetch(`${customerURL}`, { method: 'POST', headers: myHeaders, body: dataForActions })
     .then((res) => {

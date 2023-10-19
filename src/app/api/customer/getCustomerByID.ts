@@ -1,4 +1,5 @@
 import { UserState } from '../../types/types';
+import { BASIC_URL } from '../helpers/constants';
 import { addUserState } from '../helpers/utils';
 
 export const getCustomerByID = async (customerID: string): Promise<void> => {
@@ -12,10 +13,7 @@ export const getCustomerByID = async (customerID: string): Promise<void> => {
     headers: myHeaders,
   };
 
-  await fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers/${customerID}`,
-    requestOptions,
-  )
+  await fetch(`${BASIC_URL}customers/${customerID}`, requestOptions)
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();
@@ -39,10 +37,7 @@ export const fillUserState = async (email: string): Promise<void> => {
     headers: myHeaders,
   };
 
-  await fetch(
-    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers?limit=500',
-    requestOptions,
-  )
+  await fetch(`${BASIC_URL}customers?limit=500`, requestOptions)
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();

@@ -1,4 +1,5 @@
 import User from '../../components/user';
+import { BASIC_URL } from '../helpers/constants';
 
 export async function deleteCart(id: string): Promise<void> {
   const myHeaders = {
@@ -17,10 +18,7 @@ export async function deleteCart(id: string): Promise<void> {
 
   const version = localStorage.cart ? JSON.parse(localStorage.cart).version : 1;
 
-  fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${id}?version=${version}`,
-    requestOptions,
-  )
+  fetch(`${BASIC_URL}me/carts/${id}?version=${version}`, requestOptions)
     .then((res) => {
       if (res.status < 200 || res.status >= 300) {
         throw new Error(`The error with status code ${res.status} has occured, please try later`);

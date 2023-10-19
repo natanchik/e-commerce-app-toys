@@ -1,6 +1,7 @@
 import { addUserState, pushCurrentAction } from '../../helpers/utils';
 import { CurrentAction, CurrentActionWithId } from '../../../types/types';
 import { addProfileWarning, removeProfileWarning } from '../../../handlers/handlers-profile';
+import { BASIC_URL } from '../../helpers/constants';
 
 const changeCustomerAddress = async (data: object, type: string, isDefault: boolean): Promise<void> => {
   const myHeaders = {
@@ -33,7 +34,7 @@ const changeCustomerAddress = async (data: object, type: string, isDefault: bool
   });
 
   const customerId = JSON.parse(localStorage.userState).id;
-  const customerURL = `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers/${customerId}`;
+  const customerURL = `${BASIC_URL}customers/${customerId}`;
 
   await fetch(`${customerURL}`, { method: 'POST', headers: myHeaders, body: dataForActions })
     .then((res) => {

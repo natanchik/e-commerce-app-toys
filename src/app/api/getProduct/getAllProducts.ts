@@ -1,6 +1,7 @@
 import { generateQueryParams } from '../helpers/utils';
 import { catalogQueryParams, productLimit } from '../../state/state';
 import { Product } from '../../types/types';
+import { BASIC_URL } from '../helpers/constants';
 
 const getAllProducts = async (limit?: number): Promise<Product[]> => {
   const myHeaders = {
@@ -14,9 +15,9 @@ const getAllProducts = async (limit?: number): Promise<Product[]> => {
   };
 
   return fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/products?limit=${
-      limit ? limit : productLimit.limit
-    }${catalogQueryParams.size > 0 ? generateQueryParams(catalogQueryParams) : ''}`,
+    `${BASIC_URL}products?limit=${limit ? limit : productLimit.limit}${
+      catalogQueryParams.size > 0 ? generateQueryParams(catalogQueryParams) : ''
+    }`,
     requestOptions,
   )
     .then((response) => {

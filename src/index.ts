@@ -27,7 +27,6 @@ const loadTokens = async (): Promise<void> => {
   }
   if (!localStorage.getItem('categories')) await getCategories();
   await getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);
-
 };
 
 const app = new App();

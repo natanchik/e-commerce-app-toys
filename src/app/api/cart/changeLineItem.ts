@@ -1,6 +1,7 @@
 import User from '../../components/user';
 import { showWarning } from '../../handlers/handlers-profile';
 import { Cart } from '../../types/types';
+import { BASIC_URL } from '../helpers/constants';
 import { getLineItemId } from '../helpers/utils';
 
 export const changeLineItem = async (
@@ -51,10 +52,7 @@ export const changeLineItem = async (
     body: JSON.stringify(currentBody),
   };
 
-  await fetch(
-    `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/me/carts/${cart.id}`,
-    requestOptions,
-  )
+  await fetch(`${BASIC_URL}me/carts/${cart.id}`, requestOptions)
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();

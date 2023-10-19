@@ -49,7 +49,7 @@ class App {
       {
         path: `${pages.MAIN}`,
         callback: async (): Promise<void> => {
-          setTimeout (async () => {
+          setTimeout(async () => {
             const mainPage = new MainPage();
             Main.setContent(await mainPage.drawMainPage());
             const cat = document.querySelector('.main-page__categories') as HTMLDivElement;

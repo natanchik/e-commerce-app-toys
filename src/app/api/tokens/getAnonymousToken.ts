@@ -1,5 +1,7 @@
+import { AUTORIZATION_CODE, PROJECT_KEY, URL } from '../helpers/constants';
+
 const myHeaders = {
-  Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
+  Authorization: `${AUTORIZATION_CODE}`,
 };
 
 const requestOptions = {
@@ -10,7 +12,7 @@ const requestOptions = {
 
 const getAnonymousToken = async (): Promise<void> => {
   return fetch(
-    'https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=client_credentials',
+    `${URL}oauth/${PROJECT_KEY}/anonymous/token?grant_type=client_credentials`,
     requestOptions,
   )
     .then((res) => {

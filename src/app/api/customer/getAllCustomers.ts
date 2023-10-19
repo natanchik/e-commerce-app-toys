@@ -1,3 +1,5 @@
+import { BASIC_URL } from '../helpers/constants';
+
 export const getAllCustomers = (): void => {
   const myHeaders = {
     'Content-Type': 'application/json',
@@ -9,10 +11,7 @@ export const getAllCustomers = (): void => {
     headers: myHeaders,
   };
 
-  fetch(
-    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers?limit=500',
-    requestOptions,
-  ).then((res) => {
+  fetch(`${BASIC_URL}customers?limit=500`, requestOptions).then((res) => {
     if (res.status >= 200 && res.status < 300) {
       return res.json();
     } else {
@@ -32,10 +31,7 @@ export const getAllCustomersEmails = async (emails: string[] = []): Promise<stri
     headers: myHeaders,
   };
 
-  await fetch(
-    'https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers?limit=500',
-    requestOptions,
-  )
+  await fetch(`${BASIC_URL}customers?limit=500`, requestOptions)
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();

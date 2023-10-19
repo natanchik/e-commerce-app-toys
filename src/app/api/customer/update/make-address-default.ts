@@ -1,5 +1,6 @@
 import { addUserState } from '../../helpers/utils';
 import { addProfileWarning, removeProfileWarning } from '../../../handlers/handlers-profile';
+import { BASIC_URL } from '../../helpers/constants';
 
 const makeAddressDefault = async (target: HTMLElement, type: string): Promise<void> => {
   const myHeaders = {
@@ -26,7 +27,7 @@ const makeAddressDefault = async (target: HTMLElement, type: string): Promise<vo
   });
 
   const customerId = JSON.parse(localStorage.userState).id;
-  const customerURL = `https://api.australia-southeast1.gcp.commercetools.com/ecommerce-application-jsfe2023/customers/${customerId}`;
+  const customerURL = `${BASIC_URL}customers/${customerId}`;
 
   await fetch(`${customerURL}`, { method: 'POST', headers: myHeaders, body: dataForActions })
     .then((res) => {

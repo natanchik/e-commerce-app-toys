@@ -16,7 +16,7 @@ class Filters {
 
     this.drawAllFilters(filters).then(() => {
       this.drawResetButton(filters);
-    })
+    });
 
     return filters;
   }
@@ -28,7 +28,7 @@ class Filters {
     await this.drawByCategoryFilter(filters);
     await this.drawByTypeFilter(filters);
   }
- 
+
   private async drawByCategoryFilter(filters: HTMLDivElement): Promise<void> {
     if (!stateCategories.has('top_categories'))
       await getCategories('top', [{ key: 'where', value: 'ancestors%20is%20empty' }]);

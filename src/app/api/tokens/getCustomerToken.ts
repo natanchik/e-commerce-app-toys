@@ -1,8 +1,10 @@
-const customerTokenURL = `https://auth.australia-southeast1.gcp.commercetools.com/oauth/ecommerce-application-jsfe2023/customers/token`;
+import { AUTORIZATION_CODE, PROJECT_KEY, URL } from '../helpers/constants';
+
+const customerTokenURL = `${URL}oauth/${PROJECT_KEY}/customers/token`;
 
 const myHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded',
-  Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
+  Authorization: `${AUTORIZATION_CODE}`,
 };
 
 const getCustomerToken = async (username: string, password: string): Promise<void> => {

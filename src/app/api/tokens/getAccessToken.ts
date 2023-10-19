@@ -1,15 +1,14 @@
+import { AUTORIZATION_CODE, URL } from '../helpers/constants';
+
 const requestOptions = {
   method: 'POST',
   headers: {
-    Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
+    Authorization: `${AUTORIZATION_CODE}`,
   },
 };
 
 const getAccessToken = async (): Promise<void> => {
-  return fetch(
-    'https://auth.australia-southeast1.gcp.commercetools.com/oauth/token?grant_type=client_credentials',
-    requestOptions,
-  )
+  return fetch(`${URL}oauth/token?grant_type=client_credentials`, requestOptions)
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.json();
