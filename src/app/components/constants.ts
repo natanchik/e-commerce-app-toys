@@ -1,7 +1,8 @@
 import { ValidTemplates } from '../types/types';
 
-export const Base = 'https://api.europe-west1.gcp.commercetools.com';
-export const BaseUrl = `${Base}/ecommerce-rs2023/`;
+export const BaseUrl = `https://api.europe-west1.gcp.commercetools.com/ecommerce-rs2023`;
+export const AuthUrl = 'https://auth.europe-west1.gcp.commercetools.com';
+export const AuthorizationKey = 'eKo_39j0suyLO7WaKBwUgwatNW-rmIVL';
 
 export const countries = { '': '', 'United States': 'US', Kazakhstan: 'KZ' };
 

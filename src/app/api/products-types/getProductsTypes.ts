@@ -24,7 +24,7 @@ const getProductsTypes = async (): Promise<void> => {
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_getproducts-types', error.message);
-      alert('Sorry, this is taking an unusually long time...');
+      // alert('Sorry, this is taking an unusually long time...');
     });
 };
 

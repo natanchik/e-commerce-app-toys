@@ -40,7 +40,7 @@ const getAllProducts = async (limit?: number): Promise<Product[]> => {
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_getproducts', error.message);
-      alert('Sorry, this is taking an unusually long time...');
+      // alert('Sorry, this is taking an unusually long time...');
     });
 };
 

@@ -1,7 +1,8 @@
-import { Base } from '../../components/constants';
+import { AuthUrl } from '../../components/constants';
 
 const myHeaders = {
-  Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
+  // Authorization: AuthorizationKey,
+  PO2qO7ERb7iI8OlmXElfNTi5: 'eKo_39j0suyLO7WaKBwUgwatNW-rmIVL',
 };
 
 const requestOptions = {
@@ -12,7 +13,7 @@ const requestOptions = {
 
 const getAnonymousToken = async (): Promise<void> => {
   return fetch(
-    `${Base}/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=client_credentials`,
+    `${AuthUrl}/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=client_credentials&scope=manage_project:ecommerce-rs2023`,
     requestOptions,
   )
     .then((res) => {
@@ -27,7 +28,8 @@ const getAnonymousToken = async (): Promise<void> => {
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_get-anonymous-token', error.message);
-      alert('Sorry, this is taking an unusually long time...');
+      // alert('Sorry, this is taking an unusually long time...');
+      // alert('Anonymous Token');
     });
 };
 

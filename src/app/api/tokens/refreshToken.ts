@@ -1,7 +1,8 @@
-import { Base } from '../../components/constants';
+import { AuthUrl } from '../../components/constants';
 
 const myHeaders = {
-  Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
+  //Authorization: AuthorizationKey,
+  PO2qO7ERb7iI8OlmXElfNTi5: 'eKo_39j0suyLO7WaKBwUgwatNW-rmIVL',
 };
 
 const requestOptions = {
@@ -12,7 +13,7 @@ const requestOptions = {
 
 const refreshToken = async (refreshTokenValue: string): Promise<void> => {
   return fetch(
-    `${Base}/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=refresh_token&refresh_token=${refreshTokenValue}`,
+    `${AuthUrl}/oauth/ecommerce-application-jsfe2023/anonymous/token?grant_type=refresh_token&refresh_token=${refreshTokenValue}`,
     requestOptions,
   )
     .then((res) => {
@@ -27,6 +28,7 @@ const refreshToken = async (refreshTokenValue: string): Promise<void> => {
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_refresh-token', error.message);
+      // alert('Refresh Token');
     });
 };
 

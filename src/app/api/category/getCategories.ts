@@ -39,7 +39,7 @@ const getCategories = async (
       return result.results;
     })
     .catch(() => {
-      alert('Sorry, this is taking an unusually long time...');
+      // alert('Sorry, this is taking an unusually long time...');
     });
 };
 

@@ -1,10 +1,11 @@
-import { Base } from '../../components/constants';
+import { AuthUrl } from '../../components/constants';
 
-const customerTokenURL = `${Base}/oauth/ecommerce-application-jsfe2023/customers/token`;
+const customerTokenURL = `${AuthUrl}/oauth/ecommerce-application-jsfe2023/customers/token`;
 
 const myHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded',
-  Authorization: 'Basic bVg4MUEzUXA5OFJnOVphdU5zakwxVFJWOm94ZnI3dXdxTkplTWJIZFRXUFJHUFBIcVU1ZWlPSlVy',
+  // Authorization: AuthorizationKey,
+  PO2qO7ERb7iI8OlmXElfNTi5: 'eKo_39j0suyLO7WaKBwUgwatNW-rmIVL',
 };
 
 const getCustomerToken = async (username: string, password: string): Promise<void> => {
@@ -28,7 +29,8 @@ const getCustomerToken = async (username: string, password: string): Promise<voi
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_get-customer-token', error.message);
-      alert('Sorry, this is taking an unusually long time...');
+      // alert('Sorry, this is taking an unusually long time...');
+      // alert('Customer Token');
     });
 };
 

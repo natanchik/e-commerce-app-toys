@@ -24,7 +24,7 @@ const getProductsBySearch = async (text: string): Promise<void> => {
     })
     .catch((error) => {
       if (error) localStorage.setItem('error_getproduct', error.message);
-      alert('Sorry, this is taking an unusually long time...');
+      // alert('Sorry, this is taking an unusually long time...');
     });
 };
 
